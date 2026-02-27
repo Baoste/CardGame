@@ -24,6 +24,7 @@ namespace Game.Domain
     public class DrawCardEvent : INetEventPayload
     {
         public int PlayerId;
+        public int CardId;
     }
 
     [Serializable]

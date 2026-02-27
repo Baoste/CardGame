@@ -465,7 +465,7 @@ MonoBehaviour:
   _ipv6BindAddress: 
   _port: 7777
   _maximumClients: 4095
-  _clientAddress: localhost
+  _clientAddress: 49.233.142.24
 --- !u!114 &680630110
 MonoBehaviour:
   m_ObjectHideFlags: 0

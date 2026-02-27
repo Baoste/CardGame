@@ -140,7 +140,8 @@ public class MatchGateway : NetworkBehaviour
         session.Slots[info.slot].LastSeenUtc = DateTime.UtcNow;
 
         // 写入事件日志 + 广播给本局两人
-        var ev = session.AddEvent("DrawCard", new DrawCardEvent { PlayerId = 1});
+        // TODO: 这里要改到服务器处理，而不是客户端。需要将Event和Command分离，客户端发 Command（比如 DrawCardCommand），服务器处理后写 Event（比如 DrawCardEvent）
+        var ev = session.AddEvent("DrawCard", new DrawCardEvent { PlayerId = 1, CardId = UnityEngine.Random.Range(0,15) });
         BroadcastToSession(session, ev);
     }
 
@@ -328,7 +329,7 @@ public class MatchGateway : NetworkBehaviour
             context = chat.text;
         if (payload is DrawCardEvent draw)
         {
-            Debug.Log($"draw {UnityEngine.Random.Range(0, 15)}");
+            Debug.Log($"draw {draw.CardId}");
             context = "draw";
         }
         Debug.Log($"[Client] Event#{ev.Index} type={ev.Type} payload={context}");
