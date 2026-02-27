@@ -1,0 +1,24 @@
+using System.Collections.Generic;
+
+namespace Game.Domain
+{
+    public static class CardDatabase
+    {
+        private static Dictionary<int, Card> _cards;
+
+        public static void Init(List<Card> defs)
+        {
+            _cards = new Dictionary<int, Card>();
+
+            foreach (var def in defs)
+            {
+                _cards[def.id] = def;
+            }
+        }
+
+        public static Card Get(int cardId)
+        {
+            return _cards[cardId];
+        }
+    }
+}

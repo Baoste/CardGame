@@ -1,0 +1,27 @@
+using FishNet.Managing;
+using UnityEngine;
+
+public class QuickStartButtons : MonoBehaviour
+{
+    public NetworkManager nm;
+
+    private void OnGUI()
+    {
+        if (nm == null) return;
+
+        const int w = 200;
+        const int h = 40;
+
+        if (GUI.Button(new Rect(10, 10, w, h), "Start Server"))
+            nm.ServerManager.StartConnection();
+
+        if (GUI.Button(new Rect(10, 60, w, h), "Start Client"))
+            nm.ClientManager.StartConnection();
+
+        if (GUI.Button(new Rect(10, 110, w, h), "Stop All"))
+        {
+            nm.ClientManager.StopConnection();
+            nm.ServerManager.StopConnection(true);
+        }
+    }
+}
