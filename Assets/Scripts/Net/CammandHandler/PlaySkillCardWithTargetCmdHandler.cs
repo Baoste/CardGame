@@ -14,7 +14,7 @@ public class PlaySkillCardWithTargetCmdHandler : CommandHandler, ICommandHandler
 
         // return event
         CommandResult results = new CommandResult();
-        results.events.Add(MakeEvent(
+        results.events.Enqueue(MakeEvent(
             "PlaySkillCardWithTarget",
             new PlaySkillCardWithTargetEvent    // need change
             {

@@ -1,5 +1,8 @@
+using System;
+
 namespace Game.Domain
 {
+    [Serializable]
     public enum ValueSource
     {
         CasterHandCount,                // 技能牌数
@@ -7,6 +10,7 @@ namespace Game.Domain
         //PointsOfCardsDrawnThisTurn,     // 抽到的牌的点数
     }
 
+    [Serializable]
     public enum BinaryOp
     {
         Add,

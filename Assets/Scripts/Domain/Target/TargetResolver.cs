@@ -1,7 +1,9 @@
+using System;
 using System.Collections.Generic;
 
 namespace Game.Domain
 {
+    [Serializable]
     public static class TargetResolver
     {
         public static List<Card> ResolveTarget(TargetSpec spec, GameState state, EffectContext ctx)

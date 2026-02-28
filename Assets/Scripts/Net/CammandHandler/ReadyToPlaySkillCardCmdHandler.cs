@@ -14,7 +14,7 @@ public sealed class ReadyToPlaySkillCardCmdHandler : CommandHandler, ICommandHan
 
         // return event
         CommandResult results = new CommandResult();
-        results.events.Add(MakeEvent(
+        results.events.Enqueue(MakeEvent(
             "ReadyToPlaySkillCard",
             new ReadyToPlaySkillCardEvent    // need change
             {

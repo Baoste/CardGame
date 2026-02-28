@@ -15,7 +15,7 @@ public sealed class ChatCmdHandler : CommandHandler, ICommandHandler
 
         // need change
         CommandResult results = new CommandResult();
-        results.events.Add(MakeEvent(
+        results.events.Enqueue(MakeEvent(
             "Chat",
             new ChatEvent
             {

@@ -95,8 +95,9 @@ public class MatchGateway : NetworkBehaviour
 
                 var cmd = session.AddCommand(type, jsonData);
                 CommandResult results = ProcessCommand(session, cmd);
-                foreach (var res in results.events)
+                while (results.events.Count > 0)
                 {
+                    var res = results.events.Dequeue();
                     var ev = session.AddEvent(res.type, res.jsonData);
                     BroadcastToSession(session, ev);
                 }
@@ -121,8 +122,9 @@ public class MatchGateway : NetworkBehaviour
             var cmd = session.AddCommand(type, jsonData);
             CommandResult results = ProcessCommand(session, cmd);
 
-            foreach (var res in results.events)
+            while (results.events.Count > 0)
             {
+                var res = results.events.Dequeue();
                 if (!EventDispatcher.map.ContainsKey(res.type))
                 {
                     TargetError(sender, $"Unknown command type: {res.type}");

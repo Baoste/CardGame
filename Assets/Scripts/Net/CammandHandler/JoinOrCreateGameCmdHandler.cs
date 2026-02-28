@@ -14,7 +14,7 @@ public sealed class JoinOrCreateGameCmdHandler : CommandHandler, ICommandHandler
 
         // return
         CommandResult results = new CommandResult();
-        results.events.Add(MakeEvent(
+        results.events.Enqueue(MakeEvent(
             "JoinOrCreateGame",
             new JoinOrCreateGameEvent    // need change
             {

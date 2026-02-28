@@ -1,10 +1,14 @@
+using System;
+
 namespace Game.Domain
 {
+    [Serializable]
     public abstract class ValueExpr
     {
         public abstract int Evaluate(GameState state, EffectContext ctx, Card target);
     }
 
+    [Serializable]
     // 常量
     public class ConstValue : ValueExpr
     {
@@ -13,6 +17,7 @@ namespace Game.Domain
             => value;
     }
 
+    [Serializable]
     // 读取变量
     public class VariableValue : ValueExpr
     {
@@ -31,6 +36,7 @@ namespace Game.Domain
         }
     }
 
+    [Serializable]
     // 二元运算
     public class BinaryValue : ValueExpr
     {

@@ -1,5 +1,8 @@
+using System;
+
 namespace Game.Domain
 {
+    [Serializable]
     public static class EffectExecutor
     {
         public static void ExecuteCard(SkillCard card,  GameState state, EffectContext ctx)

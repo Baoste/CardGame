@@ -4,7 +4,7 @@ namespace Game.Domain
 {
     public class DeckState
     {
-        public List<int> cardIdsInDeck;
+        public Stack<int> cardIdsInDeck = new Stack<int>();
     }
 
     public class SkillDeckState : DeckState

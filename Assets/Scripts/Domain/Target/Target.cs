@@ -1,5 +1,8 @@
+using System;
+
 namespace Game.Domain
 {
+    [Serializable]
     public enum TargetType
     {
         None                = 0,
@@ -9,6 +12,7 @@ namespace Game.Domain
         PointCardsInDeck    = 1 << 3,   // 牌堆的点数牌
     }
 
+    [Serializable]
     public enum TargetSelectionMode
     {
         All,
@@ -16,6 +20,7 @@ namespace Game.Domain
         Choose
     }
 
+    [Serializable]
     public class TargetSpec
     {
         public TargetType targetType;

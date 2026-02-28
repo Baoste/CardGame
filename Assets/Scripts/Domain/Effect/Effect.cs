@@ -1,5 +1,8 @@
+using System;
+
 namespace Game.Domain
 {
+    [Serializable]
     public enum EffectType
     {
         DrawCards,          // 抽牌
@@ -7,6 +10,7 @@ namespace Game.Domain
         MoveCards,          // 移动目标牌
     }
 
+    [Serializable]
     public class EffectOp
     {
         public EffectType type;

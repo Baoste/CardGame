@@ -12,7 +12,7 @@ namespace Game.Domain
 
     public class CommandResult
     {
-        public List<ResolvedEvent> events = new();
+        public Queue<ResolvedEvent> events = new();
     }
 
     public interface ICommand

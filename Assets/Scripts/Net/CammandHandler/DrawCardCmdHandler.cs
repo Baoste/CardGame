@@ -12,12 +12,16 @@ public sealed class DrawCardCmdHandler : CommandHandler, ICommandHandler
         var payload = JsonUtility.FromJson<DrawCardCommand>(cmd.jsonData);
 
         // TODO: 服务器端需要做什么
-        int drawCardId = UnityEngine.Random.Range(0, 25);
-        session.gameState.players[payload.playerId].PointCardsOnBoard.Add(drawCardId);
+        int drawCardId = -1;
+        if (session.gameState.pointCardsDeck.cardIdsInDeck.Count > 0)
+        {
+            drawCardId = session.gameState.pointCardsDeck.cardIdsInDeck.Pop();
+            session.gameState.players[payload.playerId].PointCardsOnBoard.Add(drawCardId);
+        }
 
         // return
         CommandResult results = new CommandResult();
-        results.events.Add(MakeEvent(
+        results.events.Enqueue(MakeEvent(
             "DrawCard",
             new DrawCardEvent    // need change
             {

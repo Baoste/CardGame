@@ -81,22 +81,22 @@ public class ClientMatchInput : MonoBehaviour
         //}
 
         // ·¢ÅÆ
-        //if (Input.GetKeyDown(KeyCode.F4))
-        //{
-        //    DrawCardCommand cmd = new DrawCardCommand { playerId = 1 };
-        //    gateway.SendCommandServerRpc("DrawCard", JsonUtility.ToJson(cmd));
-        //}
         if (Input.GetKeyDown(KeyCode.F4))
         {
             StartGameCommand cmd = new StartGameCommand { playerId = playerSlot };
             gateway.SendCommandServerRpc("StartGame", JsonUtility.ToJson(cmd));
         }
-
         if (Input.GetKeyDown(KeyCode.F5))
         {
-            ReadyToPlaySkillCardCommand cmd = new ReadyToPlaySkillCardCommand { playerId = playerSlot, cardId = 12 };
-            gateway.SendCommandServerRpc("ReadyToPlaySkillCard", JsonUtility.ToJson(cmd));
+            DrawCardCommand cmd = new DrawCardCommand { playerId = playerSlot };
+            gateway.SendCommandServerRpc("DrawCard", JsonUtility.ToJson(cmd));
         }
+
+        //if (Input.GetKeyDown(KeyCode.F5))
+        //{
+        //    ReadyToPlaySkillCardCommand cmd = new ReadyToPlaySkillCardCommand { playerId = playerSlot, cardId = 12 };
+        //    gateway.SendCommandServerRpc("ReadyToPlaySkillCard", JsonUtility.ToJson(cmd));
+        //}
 
         if (Input.GetKeyDown(KeyCode.F6))
         {

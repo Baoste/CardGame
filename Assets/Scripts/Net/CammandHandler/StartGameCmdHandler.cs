@@ -10,25 +10,40 @@ public class StartGameCmdHandler : CommandHandler, ICommandHandler
         var payload = JsonUtility.FromJson<StartGameCommand>(cmd.jsonData);  // need change
 
         // TODO: 服务器端需要做什么
-        List<int> targetIds = new List<int> { 1, 2, 3 };  // TODO: 需要根据技能卡的效果来确定目标
+        // 初始化牌堆
+        List<int> pointCardIds = new List<int>();
+        for (int i = 0; i < 2; i++)
+            for (int j = 0; j < 10; j++)
+                pointCardIds.Add(j);
+        StaticFunction.Shuffle(pointCardIds, session.gameState.rng);
+
+        var pointCardIdsInDeck = session.gameState.pointCardsDeck.cardIdsInDeck;
+        pointCardIdsInDeck.Clear();
+        foreach (var cardId in pointCardIds)
+            pointCardIdsInDeck.Push(cardId);
 
         // return results
         CommandResult results = new CommandResult();
-        results.events.Add(MakeEvent(
+        results.events.Enqueue(MakeEvent(
             "StartGame",
             new StartGameEvent    // need change
             {
                 playerId = payload.playerId,
             }
         ));
-        results.events.Add(MakeEvent(
+
+        // 抽牌
+        int drawCardId = pointCardIdsInDeck.Pop();
+        session.gameState.players[payload.playerId].PointCardsOnBoard.Add(drawCardId);
+        results.events.Enqueue(MakeEvent(
             "DrawCard",
             new DrawCardEvent    // need change
             {
                 playerId = payload.playerId,
-                cardId = UnityEngine.Random.Range(0, 25)
+                cardId = drawCardId
             }
         ));
+
         return results;
     }
 }

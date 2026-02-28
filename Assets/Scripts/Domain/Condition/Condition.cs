@@ -1,11 +1,15 @@
+using System;
+
 namespace Game.Domain
 {
+    [Serializable]
     public abstract class ConditionExpr
     {
         public abstract bool Evaluate(GameState state, EffectContext ctx, Card card);
     }
 
     // 比较条件
+    [Serializable]
     public class CompareCondition : ConditionExpr
     {
         public ValueExpr left;
@@ -30,6 +34,7 @@ namespace Game.Domain
     }
 
     // 逻辑组合
+    [Serializable]
     public class AndCondition : ConditionExpr
     {
         public ConditionExpr a, b;
