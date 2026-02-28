@@ -1,13 +1,9 @@
 using Game.Domain;
 using TMPro;
 using UnityEngine;
-using UnityEngine.UIElements;
 
 public sealed class DrawCardEventHandler : MonoBehaviour, IEventProcess, IEventHandler
 {
-    [SerializeField]
-    private GameObject cardPrefab;
-
     private DrawCardEvent payload;
 
     public bool Handle(NetEvent ev)
@@ -33,6 +29,8 @@ public sealed class DrawCardEventHandler : MonoBehaviour, IEventProcess, IEventH
         Vector3 position = new Vector3(0, 0, 0);
         Quaternion rotation = Quaternion.identity;
 
+        GameObject cardPrefab = Resources.Load<GameObject>("Prefabs/Card");
         GameObject newCard = Instantiate(cardPrefab, position, rotation);
+        newCard.GetComponentInChildren<TextMeshPro>().text = card.name;
     }
 }
