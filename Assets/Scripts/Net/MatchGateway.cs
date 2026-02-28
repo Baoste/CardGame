@@ -13,7 +13,7 @@ public class MatchGateway : NetworkBehaviour
     public static event System.Action<Game.Domain.NetEvent> OnClientEvent;
     public static event System.Action<string> OnClientSnapshot;
 
-    private ResolvedEvent ProcessCommand(NetCommand cmd)
+    private CommandResult ProcessCommand(NetCommand cmd)
         => CommandDispatcher.Process(cmd);
     private bool ProcessEvent(NetEvent ev)
         => EventDispatcher.Process(ev);
@@ -94,13 +94,16 @@ public class MatchGateway : NetworkBehaviour
                 session.Started = true;
 
                 var cmd = session.AddCommand(type, jsonData);
-                ResolvedEvent res = ProcessCommand(cmd);
-                var ev = session.AddEvent(res.type, res.jsonData);
-                BroadcastToSession(session, ev);
+                CommandResult results = ProcessCommand(cmd);
+                foreach (var res in results.events)
+                {
+                    var ev = session.AddEvent(res.type, res.jsonData);
+                    BroadcastToSession(session, ev);
+                }
             }
         }
         else
-        { 
+        {
             if (!_connMap.TryGetValue(sender.ClientId, out var info))
             {
                 TargetError(sender, "Not in a match.");
@@ -116,17 +119,20 @@ public class MatchGateway : NetworkBehaviour
             // cmd传给服务器处理
             session.Slots[info.slot].LastSeenUtc = DateTime.UtcNow;
             var cmd = session.AddCommand(type, jsonData);
-            ResolvedEvent res = ProcessCommand(cmd);
+            CommandResult results = ProcessCommand(cmd);
 
-            if (!EventDispatcher.map.ContainsKey(res.type))
+            foreach (var res in results.events)
             {
-                TargetError(sender, $"Unknown command type: {res.type}");
-                return;
-            }
+                if (!EventDispatcher.map.ContainsKey(res.type))
+                {
+                    TargetError(sender, $"Unknown command type: {res.type}");
+                    return;
+                }
 
-            var ev = session.AddEvent(res.type, res.jsonData);
-            // 返回event，广播给client
-            BroadcastToSession(session, ev);
+                // 返回event，广播给client
+                var ev = session.AddEvent(res.type, res.jsonData);
+                BroadcastToSession(session, ev);
+            }
         }
     }
 

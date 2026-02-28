@@ -1,4 +1,5 @@
 using Game.Domain;
+using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -79,16 +80,27 @@ public class ClientMatchInput : MonoBehaviour
         //}
 
         // ·¢ÅÆ
+        //if (Input.GetKeyDown(KeyCode.F4))
+        //{
+        //    DrawCardCommand cmd = new DrawCardCommand { playerId = 1 };
+        //    gateway.SendCommandServerRpc("DrawCard", JsonUtility.ToJson(cmd));
+        //}
         if (Input.GetKeyDown(KeyCode.F4))
         {
-            DrawCardCommand cmd = new DrawCardCommand { playerId = 1 };
-            gateway.SendCommandServerRpc("DrawCard", JsonUtility.ToJson(cmd));
+            StartGameCommand cmd = new StartGameCommand { playerId = 1 };
+            gateway.SendCommandServerRpc("StartGame", JsonUtility.ToJson(cmd));
         }
 
         if (Input.GetKeyDown(KeyCode.F5))
         {
             ReadyToPlaySkillCardCommand cmd = new ReadyToPlaySkillCardCommand { playerId = 1, cardId = 12 };
             gateway.SendCommandServerRpc("ReadyToPlaySkillCard", JsonUtility.ToJson(cmd));
+        }
+
+        if (Input.GetKeyDown(KeyCode.F6))
+        {
+            PlaySkillCardWithTargetCommand cmd = new PlaySkillCardWithTargetCommand { playerId = 1, cardId = 12, targetIds = new List<int> { 1 } };
+            gateway.SendCommandServerRpc("PlaySkillCardWithTarget", JsonUtility.ToJson(cmd));
         }
     }
 

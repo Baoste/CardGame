@@ -1,9 +1,10 @@
+using FishNet.Demo.AdditiveScenes;
 using Game.Domain;
 using UnityEngine;
 
-public sealed class JoinOrCreateGameCmdHandler : ICommandHandler
+public sealed class JoinOrCreateGameCmdHandler : CommandHandler, ICommandHandler
 {
-    public ResolvedEvent Handle(NetCommand cmd)
+    public CommandResult Handle(NetCommand cmd)
     {
         // need change
         var payload = JsonUtility.FromJson<JoinOrCreateGameCommand>(cmd.jsonData);
@@ -11,16 +12,15 @@ public sealed class JoinOrCreateGameCmdHandler : ICommandHandler
         // TODO: 服务器端需要做什么
 
         // return
-        var ev = new JoinOrCreateGameEvent    // need change
-        {
-            playerId = payload.playerId,
-            matchIdOrEmpty = payload.matchIdOrEmpty
-        };
-
-        return new ResolvedEvent
-        {
-            type = "JoinOrCreateGame",  // need change
-            jsonData = JsonUtility.ToJson(ev)
-        };
+        CommandResult results = new CommandResult();
+        results.events.Add(MakeEvent(
+            "JoinOrCreateGame",
+            new JoinOrCreateGameEvent    // need change
+            {
+                playerId = payload.playerId,
+                matchIdOrEmpty = payload.matchIdOrEmpty
+            }
+        ));
+        return results;
     }
 }

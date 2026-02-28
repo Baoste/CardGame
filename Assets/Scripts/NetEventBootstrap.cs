@@ -5,6 +5,7 @@ public static class NetEventBootstrap
     public static void Init()
     {
         EventDispatcher.Register("JoinOrCreateGame", new JoinOrCreateGameEventHandler());
+        EventDispatcher.Register("StartGame", new StartGameEventHandler());
         EventDispatcher.Register("Chat", new ChatEventHandler());
         EventDispatcher.Register("DrawCard", new DrawCardEventHandler());
         EventDispatcher.Register("ReadyToPlaySkillCard", new ReadyToPlaySkillCardEventHandler());
@@ -12,6 +13,7 @@ public static class NetEventBootstrap
 
 
         CommandDispatcher.Register("JoinOrCreateGame", new JoinOrCreateGameCmdHandler());
+        CommandDispatcher.Register("StartGame", new StartGameCmdHandler());
         CommandDispatcher.Register("Chat", new ChatCmdHandler());
         CommandDispatcher.Register("DrawCard", new DrawCardCmdHandler());
         CommandDispatcher.Register("ReadyToPlaySkillCard", new ReadyToPlaySkillCardCmdHandler());

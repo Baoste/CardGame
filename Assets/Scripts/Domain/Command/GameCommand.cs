@@ -10,6 +10,11 @@ namespace Game.Domain
         public string jsonData;
     }
 
+    public class CommandResult
+    {
+        public List<ResolvedEvent> events = new();
+    }
+
     public interface ICommand
     {
     }
@@ -19,6 +24,12 @@ namespace Game.Domain
     {
         public int playerId;
         public string matchIdOrEmpty;
+    }
+
+    [Serializable]
+    public class StartGameCommand : ICommand
+    {
+        public int playerId;
     }
 
     [Serializable]

@@ -15,6 +15,12 @@ namespace Game.Domain
     }
 
     [Serializable]
+    public class StartGameEvent : INetEventPayload
+    {
+        public int playerId;
+    }
+
+    [Serializable]
     public class ChatEvent : INetEventPayload
     {
         public int playerId;

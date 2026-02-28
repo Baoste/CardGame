@@ -1,9 +1,9 @@
 using Game.Domain;
 using UnityEngine;
 
-public sealed class ChatCmdHandler : ICommandHandler
+public sealed class ChatCmdHandler : CommandHandler, ICommandHandler
 {
-    public ResolvedEvent Handle(NetCommand cmd)
+    public CommandResult Handle(NetCommand cmd)
     {
         var payload = JsonUtility.FromJson<ChatCommand>(cmd.jsonData);  // need change
 
@@ -13,16 +13,15 @@ public sealed class ChatCmdHandler : ICommandHandler
         //END
 
         // need change
-        var ev = new ChatEvent
-        {
-            playerId = payload.playerId,
-            text = message
-        };
-
-        return new ResolvedEvent
-        {
-            type = "Chat",
-            jsonData = JsonUtility.ToJson(ev)
-        };
+        CommandResult results = new CommandResult();
+        results.events.Add(MakeEvent(
+            "Chat",
+            new ChatEvent
+            {
+                playerId = payload.playerId,
+                text = message
+            }
+        ));
+        return results;
     }
 }

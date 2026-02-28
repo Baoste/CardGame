@@ -1,11 +1,24 @@
 using Game.Domain;
 using System;
 using System.Collections.Generic;
+using UnityEngine;
 
 public interface ICommandHandler
 {
     // 处理并返回事件（或 default 表示无事件）
-    ResolvedEvent Handle(NetCommand cmd);
+    CommandResult Handle(NetCommand cmd);
+}
+
+public class CommandHandler
+{
+    public static ResolvedEvent MakeEvent<T>(string type, T payload)
+    {
+        return new ResolvedEvent
+        {
+            type = type,
+            jsonData = JsonUtility.ToJson(payload)
+        };
+    }
 }
 
 public static class CommandDispatcher
@@ -18,7 +31,7 @@ public static class CommandDispatcher
             throw new InvalidOperationException($"Handler already registered for type: {type}");
     }
 
-    public static ResolvedEvent Process(NetCommand cmd)
+    public static CommandResult Process(NetCommand cmd)
     {
         if (map.TryGetValue(cmd.type, out var handler))
             return handler.Handle(cmd);

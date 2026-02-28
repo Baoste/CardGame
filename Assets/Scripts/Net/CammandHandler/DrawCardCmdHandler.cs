@@ -3,9 +3,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public sealed class DrawCardCmdHandler : EventHandler, ICommandHandler
+public sealed class DrawCardCmdHandler : CommandHandler, ICommandHandler
 {
-    public ResolvedEvent Handle(NetCommand cmd)
+    public CommandResult Handle(NetCommand cmd)
     {
         // need change
         var payload = JsonUtility.FromJson<DrawCardCommand>(cmd.jsonData);
@@ -13,16 +13,15 @@ public sealed class DrawCardCmdHandler : EventHandler, ICommandHandler
         // TODO 服务器端需要做什么
 
         // return
-        var ev = new DrawCardEvent    // need change
-        {
-            playerId = payload.playerId,
-            cardId = UnityEngine.Random.Range(0, 25)
-        };
-
-        return new ResolvedEvent
-        {
-            type = "DrawCard",  // need change
-            jsonData = JsonUtility.ToJson(ev)
-        };
+        CommandResult results = new CommandResult();
+        results.events.Add(MakeEvent(
+            "DrawCard",
+            new DrawCardEvent    // need change
+            {
+                playerId = payload.playerId,
+                cardId = UnityEngine.Random.Range(0, 25)
+            }
+        ));
+        return results;
     }
 }
