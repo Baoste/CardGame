@@ -1,10 +1,11 @@
 using Game.Domain;
+using Game.Server;
 using System.Collections.Generic;
 using UnityEngine;
 
 public sealed class ReadyToPlaySkillCardCmdHandler : CommandHandler, ICommandHandler
 {
-    public CommandResult Handle(NetCommand cmd)
+    public CommandResult Handle(MatchSession session, NetCommand cmd)
     {
         var payload = JsonUtility.FromJson<ReadyToPlaySkillCardCommand>(cmd.jsonData);  // need change
 

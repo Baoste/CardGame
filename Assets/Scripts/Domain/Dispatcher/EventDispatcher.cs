@@ -10,7 +10,7 @@ public interface IEventHandler
 }
 
 
-public class EventHandler
+public abstract class EventHandler
 {
 }
 

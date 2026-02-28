@@ -1,9 +1,10 @@
 using Game.Domain;
+using Game.Server;
 using UnityEngine;
 
 public sealed class ChatCmdHandler : CommandHandler, ICommandHandler
 {
-    public CommandResult Handle(NetCommand cmd)
+    public CommandResult Handle(MatchSession session, NetCommand cmd)
     {
         var payload = JsonUtility.FromJson<ChatCommand>(cmd.jsonData);  // need change
 

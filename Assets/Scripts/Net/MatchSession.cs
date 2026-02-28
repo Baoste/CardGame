@@ -24,6 +24,8 @@ namespace Game.Server   // 这里用你 MatchGateway 所在的 namespace
         public int NextCmdIndex = 0;
         public bool Started;
 
+        public GameState gameState = new GameState();
+
         public MatchSession(string matchId) => MatchId = matchId;
 
         public int ServerLastEventIndex => NextEventIndex - 1; // 没事件时为 -1

@@ -1,10 +1,11 @@
 using Game.Domain;
+using Game.Server;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class StartGameCmdHandler : CommandHandler, ICommandHandler
 {
-    public CommandResult Handle(NetCommand cmd)
+    public CommandResult Handle(MatchSession session, NetCommand cmd)
     {
         var payload = JsonUtility.FromJson<StartGameCommand>(cmd.jsonData);  // need change
 

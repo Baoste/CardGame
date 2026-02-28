@@ -6,6 +6,7 @@ namespace Game.Domain
     {
         private static Dictionary<int, Card> _cards;
 
+        // TODO: load from json file
         public static void Init(List<Card> defs)
         {
             _cards = new Dictionary<int, Card>();

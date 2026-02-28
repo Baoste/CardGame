@@ -16,6 +16,7 @@ public class ClientMatchInput : MonoBehaviour
 
     [Header("Client state")]
     public int lastEventIndex = -1;
+    public int playerSlot = -1;
 
     void OnEnable()
     {
@@ -32,7 +33,7 @@ public class ClientMatchInput : MonoBehaviour
     void OnJoined(string matchId, int slot, string token, string snapshotJson)
     {
         inputField.text = matchId;
-
+        playerSlot = slot;
         // Debug.Log($"[UI] Joined match {matchId}, slot {slot}");
     }
 
@@ -50,7 +51,7 @@ public class ClientMatchInput : MonoBehaviour
         // C：创建新局
         if (Input.GetKeyDown(KeyCode.F1))
         {
-            JoinOrCreateGameCommand cmd = new JoinOrCreateGameCommand { playerId = 1, matchIdOrEmpty = "123" };
+            JoinOrCreateGameCommand cmd = new JoinOrCreateGameCommand { playerId = -1, matchIdOrEmpty = "123" };
             gateway.SendCommandServerRpc("JoinOrCreateGame", JsonUtility.ToJson(cmd));
             Debug.Log("[Client] Requested create match");
         }
@@ -59,7 +60,7 @@ public class ClientMatchInput : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.F2))
         {
             string matchId = inputField.text.Trim();
-            JoinOrCreateGameCommand cmd = new JoinOrCreateGameCommand { playerId = 1, matchIdOrEmpty = matchId };
+            JoinOrCreateGameCommand cmd = new JoinOrCreateGameCommand { playerId = -1, matchIdOrEmpty = matchId };
             gateway.SendCommandServerRpc("JoinOrCreateGame", JsonUtility.ToJson(cmd));
 
             Debug.Log($"[Client] Requested join matchId={matchId}");
@@ -68,7 +69,7 @@ public class ClientMatchInput : MonoBehaviour
         // M：发消息（写入本局 eventlog 并广播给同局两人）
         if (Input.GetKeyDown(KeyCode.F3))
         {
-            ChatCommand cmd = new ChatCommand { playerId = 1, chatContext = inputField1.text };
+            ChatCommand cmd = new ChatCommand { playerId = playerSlot, chatContext = inputField1.text };
             gateway.SendCommandServerRpc("Chat", JsonUtility.ToJson(cmd));
         }
 
@@ -87,19 +88,19 @@ public class ClientMatchInput : MonoBehaviour
         //}
         if (Input.GetKeyDown(KeyCode.F4))
         {
-            StartGameCommand cmd = new StartGameCommand { playerId = 1 };
+            StartGameCommand cmd = new StartGameCommand { playerId = playerSlot };
             gateway.SendCommandServerRpc("StartGame", JsonUtility.ToJson(cmd));
         }
 
         if (Input.GetKeyDown(KeyCode.F5))
         {
-            ReadyToPlaySkillCardCommand cmd = new ReadyToPlaySkillCardCommand { playerId = 1, cardId = 12 };
+            ReadyToPlaySkillCardCommand cmd = new ReadyToPlaySkillCardCommand { playerId = playerSlot, cardId = 12 };
             gateway.SendCommandServerRpc("ReadyToPlaySkillCard", JsonUtility.ToJson(cmd));
         }
 
         if (Input.GetKeyDown(KeyCode.F6))
         {
-            PlaySkillCardWithTargetCommand cmd = new PlaySkillCardWithTargetCommand { playerId = 1, cardId = 12, targetIds = new List<int> { 1 } };
+            PlaySkillCardWithTargetCommand cmd = new PlaySkillCardWithTargetCommand { playerId = playerSlot, cardId = 12, targetIds = new List<int> { 1 } };
             gateway.SendCommandServerRpc("PlaySkillCardWithTarget", JsonUtility.ToJson(cmd));
         }
     }

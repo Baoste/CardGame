@@ -8,7 +8,7 @@ public sealed class ChatEventHandler : EventHandler, IEventHandler
         var payload = JsonUtility.FromJson<ChatEvent>(ev.jsonData);
 
         string context = payload.text;
-        Debug.Log($"[Client] Event#{ev.Index} type={ev.type} payload={context}");
+        Debug.Log($"[Client] Event#{ev.Index} type={ev.type} slot={payload.playerId} payload={context}");
 
         return true;
     }

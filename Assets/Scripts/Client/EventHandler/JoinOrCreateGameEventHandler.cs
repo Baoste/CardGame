@@ -10,7 +10,7 @@ public sealed class JoinOrCreateGameEventHandler : EventHandler, IEventHandler
         // TODO
         // START
         string context = payload.matchIdOrEmpty;
-        Debug.Log($"[Client] Event#{ev.Index} type={ev.type} payload={context}");
+        Debug.Log($"[Client] Event#{ev.Index} type={ev.type} slot={payload.playerId} payload={context}");
         // END
 
         return true;

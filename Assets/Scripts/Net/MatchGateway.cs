@@ -13,8 +13,8 @@ public class MatchGateway : NetworkBehaviour
     public static event System.Action<Game.Domain.NetEvent> OnClientEvent;
     public static event System.Action<string> OnClientSnapshot;
 
-    private CommandResult ProcessCommand(NetCommand cmd)
-        => CommandDispatcher.Process(cmd);
+    private CommandResult ProcessCommand(MatchSession session, NetCommand cmd)
+        => CommandDispatcher.Process(session, cmd);
     private bool ProcessEvent(NetEvent ev)
         => EventDispatcher.Process(ev);
 
@@ -94,7 +94,7 @@ public class MatchGateway : NetworkBehaviour
                 session.Started = true;
 
                 var cmd = session.AddCommand(type, jsonData);
-                CommandResult results = ProcessCommand(cmd);
+                CommandResult results = ProcessCommand(session, cmd);
                 foreach (var res in results.events)
                 {
                     var ev = session.AddEvent(res.type, res.jsonData);
@@ -119,7 +119,7 @@ public class MatchGateway : NetworkBehaviour
             // cmd传给服务器处理
             session.Slots[info.slot].LastSeenUtc = DateTime.UtcNow;
             var cmd = session.AddCommand(type, jsonData);
-            CommandResult results = ProcessCommand(cmd);
+            CommandResult results = ProcessCommand(session, cmd);
 
             foreach (var res in results.events)
             {

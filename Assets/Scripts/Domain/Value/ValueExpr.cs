@@ -22,7 +22,7 @@ namespace Game.Domain
             switch (source)
             {
                 case ValueSource.CasterHandCount:
-                    return state.Players[ctx.caster].handCount;
+                    return state.players[ctx.caster].handCount;
 
                 case ValueSource.TargetPoints:
                     return target.point;

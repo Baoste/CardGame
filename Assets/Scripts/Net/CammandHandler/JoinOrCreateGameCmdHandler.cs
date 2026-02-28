@@ -1,10 +1,11 @@
 using FishNet.Demo.AdditiveScenes;
 using Game.Domain;
+using Game.Server;
 using UnityEngine;
 
 public sealed class JoinOrCreateGameCmdHandler : CommandHandler, ICommandHandler
 {
-    public CommandResult Handle(NetCommand cmd)
+    public CommandResult Handle(MatchSession session, NetCommand cmd)
     {
         // need change
         var payload = JsonUtility.FromJson<JoinOrCreateGameCommand>(cmd.jsonData);

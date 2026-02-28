@@ -6,7 +6,7 @@ namespace Game.Domain
     {
         public int playerId;
         public int handCount;
-        public List<int> SkillCardsInHand;
-        public List<int> PointCardsOnBoard;
+        public List<int> SkillCardsInHand = new();
+        public List<int> PointCardsOnBoard = new();
     }
 }

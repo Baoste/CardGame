@@ -1,4 +1,5 @@
 using Game.Domain;
+using Game.Server;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
@@ -6,7 +7,7 @@ using UnityEngine;
 public interface ICommandHandler
 {
     // 处理并返回事件（或 default 表示无事件）
-    CommandResult Handle(NetCommand cmd);
+    CommandResult Handle(MatchSession session, NetCommand cmd);
 }
 
 public class CommandHandler
@@ -31,10 +32,10 @@ public static class CommandDispatcher
             throw new InvalidOperationException($"Handler already registered for type: {type}");
     }
 
-    public static CommandResult Process(NetCommand cmd)
+    public static CommandResult Process(MatchSession session, NetCommand cmd)
     {
         if (map.TryGetValue(cmd.type, out var handler))
-            return handler.Handle(cmd);
+            return handler.Handle(session, cmd);
 
         throw new InvalidOperationException($"No handler registered for command type: {cmd.type}");
     }

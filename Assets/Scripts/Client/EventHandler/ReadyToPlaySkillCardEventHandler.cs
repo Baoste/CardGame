@@ -16,7 +16,7 @@ public sealed class ReadyToPlaySkillCardEventHandler : EventHandler, IEventHandl
         {
             context = $"targets:{string.Join(",", targetIds)}";
         }
-        Debug.Log($"[Client] Event#{ev.Index} type={ev.type} payload={context}");
+        Debug.Log($"[Client] Event#{ev.Index} type={ev.type} slot={payload.playerId} payload={context}");
         // END
 
         return true;

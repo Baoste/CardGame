@@ -10,7 +10,7 @@ namespace Game.Domain
 
         public Random rng = new Random();
 
-        public PlayerState[] Players = new PlayerState[2];
+        public PlayerState[] players = new PlayerState[2];
         public SkillDeckState skillCardsDeck = new SkillDeckState();
         public PointCardsDeck pointCardsDeck = new PointCardsDeck();
         //public BoardState Board = new BoardState();
