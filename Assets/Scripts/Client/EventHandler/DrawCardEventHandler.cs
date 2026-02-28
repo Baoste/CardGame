@@ -3,10 +3,12 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UIElements;
 
-public sealed class DrawCardEventHandler : IEventProcess, IEventHandler
+public sealed class DrawCardEventHandler : MonoBehaviour, IEventProcess, IEventHandler
 {
-    private DrawCardTest drawCardTest;
-    DrawCardEvent payload;
+    [SerializeField]
+    private GameObject cardPrefab;
+
+    private DrawCardEvent payload;
 
     public bool Handle(NetEvent ev)
     {
@@ -15,37 +17,22 @@ public sealed class DrawCardEventHandler : IEventProcess, IEventHandler
         // TODO
         // START
         // TODO: Client draw function
-        //DrawCardTest
-
+        ProcessQueueManager.Instance.Enqueue(this);
 
         string context = payload.cardId.ToString();
         Debug.Log($"[Client] Event#{ev.Index} type={ev.type} slot={payload.playerId} payload={context}");
         // END
-
-        ProcessQueueManager.Instance.Enqueue(this);
 
         return true;
     }
 
     public void Process()
     {
-        Card card = FindCard(payload.cardId);
+        Card card = CardDatabase.Get(payload.cardId);
 
         Vector3 position = new Vector3(0, 0, 0);
         Quaternion rotation = Quaternion.identity;
 
-        drawCardTest.InitiateCard(position, rotation, card.id, card.name, card.description, card.point);
-    }
-
-    public Card FindCard(int cardId)
-    {
-        Card card = new Card
-        {
-            id = cardId,
-            name = $"Card {cardId}",
-            description = $"Description for card {cardId}",
-            point = cardId * 10 // Example point calculation
-        };
-        return card;
+        GameObject newCard = Instantiate(cardPrefab, position, rotation);
     }
 }
