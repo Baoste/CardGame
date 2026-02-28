@@ -28,28 +28,13 @@ namespace Game.Server   // 这里用你 MatchGateway 所在的 namespace
 
         public int ServerLastEventIndex => NextEventIndex - 1; // 没事件时为 -1
 
-        public NetEvent AddEvent<T>(string type, T payload)
-            where T : INetEventPayload
-        {
-            var json = UnityEngine.JsonUtility.ToJson(payload);
-
-            var ev = new NetEvent
-            {
-                Index = NextEventIndex++,
-                Type = type,
-                Payload = json
-            };
-            EventLog.Add(ev);
-            return ev;
-        }
-
         public NetEvent AddEvent(string type, string jsonData)
         {
             var ev = new NetEvent
             {
                 Index = NextEventIndex++,
-                Type = type,
-                Payload = jsonData
+                type = type,
+                jsonData = jsonData
             };
             EventLog.Add(ev);
             return ev;

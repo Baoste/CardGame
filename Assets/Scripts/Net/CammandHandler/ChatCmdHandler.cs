@@ -5,10 +5,14 @@ public sealed class ChatCmdHandler : ICommandHandler
 {
     public ResolvedEvent Handle(Command cmd)
     {
-        var payload = JsonUtility.FromJson<ChatCommand>(cmd.jsonData);
+        var payload = JsonUtility.FromJson<ChatCommand>(cmd.jsonData);  // need change
 
+        // TODO
+        // START
         string message = payload.chatContext;
+        //END
 
+        // need change
         var ev = new ChatEvent
         {
             PlayerId = payload.PlayerId,

@@ -5,6 +5,8 @@ using FishNet.Connection;
 using UnityEngine;
 using Game.Domain;
 using Game.Server;
+using static Unity.Burst.Intrinsics.X86.Avx;
+
 
 public class MatchGateway : NetworkBehaviour
 {
@@ -12,18 +14,29 @@ public class MatchGateway : NetworkBehaviour
     public static event System.Action<Game.Domain.NetEvent> OnClientEvent;
     public static event System.Action<string> OnClientSnapshot;
 
-    private CommandDispatcher _dispatcher;
+    private CommandDispatcher _cmdDispatcher;
+    private EventDispatcher _eventDispatcher;
     private void Awake()
     {
-        _dispatcher = new CommandDispatcher();
-        _dispatcher
+        _cmdDispatcher = new CommandDispatcher();
+        _eventDispatcher = new EventDispatcher();
+
+        _cmdDispatcher
+            .Register("JoinOrCreateGame", new JoinOrCreateGameCmdHandler())
             .Register("Chat", new ChatCmdHandler())
             .Register("DrawCard", new DrawCardCmdHandler());
         // .Register(new PlayCardHandler());
+
+        _eventDispatcher
+            .Register("JoinOrCreateGame", new JoinOrCreateGameEventHandler())
+            .Register("Chat", new ChatEventHandler())
+            .Register("DrawCard", new DrawCardEventHandler());
     }
 
     private ResolvedEvent ProcessCommand(Command cmd)
-        => _dispatcher.Process(cmd);
+        => _cmdDispatcher.Process(cmd);
+    private bool ProcessEvent(NetEvent ev)
+        => _eventDispatcher.Process(ev);
 
     // Dedicated 多局：matchId -> session
     private readonly Dictionary<string, MatchSession> _sessions = new();
@@ -44,114 +57,112 @@ public class MatchGateway : NetworkBehaviour
     {
         if (sender == null) return;
 
-        if (!_connMap.TryGetValue(sender.ClientId, out var info))
+        if (!_cmdDispatcher.map.ContainsKey(type))
         {
-            TargetError(sender, "Not in a match.");
+            TargetError(sender, $"Unknown command type: {type}");
             return;
         }
 
-        if (!_sessions.TryGetValue(info.matchId, out var session))
+        if (type == "JoinOrCreateGame")
         {
-            TargetError(sender, "Match missing.");
-            return;
+            JoinOrCreateGameCommand payload = JsonUtility.FromJson<JoinOrCreateGameCommand>(jsonData);
+
+            // 如果这个连接已经在某局里，先踢掉旧映射（最小实现：直接覆盖）
+            if (_connMap.TryGetValue(sender.ClientId, out var old))
+            {
+                DetachConnection(sender.ClientId, old.matchId, old.slot);
+            }
+
+            var matchId = string.IsNullOrWhiteSpace(payload.matchIdOrEmpty) ? NewId() : payload.matchIdOrEmpty;
+
+            if (!_sessions.TryGetValue(matchId, out var session))
+            {
+                session = new MatchSession(matchId);
+                _sessions.Add(matchId, session);
+            }
+
+            // 找空槽位
+            int slot = FindFreeSlot(session);
+            if (slot < 0)
+            {
+                TargetError(sender, "Match is full.");
+                return;
+            }
+
+            // 绑定到槽位
+            var token = NewToken();
+            session.Slots[slot].Token = token;
+            session.Slots[slot].Conn = sender;
+            session.Slots[slot].LastSeenUtc = DateTime.UtcNow;
+            _connMap[sender.ClientId] = (matchId, slot);
+
+            // 发 snapshot（最小：只告诉你 matchId/slot/服务器事件index）
+            var snap = new Snapshot
+            {
+                matchId = matchId,
+                slot = slot,
+                serverLastEventIndex = session.ServerLastEventIndex
+            };
+            var snapJson = JsonUtility.ToJson(snap);
+
+            // 只发给本人：你需要保存 matchId/token/lastEventIndex
+            TargetJoined(sender, matchId, slot, token, snapJson);
+
+            // 凑齐两人就开始（演示：写入一条 start 事件并广播）
+            if (!session.Started && IsReady(session))
+            {
+                session.Started = true;
+
+                var cmd = session.AddCommand(type, jsonData);
+                ResolvedEvent res = ProcessCommand(cmd);
+                var ev = session.AddEvent(res.type, res.jsonData);
+                BroadcastToSession(session, ev);
+            }
         }
+        else
+        { 
+            if (!_connMap.TryGetValue(sender.ClientId, out var info))
+            {
+                TargetError(sender, "Not in a match.");
+                return;
+            }
 
-        session.Slots[info.slot].LastSeenUtc = DateTime.UtcNow;
-        var cmd = session.AddCommand(type, jsonData);
+            if (!_sessions.TryGetValue(info.matchId, out var session))
+            {
+                TargetError(sender, "Match missing.");
+                return;
+            }
 
-        // cmd传给服务器处理
-        ResolvedEvent res = ProcessCommand(cmd);
-        var ev = session.AddEvent(res.type, res.jsonData);
-        // 返回event，广播给client
-        BroadcastToSession(session, ev);
-    }
+            // cmd传给服务器处理
+            session.Slots[info.slot].LastSeenUtc = DateTime.UtcNow;
+            var cmd = session.AddCommand(type, jsonData);
+            ResolvedEvent res = ProcessCommand(cmd);
 
+            if (!_eventDispatcher.map.ContainsKey(res.type))
+            {
+                TargetError(sender, $"Unknown command type: {res.type}");
+                return;
+            }
 
-    // =======================
-    // Client -> Server: Join or Create
-    // =======================
-    [ServerRpc(RequireOwnership = false)]
-    public void JoinOrCreateServerRpc(string matchIdOrEmpty, NetworkConnection sender = null)
-    {
-        if (sender == null) return;
-
-        // 如果这个连接已经在某局里，先踢掉旧映射（最小实现：直接覆盖）
-        if (_connMap.TryGetValue(sender.ClientId, out var old))
-        {
-            DetachConnection(sender.ClientId, old.matchId, old.slot);
-        }
-
-        var matchId = string.IsNullOrWhiteSpace(matchIdOrEmpty) ? NewId() : matchIdOrEmpty;
-
-        if (!_sessions.TryGetValue(matchId, out var session))
-        {
-            session = new MatchSession(matchId);
-            _sessions.Add(matchId, session);
-        }
-
-        // 找空槽位
-        int slot = FindFreeSlot(session);
-        if (slot < 0)
-        {
-            TargetError(sender, "Match is full.");
-            return;
-        }
-
-        // 绑定到槽位
-        var token = NewToken();
-        session.Slots[slot].Token = token;
-        session.Slots[slot].Conn = sender;
-        session.Slots[slot].LastSeenUtc = DateTime.UtcNow;
-        _connMap[sender.ClientId] = (matchId, slot);
-
-        // 发 snapshot（最小：只告诉你 matchId/slot/服务器事件index）
-        var snap = new Snapshot
-        {
-            matchId = matchId,
-            slot = slot,
-            serverLastEventIndex = session.ServerLastEventIndex
-        };
-        var snapJson = JsonUtility.ToJson(snap);
-
-        // 只发给本人：你需要保存 matchId/token/lastEventIndex
-        TargetJoined(sender, matchId, slot, token, snapJson);
-
-        // 凑齐两人就开始（演示：写入一条 start 事件并广播）
-        if (!session.Started && IsReady(session))
-        {
-            session.Started = true;
-            var ev = session.AddEvent("StartGame", new StartGameEvent { PlayerId = 1 });
+            var ev = session.AddEvent(res.type, res.jsonData);
+            // 返回event，广播给client
             BroadcastToSession(session, ev);
         }
     }
 
     // =======================
-    // Client -> Server: Join or Create
+    // Server: broadcast event to both players in a session
     // =======================
-    [ServerRpc(RequireOwnership = false)]
-    public void SendServerRpc(NetworkConnection sender = null)
+    private void BroadcastToSession(MatchSession session, NetEvent ev)
     {
-        if (sender == null) return;
-
-        if (!_connMap.TryGetValue(sender.ClientId, out var info))
+        for (int i = 0; i < 2; i++)
         {
-            TargetError(sender, "Not in a match.");
-            return;
+            var conn = session.Slots[i].Conn;
+            if (conn != null)
+                TargetEvent(conn, ev);
         }
-
-        if (!_sessions.TryGetValue(info.matchId, out var session))
-        {
-            TargetError(sender, "Match missing.");
-            return;
-        }
-
-        session.Slots[info.slot].LastSeenUtc = DateTime.UtcNow;
-
-        // 写入事件日志 + 广播给本局两人
-        // TODO: 这里要改到服务器处理，而不是客户端。需要将Event和Command分离，客户端发 Command（比如 DrawCardCommand），服务器处理后写 Event（比如 DrawCardEvent）
-        var ev = session.AddEvent("DrawCard", new DrawCardEvent { PlayerId = 1, CardId = UnityEngine.Random.Range(0,15) });
-        BroadcastToSession(session, ev);
     }
+
 
     // =======================
     // Client -> Server: Reconnect
@@ -207,46 +218,6 @@ public class MatchGateway : NetworkBehaviour
     }
 
     // =======================
-    // Client -> Server: Send message within match
-    // =======================
-    [ServerRpc(RequireOwnership = false)]
-    public void SendChatServerRpc(string message, NetworkConnection sender = null)
-    {
-        if (sender == null) return;
-
-        if (!_connMap.TryGetValue(sender.ClientId, out var info))
-        {
-            TargetError(sender, "Not in a match.");
-            return;
-        }
-
-        if (!_sessions.TryGetValue(info.matchId, out var session))
-        {
-            TargetError(sender, "Match missing.");
-            return;
-        }
-
-        session.Slots[info.slot].LastSeenUtc = DateTime.UtcNow;
-
-        // 写入事件日志 + 广播给本局两人
-        var ev = session.AddEvent("Chat", new ChatEvent { PlayerId = 1, text = message });
-        BroadcastToSession(session, ev);
-    }
-
-    // =======================
-    // Server: broadcast event to both players in a session
-    // =======================
-    private void BroadcastToSession(MatchSession session, NetEvent ev)
-    {
-        for (int i = 0; i < 2; i++)
-        {
-            var conn = session.Slots[i].Conn;
-            if (conn != null)
-                TargetEvent(conn, ev);
-        }
-    }
-
-    // =======================
     // Server: detach a connection mapping (best-effort)
     // =======================
     private void DetachConnection(int clientId, string matchId, int slot)
@@ -262,8 +233,8 @@ public class MatchGateway : NetworkBehaviour
                 session.Slots[slot].LastSeenUtc = DateTime.UtcNow;
 
                 // 记录一条“离线事件”（可选）
-                var ev = session.AddEvent("StartGame", new StartGameEvent { PlayerId = 1 });
-                BroadcastToSession(session, ev);
+                //var ev = session.AddEvent("StartGame", new StartGameEvent { PlayerId = 1 });
+                //BroadcastToSession(session, ev);
             }
         }
     }
@@ -303,14 +274,15 @@ public class MatchGateway : NetworkBehaviour
         }
     }
 
+    // 通过ev的Type字段找到对应的Payload类型，再把JsonData反序列化成对应的Payload对象
     public INetEventPayload DecodePayload(NetEvent ev)
     {
-        var type = NetEventRegistry.GetPayloadType(ev.Type);
+        var type = NetEventRegistry.GetPayloadType(ev.type);
         if (type == null)
             return null;
 
         return (INetEventPayload)UnityEngine.JsonUtility
-            .FromJson(ev.Payload, type);
+            .FromJson(ev.jsonData, type);
     }
 
     // ===== Target RPCs (Server -> Client) =====
@@ -331,17 +303,20 @@ public class MatchGateway : NetworkBehaviour
     [TargetRpc]
     private void TargetEvent(NetworkConnection conn, NetEvent ev)
     {
-        var payload = DecodePayload(ev);
-        string context = "";
-        if (payload is ChatEvent chat)
-            context = chat.text;
-        if (payload is DrawCardEvent draw)
+        if (ProcessEvent(ev))
         {
-            Debug.Log($"draw {draw.CardId}");
-            context = "draw";
+            OnClientEvent?.Invoke(ev);
         }
-        Debug.Log($"[Client] Event#{ev.Index} type={ev.Type} payload={context}");
-        OnClientEvent?.Invoke(ev);
+        //var payload = DecodePayload(ev);
+        //string context = "";
+        //if (payload is ChatEvent chat)
+        //    context = chat.text;
+        //if (payload is DrawCardEvent draw)
+        //{
+        //    Debug.Log($"draw {draw.CardId}");
+        //    context = "draw";
+        //}
+        //Debug.Log($"[Client] Event#{ev.Index} type={ev.type} payload={context}");
     }
 
     [TargetRpc]

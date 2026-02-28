@@ -25,8 +25,8 @@ namespace Game.Domain
     public struct NetEvent
     {
         public int Index;
-        public string Type;
-        public string Payload;  // Json
+        public string type;
+        public string jsonData;  // Json
     }
 
     [Serializable]

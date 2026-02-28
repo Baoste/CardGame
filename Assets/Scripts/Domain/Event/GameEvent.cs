@@ -8,9 +8,10 @@ namespace Game.Domain
     }
 
     [Serializable]
-    public class StartGameEvent : INetEventPayload
+    public class JoinOrCreateGameEvent : INetEventPayload
     {
         public int PlayerId;
+        public string matchIdOrEmpty;
     }
 
     [Serializable]

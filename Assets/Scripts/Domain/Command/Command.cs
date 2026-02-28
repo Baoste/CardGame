@@ -15,8 +15,9 @@ namespace Game.Domain
     }
 
     [Serializable]
-    public class JoinOrCreateCommand : ICommand
+    public class JoinOrCreateGameCommand : ICommand
     {
+        public int PlayerId;
         public string matchIdOrEmpty;
     }
 

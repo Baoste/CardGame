@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public sealed class DrawCardCmdHandler : ICommandHandler
+public sealed class DrawCardCmdHandler : EventHandler, ICommandHandler
 {
     public ResolvedEvent Handle(Command cmd)
     {
@@ -13,9 +13,10 @@ public sealed class DrawCardCmdHandler : ICommandHandler
         // TODO 服务器端需要做什么
 
         // return
-        var ev = new DrawCardCommand    // need change
+        var ev = new DrawCardEvent    // need change
         {
             PlayerId = payload.PlayerId,
+            CardId = UnityEngine.Random.Range(0, 25)
         };
 
         return new ResolvedEvent

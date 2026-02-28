@@ -32,7 +32,7 @@ public class ClientMatchInput : MonoBehaviour
     {
         inputField.text = matchId;
 
-        Debug.Log($"[UI] Joined match {matchId}, slot {slot}");
+        // Debug.Log($"[UI] Joined match {matchId}, slot {slot}");
     }
 
     void OnEvent(Game.Domain.NetEvent ev)
@@ -49,8 +49,8 @@ public class ClientMatchInput : MonoBehaviour
         // C：创建新局
         if (Input.GetKeyDown(KeyCode.F1))
         {
-            gateway.JoinOrCreateServerRpc("");
-            inputField.text = "";
+            JoinOrCreateGameCommand cmd = new JoinOrCreateGameCommand { PlayerId = 1, matchIdOrEmpty = "123" };
+            gateway.SendCommandServerRpc("JoinOrCreateGame", JsonUtility.ToJson(cmd));
             Debug.Log("[Client] Requested create match");
         }
 
@@ -58,7 +58,9 @@ public class ClientMatchInput : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.F2))
         {
             string matchId = inputField.text.Trim();
-            gateway.JoinOrCreateServerRpc(matchId);
+            JoinOrCreateGameCommand cmd = new JoinOrCreateGameCommand { PlayerId = 1, matchIdOrEmpty = matchId };
+            gateway.SendCommandServerRpc("JoinOrCreateGame", JsonUtility.ToJson(cmd));
+
             Debug.Log($"[Client] Requested join matchId={matchId}");
         }
 
@@ -69,15 +71,15 @@ public class ClientMatchInput : MonoBehaviour
             gateway.SendCommandServerRpc("Chat", JsonUtility.ToJson(cmd));
         }
 
-        // R：重连（需要你先断线再连上服务器，然后按 R）
-        if (Input.GetKeyDown(KeyCode.F4))
-        {
-            gateway.ReconnectServerRpc(matchId, token, lastEventIndex);
-            Debug.Log($"[Client] Requested reconnect match={matchId} lastEventIndex={lastEventIndex}");
-        }
+        //// R：重连（需要你先断线再连上服务器，然后按 R）
+        //if (Input.GetKeyDown(KeyCode.F4))
+        //{
+        //    gateway.ReconnectServerRpc(matchId, token, lastEventIndex);
+        //    Debug.Log($"[Client] Requested reconnect match={matchId} lastEventIndex={lastEventIndex}");
+        //}
 
         // 发牌
-        if (Input.GetKeyDown(KeyCode.F5))
+        if (Input.GetKeyDown(KeyCode.F4))
         {
             DrawCardCommand cmd = new DrawCardCommand { PlayerId = 1 };
             gateway.SendCommandServerRpc("DrawCard", JsonUtility.ToJson(cmd));
