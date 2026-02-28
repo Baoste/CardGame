@@ -10,3 +10,14 @@ public static class NetEventBootstrap
         NetEventRegistry.Register<PlayCardEvent>("PlayCard");
     }
 }
+
+public static class CommandBootstrap
+{
+    public static void Init()
+    {
+        CommandRegistry.Register<JoinOrCreateCommand>("JoinOrCreate");
+        CommandRegistry.Register<DrawCardCommand>("DrawCard");
+        CommandRegistry.Register<PlayCardCommand>("PlayCard");
+        CommandRegistry.Register<ChatCommand>("Chat");
+    }
+}

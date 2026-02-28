@@ -4,7 +4,7 @@ using FishNet.Object;
 using FishNet.Connection;
 using UnityEngine;
 using Game.Domain;
-using FishNet.Demo.AdditiveScenes;
+using Game.Server;
 
 public class MatchGateway : NetworkBehaviour
 {
@@ -12,42 +12,18 @@ public class MatchGateway : NetworkBehaviour
     public static event System.Action<Game.Domain.NetEvent> OnClientEvent;
     public static event System.Action<string> OnClientSnapshot;
 
-    // ====== Server-only session model ======
-    private class PlayerSlot
+    private CommandDispatcher _dispatcher;
+    private void Awake()
     {
-        public string Token;               // 重连凭证
-        public NetworkConnection Conn;     // 在线连接（断线后可能为 null）
-        public DateTime LastSeenUtc;       // 用于 GC
+        _dispatcher = new CommandDispatcher();
+        _dispatcher
+            .Register("Chat", new ChatCmdHandler())
+            .Register("DrawCard", new DrawCardCmdHandler());
+        // .Register(new PlayCardHandler());
     }
 
-    private class MatchSession
-    {
-        public string MatchId;
-        public PlayerSlot[] Slots = { new PlayerSlot(), new PlayerSlot() };
-
-        public readonly List<NetEvent> EventLog = new();
-        public int NextEventIndex = 0;
-        public bool Started;
-
-        public MatchSession(string matchId) => MatchId = matchId;
-
-        public int ServerLastEventIndex => NextEventIndex - 1; // 没事件时为 -1
-
-        public NetEvent AddEvent<T>(string type, T payload)
-            where T : INetEventPayload
-        {
-            var json = UnityEngine.JsonUtility.ToJson(payload);
-
-            var ev = new NetEvent
-            {
-                Index = NextEventIndex++,
-                Type = type,
-                Payload = json
-            };
-            EventLog.Add(ev);
-            return ev;
-        }
-    }
+    private ResolvedEvent ProcessCommand(Command cmd)
+        => _dispatcher.Process(cmd);
 
     // Dedicated 多局：matchId -> session
     private readonly Dictionary<string, MatchSession> _sessions = new();
@@ -58,6 +34,38 @@ public class MatchGateway : NetworkBehaviour
     // 两人都离线后保留多久再回收
     private static readonly TimeSpan KeepAlive = TimeSpan.FromMinutes(5);
     private float _gcTimer;
+
+
+    // =======================
+    // Client -> Server: Send Command
+    // =======================
+    [ServerRpc(RequireOwnership = false)]
+    public void SendCommandServerRpc(string type, string jsonData, NetworkConnection sender = null)
+    {
+        if (sender == null) return;
+
+        if (!_connMap.TryGetValue(sender.ClientId, out var info))
+        {
+            TargetError(sender, "Not in a match.");
+            return;
+        }
+
+        if (!_sessions.TryGetValue(info.matchId, out var session))
+        {
+            TargetError(sender, "Match missing.");
+            return;
+        }
+
+        session.Slots[info.slot].LastSeenUtc = DateTime.UtcNow;
+        var cmd = session.AddCommand(type, jsonData);
+
+        // cmd传给服务器处理
+        ResolvedEvent res = ProcessCommand(cmd);
+        var ev = session.AddEvent(res.type, res.jsonData);
+        // 返回event，广播给client
+        BroadcastToSession(session, ev);
+    }
+
 
     // =======================
     // Client -> Server: Join or Create

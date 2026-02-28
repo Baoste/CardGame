@@ -12,6 +12,7 @@ public class GameBootstrap : MonoBehaviour
         _initialized = true;
 
         NetEventBootstrap.Init();
+        CommandBootstrap.Init();
         Debug.Log("NetEvent ×¢²áÍê³É");
     }
 }

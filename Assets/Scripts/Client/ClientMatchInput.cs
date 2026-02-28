@@ -1,3 +1,4 @@
+using Game.Domain;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -64,7 +65,8 @@ public class ClientMatchInput : MonoBehaviour
         // M：发消息（写入本局 eventlog 并广播给同局两人）
         if (Input.GetKeyDown(KeyCode.F3))
         {
-            gateway.SendChatServerRpc(inputField1.text);
+            ChatCommand cmd = new ChatCommand { PlayerId = 1, chatContext = inputField1.text };
+            gateway.SendCommandServerRpc("Chat", JsonUtility.ToJson(cmd));
         }
 
         // R：重连（需要你先断线再连上服务器，然后按 R）
@@ -77,7 +79,8 @@ public class ClientMatchInput : MonoBehaviour
         // 发牌
         if (Input.GetKeyDown(KeyCode.F5))
         {
-            gateway.SendServerRpc();
+            DrawCardCommand cmd = new DrawCardCommand { PlayerId = 1 };
+            gateway.SendCommandServerRpc("DrawCard", JsonUtility.ToJson(cmd));
         }
     }
 

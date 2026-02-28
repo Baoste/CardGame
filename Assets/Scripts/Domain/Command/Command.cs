@@ -1,34 +1,43 @@
+using System;
 using System.Collections.Generic;
 
 namespace Game.Domain
 {
-    public interface ICommand
+    [Serializable]
+    public struct ResolvedEvent
     {
-        void Resolve();
+        public string type;   // e.g. "StartGame"
+        public string jsonData;
     }
 
+    public interface ICommand
+    {
+    }
+
+    [Serializable]
+    public class JoinOrCreateCommand : ICommand
+    {
+        public string matchIdOrEmpty;
+    }
+
+    [Serializable]
+    public class ChatCommand : ICommand
+    {
+        public int PlayerId;
+        public string chatContext;
+    }
+
+    [Serializable]
     public class DrawCardCommand : ICommand
     {
         public int PlayerId;
-
-        public void Resolve()
-        {
-            
-        }
     }
 
+    [Serializable]
     public class PlayCardCommand : ICommand
     {
         public int PlayerId;
         public int CardId;
         public List<int> targetIds;
-
-        public void Resolve()
-        {
-            Card card = CardDatabase.Get(CardId);
-            //ctx.selectedCards = cmd.targetIds;
-            //ExecuteCard(card, state, ctx); // 里面要加上events.Add
-            //广播发生在网络层，不在 Domain
-        }
     }
 }
