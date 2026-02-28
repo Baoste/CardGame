@@ -3,7 +3,7 @@ using UnityEngine;
 
 public sealed class JoinOrCreateGameCmdHandler : ICommandHandler
 {
-    public ResolvedEvent Handle(Command cmd)
+    public ResolvedEvent Handle(NetCommand cmd)
     {
         // need change
         var payload = JsonUtility.FromJson<JoinOrCreateGameCommand>(cmd.jsonData);

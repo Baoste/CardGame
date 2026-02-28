@@ -35,4 +35,19 @@ namespace Game.Domain
         public int cardId;
         public List<int> targetIds;
     }
+
+    [Serializable]
+    public class PlaySkillCardWithTargetEvent : INetEventPayload
+    {
+        public int playerId;
+        public int cardId;
+        public List<int> targetIds;
+    }
+
+    [Serializable]
+    public class CardChangeEvent : INetEventPayload
+    {
+        public int playerId;
+        public int cardId;
+    }
 }

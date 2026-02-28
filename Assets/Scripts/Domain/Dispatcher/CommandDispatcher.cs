@@ -5,7 +5,7 @@ using System.Collections.Generic;
 public interface ICommandHandler
 {
     // 处理并返回事件（或 default 表示无事件）
-    ResolvedEvent Handle(Command cmd);
+    ResolvedEvent Handle(NetCommand cmd);
 }
 
 public static class CommandDispatcher
@@ -18,7 +18,7 @@ public static class CommandDispatcher
             throw new InvalidOperationException($"Handler already registered for type: {type}");
     }
 
-    public static ResolvedEvent Process(Command cmd)
+    public static ResolvedEvent Process(NetCommand cmd)
     {
         if (map.TryGetValue(cmd.type, out var handler))
             return handler.Handle(cmd);

@@ -5,7 +5,7 @@ using UnityEngine;
 
 public sealed class DrawCardCmdHandler : EventHandler, ICommandHandler
 {
-    public ResolvedEvent Handle(Command cmd)
+    public ResolvedEvent Handle(NetCommand cmd)
     {
         // need change
         var payload = JsonUtility.FromJson<DrawCardCommand>(cmd.jsonData);

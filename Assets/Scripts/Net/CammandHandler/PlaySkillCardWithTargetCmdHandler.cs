@@ -2,7 +2,7 @@ using Game.Domain;
 using System.Collections.Generic;
 using UnityEngine;
 
-public sealed class ReadyToPlaySkillCardCmdHandler : ICommandHandler
+public class PlaySkillCardWithTargetCmdHandler : ICommandHandler
 {
     public ResolvedEvent Handle(NetCommand cmd)
     {

@@ -5,7 +5,7 @@ namespace Game.Domain
 {
     // ===== Command (Client -> Server) =====
     [Serializable]
-    public struct Command
+    public struct NetCommand
     {
         public int index;
         public string type;

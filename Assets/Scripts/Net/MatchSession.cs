@@ -19,7 +19,7 @@ namespace Game.Server   // 这里用你 MatchGateway 所在的 namespace
         public PlayerSlot[] Slots = { new PlayerSlot(), new PlayerSlot() };
 
         public readonly List<NetEvent> EventLog = new();
-        public readonly List<Command> CmdLog = new();
+        public readonly List<NetCommand> CmdLog = new();
         public int NextEventIndex = 0;
         public int NextCmdIndex = 0;
         public bool Started;
@@ -40,9 +40,9 @@ namespace Game.Server   // 这里用你 MatchGateway 所在的 namespace
             return ev;
         }
 
-        public Command AddCommand(string type, string jsonData)
+        public NetCommand AddCommand(string type, string jsonData)
         {
-            var cmd = new Command
+            var cmd = new NetCommand
             {
                 index = NextCmdIndex++,
                 type = type,

@@ -13,7 +13,7 @@ public class MatchGateway : NetworkBehaviour
     public static event System.Action<Game.Domain.NetEvent> OnClientEvent;
     public static event System.Action<string> OnClientSnapshot;
 
-    private ResolvedEvent ProcessCommand(Command cmd)
+    private ResolvedEvent ProcessCommand(NetCommand cmd)
         => CommandDispatcher.Process(cmd);
     private bool ProcessEvent(NetEvent ev)
         => EventDispatcher.Process(ev);

@@ -3,7 +3,7 @@ using UnityEngine;
 
 public sealed class ChatCmdHandler : ICommandHandler
 {
-    public ResolvedEvent Handle(Command cmd)
+    public ResolvedEvent Handle(NetCommand cmd)
     {
         var payload = JsonUtility.FromJson<ChatCommand>(cmd.jsonData);  // need change
 

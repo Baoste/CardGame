@@ -40,4 +40,12 @@ namespace Game.Domain
         public int playerId;
         public int cardId;
     }
+
+    [Serializable]
+    public class PlaySkillCardWithTargetCommand : ICommand
+    {
+        public int playerId;
+        public int cardId;
+        public List<int> targetIds;
+    }
 }
