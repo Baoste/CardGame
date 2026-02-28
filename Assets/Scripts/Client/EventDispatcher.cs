@@ -1,6 +1,7 @@
 using Game.Domain;
 using System;
 using System.Collections.Generic;
+using UnityEngine;
 
 public interface IEventHandler
 {
@@ -13,18 +14,17 @@ public class EventHandler
 {
 }
 
-public sealed class EventDispatcher
+public static class EventDispatcher
 {
-    public readonly Dictionary<string, IEventHandler> map = new();
+    public static readonly Dictionary<string, IEventHandler> map = new();
 
-    public EventDispatcher Register(string type, IEventHandler handler)
+    public static void Register(string type, IEventHandler handler)
     {
         if (!map.TryAdd(type, handler))
             throw new InvalidOperationException($"Handler already registered for type: {type}");
-        return this;
     }
 
-    public bool Process(NetEvent ev)
+    public static bool Process(NetEvent ev)
     {
         if (map.TryGetValue(ev.type, out var handler))
             return handler.Handle(ev);

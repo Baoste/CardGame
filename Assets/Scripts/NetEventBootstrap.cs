@@ -4,20 +4,15 @@ public static class NetEventBootstrap
 {
     public static void Init()
     {
-        NetEventRegistry.Register<JoinOrCreateGameEvent>("JoinOrCreate");
-        NetEventRegistry.Register<ChatEvent>("Chat");
-        NetEventRegistry.Register<DrawCardEvent>("DrawCard");
-        NetEventRegistry.Register<PlayCardEvent>("PlayCard");
-    }
-}
+        EventDispatcher.Register("JoinOrCreateGame", new JoinOrCreateGameEventHandler());
+        EventDispatcher.Register("Chat", new ChatEventHandler());
+        EventDispatcher.Register("DrawCard", new DrawCardEventHandler());
+        EventDispatcher.Register("ReadyToPlaySkillCard", new ReadyToPlaySkillCardEventHandler());
 
-public static class CommandBootstrap
-{
-    public static void Init()
-    {
-        CommandRegistry.Register<JoinOrCreateGameCommand>("JoinOrCreate");
-        CommandRegistry.Register<DrawCardCommand>("DrawCard");
-        CommandRegistry.Register<PlayCardCommand>("PlayCard");
-        CommandRegistry.Register<ChatCommand>("Chat");
+
+        CommandDispatcher.Register("JoinOrCreateGame", new JoinOrCreateGameCmdHandler());
+        CommandDispatcher.Register("Chat", new ChatCmdHandler());
+        CommandDispatcher.Register("DrawCard", new DrawCardCmdHandler());
+        CommandDispatcher.Register("ReadyToPlaySkillCard", new ReadyToPlaySkillCardCmdHandler());
     }
 }

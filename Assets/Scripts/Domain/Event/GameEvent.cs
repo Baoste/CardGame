@@ -10,29 +10,29 @@ namespace Game.Domain
     [Serializable]
     public class JoinOrCreateGameEvent : INetEventPayload
     {
-        public int PlayerId;
+        public int playerId;
         public string matchIdOrEmpty;
     }
 
     [Serializable]
     public class ChatEvent : INetEventPayload
     {
-        public int PlayerId;
+        public int playerId;
         public string text;
     }
 
     [Serializable]
     public class DrawCardEvent : INetEventPayload
     {
-        public int PlayerId;
-        public int CardId;
+        public int playerId;
+        public int cardId;
     }
 
     [Serializable]
-    public class PlayCardEvent : INetEventPayload
+    public class ReadyToPlaySkillCardEvent : INetEventPayload
     {
-        public int PlayerId;
-        public int CardId;
+        public int playerId;
+        public int cardId;
         public List<int> targetIds;
     }
 }

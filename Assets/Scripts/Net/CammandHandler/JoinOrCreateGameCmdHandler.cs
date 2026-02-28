@@ -8,12 +8,12 @@ public sealed class JoinOrCreateGameCmdHandler : ICommandHandler
         // need change
         var payload = JsonUtility.FromJson<JoinOrCreateGameCommand>(cmd.jsonData);
 
-        // TODO 服务器端需要做什么
+        // TODO: 服务器端需要做什么
 
         // return
         var ev = new JoinOrCreateGameEvent    // need change
         {
-            PlayerId = payload.PlayerId,
+            playerId = payload.playerId,
             matchIdOrEmpty = payload.matchIdOrEmpty
         };
 

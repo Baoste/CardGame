@@ -15,8 +15,8 @@ public sealed class DrawCardCmdHandler : EventHandler, ICommandHandler
         // return
         var ev = new DrawCardEvent    // need change
         {
-            PlayerId = payload.PlayerId,
-            CardId = UnityEngine.Random.Range(0, 25)
+            playerId = payload.playerId,
+            cardId = UnityEngine.Random.Range(0, 25)
         };
 
         return new ResolvedEvent

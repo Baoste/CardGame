@@ -15,7 +15,7 @@ public sealed class ChatCmdHandler : ICommandHandler
         // need change
         var ev = new ChatEvent
         {
-            PlayerId = payload.PlayerId,
+            playerId = payload.playerId,
             text = message
         };
 

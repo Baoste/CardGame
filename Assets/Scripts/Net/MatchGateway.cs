@@ -5,7 +5,6 @@ using FishNet.Connection;
 using UnityEngine;
 using Game.Domain;
 using Game.Server;
-using static Unity.Burst.Intrinsics.X86.Avx;
 
 
 public class MatchGateway : NetworkBehaviour
@@ -14,29 +13,10 @@ public class MatchGateway : NetworkBehaviour
     public static event System.Action<Game.Domain.NetEvent> OnClientEvent;
     public static event System.Action<string> OnClientSnapshot;
 
-    private CommandDispatcher _cmdDispatcher;
-    private EventDispatcher _eventDispatcher;
-    private void Awake()
-    {
-        _cmdDispatcher = new CommandDispatcher();
-        _eventDispatcher = new EventDispatcher();
-
-        _cmdDispatcher
-            .Register("JoinOrCreateGame", new JoinOrCreateGameCmdHandler())
-            .Register("Chat", new ChatCmdHandler())
-            .Register("DrawCard", new DrawCardCmdHandler());
-        // .Register(new PlayCardHandler());
-
-        _eventDispatcher
-            .Register("JoinOrCreateGame", new JoinOrCreateGameEventHandler())
-            .Register("Chat", new ChatEventHandler())
-            .Register("DrawCard", new DrawCardEventHandler());
-    }
-
     private ResolvedEvent ProcessCommand(Command cmd)
-        => _cmdDispatcher.Process(cmd);
+        => CommandDispatcher.Process(cmd);
     private bool ProcessEvent(NetEvent ev)
-        => _eventDispatcher.Process(ev);
+        => EventDispatcher.Process(ev);
 
     // Dedicated 多局：matchId -> session
     private readonly Dictionary<string, MatchSession> _sessions = new();
@@ -57,7 +37,7 @@ public class MatchGateway : NetworkBehaviour
     {
         if (sender == null) return;
 
-        if (!_cmdDispatcher.map.ContainsKey(type))
+        if (!CommandDispatcher.map.ContainsKey(type))
         {
             TargetError(sender, $"Unknown command type: {type}");
             return;
@@ -138,7 +118,7 @@ public class MatchGateway : NetworkBehaviour
             var cmd = session.AddCommand(type, jsonData);
             ResolvedEvent res = ProcessCommand(cmd);
 
-            if (!_eventDispatcher.map.ContainsKey(res.type))
+            if (!EventDispatcher.map.ContainsKey(res.type))
             {
                 TargetError(sender, $"Unknown command type: {res.type}");
                 return;
@@ -272,17 +252,6 @@ public class MatchGateway : NetworkBehaviour
             _sessions.Remove(id);
             // Debug.Log($"[Server] GC session {id}");
         }
-    }
-
-    // 通过ev的Type字段找到对应的Payload类型，再把JsonData反序列化成对应的Payload对象
-    public INetEventPayload DecodePayload(NetEvent ev)
-    {
-        var type = NetEventRegistry.GetPayloadType(ev.type);
-        if (type == null)
-            return null;
-
-        return (INetEventPayload)UnityEngine.JsonUtility
-            .FromJson(ev.jsonData, type);
     }
 
     // ===== Target RPCs (Server -> Client) =====

@@ -10,7 +10,7 @@ public sealed class DrawCardEventHandler : EventHandler, IEventHandler
         // TODO
         // START
         // TODO: Client draw function
-        string context = payload.CardId.ToString();
+        string context = payload.cardId.ToString();
         Debug.Log($"[Client] Event#{ev.Index} type={ev.type} payload={context}");
         // END
 

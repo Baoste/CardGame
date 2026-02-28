@@ -8,22 +8,21 @@ public interface ICommandHandler
     ResolvedEvent Handle(Command cmd);
 }
 
-public sealed class CommandDispatcher
+public static class CommandDispatcher
 {
-    public readonly Dictionary<string, ICommandHandler> map = new();
+    public static readonly Dictionary<string, ICommandHandler> map = new();
 
-    public CommandDispatcher Register(string type, ICommandHandler handler)
+    public static void Register(string type, ICommandHandler handler)
     {
         if (!map.TryAdd(type, handler))
             throw new InvalidOperationException($"Handler already registered for type: {type}");
-        return this;
     }
 
-    public ResolvedEvent Process(Command cmd)
+    public static ResolvedEvent Process(Command cmd)
     {
         if (map.TryGetValue(cmd.type, out var handler))
             return handler.Handle(cmd);
 
-        return default;
+        throw new InvalidOperationException($"No handler registered for command type: {cmd.type}");
     }
 }

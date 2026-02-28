@@ -17,28 +17,27 @@ namespace Game.Domain
     [Serializable]
     public class JoinOrCreateGameCommand : ICommand
     {
-        public int PlayerId;
+        public int playerId;
         public string matchIdOrEmpty;
     }
 
     [Serializable]
     public class ChatCommand : ICommand
     {
-        public int PlayerId;
+        public int playerId;
         public string chatContext;
     }
 
     [Serializable]
     public class DrawCardCommand : ICommand
     {
-        public int PlayerId;
+        public int playerId;
     }
 
     [Serializable]
-    public class PlayCardCommand : ICommand
+    public class ReadyToPlaySkillCardCommand : ICommand
     {
-        public int PlayerId;
-        public int CardId;
-        public List<int> targetIds;
+        public int playerId;
+        public int cardId;
     }
 }
