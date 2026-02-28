@@ -10,8 +10,9 @@ public interface IEventHandler
 }
 
 
-public abstract class EventHandler
+public interface IEventProcess
 {
+    void Process();
 }
 
 public static class EventDispatcher

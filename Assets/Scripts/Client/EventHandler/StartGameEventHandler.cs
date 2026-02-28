@@ -2,7 +2,7 @@ using Game.Domain;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class StartGameEventHandler : EventHandler, IEventHandler
+public class StartGameEventHandler : IEventProcess, IEventHandler
 {
     public bool Handle(NetEvent ev)
     {
@@ -15,5 +15,9 @@ public class StartGameEventHandler : EventHandler, IEventHandler
         // END
 
         return true;
+    }
+    public void Process()
+    {
+
     }
 }

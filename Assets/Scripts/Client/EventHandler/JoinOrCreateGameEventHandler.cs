@@ -1,7 +1,7 @@
 using Game.Domain;
 using UnityEngine;
 
-public sealed class JoinOrCreateGameEventHandler : EventHandler, IEventHandler
+public sealed class JoinOrCreateGameEventHandler : IEventProcess, IEventHandler
 {
     public bool Handle(NetEvent ev)
     {
@@ -14,5 +14,9 @@ public sealed class JoinOrCreateGameEventHandler : EventHandler, IEventHandler
         // END
 
         return true;
+    }
+    public void Process()
+    {
+
     }
 }
