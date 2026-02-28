@@ -2,7 +2,7 @@ using Game.Domain;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlaySkillCardWithTargetEventHandler : EventHandler, IEventHandler
+public class PlaySkillCardWithTargetEventHandler : IEventProcess, IEventHandler
 {
     public bool Handle(NetEvent ev)
     {
@@ -20,5 +20,9 @@ public class PlaySkillCardWithTargetEventHandler : EventHandler, IEventHandler
         // END
 
         return true;
+    }
+    public void Process()
+    {
+
     }
 }

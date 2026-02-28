@@ -1,7 +1,7 @@
 using Game.Domain;
 using UnityEngine;
 
-public sealed class ChatEventHandler : EventHandler, IEventHandler
+public sealed class ChatEventHandler : IEventProcess, IEventHandler
 {
     public bool Handle(NetEvent ev)
     {
@@ -11,5 +11,9 @@ public sealed class ChatEventHandler : EventHandler, IEventHandler
         Debug.Log($"[Client] Event#{ev.Index} type={ev.type} payload={context}");
 
         return true;
+    }
+    public void Process()
+    {
+
     }
 }
