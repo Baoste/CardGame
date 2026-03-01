@@ -5,7 +5,7 @@ namespace Game.Domain
     [Serializable]
     public abstract class ValueExpr
     {
-        public abstract int Evaluate(GameState state, EffectContext ctx, Card target);
+        public abstract int Evaluate(GameState state, EffectContext ctx, int target);
     }
 
     [Serializable]
@@ -13,7 +13,7 @@ namespace Game.Domain
     public class ConstValue : ValueExpr
     {
         public int value;
-        public override int Evaluate(GameState state, EffectContext ctx, Card target)
+        public override int Evaluate(GameState state, EffectContext ctx, int target)
             => value;
     }
 
@@ -22,15 +22,18 @@ namespace Game.Domain
     public class VariableValue : ValueExpr
     {
         public ValueSource source;
-        public override int Evaluate(GameState state, EffectContext ctx, Card target)
+        public override int Evaluate(GameState state, EffectContext ctx, int target)
         {
             switch (source)
             {
-                case ValueSource.CasterHandCount:
-                    return state.players[ctx.caster].handCount;
+                case ValueSource.CasterSkillCardsCount:
+                    return state.players[ctx.caster].SkillCardsInHand.Count;
+
+                case ValueSource.CasterPointCardsCount:
+                    return state.players[ctx.caster].PointCardsOnBoard.Count;
 
                 case ValueSource.TargetPoints:
-                    return target.point;
+                    return CardDatabase.Get(target).point;
             }
             return 0;
         }
@@ -44,7 +47,7 @@ namespace Game.Domain
         public ValueExpr right;
         public BinaryOp op;
 
-        public override int Evaluate(GameState state, EffectContext ctx, Card target)
+        public override int Evaluate(GameState state, EffectContext ctx, int target)
         {
             int l = left.Evaluate(state, ctx, target);
             int r = right.Evaluate(state, ctx, target);

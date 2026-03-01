@@ -2,24 +2,11 @@ using Game.Domain;
 using Game.Server;
 using System;
 using System.Collections.Generic;
-using UnityEngine;
 
 public interface ICommandHandler
 {
     // 处理并返回事件（或 default 表示无事件）
     CommandResult Handle(MatchSession session, NetCommand cmd);
-}
-
-public class CommandHandler
-{
-    public static ResolvedEvent MakeEvent<T>(string type, T payload)
-    {
-        return new ResolvedEvent
-        {
-            type = type,
-            jsonData = JsonUtility.ToJson(payload)
-        };
-    }
 }
 
 public static class CommandDispatcher

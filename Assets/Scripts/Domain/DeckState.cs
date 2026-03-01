@@ -4,14 +4,14 @@ namespace Game.Domain
 {
     public class DeckState
     {
-        public Stack<int> cardIdsInDeck = new Stack<int>();
+        public Stack<int> instanceIdsInDeck = new Stack<int>();
     }
 
-    public class SkillDeckState : DeckState
+    public class SkillCardsDeckState : DeckState
     {
     }
 
-    public class PointCardsDeck : DeckState
+    public class PointCardsDeckState : DeckState
     {
     }
 }

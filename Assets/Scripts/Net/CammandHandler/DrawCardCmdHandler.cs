@@ -12,11 +12,11 @@ public sealed class DrawCardCmdHandler : CommandHandler, ICommandHandler
         var payload = JsonUtility.FromJson<DrawCardCommand>(cmd.jsonData);
 
         // TODO: 服务器端需要做什么
-        int drawCardId = -1;
-        if (session.gameState.pointCardsDeck.cardIdsInDeck.Count > 0)
+        int drawCardInstanceId = -1;
+        if (session.gameState.pointCardsDeck.instanceIdsInDeck.Count > 0)
         {
-            drawCardId = session.gameState.pointCardsDeck.cardIdsInDeck.Pop();
-            session.gameState.players[payload.playerId].PointCardsOnBoard.Add(drawCardId);
+            drawCardInstanceId = session.gameState.pointCardsDeck.instanceIdsInDeck.Pop();
+            session.gameState.players[payload.playerId].PointCardsOnBoard.Add(drawCardInstanceId);
         }
 
         // return
@@ -26,7 +26,9 @@ public sealed class DrawCardCmdHandler : CommandHandler, ICommandHandler
             new DrawCardEvent    // need change
             {
                 playerId = payload.playerId,
-                cardId = drawCardId
+                cardId = session.instanceToCardId.GetValueOrDefault(drawCardInstanceId, -1),
+                instanceId = drawCardInstanceId,
+                isHoleCard = false
             }
         ));
         return results;

@@ -9,13 +9,11 @@ public sealed class DrawCardEventHandler : MonoBehaviour, IEventProcess, IEventH
     public bool Handle(NetEvent ev)
     {
         payload = JsonUtility.FromJson<DrawCardEvent>(ev.jsonData); // need change
+        ProcessQueueManager.Instance.Enqueue(Process);
 
         // TODO
         // START
-        // TODO: Client draw function
-        ProcessQueueManager.Instance.Enqueue(this);
-
-        string context = payload.cardId.ToString();
+        string context = $"instanceid:{payload.instanceId.ToString()} cardid:{payload.cardId.ToString()}";
         Debug.Log($"[Client] Event#{ev.Index} type={ev.type} slot={payload.playerId} payload={context}");
         // END
 
@@ -24,13 +22,16 @@ public sealed class DrawCardEventHandler : MonoBehaviour, IEventProcess, IEventH
 
     public void Process()
     {
-        Card card = CardDatabase.Get(payload.cardId);
-
-        Vector3 position = new Vector3(0, 0, 0);
-        Quaternion rotation = Quaternion.identity;
-
-        GameObject cardPrefab = Resources.Load<GameObject>("Prefabs/Card");
-        GameObject newCard = Instantiate(cardPrefab, position, rotation);
-        newCard.GetComponentInChildren<TextMeshPro>().text = card.name;
+        // TODO: change string and parameters
+        ProcessDispatcher.Process("DrawCardTest", new object[] { payload.cardId });
     }
+
+    //[ContextMenu("Debug Draw Function")]
+    //private void DebugHandle()
+    //{
+    //    ProcessQueueManager.Instance.Enqueue(() =>
+    //    {
+    //        ProcessDispatcher.Process("DrawCardTest", new object[] { 0 });
+    //    });
+    //}
 }

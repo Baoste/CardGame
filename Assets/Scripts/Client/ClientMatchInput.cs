@@ -100,7 +100,7 @@ public class ClientMatchInput : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.F6))
         {
-            PlaySkillCardWithTargetCommand cmd = new PlaySkillCardWithTargetCommand { playerId = playerSlot, cardId = 12, targetIds = new List<int> { 1 } };
+            PlaySkillCardWithTargetCommand cmd = new PlaySkillCardWithTargetCommand { playerId = playerSlot, instanceId = 12, targetIds = new List<int> { 1 } };
             gateway.SendCommandServerRpc("PlaySkillCardWithTarget", JsonUtility.ToJson(cmd));
         }
     }

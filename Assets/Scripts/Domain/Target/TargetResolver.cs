@@ -1,49 +1,84 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Game.Domain
 {
     [Serializable]
     public static class TargetResolver
     {
-        public static List<Card> ResolveTarget(TargetSpec spec, GameState state, EffectContext ctx)
+        public static List<int> DetermineCandidates(TargetSpec spec, GameState state, EffectContext ctx)
         {
-            // 候选池 pool：TargetType 决定从哪来
-            List<Card> pool = new List<Card>();
-            //if ((spec.targetType & TargetType.CardsInHand) != 0)
-            //    pool.AddRange(new List<Card>(state.Players[ctx.caster].Hand));
-            //if ((spec.targetType & TargetType.CardsOnBoard) != 0)
-            //    pool.AddRange(new List<Card>(state.Players[ctx.caster].Board));
-            //if ((spec.targetType & TargetType.SkillCardsInDeck) != 0)
-            //    pool.AddRange(List<Card>(state.SkillCardsDeck));
-            //if ((spec.targetType & TargetType.PointCardsInDeck) != 0)
-            //    pool.AddRange((List<Card>(state.PointCardsDeck));
+            List<int> pool = new List<int>();
 
-            //// 过滤（如果你有 ConditionExpr）
-            //if (spec.condition != null)
-            //    pool = pool.FindAll(c => spec.condition.Evaluate(state, ctx, c));
+            // TargetType 决定从哪来
+            if ((spec.targetType & TargetType.MySkillCardsInHand) != 0)
+                pool.AddRange(new List<int>(state.players[ctx.caster].SkillCardsInHand));
+            if ((spec.targetType & TargetType.OpponentSkillCardsInHand) != 0)
+                pool.AddRange(new List<int>(state.players[ctx.opponent].SkillCardsInHand));
+            if ((spec.targetType & TargetType.MyPointCardsOnBoard) != 0)
+                pool.AddRange(new List<int>(state.players[ctx.caster].PointCardsOnBoard));
+            if ((spec.targetType & TargetType.OpponentPointCardsOnBoard) != 0)
+                pool.AddRange(new List<int>(state.players[ctx.opponent].PointCardsOnBoard));
+            if ((spec.targetType & TargetType.SkillCardsInDeck) != 0)
+                pool.AddRange(new List<int>(state.skillCardsDeck.instanceIdsInDeck));
+            if ((spec.targetType & TargetType.PointCardsInDeck) != 0)
+                pool.AddRange(new List<int>(state.pointCardsDeck.instanceIdsInDeck));
 
-            //// 随机（如果是随机目标）
-            //if (spec.targetSelectionMode == TargetSelectionMode.Random)
-            //{
-            //    if (pool.Count == 0) return new List<Card>();
-            //    int i = state.rng.Next(pool.Count);
-            //    pool = new List<Card> { pool[i] };
-            //}
+            // filter 过滤
+            pool = pool.FindAll(c => spec.filter.Evaluate(state, ctx, c));
 
-            //// 排序 + TopK（如果你有 sortKey）
-            //// if (spec.sortKey != null)
-            //// {
-            ////     pool.Sort((a, b) =>
-            ////     {
-            ////         int ka = spec.sortKey.Evaluate(state, ctx, a);
-            ////         int kb = spec.sortKey.Evaluate(state, ctx, b);
-            ////         return spec.sortDescending ? kb.CompareTo(ka) : ka.CompareTo(kb);
-            ////     });
-            //// }
+            return pool;
+        }
+        public static bool ValidateTarget(TargetSpec spec, GameState state, EffectContext ctx)
+        {
+            if (ctx.selectedCards.Count > spec.maxPick.Evaluate(state, ctx, -1))
+                return false;
 
-            int take = spec.count <= 0 ? pool.Count : System.Math.Min(spec.count, pool.Count);
-            return pool.GetRange(0, take);
+            List<int> pool = DetermineCandidates(spec, state, ctx);
+
+            // TargetSelectionMode 决定怎么选
+            switch (spec.targetSelectionMode)
+            {
+                case TargetSelectionMode.All:
+                    break;
+                case TargetSelectionMode.Random:
+                    StaticFunction.Shuffle(pool, state.rng);
+                    int cid = ctx.selectedCards[0];
+                    for (int i = 0; i < spec.maxTargetCount.Evaluate(state, ctx, cid); i++)
+                    {
+                        if (pool.Count > i)
+                        {
+                            ctx.selectedCards.Add(pool[i]);
+                        }
+                    }
+                    break;
+                case TargetSelectionMode.Choose:
+                    if (!ctx.selectedCards.All(x => pool.Contains(x)))
+                        return false;
+                    break;
+                case TargetSelectionMode.First:
+                    if (pool.Count > 0)
+                        ctx.selectedCards.Add(pool[0]);
+                    break;
+                case TargetSelectionMode.Last:
+                    if (pool.Count > 0)
+                        ctx.selectedCards.Add(pool[pool.Count - 1]);
+                    break;
+            }
+
+            return true;
+
+            // // 排序 + TopK（如果你有 sortKey）
+            // if (spec.sortKey != null)
+            // {
+            //     pool.Sort((a, b) =>
+            //     {
+            //         int ka = spec.sortKey.Evaluate(state, ctx, a);
+            //         int kb = spec.sortKey.Evaluate(state, ctx, b);
+            //         return spec.sortDescending ? kb.CompareTo(ka) : ka.CompareTo(kb);
+            //     });
+            // }
         }
     }
 }

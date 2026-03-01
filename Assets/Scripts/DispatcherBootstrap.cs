@@ -1,6 +1,6 @@
 using Game.Domain;
 
-public static class NetEventBootstrap
+public static class DispatcherBootstrap
 {
     public static void Init()
     {
@@ -18,5 +18,7 @@ public static class NetEventBootstrap
         CommandDispatcher.Register("DrawCard", new DrawCardCmdHandler());
         CommandDispatcher.Register("ReadyToPlaySkillCard", new ReadyToPlaySkillCardCmdHandler());
         CommandDispatcher.Register("PlaySkillCardWithTarget", new PlaySkillCardWithTargetCmdHandler());
+
+        //ProcessDispatcher.Register("DrawCard", );
     }
 }

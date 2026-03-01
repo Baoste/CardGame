@@ -7,6 +7,7 @@ public class PlaySkillCardWithTargetEventHandler : IEventProcess, IEventHandler
     public bool Handle(NetEvent ev)
     {
         var payload = JsonUtility.FromJson<PlaySkillCardWithTargetEvent>(ev.jsonData); // need change
+        ProcessQueueManager.Instance.Enqueue(Process);
 
         // TODO
         // START
@@ -23,6 +24,6 @@ public class PlaySkillCardWithTargetEventHandler : IEventProcess, IEventHandler
     }
     public void Process()
     {
-
+        // TODO:
     }
 }

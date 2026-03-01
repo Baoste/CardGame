@@ -1,7 +1,6 @@
 using Game.Domain;
 using System;
 using System.Collections.Generic;
-using UnityEngine;
 
 public interface IEventHandler
 {

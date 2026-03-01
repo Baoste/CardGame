@@ -5,7 +5,16 @@ namespace Game.Domain
     [Serializable]
     public abstract class ConditionExpr
     {
-        public abstract bool Evaluate(GameState state, EffectContext ctx, Card card);
+        public abstract bool Evaluate(GameState state, EffectContext ctx, int target);
+    }
+
+    [Serializable]
+    public class AllCondition : ConditionExpr
+    {
+        public override bool Evaluate(GameState state, EffectContext ctx, int target)
+        {
+            return true;
+        }
     }
 
     // 比较条件
@@ -16,10 +25,10 @@ namespace Game.Domain
         public ValueExpr right;
         public CompareOp op;
 
-        public override bool Evaluate(GameState state, EffectContext ctx, Card card)
+        public override bool Evaluate(GameState state, EffectContext ctx, int target)
         {
-            int l = left.Evaluate(state, ctx, card);
-            int r = right.Evaluate(state, ctx, card);
+            int l = left.Evaluate(state, ctx, target);
+            int r = right.Evaluate(state, ctx, target);
 
             return op switch
             {
@@ -38,7 +47,7 @@ namespace Game.Domain
     public class AndCondition : ConditionExpr
     {
         public ConditionExpr a, b;
-        public override bool Evaluate(GameState state, EffectContext ctx, Card card)
-            => a.Evaluate(state, ctx, card) && b.Evaluate(state, ctx, card);
+        public override bool Evaluate(GameState state, EffectContext ctx, int target)
+            => a.Evaluate(state, ctx, target) && b.Evaluate(state, ctx, target);
     }
 }

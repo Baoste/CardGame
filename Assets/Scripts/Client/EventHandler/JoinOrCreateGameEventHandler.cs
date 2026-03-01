@@ -6,6 +6,7 @@ public sealed class JoinOrCreateGameEventHandler : IEventProcess, IEventHandler
     public bool Handle(NetEvent ev)
     {
         var payload = JsonUtility.FromJson<JoinOrCreateGameEvent>(ev.jsonData); // need change
+        ProcessQueueManager.Instance.Enqueue(Process);
 
         // TODO
         // START
@@ -17,6 +18,6 @@ public sealed class JoinOrCreateGameEventHandler : IEventProcess, IEventHandler
     }
     public void Process()
     {
-
+        // TODO:
     }
 }

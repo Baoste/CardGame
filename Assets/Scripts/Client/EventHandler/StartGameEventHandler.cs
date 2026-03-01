@@ -7,6 +7,7 @@ public class StartGameEventHandler : IEventProcess, IEventHandler
     public bool Handle(NetEvent ev)
     {
         var payload = JsonUtility.FromJson<StartGameEvent>(ev.jsonData); // need change
+        ProcessQueueManager.Instance.Enqueue(Process);
 
         // TODO
         // START
@@ -18,6 +19,6 @@ public class StartGameEventHandler : IEventProcess, IEventHandler
     }
     public void Process()
     {
-
+        // TODO:
     }
 }

@@ -32,12 +32,15 @@ namespace Game.Domain
     {
         public int playerId;
         public int cardId;
+        public int instanceId;
+        public bool isHoleCard;
     }
 
     [Serializable]
     public class ReadyToPlaySkillCardEvent : INetEventPayload
     {
         public int playerId;
+        public int instanceId;
         public int cardId;
         public List<int> targetIds;
     }
@@ -46,6 +49,7 @@ namespace Game.Domain
     public class PlaySkillCardWithTargetEvent : INetEventPayload
     {
         public int playerId;
+        public int instanceId;
         public int cardId;
         public List<int> targetIds;
     }
@@ -54,6 +58,7 @@ namespace Game.Domain
     public class CardChangeEvent : INetEventPayload
     {
         public int playerId;
+        public int instanceId;
         public int cardId;
     }
 }

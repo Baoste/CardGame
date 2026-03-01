@@ -25,6 +25,8 @@ namespace Game.Server   // 这里用你 MatchGateway 所在的 namespace
         public bool Started;
 
         public GameState gameState = new GameState();
+        public EffectContext ctx = new EffectContext();
+        public Dictionary<int, int> instanceToCardId = new Dictionary<int, int>();
 
         public MatchSession(string matchId) => MatchId = matchId;
 

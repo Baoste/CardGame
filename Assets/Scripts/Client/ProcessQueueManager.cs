@@ -1,4 +1,5 @@
 using Game.Domain;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -6,7 +7,7 @@ using UnityEngine;
 public class ProcessQueueManager : MonoBehaviour
 {
     private static ProcessQueueManager instance;
-    private Queue<IEventProcess> processQueue = new Queue<IEventProcess>();
+    private Queue<Action> processQueue = new Queue<Action>();
     private bool isProcessing = false;
 
     public static ProcessQueueManager Instance
@@ -42,7 +43,7 @@ public class ProcessQueueManager : MonoBehaviour
     }
 
     // 添加到队列
-    public void Enqueue(IEventProcess processable)
+    public void Enqueue(Action processable)
     {
         processQueue.Enqueue(processable);
 
@@ -59,8 +60,8 @@ public class ProcessQueueManager : MonoBehaviour
 
         while (processQueue.Count > 0)
         {
-            IEventProcess current = processQueue.Dequeue();
-            current.Process();
+            Action current = processQueue.Dequeue();
+            current();
 
             yield return null;
         }

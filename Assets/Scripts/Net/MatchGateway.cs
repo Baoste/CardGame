@@ -284,16 +284,6 @@ public class MatchGateway : NetworkBehaviour
         {
             OnClientEvent?.Invoke(ev);
         }
-        //var payload = DecodePayload(ev);
-        //string context = "";
-        //if (payload is ChatEvent chat)
-        //    context = chat.text;
-        //if (payload is DrawCardEvent draw)
-        //{
-        //    Debug.Log($"draw {draw.CardId}");
-        //    context = "draw";
-        //}
-        //Debug.Log($"[Client] Event#{ev.Index} type={ev.type} payload={context}");
     }
 
     [TargetRpc]

@@ -11,7 +11,7 @@ public class GameBootstrap : MonoBehaviour
         if (_initialized) return;
         _initialized = true;
 
-        NetEventBootstrap.Init();
+        DispatcherBootstrap.Init();
         Debug.Log("NetEvent ×¢²áÍê³É");
     }
 }

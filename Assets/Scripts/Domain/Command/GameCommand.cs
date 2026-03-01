@@ -49,6 +49,7 @@ namespace Game.Domain
     public class ReadyToPlaySkillCardCommand : ICommand
     {
         public int playerId;
+        public int instanceId;
         public int cardId;
     }
 
@@ -56,7 +57,9 @@ namespace Game.Domain
     public class PlaySkillCardWithTargetCommand : ICommand
     {
         public int playerId;
+        public int instanceId;
         public int cardId;
+        public EffectOp effect;
         public List<int> targetIds;
     }
 }
