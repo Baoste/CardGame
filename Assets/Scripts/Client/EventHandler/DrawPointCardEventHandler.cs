@@ -2,13 +2,13 @@ using Game.Domain;
 using TMPro;
 using UnityEngine;
 
-public sealed class DrawCardEventHandler : MonoBehaviour, IEventProcess, IEventHandler
+public sealed class DrawPointCardEventHandler : MonoBehaviour, IEventProcess, IEventHandler
 {
-    private DrawCardEvent payload;
+    private DrawPointCardEvent payload;
 
     public bool Handle(NetEvent ev)
     {
-        payload = JsonUtility.FromJson<DrawCardEvent>(ev.jsonData); // need change
+        payload = JsonUtility.FromJson<DrawPointCardEvent>(ev.jsonData); // need change
         ProcessQueueManager.Instance.Enqueue(Process);
 
         // TODO

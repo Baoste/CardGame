@@ -43,8 +43,8 @@ public class StartGameCmdHandler : CommandHandler, ICommandHandler
         int drawCardInstanceId = pointCardinstanceIdsInDeck.Pop();
         session.gameState.players[payload.playerId].holeCard = drawCardInstanceId;
         results.events.Enqueue(MakeEvent(
-            "DrawCard",
-            new DrawCardEvent    // need change
+            "DrawPointCard",
+            new DrawPointCardEvent    // need change
             {
                 playerId = payload.playerId,
                 cardId = session.instanceToCardId.GetValueOrDefault(drawCardInstanceId, -1),

@@ -20,6 +20,20 @@ namespace Game.Domain
         public int playerId;
     }
 
+    // 回复牌局快照
+    [Serializable]
+    public class GetGameStateEvent : INetEventPayload
+    {
+        public GameState gameState;
+    }
+
+    // 回复牌局上下文
+    [Serializable]
+    public class GetCtxEvent : INetEventPayload
+    {
+        public EffectContext ctx;
+    }
+
     [Serializable]
     public class ChatEvent : INetEventPayload
     {
@@ -28,7 +42,7 @@ namespace Game.Domain
     }
 
     [Serializable]
-    public class DrawCardEvent : INetEventPayload
+    public class DrawPointCardEvent : INetEventPayload
     {
         public int playerId;
         public int cardId;
@@ -37,20 +51,16 @@ namespace Game.Domain
     }
 
     [Serializable]
-    public class ReadyToPlaySkillCardEvent : INetEventPayload
+    public class ReadyToPlaySkillCardEffectEvent : INetEventPayload
     {
         public int playerId;
-        public int instanceId;
-        public int cardId;
-        public List<int> targetIds;
+        public List<int> candidateIds;
     }
 
     [Serializable]
-    public class PlaySkillCardWithTargetEvent : INetEventPayload
+    public class PlaySkillCardEffectWithTargetEvent : INetEventPayload
     {
         public int playerId;
-        public int instanceId;
-        public int cardId;
         public List<int> targetIds;
     }
 

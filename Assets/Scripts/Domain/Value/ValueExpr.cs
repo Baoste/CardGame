@@ -1,11 +1,20 @@
 using System;
+using UnityEngine;
 
 namespace Game.Domain
 {
     [Serializable]
-    public abstract class ValueExpr
+    public class ValueExpr
     {
-        public abstract int Evaluate(GameState state, EffectContext ctx, int target);
+        public virtual int Evaluate(GameState state, EffectContext ctx, int target) { return -1; }   
+    }
+
+    [Serializable]
+    // 无值
+    public class NoneValue : ValueExpr
+    {
+        public override int Evaluate(GameState state, EffectContext ctx, int target)
+            => -1;
     }
 
     [Serializable]
@@ -43,8 +52,8 @@ namespace Game.Domain
     // 二元运算
     public class BinaryValue : ValueExpr
     {
-        public ValueExpr left;
-        public ValueExpr right;
+        [SerializeReference] public ValueExpr left;
+        [SerializeReference] public ValueExpr right;
         public BinaryOp op;
 
         public override int Evaluate(GameState state, EffectContext ctx, int target)

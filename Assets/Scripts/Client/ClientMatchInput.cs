@@ -1,8 +1,11 @@
 using Game.Domain;
+using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using static Unity.Burst.Intrinsics.X86.Avx;
+using static UnityEngine.Rendering.DebugUI;
 
 public class ClientMatchInput : MonoBehaviour
 {
@@ -43,6 +46,10 @@ public class ClientMatchInput : MonoBehaviour
             lastEventIndex = ev.Index;
     }
 
+    private void Awake()
+    {
+        ProcessDispatcher.Register("PlaySkillCardTest", WaitForChoose);
+    }
 
     void Update()
     {
@@ -88,8 +95,8 @@ public class ClientMatchInput : MonoBehaviour
         }
         if (Input.GetKeyDown(KeyCode.F5))
         {
-            DrawCardCommand cmd = new DrawCardCommand { playerId = playerSlot };
-            gateway.SendCommandServerRpc("DrawCard", JsonUtility.ToJson(cmd));
+            DrawPointCardCommand cmd = new DrawPointCardCommand { playerId = playerSlot };
+            gateway.SendCommandServerRpc("DrawPointCard", JsonUtility.ToJson(cmd));
         }
 
         //if (Input.GetKeyDown(KeyCode.F5))
@@ -100,9 +107,96 @@ public class ClientMatchInput : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.F6))
         {
-            PlaySkillCardWithTargetCommand cmd = new PlaySkillCardWithTargetCommand { playerId = playerSlot, instanceId = 12, targetIds = new List<int> { 1 } };
-            gateway.SendCommandServerRpc("PlaySkillCardWithTarget", JsonUtility.ToJson(cmd));
+            //PlaySkillCardWithTargetCommand cmd = new PlaySkillCardWithTargetCommand { playerId = playerSlot, instanceId = 12, targetIds = new List<int> { 1 } };
+            //gateway.SendCommandServerRpc("PlaySkillCardWithTarget", JsonUtility.ToJson(cmd));
+
+            EffectOp effect0 = new EffectOp
+            {
+                type = EffectType.DrawCards,
+                target = new TargetSpec
+                {
+                    targetType = TargetType.PointCardsInDeck,
+                    targetSelectionMode = TargetSelectionMode.All,
+                    filter = new AllCondition(),
+                    maxTargetCount = new NoneValue(),
+                    maxPick = new NoneValue()
+                },
+                value = new ConstValue
+                {
+                    value = 1
+                }
+            };
+            EffectOp effect1 = new EffectOp
+            {
+                type = EffectType.DrawCards,
+                target = new TargetSpec
+                {
+                    targetType = TargetType.PointCardsInDeck,
+                    targetSelectionMode = TargetSelectionMode.All,
+                    filter = new AllCondition(),
+                    maxTargetCount = new NoneValue(),
+                    maxPick = new ConstValue
+                    {
+                        value = 1
+                    }
+                },
+                value = new ConstValue
+                {
+                    value = 1
+                }
+            };
+            SkillCard tmp = new SkillCard
+            {
+                id = 999,
+                name = "抽牌",
+                description = "抽一张牌，再抽一张牌",
+                point = 1,
+                type = CardType.Skill,
+                effects = new List<EffectOp> { effect0, effect1 }
+            };
+
+            StartCoroutine(ExcuteCard(tmp));
         }
+    }
+
+    IEnumerator ExcuteCard(Card card)
+    {
+        // 这里模拟一个需要玩家选择目标的效果执行流程：
+        // 1. 客户端收到事件，解析出 Card 和 EffectOp（这里直接用参数传了）
+        // 2. 弹 UI 让玩家选目标（这里直接等 0.1 秒模拟玩家选择）
+        // 3. 玩家选好后，继续执行效果
+        foreach (var op in card.effects)
+        {
+            ReadyToPlaySkillCardEffectCommand cmd = new ReadyToPlaySkillCardEffectCommand { playerId = playerSlot, effect = op };
+            gateway.SendCommandServerRpc("ReadyToPlaySkillCardEffect", JsonUtility.ToJson(cmd));
+            yield return new WaitUntil(() => ClientEffectContext.ChooseDone);
+            ClientEffectContext.ChooseDone = false;
+            ClientEffectExecutor.ExecuteOp(op, gateway, ClientGameState.Instance, ClientEffectContext.Instance, ClientEffectContext.Instance.selectedCards);
+        }
+    }
+
+    // Debug Test
+    public void WaitForChoose(object[] parameters)
+    {
+        List<int> targetIds = (List<int>)parameters[0];
+        if (targetIds.Count == 0)
+        {
+            Debug.Log("[Client] No target to choose, executing effect directly");
+            ClientEffectContext.Instance.selectedCards = new List<int>();
+            StartCoroutine(DelayedTest(0.1f));
+        }
+        else
+        {
+            Debug.Log($"[Client] Waiting for player to choose target");
+            ClientEffectContext.Instance.selectedCards = targetIds; // 这里直接把候选目标当作已选目标了，实际你会弹 UI 让玩家选
+            StartCoroutine(DelayedTest(3f));
+        }
+    }
+
+    private IEnumerator DelayedTest(float time)
+    {
+        yield return new WaitForSeconds(time);
+        ClientEffectContext.ChooseDone = true;
     }
 
     // 你在真实项目里会这样更新 lastEventIndex：

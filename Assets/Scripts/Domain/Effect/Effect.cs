@@ -1,4 +1,5 @@
 using System;
+using UnityEngine;
 
 namespace Game.Domain
 {
@@ -21,7 +22,7 @@ namespace Game.Domain
     public class EffectOp
     {
         public EffectType type;
-        public TargetSpec target;
-        public ValueExpr value;
+        [SerializeReference] public TargetSpec target;
+        [SerializeReference] public ValueExpr value;
     }
 }

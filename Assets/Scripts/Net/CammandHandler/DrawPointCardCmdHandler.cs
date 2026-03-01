@@ -4,12 +4,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public sealed class DrawCardCmdHandler : CommandHandler, ICommandHandler
+public sealed class DrawPointCardCmdHandler : CommandHandler, ICommandHandler
 {
     public CommandResult Handle(MatchSession session, NetCommand cmd)
     {
         // need change
-        var payload = JsonUtility.FromJson<DrawCardCommand>(cmd.jsonData);
+        var payload = JsonUtility.FromJson<DrawPointCardCommand>(cmd.jsonData);
 
         // TODO: 服务器端需要做什么
         int drawCardInstanceId = -1;
@@ -22,8 +22,8 @@ public sealed class DrawCardCmdHandler : CommandHandler, ICommandHandler
         // return
         CommandResult results = new CommandResult();
         results.events.Enqueue(MakeEvent(
-            "DrawCard",
-            new DrawCardEvent    // need change
+            "DrawPointCard",
+            new DrawPointCardEvent    // need change
             {
                 playerId = payload.playerId,
                 cardId = session.instanceToCardId.GetValueOrDefault(drawCardInstanceId, -1),

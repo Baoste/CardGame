@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 
 namespace Game.Domain
@@ -10,6 +11,7 @@ namespace Game.Domain
      * - SkillCardsInHand：玩家手牌中技能牌的 InstanceID 列表
      * - PointCardsOnBoard：玩家场上点数牌的 InstanceID 列表，不包含底牌
      */
+    [Serializable]
     public class PlayerState
     {
         public int playerId;

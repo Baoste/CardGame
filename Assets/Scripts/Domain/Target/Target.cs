@@ -1,4 +1,5 @@
 using System;
+using UnityEngine;
 
 namespace Game.Domain
 {
@@ -28,10 +29,10 @@ namespace Game.Domain
     public class TargetSpec
     {
         public TargetType targetType;
-        public ConditionExpr filter;        // 例如对手牌进行过滤：只选“攻击牌”、只选“点数>=5”
+        [SerializeReference] public ConditionExpr filter;        // 例如对手牌进行过滤：只选“攻击牌”、只选“点数>=5”
 
         public TargetSelectionMode targetSelectionMode;
-        public ValueExpr maxTargetCount;    // 候选最大数量，只有在Random情况下起作用
-        public ValueExpr maxPick;           // 选择的最大数量
+        [SerializeReference] public ValueExpr maxTargetCount;    // 候选最大数量，只有在Random情况下起作用
+        [SerializeReference] public ValueExpr maxPick;           // 选择的最大数量
     }
 }

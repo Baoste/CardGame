@@ -30,8 +30,10 @@ namespace Game.Domain
 
             return pool;
         }
-        public static bool ValidateTarget(TargetSpec spec, GameState state, EffectContext ctx)
+        public static bool ValidateTarget(TargetSpec spec, GameState state, EffectContext ctx, out List<int> target)
         {
+            target = new List<int>();
+
             if (ctx.selectedCards.Count > spec.maxPick.Evaluate(state, ctx, -1))
                 return false;
 
@@ -41,6 +43,7 @@ namespace Game.Domain
             switch (spec.targetSelectionMode)
             {
                 case TargetSelectionMode.All:
+                    target = pool;
                     break;
                 case TargetSelectionMode.Random:
                     StaticFunction.Shuffle(pool, state.rng);
@@ -49,21 +52,22 @@ namespace Game.Domain
                     {
                         if (pool.Count > i)
                         {
-                            ctx.selectedCards.Add(pool[i]);
+                            target.Add(pool[i]);
                         }
                     }
                     break;
                 case TargetSelectionMode.Choose:
                     if (!ctx.selectedCards.All(x => pool.Contains(x)))
                         return false;
+                    target = ctx.selectedCards;
                     break;
                 case TargetSelectionMode.First:
                     if (pool.Count > 0)
-                        ctx.selectedCards.Add(pool[0]);
+                        target.Add(pool[0]);
                     break;
                 case TargetSelectionMode.Last:
                     if (pool.Count > 0)
-                        ctx.selectedCards.Add(pool[pool.Count - 1]);
+                        target.Add(pool[pool.Count - 1]);
                     break;
             }
 

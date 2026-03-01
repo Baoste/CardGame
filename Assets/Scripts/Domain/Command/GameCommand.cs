@@ -32,6 +32,18 @@ namespace Game.Domain
         public int playerId;
     }
 
+    // 获取牌局快照
+    [Serializable]
+    public class GetGameStateCommand : ICommand
+    {
+    }
+
+    // 获取牌局上下文（例如当前技能卡的目标选择规范等）
+    [Serializable]
+    public class GetCtxCommand : ICommand
+    {
+    }
+
     [Serializable]
     public class ChatCommand : ICommand
     {
@@ -40,25 +52,22 @@ namespace Game.Domain
     }
 
     [Serializable]
-    public class DrawCardCommand : ICommand
+    public class DrawPointCardCommand : ICommand
     {
         public int playerId;
     }
 
     [Serializable]
-    public class ReadyToPlaySkillCardCommand : ICommand
+    public class ReadyToPlaySkillCardEffectCommand : ICommand
     {
         public int playerId;
-        public int instanceId;
-        public int cardId;
+        public EffectOp effect;
     }
 
     [Serializable]
-    public class PlaySkillCardWithTargetCommand : ICommand
+    public class PlaySkillCardEffectWithTargetCommand : ICommand
     {
         public int playerId;
-        public int instanceId;
-        public int cardId;
         public EffectOp effect;
         public List<int> targetIds;
     }

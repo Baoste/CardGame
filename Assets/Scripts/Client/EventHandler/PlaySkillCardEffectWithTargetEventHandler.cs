@@ -2,11 +2,11 @@ using Game.Domain;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlaySkillCardWithTargetEventHandler : IEventProcess, IEventHandler
+public class PlaySkillCardEffectWithTargetEventHandler : IEventProcess, IEventHandler
 {
     public bool Handle(NetEvent ev)
     {
-        var payload = JsonUtility.FromJson<PlaySkillCardWithTargetEvent>(ev.jsonData); // need change
+        var payload = JsonUtility.FromJson<PlaySkillCardEffectWithTargetEvent>(ev.jsonData); // need change
         ProcessQueueManager.Instance.Enqueue(Process);
 
         // TODO

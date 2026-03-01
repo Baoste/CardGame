@@ -1,11 +1,12 @@
 using System;
+using UnityEngine;
 
 namespace Game.Domain
 {
     [Serializable]
-    public abstract class ConditionExpr
+    public class ConditionExpr
     {
-        public abstract bool Evaluate(GameState state, EffectContext ctx, int target);
+        public virtual bool Evaluate(GameState state, EffectContext ctx, int target) { return false; }
     }
 
     [Serializable]
@@ -21,8 +22,8 @@ namespace Game.Domain
     [Serializable]
     public class CompareCondition : ConditionExpr
     {
-        public ValueExpr left;
-        public ValueExpr right;
+        [SerializeReference] public ValueExpr left;
+        [SerializeReference] public ValueExpr right;
         public CompareOp op;
 
         public override bool Evaluate(GameState state, EffectContext ctx, int target)
@@ -46,7 +47,7 @@ namespace Game.Domain
     [Serializable]
     public class AndCondition : ConditionExpr
     {
-        public ConditionExpr a, b;
+        [SerializeReference] public ConditionExpr a, b;
         public override bool Evaluate(GameState state, EffectContext ctx, int target)
             => a.Evaluate(state, ctx, target) && b.Evaluate(state, ctx, target);
     }

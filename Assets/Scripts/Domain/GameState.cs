@@ -13,6 +13,7 @@ namespace Game.Domain
      * - skillCardsDeck：技能牌堆状态，包含剩余牌的 InstanceID 列表等信息
      * - pointCardsDeck：点数牌堆状态，包含剩余牌的 InstanceID 列表等信息
      */
+    [Serializable]
     public class GameState
     {
         public int Turn;
@@ -35,5 +36,10 @@ namespace Game.Domain
                 players[i] = new PlayerState();
             }
         }
+    }
+
+    public static class ClientGameState
+    {
+        public static GameState Instance;
     }
 }

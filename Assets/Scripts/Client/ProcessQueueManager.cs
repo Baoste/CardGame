@@ -54,7 +54,7 @@ public class ProcessQueueManager : MonoBehaviour
     }
 
     // 处理队列的协程
-    private System.Collections.IEnumerator ProcessQueue()
+    private IEnumerator ProcessQueue()
     {
         isProcessing = true;
 
