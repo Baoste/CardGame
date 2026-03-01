@@ -178,8 +178,8 @@ public class ClientMatchInput : MonoBehaviour
     // Debug Test
     public void WaitForChoose(object[] parameters)
     {
-        List<int> targetIds = (List<int>)parameters[0];
-        if (targetIds.Count == 0)
+        List<int> candidateIds = (List<int>)parameters[0];
+        if (candidateIds.Count == 0)
         {
             Debug.Log("[Client] No target to choose, executing effect directly");
             ClientEffectContext.Instance.selectedCards = new List<int>();
@@ -188,7 +188,7 @@ public class ClientMatchInput : MonoBehaviour
         else
         {
             Debug.Log($"[Client] Waiting for player to choose target");
-            ClientEffectContext.Instance.selectedCards = targetIds; // 这里直接把候选目标当作已选目标了，实际你会弹 UI 让玩家选
+            ClientEffectContext.Instance.selectedCards = candidateIds; // 这里直接把候选目标当作已选目标了，实际你会弹 UI 让玩家选
             StartCoroutine(DelayedTest(3f));
         }
     }
