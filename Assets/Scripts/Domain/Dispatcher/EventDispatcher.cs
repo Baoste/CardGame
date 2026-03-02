@@ -11,7 +11,7 @@ public interface IEventHandler
 
 public interface IEventProcess
 {
-    void Process();
+    void Process(object[] objects);
 }
 
 public static class EventDispatcher

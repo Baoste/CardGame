@@ -9,8 +9,9 @@ public sealed class DrawPointCardEventHandler : IEventProcess, IEventHandler
 
     public bool Handle(NetEvent ev)
     {
-        payload = JsonConvert.DeserializeObject<DrawPointCardEvent>(ev.jsonData); // need change
-        ProcessQueueManager.Instance.Enqueue(Process);
+        payload = JsonConvert.DeserializeObject<DrawPointCardEvent>(ev.jsonData);   // need change
+        // need change, 需要把参数在这里传进去
+        ProcessQueueManager.Instance.Enqueue(Process, new object[] { payload.cardId, payload.playerId, payload.isHoleCard });
 
         // TODO
         // START
@@ -21,9 +22,8 @@ public sealed class DrawPointCardEventHandler : IEventProcess, IEventHandler
         return true;
     }
 
-    public void Process()
+    public void Process(object[] objects)
     {
-        // TODO: change string and parameters
-        ProcessDispatcher.Process("DrawCardTest", new object[] { payload.cardId, payload.playerId });
+        ProcessDispatcher.Process("DrawCardTest", objects);
     }
 }

@@ -7,7 +7,7 @@ public sealed class JoinOrCreateGameEventHandler : IEventProcess, IEventHandler
     public bool Handle(NetEvent ev)
     {
         var payload = JsonConvert.DeserializeObject<JoinOrCreateGameEvent>(ev.jsonData); // need change
-        ProcessQueueManager.Instance.Enqueue(Process);
+        ProcessQueueManager.Instance.Enqueue(Process, new object[] { });
 
         // TODO
         // START
@@ -17,7 +17,7 @@ public sealed class JoinOrCreateGameEventHandler : IEventProcess, IEventHandler
 
         return true;
     }
-    public void Process()
+    public void Process(object[] objects)
     {
         // TODO:
     }

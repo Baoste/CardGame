@@ -14,21 +14,16 @@ public class DrawCardTest : MonoBehaviour
     {
         ProcessDispatcher.Register("DrawCardTest", DrawCard);
         // 测试：直接调用 ProcessDispatcher 来模拟事件处理
-        ProcessDispatcher.Process("DrawCardTest", new object[] { 1, 1 });
-        ProcessDispatcher.Process("DrawCardTest", new object[] { 2, 1 });
-        ProcessDispatcher.Process("DrawCardTest", new object[] { 1, 0 });
-        ProcessDispatcher.Process("DrawCardTest", new object[] { 2, 0 });
-        ProcessDispatcher.Process("DrawCardTest", new object[] { 3, 0 });
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
+        //ProcessDispatcher.Process("DrawCardTest", new object[] { 1, 1 });
+        //ProcessDispatcher.Process("DrawCardTest", new object[] { 2, 1 });
+        //ProcessDispatcher.Process("DrawCardTest", new object[] { 1, 0 });
+        //ProcessDispatcher.Process("DrawCardTest", new object[] { 2, 0 });
+        //ProcessDispatcher.Process("DrawCardTest", new object[] { 3, 0 });
     }
 
     // parameters[0]: int cardId
     // parameters[1]: int playerId
+    // parameters[2]: bool isHoleCard
     public void DrawCard(object[] parameters)
     {
         Card card = CardDatabase.Get((int)parameters[0]);
@@ -53,8 +48,11 @@ public class DrawCardTest : MonoBehaviour
         // 先创建对象，位置会由 ArrangeHand 重排
         GameObject newCard = Instantiate(cardPrefab, Vector3.zero, Quaternion.identity);
         var text = newCard.GetComponentInChildren<TextMeshPro>();
-        if (text != null)
-            text.text = card.name;
+        Debug.Log($"{playerId} {ClientGameState.playerSlot}");
+        if (text != null && (playerId == ClientGameState.playerSlot || !(bool)parameters[2]))
+            text.text = card.point.ToString();
+        else
+            text.text = "";
 
         // 加入 handMap 并重排该玩家的手牌显示
         if (!handMap.TryGetValue(playerId, out var list))
@@ -80,10 +78,10 @@ public class DrawCardTest : MonoBehaviour
 
         // 视口（Viewport）Y：己方在上半屏，对方在下半屏
         // 约定：playerId == 0 表示己方（上半屏）；其他 playerId 为对方（下半屏）
-        float viewportY = (playerId == 0) ? 0.75f : 0.25f;
+        float viewportY = (playerId != ClientGameState.playerSlot) ? 0.75f : 0.25f;
 
         // 可用宽度（视口单位），以及每张牌的间距（视卡数量自适应）
-        float availableWidth = 0.8f; // 留白两侧各 0.1
+        float availableWidth = 0.9f; // 留白两侧各 0.1
         float spacing = Mathf.Min(0.18f, availableWidth / Mathf.Max(1, n)); // 最大间距限制，避免过分分散
         float startX = 0.5f - spacing * (n - 1) / 2f; // 居中起始 X
 
@@ -95,7 +93,8 @@ public class DrawCardTest : MonoBehaviour
             float vx = startX + i * spacing;
             Vector3 worldPos = Camera.main.ViewportToWorldPoint(new Vector3(vx, viewportY, distance));
             // 固定在 z = 0 平面（或按需要调整）
-            list[i].transform.position = new Vector3(worldPos.x, worldPos.y, 0f);
+            float z = 10f;
+            list[i].transform.position = new Vector3(worldPos.x, worldPos.y, z);
             list[i].transform.rotation = Quaternion.identity;
         }
     }

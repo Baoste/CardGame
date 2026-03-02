@@ -17,7 +17,7 @@ public class GetGameStateEventHandler : IEventProcess, IEventHandler
 
         return true;
     }
-    public void Process()
+    public void Process(object[] objects)
     {
         // Nothing to do
     }

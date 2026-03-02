@@ -29,6 +29,14 @@ namespace Game.Domain
         public int playerId;
     }
 
+    /// <summary>
+    /// 开始回合命令
+    /// </summary>
+    public class StartTurnCommand : ICommand
+    {
+        public int playerId;
+    }
+
     // 获取牌局快照
     public class GetGameStateCommand : ICommand
     {

@@ -39,6 +39,7 @@ namespace Game.Domain
 
     public static class ClientGameState
     {
+        public static int playerSlot = -1;
         public static bool GetDone = false;     // 是否已经拿到 ClientGameState 的数据了
         public static GameState Instance;
     }

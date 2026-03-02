@@ -69,6 +69,18 @@ public class StartGameCmdHandler : CommandHandler, ICommandHandler
                 isHoleCard = true
             }
         ));
+        drawCardInstanceId = pointCardsDeck.Draw();
+        session.gameState.players[1-payload.playerId].holeCard = drawCardInstanceId;
+        results.events.Enqueue(MakeEvent(
+            "DrawPointCard",
+            new DrawPointCardEvent    // need change
+            {
+                playerId = 1-payload.playerId,
+                cardId = session.instanceToCardId.GetValueOrDefault(drawCardInstanceId, -1),
+                instanceId = drawCardInstanceId,
+                isHoleCard = true
+            }
+        ));
 
         return results;
     }

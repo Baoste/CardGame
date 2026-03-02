@@ -18,6 +18,15 @@ namespace Game.Domain
         public int playerId;
     }
 
+    /// <summary>
+    /// 开始回合事件
+    /// </summary>
+    public class StartTurnEvent : INetEventPayload
+    {
+        public int playerId;
+        public int opponentId;
+    }
+
     // 回复牌局快照
     public class GetGameStateEvent : INetEventPayload
     {

@@ -20,7 +20,6 @@ public class ClientMatchInput : MonoBehaviour
 
     [Header("Client state")]
     public int lastEventIndex = -1;
-    public int playerSlot = -1;
 
     void OnEnable()
     {
@@ -37,8 +36,8 @@ public class ClientMatchInput : MonoBehaviour
     void OnJoined(string matchId, int slot, string token, string snapshotJson)
     {
         inputField.text = matchId;
-        playerSlot = slot;
-        // Debug.Log($"[UI] Joined match {matchId}, slot {slot}");
+        ClientGameState.playerSlot = slot;
+        Debug.Log($"[UI] Joined match {matchId}, slot {slot}");
     }
 
     void OnEvent(Game.Domain.NetEvent ev)
@@ -77,7 +76,7 @@ public class ClientMatchInput : MonoBehaviour
         // M：发消息（写入本局 eventlog 并广播给同局两人）
         if (Input.GetKeyDown(KeyCode.F3))
         {
-            ChatCommand cmd = new ChatCommand { playerId = playerSlot, chatContext = inputField1.text };
+            ChatCommand cmd = new ChatCommand { playerId = ClientGameState.playerSlot, chatContext = inputField1.text };
             gateway.SendCommandServerRpc("Chat", JsonConvert.SerializeObject(cmd));
         }
 
@@ -91,19 +90,19 @@ public class ClientMatchInput : MonoBehaviour
         // 发牌
         if (Input.GetKeyDown(KeyCode.F4))
         {
-            StartGameCommand cmd = new StartGameCommand { playerId = playerSlot };
+            StartGameCommand cmd = new StartGameCommand { playerId = ClientGameState.playerSlot };
             gateway.SendCommandServerRpc("StartGame", JsonConvert.SerializeObject(cmd));
         }
         if (Input.GetKeyDown(KeyCode.F5))
         {
-            DrawPointCardCommand cmd = new DrawPointCardCommand { playerId = playerSlot };
+            DrawPointCardCommand cmd = new DrawPointCardCommand { playerId = ClientGameState.playerSlot };
             gateway.SendCommandServerRpc("DrawPointCard", JsonConvert.SerializeObject(cmd));
         }
 
         if (Input.GetKeyDown(KeyCode.F6))
         {
             Card tmp = CardDatabase.Get(999);
-            StartCoroutine(ClientEffectExecutor.ExcuteCard(tmp, gateway, playerSlot));
+            StartCoroutine(ClientEffectExecutor.ExcuteCard(tmp, gateway, ClientGameState.playerSlot));
         }
 
         //if (Input.GetKeyDown(KeyCode.F7))

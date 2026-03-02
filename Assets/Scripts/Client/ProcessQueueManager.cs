@@ -7,7 +7,8 @@ using UnityEngine;
 public class ProcessQueueManager : MonoBehaviour
 {
     private static ProcessQueueManager instance;
-    private Queue<Action> processQueue = new Queue<Action>();
+    private Queue<Action<object[]>> processQueue = new Queue<Action<object[]>>();
+    private Queue<object[]> paramsQueue = new Queue<object[]>();
     private bool isProcessing = false;
 
     public static ProcessQueueManager Instance
@@ -43,9 +44,10 @@ public class ProcessQueueManager : MonoBehaviour
     }
 
     // 添加到队列
-    public void Enqueue(Action processable)
+    public void Enqueue(Action<object[]> processable, object[] paramList)
     {
         processQueue.Enqueue(processable);
+        paramsQueue.Enqueue(paramList);
 
         if (!isProcessing)
         {
@@ -60,8 +62,8 @@ public class ProcessQueueManager : MonoBehaviour
 
         while (processQueue.Count > 0)
         {
-            Action current = processQueue.Dequeue();
-            current();
+            Action<object[]> current = processQueue.Dequeue();
+            current(paramsQueue.Dequeue());
 
             yield return null;
         }
