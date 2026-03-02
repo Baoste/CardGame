@@ -2,7 +2,7 @@ using Game.Domain;
 using TMPro;
 using UnityEngine;
 
-public sealed class DrawPointCardEventHandler : MonoBehaviour, IEventProcess, IEventHandler
+public sealed class DrawPointCardEventHandler : IEventProcess, IEventHandler
 {
     private DrawPointCardEvent payload;
 
@@ -25,13 +25,4 @@ public sealed class DrawPointCardEventHandler : MonoBehaviour, IEventProcess, IE
         // TODO: change string and parameters
         ProcessDispatcher.Process("DrawCardTest", new object[] { payload.cardId });
     }
-
-    //[ContextMenu("Debug Draw Function")]
-    //private void DebugHandle()
-    //{
-    //    ProcessQueueManager.Instance.Enqueue(() =>
-    //    {
-    //        ProcessDispatcher.Process("DrawCardTest", new object[] { 0 });
-    //    });
-    //}
 }

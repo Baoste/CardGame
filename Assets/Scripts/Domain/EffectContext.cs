@@ -12,6 +12,7 @@ namespace Game.Domain
         public List<int> candidateSourceIds = new List<int>();      // 可选的来源ID列表，可能是技能牌或点数牌的 InstanceID
         public List<int> candidateTargetIds = new List<int>();      // 可选的目标ID列表，可能是技能牌或点数牌的 InstanceID
         public List<int> tmpSelectedIds = new List<int>();          // 临时选项列表，用于临时储存 selectedSourceIds 或 selectedTargetIds
+        // TODO: 现在缺少一个回合开始cmd，在这个cmd里把caster和opponent都设置好，后续技能卡效果需要用到这两个字段来区分玩家
         public int caster;      // 施法者玩家ID
         public int opponent;    // 对手玩家ID
     }

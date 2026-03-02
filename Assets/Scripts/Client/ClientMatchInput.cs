@@ -107,67 +107,13 @@ public class ClientMatchInput : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.F6))
         {
-            //PlaySkillCardWithTargetCommand cmd = new PlaySkillCardWithTargetCommand { playerId = playerSlot, instanceId = 12, selectedTargetIds = new List<int> { 1 } };
-            //gateway.SendCommandServerRpc("PlaySkillCardWithTarget", JsonUtility.ToJson(cmd));
+            Card tmp = CardDatabase.Get(999);
+            StartCoroutine(ClientEffectExecutor.ExcuteCard(tmp, gateway, playerSlot));
+        }
 
-            EffectOp effect0 = new EffectOp
-            {
-                type = EffectType.DrawCards,
-                source = new ParticipantSpec
-                {
-                    participantType = ParticipantType.None,
-                    participantSelectionMode = ParticipantSelectionMode.None,
-                    filter = new AllCondition(),
-                    maxCandidateCount = new NoneValue(),
-                    maxSelectCount = new NoneValue()
-                },
-                target = new ParticipantSpec
-                {
-                    participantType = ParticipantType.PointCardsInDeck,
-                    participantSelectionMode = ParticipantSelectionMode.None,
-                    filter = new AllCondition(),
-                    maxCandidateCount = new NoneValue(),
-                    maxSelectCount = new NoneValue()
-                },
-                value = new ConstValue
-                {
-                    value = 1
-                }
-            };
-            EffectOp effect1 = new EffectOp
-            {
-                type = EffectType.DrawCards,
-                source = new ParticipantSpec
-                {
-                    participantType = ParticipantType.None,
-                    participantSelectionMode = ParticipantSelectionMode.None,
-                    filter = new AllCondition(),
-                    maxCandidateCount = new NoneValue(),
-                    maxSelectCount = new NoneValue()
-                },
-                target = new ParticipantSpec
-                {
-                    participantType = ParticipantType.PointCardsInDeck,
-                    participantSelectionMode = ParticipantSelectionMode.All,
-                    filter = new AllCondition(),
-                    maxCandidateCount = new NoneValue(),
-                    maxSelectCount = new NoneValue()
-                },
-                value = new ConstValue
-                {
-                    value = 1
-                }
-            };
-            SkillCard tmp = new SkillCard
-            {
-                id = 999,
-                name = "抽牌",
-                description = "抽一张牌，再抽一张牌",
-                point = 1,
-                type = CardType.Skill,
-                effects = new List<EffectOp> { effect0, effect1 }
-            };
-
+        if (Input.GetKeyDown(KeyCode.F7))
+        {
+            Card tmp = CardDatabase.Get(9999);
             StartCoroutine(ClientEffectExecutor.ExcuteCard(tmp, gateway, playerSlot));
         }
     }
@@ -183,8 +129,7 @@ public class ClientMatchInput : MonoBehaviour
             Debug.Log("[Client] No target to choose, executing effect directly");
             ClientEffectContext.Instance.selectedSourceIds = new List<int>();
             ClientEffectContext.Instance.selectedTargetIds = new List<int>();
-            // StartCoroutine(DelayedTest(5f));
-            StartCoroutine(ClickTest());
+            ClientEffectContext.ChooseDone = true;
         }
         else
         {

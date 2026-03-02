@@ -10,8 +10,6 @@ public sealed class ReadyToPlaySkillCardEffectCmdHandler : CommandHandler, IComm
         var payload = JsonUtility.FromJson<ReadyToPlaySkillCardEffectCommand>(cmd.jsonData);  // need change
 
         // TODO: 服务器端需要做什么
-        session.ctx.caster = payload.playerId;
-        session.ctx.opponent = 1 - payload.playerId;
         ParticipantResolver.ValidateParticipant(payload.effect.source, session.gameState, session.ctx, out var sourceIds);
         ParticipantResolver.ValidateParticipant(payload.effect.target, session.gameState, session.ctx, out var targetIds);
 

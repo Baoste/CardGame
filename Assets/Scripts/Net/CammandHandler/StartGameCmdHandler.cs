@@ -12,21 +12,38 @@ public class StartGameCmdHandler : CommandHandler, ICommandHandler
         // TODO: 服务器端需要做什么
         // 初始化牌堆
         List<int> pointCardInstanceIds = new List<int>();
+        List<int> skillCardInstanceIds = new List<int>();
         // instance id 绑定到 Card id
-        // tmp 假设card id是0-9
-        // TODO: 读取数据库里的牌堆配置，再生成牌堆
-        List<int> cardTMP = new List<int> { 0, 1, 2, 3, 4, 5, 6, 7, 8 };
-
-        for (int i = 0; i < 2 * cardTMP.Count; i++)
+        int instanceIdCounter = 0;
+        foreach (int key in CardDatabase.GetKeys())
         {
-            session.instanceToCardId[i] = cardTMP[i/2];
-            pointCardInstanceIds.Add(i);
+            for (int i = 0; i < CardDatabase.Get(key).count; i++)
+            {
+                session.instanceToCardId[instanceIdCounter] = key;
+                switch (CardDatabase.Get(key).type)
+                {
+                    case CardType.Point:
+                        pointCardInstanceIds.Add(instanceIdCounter);
+                        break;
+                    case CardType.Skill:
+                        skillCardInstanceIds.Add(instanceIdCounter);
+                        break;
+                }
+                instanceIdCounter++;
+            }
+
         }
+
         StaticFunction.Shuffle(pointCardInstanceIds, session.gameState.rng);
+        StaticFunction.Shuffle(skillCardInstanceIds, session.gameState.rng);
 
         var pointCardsDeck = session.gameState.pointCardsDeck;
         pointCardsDeck.Clear();
         pointCardsDeck.Add(pointCardInstanceIds);
+
+        var skillCardsDeck = session.gameState.skillCardsDeck;
+        skillCardsDeck.Clear();
+        skillCardsDeck.Add(skillCardInstanceIds);
 
         // return results
         CommandResult results = new CommandResult();

@@ -1,62 +1,98 @@
-[
-  {
-    "id": 0,
-    "name": "Card1",
-    "description": "This is card 1",
-    "point": 1
-  },
-  {
-    "id": 1,
-    "name": "Card2",
-    "description": "This is card 2",
-    "point": 2
-  },
-  {
-    "id": 2,
-    "name": "Card3",
-    "description": "This is card 3",
-    "point": 3
-  },
-  {
-    "id": 3,
-    "name": "Card4",
-    "description": "This is card 4",
-    "point": 4
-  },
-  {
-    "id": 4,
-    "name": "Card4",
-    "description": "This is card 4",
-    "point": 5
-  },
-  {
-    "id": 5,
-    "name": "Card4",
-    "description": "This is card 4",
-    "point": 6
-  },
-  {
-    "id": 6,
-    "name": "Card4",
-    "description": "This is card 4",
-    "point": 7
-  },
-  {
-    "id": 7,
-    "name": "Card4",
-    "description": "This is card 4",
-    "point": 8
-  },
-  {
-    "id": 8,
-    "name": "Card4",
-    "description": "This is card 4",
-    "point": 9
-  },
-  {
-    "id": 9,
-    "name": "Card4",
-    "description": "This is card 4",
-    "point": 10
-  }
-]
+{
+    "cards": [
+        {
+            "id": 1,
+            "name": "点数牌1",
+            "description": "点数牌1",
+            "point": 1,
+            "type": 0,
+            "count": 2,
+            "effects": []
+        },
+        {
+            "id": 2,
+            "name": "点数牌2",
+            "description": "点数牌2",
+            "point": 2,
+            "type": 0,
+            "count": 2,
+            "effects": []
+        },
+        {
+            "id": 3,
+            "name": "点数牌3",
+            "description": "点数牌3",
+            "point": 3,
+            "type": 0,
+            "count": 2,
+            "effects": []
+        },
+        {
+            "id": 4,
+            "name": "点数牌4",
+            "description": "点数牌4",
+            "point": 4,
+            "type": 0,
+            "count": 2,
+            "effects": []
+        },
+        {
+            "id": 5,
+            "name": "点数牌5",
+            "description": "点数牌5",
+            "point": 5,
+            "type": 0,
+            "count": 2,
+            "effects": []
+        },
+        {
+            "id": 6,
+            "name": "点数牌6",
+            "description": "点数牌6",
+            "point": 6,
+            "type": 0,
+            "count": 2,
+            "effects": []
+        },
+        {
+            "id": 7,
+            "name": "点数牌7",
+            "description": "点数牌7",
+            "point": 7,
+            "type": 0,
+            "count": 2,
+            "effects": []
+        },
+        {
+            "id": 8,
+            "name": "点数牌8",
+            "description": "点数牌8",
+            "point": 8,
+            "type": 0,
+            "count": 2,
+            "effects": []
+        },
+        {
+            "id": 9,
+            "name": "点数牌9",
+            "description": "点数牌9",
+            "point": 9,
+            "type": 0,
+            "count": 2,
+            "effects": []
+        },
+        {
+            "id": 10,
+            "name": "点数牌10",
+            "description": "点数牌10",
+            "point": 10,
+            "type": 0,
+            "count": 2,
+            "effects": []
+        }
+    ],
+    "references": {
+        "version": 2,
+        "RefIds": []
+    }
+}

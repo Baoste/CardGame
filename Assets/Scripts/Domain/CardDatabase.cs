@@ -2,18 +2,39 @@ using System.Collections.Generic;
 
 namespace Game.Domain
 {
+    public enum CardDatabaseType
+    {
+        PointCard,
+        SkillCard
+    }
+
     public static class CardDatabase
     {
-        private static Dictionary<int, Card> _cards;
+        private static Dictionary<int, Card> _cards = new Dictionary<int, Card>();
 
         // TODO: load from json file
-        public static void Init(List<Card> defs)
+        public static void Init(string fileName, CardDatabaseType type)
         {
-            _cards = new Dictionary<int, Card>();
-
-            foreach (var def in defs)
+            switch (type)
             {
-                _cards[def.id] = def;
+                case CardDatabaseType.PointCard:
+                { 
+                    List<PointCard> defs = CardJsonUtility.LoadCardsFromJson<PointCard>(fileName);
+                    foreach (var def in defs)
+                    {
+                        _cards[def.id] = def;
+                    }
+                    break;
+                }
+                case CardDatabaseType.SkillCard:
+                {
+                    List<SkillCard> defs = CardJsonUtility.LoadCardsFromJson<SkillCard>(fileName);
+                    foreach (var def in defs)
+                    {
+                        _cards[def.id] = def;
+                    }
+                    break;
+                }
             }
         }
 
@@ -21,6 +42,11 @@ namespace Game.Domain
         {
             _cards.TryGetValue(cardId, out var card);
             return card;
+        }
+
+        public static List<int> GetKeys()
+        {
+            return new List<int>(_cards.Keys);
         }
     }
 }
