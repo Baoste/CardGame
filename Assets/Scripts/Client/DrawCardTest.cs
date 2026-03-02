@@ -21,6 +21,11 @@ public class DrawCardTest : MonoBehaviour
     public void DrawCard(object[] parameters)
     {
         Card card = CardDatabase.Get((int)parameters[0]);
+        if (card == null)
+        {
+            Debug.Log($"Card with id {(int)parameters[0]} not found");
+            return;
+        }
 
         Vector3 position = new Vector3(0, 0, 0);
         Quaternion rotation = Quaternion.identity;

@@ -43,6 +43,9 @@ public class MatchGateway : NetworkBehaviour
             return;
         }
 
+        if (type == "GetCtx")           ClientEffectContext.GetServerCtxDone = false;
+        if (type == "GetGameState")     ClientGameState.GetDone = false;
+
         if (type == "JoinOrCreateGame")
         {
             JoinOrCreateGameCommand payload = JsonUtility.FromJson<JoinOrCreateGameCommand>(jsonData);

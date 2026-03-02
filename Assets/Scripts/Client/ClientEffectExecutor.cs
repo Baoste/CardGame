@@ -17,18 +17,19 @@ namespace Game.Domain
         //    }
         //}
 
-        //public static void ExecuteCard(Card card, MatchGateway gateway, List<int> targetIds)
+        //public static void ExecuteCard(Card card, MatchGateway gateway, List<int> selectedTargetIds)
         //{
         //    foreach (var op in card.effects)
-        //        ExecuteOp(op, gateway, ClientGameState.Instance, ClientEffectContext.Instance, targetIds);
+        //        ExecuteOp(op, gateway, ClientGameState.Instance, ClientEffectContext.Instance, selectedTargetIds);
         //}
 
-        public static void ExecuteOp(EffectOp op, MatchGateway gateway, GameState gameState, EffectContext ctx, List<int> targetIds)
+        public static void ExecuteOp(EffectOp op, MatchGateway gateway, GameState gameState, EffectContext ctx) 
         {
+            ClientEffectFunction clientEffectFunction = GameObject.Find("ClientEffectFunction").GetComponent<ClientEffectFunction>();
             switch (op.type)
             {
                 case EffectType.DrawCards:
-                    ClientEffectFunction.DrawCards(op, gateway, gameState, ctx, targetIds);
+                    clientEffectFunction.DrawCards(op, gateway, gameState, ctx);
                     break;
 
                 case EffectType.DiscardCards:

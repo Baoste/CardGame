@@ -19,7 +19,8 @@ namespace Game.Domain
 
         public static Card Get(int cardId)
         {
-            return _cards[cardId];
+            _cards.TryGetValue(cardId, out var card);
+            return card;
         }
     }
 }

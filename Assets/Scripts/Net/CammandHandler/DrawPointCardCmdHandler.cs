@@ -12,12 +12,8 @@ public sealed class DrawPointCardCmdHandler : CommandHandler, ICommandHandler
         var payload = JsonUtility.FromJson<DrawPointCardCommand>(cmd.jsonData);
 
         // TODO: 服务器端需要做什么
-        int drawCardInstanceId = -1;
-        if (session.gameState.pointCardsDeck.instanceIdsInDeck.Count > 0)
-        {
-            drawCardInstanceId = session.gameState.pointCardsDeck.instanceIdsInDeck.Pop();
-            session.gameState.players[payload.playerId].PointCardsOnBoard.Add(drawCardInstanceId);
-        }
+        int drawCardInstanceId = session.gameState.pointCardsDeck.Draw();
+        session.gameState.players[payload.playerId].PointCardsOnBoard.Add(drawCardInstanceId);
 
         // return
         CommandResult results = new CommandResult();

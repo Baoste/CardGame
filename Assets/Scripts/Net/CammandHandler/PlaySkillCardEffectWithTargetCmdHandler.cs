@@ -13,8 +13,11 @@ public class PlaySkillCardEffectWithTargetCmdHandler : CommandHandler, ICommandH
         // 验证 payload 里的 playerId 和 cardId 是否有效，是否符合游戏规则（比如玩家是否有这张牌，牌能否在当前阶段打出等等）
         session.ctx.caster = payload.playerId;
         session.ctx.opponent = 1 - payload.playerId;
-        session.ctx.selectedCards = new List<int>(payload.targetIds);
-        TargetResolver.ValidateTarget(payload.effect.target, session.gameState, session.ctx, out var targetIds);
+
+        session.ctx.tmpSelectedIds = new List<int>(payload.selectedSourceIds);
+        bool success0 = ParticipantResolver.ValidateParticipant(payload.effect.source, session.gameState, session.ctx, out var sourceIds);
+        session.ctx.tmpSelectedIds = new List<int>(payload.selectedTargetIds);
+        bool success1 = ParticipantResolver.ValidateParticipant(payload.effect.target, session.gameState, session.ctx, out var targetIds);
 
         // return event
         CommandResult results = new CommandResult();
@@ -23,7 +26,7 @@ public class PlaySkillCardEffectWithTargetCmdHandler : CommandHandler, ICommandH
             new PlaySkillCardEffectWithTargetEvent    // need change
             {
                 playerId = payload.playerId,
-                targetIds = targetIds
+                success = success0 && success1
             }
         ));
         return results;

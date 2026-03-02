@@ -107,19 +107,27 @@ public class ClientMatchInput : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.F6))
         {
-            //PlaySkillCardWithTargetCommand cmd = new PlaySkillCardWithTargetCommand { playerId = playerSlot, instanceId = 12, targetIds = new List<int> { 1 } };
+            //PlaySkillCardWithTargetCommand cmd = new PlaySkillCardWithTargetCommand { playerId = playerSlot, instanceId = 12, selectedTargetIds = new List<int> { 1 } };
             //gateway.SendCommandServerRpc("PlaySkillCardWithTarget", JsonUtility.ToJson(cmd));
 
             EffectOp effect0 = new EffectOp
             {
                 type = EffectType.DrawCards,
-                target = new TargetSpec
+                source = new ParticipantSpec
                 {
-                    targetType = TargetType.PointCardsInDeck,
-                    targetSelectionMode = TargetSelectionMode.All,
+                    participantType = ParticipantType.None,
+                    participantSelectionMode = ParticipantSelectionMode.None,
                     filter = new AllCondition(),
-                    maxTargetCount = new NoneValue(),
-                    maxPick = new NoneValue()
+                    maxCandidateCount = new NoneValue(),
+                    maxSelectCount = new NoneValue()
+                },
+                target = new ParticipantSpec
+                {
+                    participantType = ParticipantType.PointCardsInDeck,
+                    participantSelectionMode = ParticipantSelectionMode.None,
+                    filter = new AllCondition(),
+                    maxCandidateCount = new NoneValue(),
+                    maxSelectCount = new NoneValue()
                 },
                 value = new ConstValue
                 {
@@ -129,16 +137,21 @@ public class ClientMatchInput : MonoBehaviour
             EffectOp effect1 = new EffectOp
             {
                 type = EffectType.DrawCards,
-                target = new TargetSpec
+                source = new ParticipantSpec
                 {
-                    targetType = TargetType.PointCardsInDeck,
-                    targetSelectionMode = TargetSelectionMode.All,
+                    participantType = ParticipantType.None,
+                    participantSelectionMode = ParticipantSelectionMode.None,
                     filter = new AllCondition(),
-                    maxTargetCount = new NoneValue(),
-                    maxPick = new ConstValue
-                    {
-                        value = 1
-                    }
+                    maxCandidateCount = new NoneValue(),
+                    maxSelectCount = new NoneValue()
+                },
+                target = new ParticipantSpec
+                {
+                    participantType = ParticipantType.PointCardsInDeck,
+                    participantSelectionMode = ParticipantSelectionMode.All,
+                    filter = new AllCondition(),
+                    maxCandidateCount = new NoneValue(),
+                    maxSelectCount = new NoneValue()
                 },
                 value = new ConstValue
                 {
@@ -169,33 +182,50 @@ public class ClientMatchInput : MonoBehaviour
         {
             ReadyToPlaySkillCardEffectCommand cmd = new ReadyToPlaySkillCardEffectCommand { playerId = playerSlot, effect = op };
             gateway.SendCommandServerRpc("ReadyToPlaySkillCardEffect", JsonUtility.ToJson(cmd));
-            yield return new WaitUntil(() => ClientEffectContext.ChooseDone);
+            yield return new WaitUntil(() => 
+                ClientGameState.GetDone &&
+                ClientEffectContext.GetServerCtxDone &&
+                ClientEffectContext.ChooseDone
+            );
             ClientEffectContext.ChooseDone = false;
-            ClientEffectExecutor.ExecuteOp(op, gateway, ClientGameState.Instance, ClientEffectContext.Instance, ClientEffectContext.Instance.selectedCards);
+            ClientEffectExecutor.ExecuteOp(op, gateway, ClientGameState.Instance, ClientEffectContext.Instance);
+            yield return new WaitUntil(() => ClientEffectContext.IsExecuteDone);
+            ClientEffectContext.IsExecuteDone = false;
         }
     }
 
     // Debug Test
     public void WaitForChoose(object[] parameters)
     {
-        List<int> candidateIds = (List<int>)parameters[0];
-        if (candidateIds.Count == 0)
+        List<int> candidateSourceIds = (List<int>)parameters[0];
+        List<int> candidateTargetIds = (List<int>)parameters[1];
+        if (candidateSourceIds.Count == 0 && candidateTargetIds.Count == 0)
         {
             Debug.Log("[Client] No target to choose, executing effect directly");
-            ClientEffectContext.Instance.selectedCards = new List<int>();
-            StartCoroutine(DelayedTest(0.1f));
+            ClientEffectContext.Instance.selectedSourceIds = new List<int>();
+            ClientEffectContext.Instance.selectedTargetIds = new List<int>();
+            // StartCoroutine(DelayedTest(5f));
+            StartCoroutine(ClickTest());
         }
         else
         {
             Debug.Log($"[Client] Waiting for player to choose target");
-            ClientEffectContext.Instance.selectedCards = candidateIds; // 这里直接把候选目标当作已选目标了，实际你会弹 UI 让玩家选
-            StartCoroutine(DelayedTest(3f));
+            ClientEffectContext.Instance.selectedSourceIds = candidateSourceIds; // 这里直接把候选目标当作已选目标了，实际你会弹 UI 让玩家选
+            ClientEffectContext.Instance.selectedTargetIds = new List<int> { candidateTargetIds[0] }; // 这里直接把候选目标当作已选目标了，实际你会弹 UI 让玩家选
+            // StartCoroutine(DelayedTest(10f));
+            StartCoroutine(ClickTest());
         }
     }
 
     private IEnumerator DelayedTest(float time)
     {
         yield return new WaitForSeconds(time);
+        ClientEffectContext.ChooseDone = true;
+    }
+
+    private IEnumerator ClickTest()
+    {
+        yield return new WaitUntil(() => Input.GetMouseButtonDown(0));
         ClientEffectContext.ChooseDone = true;
     }
 

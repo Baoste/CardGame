@@ -10,6 +10,7 @@ public class GetCtxEventHandler : IEventProcess, IEventHandler
         var payload = JsonUtility.FromJson<GetCtxEvent>(ev.jsonData);
 
         ClientEffectContext.Instance = payload.ctx;
+        ClientEffectContext.GetServerCtxDone = true;
 
         Debug.Log($"[Client] Event#{ev.Index} type={ev.type} payload=ctx");
 

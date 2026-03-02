@@ -11,12 +11,9 @@ public class PlaySkillCardEffectWithTargetEventHandler : IEventProcess, IEventHa
 
         // TODO
         // START
-        List<int> targetIds = payload.targetIds;
-        string context = "";
-        if (targetIds.Count > 0)
-        {
-            context = $"targets:{string.Join(",", targetIds)}";
-        }
+        ClientEffectContext.IsCommandValid = payload.success;
+        ClientEffectContext.IsValidateDone = true;
+        string context = payload.success.ToString();
         Debug.Log($"[Client] Event#{ev.Index} type={ev.type} slot={payload.playerId} payload={context}");
         // END
 

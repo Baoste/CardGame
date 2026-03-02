@@ -24,10 +24,9 @@ public class StartGameCmdHandler : CommandHandler, ICommandHandler
         }
         StaticFunction.Shuffle(pointCardInstanceIds, session.gameState.rng);
 
-        var pointCardinstanceIdsInDeck = session.gameState.pointCardsDeck.instanceIdsInDeck;
-        pointCardinstanceIdsInDeck.Clear();
-        foreach (var instanceId in pointCardInstanceIds)
-            pointCardinstanceIdsInDeck.Push(instanceId);
+        var pointCardsDeck = session.gameState.pointCardsDeck;
+        pointCardsDeck.Clear();
+        pointCardsDeck.Add(pointCardInstanceIds);
 
         // return results
         CommandResult results = new CommandResult();
@@ -40,7 +39,7 @@ public class StartGameCmdHandler : CommandHandler, ICommandHandler
         ));
 
         // ³éµ×ÅÆ
-        int drawCardInstanceId = pointCardinstanceIdsInDeck.Pop();
+        int drawCardInstanceId = pointCardsDeck.Draw();
         session.gameState.players[payload.playerId].holeCard = drawCardInstanceId;
         results.events.Enqueue(MakeEvent(
             "DrawPointCard",

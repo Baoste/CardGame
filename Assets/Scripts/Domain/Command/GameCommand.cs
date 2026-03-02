@@ -69,6 +69,7 @@ namespace Game.Domain
     {
         public int playerId;
         public EffectOp effect;
-        public List<int> targetIds;
+        public List<int> selectedSourceIds;
+        public List<int> selectedTargetIds;
     }
 }

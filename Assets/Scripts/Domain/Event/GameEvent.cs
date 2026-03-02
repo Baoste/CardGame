@@ -54,14 +54,15 @@ namespace Game.Domain
     public class ReadyToPlaySkillCardEffectEvent : INetEventPayload
     {
         public int playerId;
-        public List<int> candidateIds;
+        public List<int> candidateSourceIds;
+        public List<int> candidateTargetIds;
     }
 
     [Serializable]
     public class PlaySkillCardEffectWithTargetEvent : INetEventPayload
     {
         public int playerId;
-        public List<int> targetIds;
+        public bool success;
     }
 
     [Serializable]

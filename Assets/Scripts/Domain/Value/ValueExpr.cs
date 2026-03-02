@@ -36,10 +36,10 @@ namespace Game.Domain
             switch (source)
             {
                 case ValueSource.CasterSkillCardsCount:
-                    return state.players[ctx.caster].SkillCardsInHand.Count;
+                    return state.players[ctx.caster].SkillCardsInHand.GetCount();
 
                 case ValueSource.CasterPointCardsCount:
-                    return state.players[ctx.caster].PointCardsOnBoard.Count;
+                    return state.players[ctx.caster].PointCardsOnBoard.GetCount();
 
                 case ValueSource.TargetPoints:
                     return CardDatabase.Get(target).point;

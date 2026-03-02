@@ -12,7 +12,8 @@ public sealed class ReadyToPlaySkillCardEffectCmdHandler : CommandHandler, IComm
         // TODO: 服务器端需要做什么
         session.ctx.caster = payload.playerId;
         session.ctx.opponent = 1 - payload.playerId;
-        TargetResolver.ValidateTarget(payload.effect.target, session.gameState, session.ctx, out var targetIds);
+        ParticipantResolver.ValidateParticipant(payload.effect.source, session.gameState, session.ctx, out var sourceIds);
+        ParticipantResolver.ValidateParticipant(payload.effect.target, session.gameState, session.ctx, out var targetIds);
 
         // return event
         CommandResult results = new CommandResult();
@@ -38,7 +39,8 @@ public sealed class ReadyToPlaySkillCardEffectCmdHandler : CommandHandler, IComm
             new ReadyToPlaySkillCardEffectEvent    // need change
             {
                 playerId = payload.playerId,
-                candidateIds = targetIds
+                candidateSourceIds = sourceIds,
+                candidateTargetIds = targetIds
             }
         ));
         return results;
