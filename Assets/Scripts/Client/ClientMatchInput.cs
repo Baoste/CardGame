@@ -168,31 +168,10 @@ public class ClientMatchInput : MonoBehaviour
                 effects = new List<EffectOp> { effect0, effect1 }
             };
 
-            StartCoroutine(ExcuteCard(tmp));
+            StartCoroutine(ClientEffectExecutor.ExcuteCard(tmp, gateway, playerSlot));
         }
     }
 
-    IEnumerator ExcuteCard(Card card)
-    {
-        // 这里模拟一个需要玩家选择目标的效果执行流程：
-        // 1. 客户端收到事件，解析出 Card 和 EffectOp（这里直接用参数传了）
-        // 2. 弹 UI 让玩家选目标（这里直接等 0.1 秒模拟玩家选择）
-        // 3. 玩家选好后，继续执行效果
-        foreach (var op in card.effects)
-        {
-            ReadyToPlaySkillCardEffectCommand cmd = new ReadyToPlaySkillCardEffectCommand { playerId = playerSlot, effect = op };
-            gateway.SendCommandServerRpc("ReadyToPlaySkillCardEffect", JsonUtility.ToJson(cmd));
-            yield return new WaitUntil(() => 
-                ClientGameState.GetDone &&
-                ClientEffectContext.GetServerCtxDone &&
-                ClientEffectContext.ChooseDone
-            );
-            ClientEffectContext.ChooseDone = false;
-            ClientEffectExecutor.ExecuteOp(op, gateway, ClientGameState.Instance, ClientEffectContext.Instance);
-            yield return new WaitUntil(() => ClientEffectContext.IsExecuteDone);
-            ClientEffectContext.IsExecuteDone = false;
-        }
-    }
 
     // Debug Test
     public void WaitForChoose(object[] parameters)

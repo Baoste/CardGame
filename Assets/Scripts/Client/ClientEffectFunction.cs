@@ -14,16 +14,20 @@ namespace Game.Domain
             int drawNum = op.value.Evaluate(gameState, ctx, selectedCardId);
             for (int i = 0; i < drawNum; i++)
             {
-                StartCoroutine(ValidateCommand(op, gateway, gameState, ctx, DrawCard));
+                StartCoroutine(ValidateCommand(op, gateway, gameState, ctx, () =>
+                {
+                    DrawPointCardCommand cmd = new DrawPointCardCommand { playerId = ctx.caster };
+                    gateway.SendCommandServerRpc("DrawPointCard", JsonUtility.ToJson(cmd));
+                }));
             }
             ClientEffectContext.IsExecuteDone = true;
         }
         
-        public void DrawCard(MatchGateway gateway, GameState gameState, EffectContext ctx)
-        {
-            DrawPointCardCommand cmd = new DrawPointCardCommand { playerId = ctx.caster };
-            gateway.SendCommandServerRpc("DrawPointCard", JsonUtility.ToJson(cmd));
-        }
+        //public void DrawCard(MatchGateway gateway, GameState gameState, EffectContext ctx)
+        //{
+        //    DrawPointCardCommand cmd = new DrawPointCardCommand { playerId = ctx.caster };
+        //    gateway.SendCommandServerRpc("DrawPointCard", JsonUtility.ToJson(cmd));
+        //}
 
         //public static void ModifyCardPoints(EffectOp op, GameState state, EffectContext ctx)
         //{
@@ -34,8 +38,7 @@ namespace Game.Domain
         //    }
         //}
 
-        public IEnumerator ValidateCommand(EffectOp op, MatchGateway gateway, GameState gameState, EffectContext ctx, 
-            Action<MatchGateway, GameState, EffectContext> onSuccess)
+        public IEnumerator ValidateCommand(EffectOp op, MatchGateway gateway, GameState gameState, EffectContext ctx, Action onSuccess)
         {
             PlaySkillCardEffectWithTargetCommand cmd = new PlaySkillCardEffectWithTargetCommand
             {
@@ -53,7 +56,7 @@ namespace Game.Domain
                 Debug.Log($"[Client] Validate failed");
                 yield break;
             }
-            onSuccess.Invoke(gateway, gameState, ctx);
+            onSuccess.Invoke();
         }
     }
 }
