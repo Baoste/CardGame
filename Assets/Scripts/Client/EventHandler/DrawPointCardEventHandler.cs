@@ -24,6 +24,6 @@ public sealed class DrawPointCardEventHandler : IEventProcess, IEventHandler
     public void Process()
     {
         // TODO: change string and parameters
-        ProcessDispatcher.Process("DrawCardTest", new object[] { payload.cardId });
+        ProcessDispatcher.Process("DrawCardTest", new object[] { payload.cardId, payload.playerId });
     }
 }
