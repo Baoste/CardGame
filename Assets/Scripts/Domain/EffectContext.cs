@@ -4,7 +4,6 @@ using System.Collections.Generic;
 
 namespace Game.Domain
 {
-    [Serializable]
     public class EffectContext
     {
         public List<int> selectedSourceIds = new List<int>();       // 已选的来源ID列表，可能是技能牌或点数牌的 InstanceID

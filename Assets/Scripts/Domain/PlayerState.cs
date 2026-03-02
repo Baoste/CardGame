@@ -12,7 +12,6 @@ namespace Game.Domain
      * - SkillCardsInHand：玩家手牌中技能牌的 InstanceID 列表
      * - PointCardsOnBoard：玩家场上点数牌的 InstanceID 列表，不包含底牌
      */
-    [Serializable]
     public class PlayerState
     {
         public int playerId;
@@ -22,7 +21,6 @@ namespace Game.Domain
     }
 
     // 卡牌列表，指在玩家手牌或场上存在的卡牌，包含技能牌和点数牌
-    [Serializable]
     public class CardBoard
     {
         public List<int> _cardInstanceIds = new List<int>();

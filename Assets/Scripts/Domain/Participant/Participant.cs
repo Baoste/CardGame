@@ -1,9 +1,7 @@
 using System;
-using UnityEngine;
 
 namespace Game.Domain
 {
-    [Serializable]
     public enum ParticipantType
     {
         None                        = 0,        // 无目标，表示这个效果没有目标，例如抽牌
@@ -17,7 +15,6 @@ namespace Game.Domain
         PointCardsInDeck            = 1 << 7,   // 牌堆的点数牌
     }
 
-    [Serializable]
     public enum ParticipantSelectionMode
     {
         None,
@@ -28,14 +25,13 @@ namespace Game.Domain
         Random,
     }
 
-    [Serializable]
     public class ParticipantSpec
     {
         public ParticipantType participantType;
-        [SerializeReference] public ConditionExpr filter;        // 例如对手牌进行过滤：只选“攻击牌”、只选“点数>=5”
+        public ConditionExpr filter;        // 例如对手牌进行过滤：只选“攻击牌”、只选“点数>=5”
 
         public ParticipantSelectionMode participantSelectionMode;
-        [SerializeReference] public ValueExpr maxCandidateCount;    // 候选最大数量，只有在Random情况下起作用
-        [SerializeReference] public ValueExpr maxSelectCount;       // 选择的最大数量
+        public ValueExpr maxCandidateCount;    // 候选最大数量，只有在Random情况下起作用
+        public ValueExpr maxSelectCount;       // 选择的最大数量
     }
 }

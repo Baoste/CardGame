@@ -21,7 +21,6 @@ namespace Game.Domain
     }
 
     // ===== Event (Server -> Client) =====
-    [Serializable]
     public struct NetEvent
     {
         public int Index;
@@ -29,7 +28,6 @@ namespace Game.Domain
         public string jsonData;  // Json
     }
 
-    [Serializable]
     public struct Snapshot
     {
         public string matchId;

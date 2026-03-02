@@ -3,14 +3,12 @@ using System.Collections.Generic;
 
 namespace Game.Domain
 {
-    [Serializable]
     public enum CardType
     {
         Point,
         Skill
     }
 
-    [Serializable]
     public class Card
     {
         public int id;

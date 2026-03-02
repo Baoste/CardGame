@@ -4,7 +4,6 @@ using System;
 namespace Game.Domain
 {
     // ===== Command (Client -> Server) =====
-    [Serializable]
     public struct NetCommand
     {
         public int index;

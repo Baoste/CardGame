@@ -4,7 +4,6 @@ using System.Linq;
 
 namespace Game.Domain
 {
-    [Serializable]
     public static class ParticipantResolver
     {
         public static List<int> DetermineCandidates(ParticipantSpec spec, GameState state, EffectContext ctx)

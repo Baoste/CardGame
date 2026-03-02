@@ -3,7 +3,6 @@ using System.Collections.Generic;
 
 namespace Game.Domain
 {
-    [Serializable]
     public class DeckState
     {
         public List<int> _instanceIdsInDeck = new List<int>();
@@ -46,12 +45,10 @@ namespace Game.Domain
         }
     }
 
-    [Serializable]
     public class SkillCardsDeckState : DeckState
     {
     }
 
-    [Serializable]
     public class PointCardsDeckState : DeckState
     {
     }

@@ -100,23 +100,17 @@ public class ClientMatchInput : MonoBehaviour
             gateway.SendCommandServerRpc("DrawPointCard", JsonConvert.SerializeObject(cmd));
         }
 
-        //if (Input.GetKeyDown(KeyCode.F5))
-        //{
-        //    ReadyToPlaySkillCardCommand cmd = new ReadyToPlaySkillCardCommand { playerId = playerSlot, cardId = 12 };
-        //    gateway.SendCommandServerRpc("ReadyToPlaySkillCard", JsonConvert.SerializeObject(cmd));
-        //}
-
         if (Input.GetKeyDown(KeyCode.F6))
         {
             Card tmp = CardDatabase.Get(999);
             StartCoroutine(ClientEffectExecutor.ExcuteCard(tmp, gateway, playerSlot));
         }
 
-        if (Input.GetKeyDown(KeyCode.F7))
-        {
-            Card tmp = CardDatabase.Get(9999);
-            StartCoroutine(ClientEffectExecutor.ExcuteCard(tmp, gateway, playerSlot));
-        }
+        //if (Input.GetKeyDown(KeyCode.F7))
+        //{
+        //    Card tmp = CardDatabase.Get(9999);
+        //    StartCoroutine(ClientEffectExecutor.ExcuteCard(tmp, gateway, playerSlot));
+        //}
     }
 
 

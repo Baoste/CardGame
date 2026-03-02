@@ -7,7 +7,6 @@ using UnityEngine;
 
 public static class CardJsonUtility
 {
-    [Serializable]
     private class CardListWrapper<T>
     {
         public List<T> cards;
