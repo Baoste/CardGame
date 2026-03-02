@@ -1,4 +1,5 @@
 using Game.Domain;
+using Newtonsoft.Json;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -15,7 +16,7 @@ public static class CardJsonUtility
     public static void ConvertCardsToJson<T>(List<T> cards, string fileName)
     {
         CardListWrapper<T> wrapper = new CardListWrapper<T> { cards = cards };
-        string json = JsonUtility.ToJson(wrapper, true);
+        string json = JsonConvert.SerializeObject(wrapper);
         string filePath = System.IO.Path.Combine(Application.streamingAssetsPath, fileName);
         System.IO.File.WriteAllText(filePath, json);
         Debug.Log("JSON saved to: " + filePath);
@@ -27,7 +28,7 @@ public static class CardJsonUtility
         if (System.IO.File.Exists(filePath))
         {
             string json = System.IO.File.ReadAllText(filePath);
-            CardListWrapper<T> wrapper = JsonUtility.FromJson<CardListWrapper<T>>(json);
+            CardListWrapper<T> wrapper = JsonConvert.DeserializeObject<CardListWrapper<T>>(json);
             return wrapper.cards;
         }
         else

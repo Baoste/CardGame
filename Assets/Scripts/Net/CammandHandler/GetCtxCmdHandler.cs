@@ -1,15 +1,13 @@
 using Game.Domain;
 using Game.Server;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+using Newtonsoft.Json;
 
 public class GetCtxCmdHandler : CommandHandler, ICommandHandler
 {
     public CommandResult Handle(MatchSession session, NetCommand cmd)
     {
         // need change
-        var payload = JsonUtility.FromJson<GetCtxCommand>(cmd.jsonData);
+        var payload = JsonConvert.DeserializeObject<GetCtxCommand>(cmd.jsonData);
 
         // return
         CommandResult results = new CommandResult();

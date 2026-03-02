@@ -1,4 +1,5 @@
 using Game.Domain;
+using Newtonsoft.Json;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -7,7 +8,7 @@ public class GetCtxEventHandler : IEventProcess, IEventHandler
 {
     public bool Handle(NetEvent ev)
     {
-        var payload = JsonUtility.FromJson<GetCtxEvent>(ev.jsonData);
+        var payload = JsonConvert.DeserializeObject<GetCtxEvent>(ev.jsonData);
 
         ClientEffectContext.Instance = payload.ctx;
         ClientEffectContext.GetServerCtxDone = true;

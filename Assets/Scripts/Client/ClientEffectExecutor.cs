@@ -1,3 +1,4 @@
+using Newtonsoft.Json;
 using System.Collections;
 using UnityEngine;
 
@@ -14,7 +15,7 @@ namespace Game.Domain
             foreach (var op in card.effects)
             {
                 ReadyToPlaySkillCardEffectCommand cmd = new ReadyToPlaySkillCardEffectCommand { playerId = playerSlot, effect = op };
-                gateway.SendCommandServerRpc("ReadyToPlaySkillCardEffect", JsonUtility.ToJson(cmd));
+                gateway.SendCommandServerRpc("ReadyToPlaySkillCardEffect", JsonConvert.SerializeObject(cmd));
                 yield return new WaitUntil(() =>
                     ClientGameState.GetDone &&
                     ClientEffectContext.GetServerCtxDone &&

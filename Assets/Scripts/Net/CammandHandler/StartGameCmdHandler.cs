@@ -1,5 +1,6 @@
 using Game.Domain;
 using Game.Server;
+using Newtonsoft.Json;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -7,7 +8,7 @@ public class StartGameCmdHandler : CommandHandler, ICommandHandler
 {
     public CommandResult Handle(MatchSession session, NetCommand cmd)
     {
-        var payload = JsonUtility.FromJson<StartGameCommand>(cmd.jsonData);  // need change
+        var payload = JsonConvert.DeserializeObject<StartGameCommand>(cmd.jsonData);  // need change
 
         // TODO: 服务器端需要做什么
         // 初始化牌堆

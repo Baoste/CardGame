@@ -1,11 +1,12 @@
 using Game.Domain;
+using Newtonsoft.Json;
 using UnityEngine;
 
 public sealed class ChatEventHandler : IEventProcess, IEventHandler
 {
     public bool Handle(NetEvent ev)
     {
-        var payload = JsonUtility.FromJson<ChatEvent>(ev.jsonData);
+        var payload = JsonConvert.DeserializeObject<ChatEvent>(ev.jsonData);
         ProcessQueueManager.Instance.Enqueue(Process);
 
         string context = payload.text;

@@ -1,4 +1,5 @@
 using Game.Domain;
+using Newtonsoft.Json;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -7,7 +8,7 @@ public class GetGameStateEventHandler : IEventProcess, IEventHandler
 {
     public bool Handle(NetEvent ev)
     {
-        var payload = JsonUtility.FromJson<GetGameStateEvent>(ev.jsonData);
+        var payload = JsonConvert.DeserializeObject<GetGameStateEvent>(ev.jsonData);
 
         ClientGameState.Instance = payload.gameState;
         ClientGameState.GetDone = true;

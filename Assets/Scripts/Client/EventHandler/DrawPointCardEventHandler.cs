@@ -1,4 +1,5 @@
 using Game.Domain;
+using Newtonsoft.Json;
 using TMPro;
 using UnityEngine;
 
@@ -8,7 +9,7 @@ public sealed class DrawPointCardEventHandler : IEventProcess, IEventHandler
 
     public bool Handle(NetEvent ev)
     {
-        payload = JsonUtility.FromJson<DrawPointCardEvent>(ev.jsonData); // need change
+        payload = JsonConvert.DeserializeObject<DrawPointCardEvent>(ev.jsonData); // need change
         ProcessQueueManager.Instance.Enqueue(Process);
 
         // TODO

@@ -3,9 +3,16 @@ using System;
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
+using Newtonsoft.Json;
 
 public class CardEditorWindow : EditorWindow
 {
+    [InitializeOnLoadMethod]
+    private static void InitEditor()
+    {
+        JsonBootstrap.Init();
+    }
+
     [Serializable]
     public class CardWrapper
     {
@@ -465,7 +472,7 @@ public class CardEditorWindow : EditorWindow
     private string ExportCurrentToJson(bool pretty)
     {
         var wrapper = new CardWrapper { card = current };
-        return JsonUtility.ToJson(wrapper, pretty);
+        return JsonConvert.SerializeObject(wrapper);
     }
 
     private void ImportJsonToCurrent(string json)
@@ -478,7 +485,7 @@ public class CardEditorWindow : EditorWindow
 
         try
         {
-            var wrapper = JsonUtility.FromJson<CardWrapper>(json);
+            var wrapper = JsonConvert.DeserializeObject<CardWrapper>(json);
             if (wrapper?.card == null)
             {
                 ShowNotification(new GUIContent("Invalid JSON: wrapper.card is null"));

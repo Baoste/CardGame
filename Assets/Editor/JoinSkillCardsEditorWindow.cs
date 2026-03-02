@@ -2,12 +2,19 @@ using Game.Domain;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
+using Newtonsoft.Json;
 using UnityEditor;
 using UnityEngine;
 
 public class JoinSkillCardsEditorWindow : EditorWindow
 {
+    [InitializeOnLoadMethod]
+    private static void InitEditor()
+    {
+        JsonBootstrap.Init();
+    }
+
+
     [Serializable]
     private class SkillCardsWrapper
     {
@@ -168,7 +175,7 @@ public class JoinSkillCardsEditorWindow : EditorWindow
             if (ta == null) continue;
             try
             {
-                var wrapper = JsonUtility.FromJson<CardEditorWindow.CardWrapper>(ta.text);
+                var wrapper = JsonConvert.DeserializeObject<CardEditorWindow.CardWrapper>(ta.text);
                 if (wrapper?.card != null)
                 {
                     cards.Add(wrapper.card);
@@ -185,7 +192,7 @@ public class JoinSkillCardsEditorWindow : EditorWindow
         }
 
         var outWrapper = new SkillCardsWrapper { cards = cards };
-        mergedJson = JsonUtility.ToJson(outWrapper, autoPretty);
+        mergedJson = JsonConvert.SerializeObject(outWrapper);
         ShowNotification(new GUIContent($"Merged {cards.Count} card(s)"));
     }
 

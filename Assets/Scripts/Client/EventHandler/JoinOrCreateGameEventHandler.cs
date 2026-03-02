@@ -1,11 +1,12 @@
 using Game.Domain;
+using Newtonsoft.Json;
 using UnityEngine;
 
 public sealed class JoinOrCreateGameEventHandler : IEventProcess, IEventHandler
 {
     public bool Handle(NetEvent ev)
     {
-        var payload = JsonUtility.FromJson<JoinOrCreateGameEvent>(ev.jsonData); // need change
+        var payload = JsonConvert.DeserializeObject<JoinOrCreateGameEvent>(ev.jsonData); // need change
         ProcessQueueManager.Instance.Enqueue(Process);
 
         // TODO

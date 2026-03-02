@@ -1,4 +1,5 @@
 using Game.Domain;
+using Newtonsoft.Json;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -8,7 +9,7 @@ public sealed class ReadyToPlaySkillCardEffectEventHandler : IEventProcess, IEve
 
     public bool Handle(NetEvent ev)
     {
-        payload = JsonUtility.FromJson<ReadyToPlaySkillCardEffectEvent>(ev.jsonData); // need change
+        payload = JsonConvert.DeserializeObject<ReadyToPlaySkillCardEffectEvent>(ev.jsonData); // need change
         ProcessQueueManager.Instance.Enqueue(Process);
 
         // TODO

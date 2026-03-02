@@ -1,4 +1,5 @@
 using Game.Domain;
+using Newtonsoft.Json;
 using System.Collections;
 using UnityEngine;
 
@@ -9,7 +10,7 @@ public class CommandHandler
         return new ResolvedEvent
         {
             type = type,
-            jsonData = JsonUtility.ToJson(payload)
+            jsonData = JsonConvert.SerializeObject(payload)
         };
     }
 }

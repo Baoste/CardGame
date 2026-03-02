@@ -5,6 +5,7 @@ using FishNet.Connection;
 using UnityEngine;
 using Game.Domain;
 using Game.Server;
+using Newtonsoft.Json;
 
 
 public class MatchGateway : NetworkBehaviour
@@ -48,7 +49,7 @@ public class MatchGateway : NetworkBehaviour
 
         if (type == "JoinOrCreateGame")
         {
-            JoinOrCreateGameCommand payload = JsonUtility.FromJson<JoinOrCreateGameCommand>(jsonData);
+            JoinOrCreateGameCommand payload = JsonConvert.DeserializeObject<JoinOrCreateGameCommand>(jsonData);
 
             // 如果这个连接已经在某局里，先踢掉旧映射（最小实现：直接覆盖）
             if (_connMap.TryGetValue(sender.ClientId, out var old))
@@ -86,7 +87,7 @@ public class MatchGateway : NetworkBehaviour
                 slot = slot,
                 serverLastEventIndex = session.ServerLastEventIndex
             };
-            var snapJson = JsonUtility.ToJson(snap);
+            var snapJson = JsonConvert.SerializeObject(snap);
 
             // 只发给本人：你需要保存 matchId/token/lastEventIndex
             TargetJoined(sender, matchId, slot, token, snapJson);
@@ -195,7 +196,7 @@ public class MatchGateway : NetworkBehaviour
             slot = slot,
             serverLastEventIndex = session.ServerLastEventIndex
         };
-        TargetSnapshot(sender, JsonUtility.ToJson(snap));
+        TargetSnapshot(sender, JsonConvert.SerializeObject(snap));
 
         // 再补发缺失事件：Index > lastEventIndex
         for (int i = 0; i < session.EventLog.Count; i++)

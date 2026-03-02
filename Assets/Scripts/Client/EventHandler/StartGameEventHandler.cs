@@ -1,4 +1,5 @@
 using Game.Domain;
+using Newtonsoft.Json;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -6,7 +7,7 @@ public class StartGameEventHandler : IEventProcess, IEventHandler
 {
     public bool Handle(NetEvent ev)
     {
-        var payload = JsonUtility.FromJson<StartGameEvent>(ev.jsonData); // need change
+        var payload = JsonConvert.DeserializeObject<StartGameEvent>(ev.jsonData); // need change
         ProcessQueueManager.Instance.Enqueue(Process);
 
         // TODO

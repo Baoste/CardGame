@@ -1,5 +1,6 @@
 using Game.Domain;
 using Game.Server;
+using Newtonsoft.Json;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -7,7 +8,7 @@ public sealed class ReadyToPlaySkillCardEffectCmdHandler : CommandHandler, IComm
 {
     public CommandResult Handle(MatchSession session, NetCommand cmd)
     {
-        var payload = JsonUtility.FromJson<ReadyToPlaySkillCardEffectCommand>(cmd.jsonData);  // need change
+        var payload = JsonConvert.DeserializeObject<ReadyToPlaySkillCardEffectCommand>(cmd.jsonData);  // need change
 
         // TODO: 服务器端需要做什么
         ParticipantResolver.ValidateParticipant(payload.effect.source, session.gameState, session.ctx, out var sourceIds);

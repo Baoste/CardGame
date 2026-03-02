@@ -13,7 +13,7 @@ public class GameBootstrap : MonoBehaviour
         _initialized = true;
 
         CardDatabase.Init("PointCards.json", CardDatabaseType.PointCard);
-        CardDatabase.Init("SkillCardsT.json", CardDatabaseType.SkillCard);
+        CardDatabase.Init("SkillCards.json", CardDatabaseType.SkillCard);
 
         DispatcherBootstrap.Init();
         Debug.Log("NetEvent ×¢²áÍê³É");

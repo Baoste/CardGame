@@ -1,5 +1,6 @@
 using Game.Domain;
 using Game.Server;
+using Newtonsoft.Json;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -9,7 +10,7 @@ public class GetGameStateCmdHandler : CommandHandler, ICommandHandler
     public CommandResult Handle(MatchSession session, NetCommand cmd)
     {
         // need change
-        var payload = JsonUtility.FromJson<GetGameStateCommand>(cmd.jsonData);
+        var payload = JsonConvert.DeserializeObject<GetGameStateCommand>(cmd.jsonData);
 
         // return
         CommandResult results = new CommandResult();

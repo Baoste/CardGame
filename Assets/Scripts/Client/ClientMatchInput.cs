@@ -1,4 +1,5 @@
 using Game.Domain;
+using Newtonsoft.Json;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -59,7 +60,7 @@ public class ClientMatchInput : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.F1))
         {
             JoinOrCreateGameCommand cmd = new JoinOrCreateGameCommand { playerId = -1, matchIdOrEmpty = "123" };
-            gateway.SendCommandServerRpc("JoinOrCreateGame", JsonUtility.ToJson(cmd));
+            gateway.SendCommandServerRpc("JoinOrCreateGame", JsonConvert.SerializeObject(cmd));
             Debug.Log("[Client] Requested create match");
         }
 
@@ -68,7 +69,7 @@ public class ClientMatchInput : MonoBehaviour
         {
             string matchId = inputField.text.Trim();
             JoinOrCreateGameCommand cmd = new JoinOrCreateGameCommand { playerId = -1, matchIdOrEmpty = matchId };
-            gateway.SendCommandServerRpc("JoinOrCreateGame", JsonUtility.ToJson(cmd));
+            gateway.SendCommandServerRpc("JoinOrCreateGame", JsonConvert.SerializeObject(cmd));
 
             Debug.Log($"[Client] Requested join matchId={matchId}");
         }
@@ -77,7 +78,7 @@ public class ClientMatchInput : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.F3))
         {
             ChatCommand cmd = new ChatCommand { playerId = playerSlot, chatContext = inputField1.text };
-            gateway.SendCommandServerRpc("Chat", JsonUtility.ToJson(cmd));
+            gateway.SendCommandServerRpc("Chat", JsonConvert.SerializeObject(cmd));
         }
 
         //// R：重连（需要你先断线再连上服务器，然后按 R）
@@ -91,18 +92,18 @@ public class ClientMatchInput : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.F4))
         {
             StartGameCommand cmd = new StartGameCommand { playerId = playerSlot };
-            gateway.SendCommandServerRpc("StartGame", JsonUtility.ToJson(cmd));
+            gateway.SendCommandServerRpc("StartGame", JsonConvert.SerializeObject(cmd));
         }
         if (Input.GetKeyDown(KeyCode.F5))
         {
             DrawPointCardCommand cmd = new DrawPointCardCommand { playerId = playerSlot };
-            gateway.SendCommandServerRpc("DrawPointCard", JsonUtility.ToJson(cmd));
+            gateway.SendCommandServerRpc("DrawPointCard", JsonConvert.SerializeObject(cmd));
         }
 
         //if (Input.GetKeyDown(KeyCode.F5))
         //{
         //    ReadyToPlaySkillCardCommand cmd = new ReadyToPlaySkillCardCommand { playerId = playerSlot, cardId = 12 };
-        //    gateway.SendCommandServerRpc("ReadyToPlaySkillCard", JsonUtility.ToJson(cmd));
+        //    gateway.SendCommandServerRpc("ReadyToPlaySkillCard", JsonConvert.SerializeObject(cmd));
         //}
 
         if (Input.GetKeyDown(KeyCode.F6))

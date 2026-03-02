@@ -1,12 +1,13 @@
 using Game.Domain;
 using Game.Server;
+using Newtonsoft.Json;
 using UnityEngine;
 
 public sealed class ChatCmdHandler : CommandHandler, ICommandHandler
 {
     public CommandResult Handle(MatchSession session, NetCommand cmd)
     {
-        var payload = JsonUtility.FromJson<ChatCommand>(cmd.jsonData);  // need change
+        var payload = JsonConvert.DeserializeObject<ChatCommand>(cmd.jsonData);  // need change
 
         // TODO
         // START

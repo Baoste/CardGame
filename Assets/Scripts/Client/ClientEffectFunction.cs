@@ -1,4 +1,5 @@
 using Game.Server;
+using Newtonsoft.Json;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -23,7 +24,7 @@ namespace Game.Domain
                     else if (op.source.participantType == ParticipantType.Opponent)
                         casterId = ctx.opponent;
                     DrawPointCardCommand cmd = new DrawPointCardCommand { playerId = ctx.caster };
-                    gateway.SendCommandServerRpc("DrawPointCard", JsonUtility.ToJson(cmd));
+                    gateway.SendCommandServerRpc("DrawPointCard", JsonConvert.SerializeObject(cmd));
                 }));
             }
             ClientEffectContext.IsExecuteDone = true;
@@ -32,7 +33,7 @@ namespace Game.Domain
         //public void DrawCard(MatchGateway gateway, GameState gameState, EffectContext ctx)
         //{
         //    DrawPointCardCommand cmd = new DrawPointCardCommand { playerId = ctx.caster };
-        //    gateway.SendCommandServerRpc("DrawPointCard", JsonUtility.ToJson(cmd));
+        //    gateway.SendCommandServerRpc("DrawPointCard", JsonConvert.SerializeObject(cmd));
         //}
 
         //public static void ModifyCardPoints(EffectOp op, GameState state, EffectContext ctx)
@@ -53,7 +54,7 @@ namespace Game.Domain
                 selectedSourceIds = ctx.selectedSourceIds,
                 selectedTargetIds = ctx.selectedTargetIds
             };
-            gateway.SendCommandServerRpc("PlaySkillCardEffectWithTarget", JsonUtility.ToJson(cmd));
+            gateway.SendCommandServerRpc("PlaySkillCardEffectWithTarget", JsonConvert.SerializeObject(cmd));
             yield return new WaitUntil(() => ClientEffectContext.IsValidateDone);
             ClientEffectContext.IsValidateDone = false;
 
