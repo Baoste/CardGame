@@ -11,8 +11,9 @@ public static class DispatcherBootstrap
         EventDispatcher.Register("GetCtx", new GetCtxEventHandler());
         EventDispatcher.Register("Chat", new ChatEventHandler());
         EventDispatcher.Register("DrawPointCard", new DrawPointCardEventHandler());
+        EventDispatcher.Register("DrawSkillCard", new DrawSkillCardEventHandler());
         EventDispatcher.Register("ReadyToPlaySkillCardEffect", new ReadyToPlaySkillCardEffectEventHandler());
-        EventDispatcher.Register("PlaySkillCardEffectWithTarget", new PlaySkillCardEffectWithTargetEventHandler());
+        EventDispatcher.Register("ValidateSkillCard", new ValidateSkillCardEventHandler());
 
 
         CommandDispatcher.Register("JoinOrCreateGame", new JoinOrCreateGameCmdHandler());
@@ -22,7 +23,8 @@ public static class DispatcherBootstrap
         CommandDispatcher.Register("GetCtx", new GetCtxCmdHandler());
         CommandDispatcher.Register("Chat", new ChatCmdHandler());
         CommandDispatcher.Register("DrawPointCard", new DrawPointCardCmdHandler());
+        CommandDispatcher.Register("DrawSkillCard", new DrawSkillCardCmdHandler());
         CommandDispatcher.Register("ReadyToPlaySkillCardEffect", new ReadyToPlaySkillCardEffectCmdHandler());
-        CommandDispatcher.Register("PlaySkillCardEffectWithTarget", new PlaySkillCardEffectWithTargetCmdHandler());
+        CommandDispatcher.Register("ValidateSkillCard", new ValidateSkillCardCmdHandler());
     }
 }

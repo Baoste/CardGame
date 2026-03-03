@@ -4,11 +4,11 @@ using Newtonsoft.Json;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlaySkillCardEffectWithTargetCmdHandler : CommandHandler, ICommandHandler
+public class ValidateSkillCardCmdHandler : CommandHandler, ICommandHandler
 {
     public CommandResult Handle(MatchSession session, NetCommand cmd)
     {
-        var payload = JsonConvert.DeserializeObject<PlaySkillCardEffectWithTargetCommand>(cmd.jsonData);  // need change
+        var payload = JsonConvert.DeserializeObject<ValidateSkillCardCommand>(cmd.jsonData);  // need change
 
         // TODO: 服务器端需要做什么
         // 验证 payload 里的 playerId 和 cardId 是否有效，是否符合游戏规则（比如玩家是否有这张牌，牌能否在当前阶段打出等等）
@@ -17,16 +17,20 @@ public class PlaySkillCardEffectWithTargetCmdHandler : CommandHandler, ICommandH
         session.ctx.tmpSelectedIds = new List<int>(payload.selectedTargetIds);
         bool success1 = ParticipantResolver.ValidateParticipant(payload.effect.target, session.gameState, session.ctx, out var targetIds);
 
+        bool success = success0 && success1;
         // return event
         CommandResult results = new CommandResult();
         results.events.Enqueue(MakeEvent(
-            "PlaySkillCardEffectWithTarget",
-            new PlaySkillCardEffectWithTargetEvent    // need change
+            "ValidateSkillCard",
+            new ValidateSkillCardEvent    // need change
             {
                 playerId = payload.playerId,
-                success = success0 && success1
+                success = success,
+                sourceIds = sourceIds,
+                targetIds = targetIds
             }
         ));
+
         return results;
     }
 }

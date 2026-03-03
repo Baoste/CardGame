@@ -7,6 +7,14 @@ namespace Game.Domain
         public virtual bool Evaluate(GameState state, EffectContext ctx, int target) { return false; }
     }
 
+    public class NoneCondition : ConditionExpr
+    {
+        public override bool Evaluate(GameState state, EffectContext ctx, int target)
+        {
+            return false;
+        }
+    }
+
     public class AllCondition : ConditionExpr
     {
         public override bool Evaluate(GameState state, EffectContext ctx, int target)

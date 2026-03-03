@@ -2,17 +2,16 @@ using System;
 
 namespace Game.Domain
 {
+    // TODO: 需要改成ZoneType，表示牌所在的区域，例如手牌、场上、牌堆等
     public enum ParticipantType
     {
-        None                        = 0,        // 无目标，表示这个效果没有目标，例如抽牌
-        Caster                      = 1 << 0,   // 施法者自己
-        Opponent                    = 1 << 1,   // 施法者的对手
-        MySkillCardsInHand          = 1 << 2,   // 自己的手牌
-        OpponentSkillCardsInHand    = 1 << 3,   // 对手的手牌
-        MyPointCardsOnBoard         = 1 << 4,   // 自己场上的牌，不包括底牌
-        OpponentPointCardsOnBoard   = 1 << 5,   // 对手场上的牌，不包括底牌
-        SkillCardsInDeck            = 1 << 6,   // 牌堆的技能牌
-        PointCardsInDeck            = 1 << 7,   // 牌堆的点数牌
+        None                        = 0,        // 无，保留
+        MySkillCardsInHand          = 1 << 0,   // 自己的手牌
+        OpponentSkillCardsInHand    = 1 << 1,   // 对手的手牌
+        MyPointCardsOnBoard         = 1 << 2,   // 自己场上的牌，不包括底牌
+        OpponentPointCardsOnBoard   = 1 << 3,   // 对手场上的牌，不包括底牌
+        SkillCardsInDeck            = 1 << 4,   // 牌堆的技能牌
+        PointCardsInDeck            = 1 << 5,   // 牌堆的点数牌
     }
 
     public enum ParticipantSelectionMode

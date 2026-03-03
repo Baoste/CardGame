@@ -11,8 +11,8 @@ public sealed class ReadyToPlaySkillCardEffectCmdHandler : CommandHandler, IComm
         var payload = JsonConvert.DeserializeObject<ReadyToPlaySkillCardEffectCommand>(cmd.jsonData);  // need change
 
         // TODO: 服务器端需要做什么
-        ParticipantResolver.ValidateParticipant(payload.effect.source, session.gameState, session.ctx, out var sourceIds);
-        ParticipantResolver.ValidateParticipant(payload.effect.target, session.gameState, session.ctx, out var targetIds);
+        List<int> candidateSourceIds = ParticipantResolver.DetermineCandidates(payload.effect.source, session.gameState, session.ctx);
+        List<int> candidateTargetIds = ParticipantResolver.DetermineCandidates(payload.effect.target, session.gameState, session.ctx);
 
         // return event
         CommandResult results = new CommandResult();
@@ -33,13 +33,18 @@ public sealed class ReadyToPlaySkillCardEffectCmdHandler : CommandHandler, IComm
             }
         ));
 
+        bool sourceNeedChoose = payload.effect.source.participantSelectionMode == ParticipantSelectionMode.Choose;
+        bool targetNeedChoose = payload.effect.target.participantSelectionMode == ParticipantSelectionMode.Choose;
+
         results.events.Enqueue(MakeEvent(
             "ReadyToPlaySkillCardEffect",
             new ReadyToPlaySkillCardEffectEvent    // need change
             {
                 playerId = payload.playerId,
-                candidateSourceIds = sourceIds,
-                candidateTargetIds = targetIds
+                sourceNeedChoose = sourceNeedChoose,
+                targetNeedChoose = targetNeedChoose,
+                candidateSourceIds = candidateSourceIds,
+                candidateTargetIds = candidateTargetIds
             }
         ));
         return results;

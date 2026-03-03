@@ -48,7 +48,6 @@ public class DrawCardTest : MonoBehaviour
         // 先创建对象，位置会由 ArrangeHand 重排
         GameObject newCard = Instantiate(cardPrefab, Vector3.zero, Quaternion.identity);
         var text = newCard.GetComponentInChildren<TextMeshPro>();
-        Debug.Log($"{playerId} {ClientGameState.playerSlot}");
         if (text != null && (playerId == ClientGameState.playerSlot || !(bool)parameters[2]))
             text.text = card.point.ToString();
         else

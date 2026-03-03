@@ -57,7 +57,8 @@ public class StartGameCmdHandler : CommandHandler, ICommandHandler
         ));
 
         // ³éµ×ÅÆ
-        int drawCardInstanceId = pointCardsDeck.Draw();
+        int drawCardInstanceId = -1;
+        drawCardInstanceId = pointCardsDeck.Draw();
         session.gameState.players[payload.playerId].holeCard = drawCardInstanceId;
         results.events.Enqueue(MakeEvent(
             "DrawPointCard",
@@ -70,15 +71,39 @@ public class StartGameCmdHandler : CommandHandler, ICommandHandler
             }
         ));
         drawCardInstanceId = pointCardsDeck.Draw();
-        session.gameState.players[1-payload.playerId].holeCard = drawCardInstanceId;
+        session.gameState.players[1 - payload.playerId].holeCard = drawCardInstanceId;
         results.events.Enqueue(MakeEvent(
             "DrawPointCard",
             new DrawPointCardEvent    // need change
             {
-                playerId = 1-payload.playerId,
+                playerId = 1 - payload.playerId,
                 cardId = session.instanceToCardId.GetValueOrDefault(drawCardInstanceId, -1),
                 instanceId = drawCardInstanceId,
                 isHoleCard = true
+            }
+        ));
+
+        // ³é¼¼ÄÜÅÆ
+        drawCardInstanceId = skillCardsDeck.Draw();
+        session.gameState.players[payload.playerId].SkillCardsInHand.Add(drawCardInstanceId);
+        results.events.Enqueue(MakeEvent(
+            "DrawSkillCard",
+            new DrawSkillCardEvent    // need change
+            {
+                playerId = payload.playerId,
+                cardId = session.instanceToCardId.GetValueOrDefault(drawCardInstanceId, -1),
+                instanceId = drawCardInstanceId,
+            }
+        ));
+        drawCardInstanceId = skillCardsDeck.Draw();
+        session.gameState.players[1 - payload.playerId].SkillCardsInHand.Add(drawCardInstanceId);
+        results.events.Enqueue(MakeEvent(
+            "DrawSkillCard",
+            new DrawSkillCardEvent    // need change
+            {
+                playerId = 1 - payload.playerId,
+                cardId = session.instanceToCardId.GetValueOrDefault(drawCardInstanceId, -1),
+                instanceId = drawCardInstanceId,
             }
         ));
 

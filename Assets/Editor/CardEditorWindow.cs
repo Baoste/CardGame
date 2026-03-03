@@ -134,9 +134,9 @@ public class CardEditorWindow : EditorWindow
                     current.effects ??= new List<EffectOp>();
                     current.effects.Add(new EffectOp
                     {
-                        type = EffectType.DrawCards,
-                        source = new ParticipantSpec { filter = new AllCondition() },
-                        target = new ParticipantSpec { filter = new AllCondition() },
+                        type = EffectType.DrawPoint,
+                        source = new ParticipantSpec { filter = new NoneCondition() },
+                        target = new ParticipantSpec { filter = new NoneCondition() },
                         value = new NoneValue()
                     });
                     effectFoldouts.Add(true);
@@ -300,7 +300,7 @@ public class CardEditorWindow : EditorWindow
         using (new EditorGUILayout.VerticalScope("box"))
         {
             int sel = ConditionExprTypeToIndex(cond);
-            int newSel = EditorGUILayout.Popup("Condition Type", sel, new[] { "AllCondition", "CompareCondition", "AndCondition" });
+            int newSel = EditorGUILayout.Popup("Condition Type", sel, new[] { "NoneCondition", "AllCondition", "CompareCondition", "AndCondition" });
             if (newSel != sel)
             {
                 cond = CreateConditionExprByIndex(newSel);
@@ -308,6 +308,10 @@ public class CardEditorWindow : EditorWindow
 
             switch (cond)
             {
+                case NoneCondition _:
+                    EditorGUILayout.LabelField("Always false", EditorStyles.helpBox);
+                    break;
+
                 case AllCondition _:
                     EditorGUILayout.LabelField("Always true", EditorStyles.helpBox);
                     break;
@@ -374,9 +378,10 @@ public class CardEditorWindow : EditorWindow
     {
         return c switch
         {
-            AllCondition _ => 0,
-            CompareCondition _ => 1,
-            AndCondition _ => 2,
+            NoneCondition _ => 0,
+            AllCondition _ => 1,
+            CompareCondition _ => 2,
+            AndCondition _ => 3,
             _ => 0
         };
     }
@@ -385,10 +390,11 @@ public class CardEditorWindow : EditorWindow
     {
         return idx switch
         {
-            0 => new AllCondition(),
-            1 => new CompareCondition(),
-            2 => new AndCondition(),
-            _ => new AllCondition()
+            0 => new NoneCondition(),
+            1 => new AllCondition(),
+            2 => new CompareCondition(),
+            3 => new AndCondition(),
+            _ => new NoneCondition()
         };
     }
 
@@ -459,8 +465,8 @@ public class CardEditorWindow : EditorWindow
                 if (op.value == null) errs.Add($"effects[{i}].value is null");
                 if (op.target == null) errs.Add($"effects[{i}].target is null");
                 // additional rule examples
-                // if (op.type == EffectType.ModifyCardPoints && (op.value is ConstValue cv && cv.value == 0))
-                //     errs.Add($"effects[{i}].value is 0 for ModifyCardPoints");
+                // if (op.type == EffectType.ModifyPoint && (op.value is ConstValue cv && cv.value == 0))
+                //     errs.Add($"effects[{i}].value is 0 for ModifyPoint");
             }
         }
 

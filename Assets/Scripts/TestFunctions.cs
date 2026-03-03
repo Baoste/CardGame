@@ -10,20 +10,20 @@ public class TestFunctions : MonoBehaviour
     {
         EffectOp effect0 = new EffectOp
         {
-            type = EffectType.DrawCards,
+            type = EffectType.DrawPoint,
             source = new ParticipantSpec
             {
                 participantType = ParticipantType.None,
                 participantSelectionMode = ParticipantSelectionMode.None,
-                filter = new AllCondition(),
+                filter = new NoneCondition(),
                 maxCandidateCount = new NoneValue(),
                 maxSelectCount = new NoneValue()
             },
             target = new ParticipantSpec
             {
-                participantType = ParticipantType.PointCardsInDeck,
+                participantType = ParticipantType.OpponentPointCardsOnBoard,
                 participantSelectionMode = ParticipantSelectionMode.None,
-                filter = new AllCondition(),
+                filter = new NoneCondition(),
                 maxCandidateCount = new NoneValue(),
                 maxSelectCount = new NoneValue()
             },
@@ -32,39 +32,16 @@ public class TestFunctions : MonoBehaviour
                 value = 1
             }
         };
-        EffectOp effect1 = new EffectOp
-        {
-            type = EffectType.DrawCards,
-            source = new ParticipantSpec
-            {
-                participantType = ParticipantType.None,
-                participantSelectionMode = ParticipantSelectionMode.None,
-                filter = new AllCondition(),
-                maxCandidateCount = new NoneValue(),
-                maxSelectCount = new NoneValue()
-            },
-            target = new ParticipantSpec
-            {
-                participantType = ParticipantType.PointCardsInDeck,
-                participantSelectionMode = ParticipantSelectionMode.All,
-                filter = new AllCondition(),
-                maxCandidateCount = new NoneValue(),
-                maxSelectCount = new NoneValue()
-            },
-            value = new ConstValue
-            {
-                value = 1
-            }
-        };
+        
         SkillCard tmp = new SkillCard
         {
             id = 999,
             name = "抽牌",
-            description = "抽一张牌，再抽一张牌",
-            point = 1,
+            description = "让对面抽一张牌",
+            point = 0,
             type = CardType.Skill,
-            count = 1,
-            effects = new List<EffectOp> { effect0, effect1 }
+            count = 2,
+            effects = new List<EffectOp> { effect0 }
         };
 
         List<SkillCard> cards = new List<SkillCard> { tmp };

@@ -33,20 +33,20 @@ namespace Game.Domain
             ClientEffectFunction clientEffectFunction = GameObject.Find("ClientEffectFunction").GetComponent<ClientEffectFunction>();
             switch (op.type)
             {
-                case EffectType.DrawCards:
-                    clientEffectFunction.DrawCards(op, gateway, gameState, ctx);
+                case EffectType.DrawPoint:
+                    clientEffectFunction.DrawPointCards(op, gateway, gameState, ctx);
                     break;
 
-                case EffectType.DiscardCards:
-                    //DrawCards(op, state, ctx);
+                case EffectType.Discard:
+                    clientEffectFunction.DiscardCards(op, gateway, gameState, ctx);
                     break;
 
-                case EffectType.ModifyCardPoints:
-                    //ModifyCardPoints(op, state, ctx);
+                case EffectType.ModifyPoint:
+                    //ModifyPoint(op, state, ctx);
                     break;
 
-                case EffectType.MoveCards:
-                    //DrawCards(op, state, ctx);
+                case EffectType.Move:
+                    //Draw(op, state, ctx);
                     break;
             }
         }

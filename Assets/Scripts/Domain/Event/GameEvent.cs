@@ -45,6 +45,13 @@ namespace Game.Domain
         public string text;
     }
 
+    public class DrawSkillCardEvent : INetEventPayload
+    {
+        public int playerId;
+        public int cardId;
+        public int instanceId;
+    }
+
     public class DrawPointCardEvent : INetEventPayload
     {
         public int playerId;
@@ -56,14 +63,18 @@ namespace Game.Domain
     public class ReadyToPlaySkillCardEffectEvent : INetEventPayload
     {
         public int playerId;
+        public bool sourceNeedChoose;
+        public bool targetNeedChoose;
         public List<int> candidateSourceIds;
         public List<int> candidateTargetIds;
     }
 
-    public class PlaySkillCardEffectWithTargetEvent : INetEventPayload
+    public class ValidateSkillCardEvent : INetEventPayload
     {
         public int playerId;
         public bool success;
+        public List<int> sourceIds;
+        public List<int> targetIds;
     }
 
     public class CardChangeEvent : INetEventPayload

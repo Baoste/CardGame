@@ -53,18 +53,25 @@ namespace Game.Domain
         public string chatContext;
     }
 
+    public class DrawSkillCardCommand : ICommand
+    {
+        public int playerId;
+    }
+
     public class DrawPointCardCommand : ICommand
     {
         public int playerId;
     }
 
+    // 根据效果返回可选的操作源、目标列表
     public class ReadyToPlaySkillCardEffectCommand : ICommand
     {
         public int playerId;
         public EffectOp effect;
     }
 
-    public class PlaySkillCardEffectWithTargetCommand : ICommand
+    // 验证玩家选择的操作源、目标是否合法
+    public class ValidateSkillCardCommand : ICommand
     {
         public int playerId;
         public EffectOp effect;

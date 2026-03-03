@@ -3,15 +3,17 @@ using Newtonsoft.Json;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlaySkillCardEffectWithTargetEventHandler : IEventProcess, IEventHandler
+public class ValidateSkillCardEventHandler : IEventProcess, IEventHandler
 {
     public bool Handle(NetEvent ev)
     {
-        var payload = JsonConvert.DeserializeObject<PlaySkillCardEffectWithTargetEvent>(ev.jsonData); // need change
+        var payload = JsonConvert.DeserializeObject<ValidateSkillCardEvent>(ev.jsonData); // need change
         ProcessQueueManager.Instance.Enqueue(Process, new object[] { });
 
         // TODO
         // START
+        ClientEffectContext.Instance.selectedSourceIds = payload.sourceIds;
+        ClientEffectContext.Instance.selectedTargetIds = payload.targetIds;
         ClientEffectContext.IsCommandValid = payload.success;
         ClientEffectContext.IsValidateDone = true;
         string context = payload.success.ToString();

@@ -9,7 +9,7 @@ namespace Game.Domain
 {
     public class ClientEffectFunction : MonoBehaviour
     {
-        public void DrawCards(EffectOp op, MatchGateway gateway, GameState gameState, EffectContext ctx)
+        public void DrawPointCards(EffectOp op, MatchGateway gateway, GameState gameState, EffectContext ctx)
         {
             // TODO: 目前只能自己抽点数牌，后续需要根据op参数区分抽不同类型的牌
             int selectedCardId = ctx.selectedTargetIds.Count > 0 ? ctx.selectedTargetIds[0] : -1;
@@ -19,9 +19,9 @@ namespace Game.Domain
                 StartCoroutine(ValidateCommand(op, gateway, gameState, ctx, () =>
                 {
                     int casterId = ctx.caster;
-                    if (op.source.participantType == ParticipantType.Caster)
+                    if (op.target.participantType == ParticipantType.MyPointCardsOnBoard)
                         casterId = ctx.caster;
-                    else if (op.source.participantType == ParticipantType.Opponent)
+                    else if (op.target.participantType == ParticipantType.OpponentPointCardsOnBoard)
                         casterId = ctx.opponent;
                     DrawPointCardCommand cmd = new DrawPointCardCommand { playerId = ctx.caster };
                     gateway.SendCommandServerRpc("DrawPointCard", JsonConvert.SerializeObject(cmd));
@@ -29,32 +29,37 @@ namespace Game.Domain
             }
             ClientEffectContext.IsExecuteDone = true;
         }
-        
-        //public void DrawCard(MatchGateway gateway, GameState gameState, EffectContext ctx)
-        //{
-        //    DrawPointCardCommand cmd = new DrawPointCardCommand { playerId = ctx.caster };
-        //    gateway.SendCommandServerRpc("DrawPointCard", JsonConvert.SerializeObject(cmd));
-        //}
 
-        //public static void ModifyCardPoints(EffectOp op, GameState state, EffectContext ctx)
-        //{
-        //    foreach (var card in ctx.selectedCards)
-        //    {
-        //        // TODO: send modify point event
-        //        // card.Points += op.value.Evaluate(state, ctx, card);
-        //    }
-        //}
+        public void DiscardCards(EffectOp op, MatchGateway gateway, GameState gameState, EffectContext ctx)
+        {
+            int selectedCardId = ctx.selectedTargetIds.Count > 0 ? ctx.selectedTargetIds[0] : -1;
+            int drawNum = op.value.Evaluate(gameState, ctx, selectedCardId);
+            for (int i = 0; i < drawNum; i++)
+            {
+                StartCoroutine(ValidateCommand(op, gateway, gameState, ctx, () =>
+                {
+                    int casterId = ctx.caster;
+                    if (op.target.participantType == ParticipantType.MyPointCardsOnBoard)
+                        casterId = ctx.caster;
+                    else if (op.target.participantType == ParticipantType.OpponentPointCardsOnBoard)
+                        casterId = ctx.opponent;
+                    DrawPointCardCommand cmd = new DrawPointCardCommand { playerId = ctx.caster };
+                    gateway.SendCommandServerRpc("DrawPointCard", JsonConvert.SerializeObject(cmd));
+                }));
+            }
+            ClientEffectContext.IsExecuteDone = true;
+        }
 
         public IEnumerator ValidateCommand(EffectOp op, MatchGateway gateway, GameState gameState, EffectContext ctx, Action onSuccess)
         {
-            PlaySkillCardEffectWithTargetCommand cmd = new PlaySkillCardEffectWithTargetCommand
+            ValidateSkillCardCommand cmd = new ValidateSkillCardCommand
             {
                 playerId = ctx.caster,
                 effect = op,
                 selectedSourceIds = ctx.selectedSourceIds,
                 selectedTargetIds = ctx.selectedTargetIds
             };
-            gateway.SendCommandServerRpc("PlaySkillCardEffectWithTarget", JsonConvert.SerializeObject(cmd));
+            gateway.SendCommandServerRpc("ValidateSkillCard", JsonConvert.SerializeObject(cmd));
             yield return new WaitUntil(() => ClientEffectContext.IsValidateDone);
             ClientEffectContext.IsValidateDone = false;
 

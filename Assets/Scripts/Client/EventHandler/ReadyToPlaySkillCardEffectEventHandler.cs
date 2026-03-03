@@ -11,7 +11,12 @@ public sealed class ReadyToPlaySkillCardEffectEventHandler : IEventProcess, IEve
     {
         payload = JsonConvert.DeserializeObject<ReadyToPlaySkillCardEffectEvent>(ev.jsonData); // need change
         // need change, 需要把参数在这里传进去
-        ProcessQueueManager.Instance.Enqueue(Process, new object[] { payload.candidateSourceIds, payload.candidateTargetIds });
+        ProcessQueueManager.Instance.Enqueue(Process, new object[] { 
+            payload.sourceNeedChoose,
+            payload.targetNeedChoose,
+            payload.candidateSourceIds, 
+            payload.candidateTargetIds 
+        });
 
         // TODO
         // START
