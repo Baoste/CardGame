@@ -3,6 +3,7 @@ using Newtonsoft.Json;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 
 
@@ -42,6 +43,7 @@ public class ClientMatchInput : MonoBehaviour
         ProcessDispatcher.Register("PlaySkillCardTest", WaitForChoose);
     }
 
+
     void Update()
     {
         if (ClientGameState.gateway == null) return;
@@ -49,7 +51,13 @@ public class ClientMatchInput : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.F1))
         {
             Card tmp = CardDatabase.Get(999);
-            StartCoroutine(ClientEffectExecutor.ExcuteCard(tmp, ClientGameState.gateway, ClientGameState.playerSlot));
+            StartCoroutine(ClientEffectExecutor.ExcuteCard(tmp, ClientGameState.gateway, ClientGameState.playerSlot, -1));
+        }
+
+        if (Input.GetKeyDown(KeyCode.F2))
+        {
+            Card tmp = CardDatabase.Get(9999);
+            StartCoroutine(ClientEffectExecutor.ExcuteCard(tmp, ClientGameState.gateway, ClientGameState.playerSlot, -1));
         }
 
     }
@@ -62,7 +70,10 @@ public class ClientMatchInput : MonoBehaviour
         bool targetNeedChoose = (bool)parameters[1];
         List<int> candidateSourceIds = (List<int>)parameters[2];
         List<int> candidateTargetIds = (List<int>)parameters[3];
-        if (!sourceNeedChoose && !targetNeedChoose)
+        int sourceSelectCount = (int)parameters[4];
+        int targetSelectCount = (int)parameters[5];
+
+        if ((!sourceNeedChoose && !targetNeedChoose) || (candidateSourceIds.Count == 0 && candidateTargetIds.Count == 0))
         {
             Debug.Log("[Client] No target to choose, executing effect directly");
             ClientEffectContext.Instance.selectedSourceIds = new List<int>();
@@ -72,10 +83,9 @@ public class ClientMatchInput : MonoBehaviour
         else
         {
             Debug.Log($"[Client] Waiting for player to choose target");
-            ClientEffectContext.Instance.selectedSourceIds = candidateSourceIds; // 这里直接把候选目标当作已选目标了，实际你会弹 UI 让玩家选
-            ClientEffectContext.Instance.selectedTargetIds = new List<int> { candidateTargetIds[0] }; // 这里直接把候选目标当作已选目标了，实际你会弹 UI 让玩家选
+            ClientEffectContext.Instance.selectedSourceIds = candidateSourceIds;
             // StartCoroutine(DelayedTest(10f));
-            StartCoroutine(ClickTest());
+            StartCoroutine(ClickTest(candidateTargetIds, targetSelectCount));
         }
     }
 
@@ -85,9 +95,30 @@ public class ClientMatchInput : MonoBehaviour
         ClientEffectContext.ChooseDone = true;
     }
 
-    private IEnumerator ClickTest()
+    private IEnumerator ClickTest(List<int> candidateTargetIds, int targetSelectCount)
     {
-        yield return new WaitUntil(() => Input.GetMouseButtonDown(0));
+        List<int> selectedTargetIds = new List<int>();
+        int count = 0;
+        while (count < targetSelectCount)
+        {
+            yield return null;
+            if (!Input.GetMouseButtonDown(0))
+                continue;
+
+            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+            if (!Physics.Raycast(ray, out RaycastHit hit, 1000f))
+                continue;
+            CardView cardView = hit.collider.GetComponentInParent<CardView>();
+            if (!cardView)
+                continue;
+
+            int instanceId = cardView.instanceId;
+            if (!candidateTargetIds.Contains(instanceId))
+                continue;
+            selectedTargetIds.Add(instanceId);
+            count++;
+        }
+        ClientEffectContext.Instance.selectedTargetIds = selectedTargetIds;
         ClientEffectContext.ChooseDone = true;
     }
 

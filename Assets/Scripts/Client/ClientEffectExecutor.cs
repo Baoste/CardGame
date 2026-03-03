@@ -6,7 +6,7 @@ namespace Game.Domain
 {
     public static class ClientEffectExecutor
     {
-        public static IEnumerator ExcuteCard(Card card, MatchGateway gateway, int playerSlot)
+        public static IEnumerator ExcuteCard(Card card, MatchGateway gateway, int playerSlot, int cardIstanceId)
         {
             // 这里模拟一个需要玩家选择目标的效果执行流程：
             // 1. 客户端收到事件，解析出 Card 和 EffectOp（这里直接用参数传了）
@@ -15,9 +15,9 @@ namespace Game.Domain
             foreach (var op in card.effects)
             {
                 ReadyToPlaySkillCardEffectCommand cmd = new ReadyToPlaySkillCardEffectCommand { playerId = playerSlot, effect = op };
-                gateway.SendCommandServerRpc("ReadyToPlaySkillCardEffect", JsonConvert.SerializeObject(cmd));
+                gateway.SendCommandServerRpc("ReadyToPlaySkillCardEffect", JsonConvert.SerializeObject(cmd), ClientGameState.playerSlot);
                 yield return new WaitUntil(() =>
-                    ClientGameState.GetDone &&
+                    ClientGameState.GetServerGameStateDone &&
                     ClientEffectContext.GetServerCtxDone &&
                     ClientEffectContext.ChooseDone
                 );
@@ -26,6 +26,9 @@ namespace Game.Domain
                 yield return new WaitUntil(() => ClientEffectContext.IsExecuteDone);
                 ClientEffectContext.IsExecuteDone = false;
             }
+
+            //DiscardCardCommand discardCmd = new DiscardCardCommand { playerId = playerSlot, instanceId = cardIstanceId };
+            //gateway.SendCommandServerRpc("DiscardCard", JsonConvert.SerializeObject(discardCmd));
         }
 
         private static void ExecuteOp(EffectOp op, MatchGateway gateway, GameState gameState, EffectContext ctx) 

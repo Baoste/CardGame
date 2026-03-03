@@ -11,7 +11,7 @@ public class GetGameStateEventHandler : IEventProcess, IEventHandler
         var payload = JsonConvert.DeserializeObject<GetGameStateEvent>(ev.jsonData);
 
         ClientGameState.Instance = payload.gameState;
-        ClientGameState.GetDone = true;
+        ClientGameState.GetServerGameStateDone = true;
 
         Debug.Log($"[Client] Event#{ev.Index} type={ev.type} payload=gamestate");
 

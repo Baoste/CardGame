@@ -8,34 +8,42 @@ public class DrawCardTest : MonoBehaviour
 {
     // 按 playerId 存储在屏幕上显示的牌（用于重排）
     private static readonly Dictionary<int, List<GameObject>> handMap = new();
+    private static Dictionary<int, GameObject> instanceMap = new();
 
     // Start is called before the first frame update
     void Start()
     {
         ProcessDispatcher.Register("DrawCardTest", DrawCard);
-        // 测试：直接调用 ProcessDispatcher 来模拟事件处理
-        //ProcessDispatcher.Process("DrawCardTest", new object[] { 1, 1 });
-        //ProcessDispatcher.Process("DrawCardTest", new object[] { 2, 1 });
-        //ProcessDispatcher.Process("DrawCardTest", new object[] { 1, 0 });
-        //ProcessDispatcher.Process("DrawCardTest", new object[] { 2, 0 });
-        //ProcessDispatcher.Process("DrawCardTest", new object[] { 3, 0 });
+        ProcessDispatcher.Register("DiscardCardTest", DiscardCard);
     }
 
+    public void DiscardCard(object[] parameters)
+    {
+        int instanceId = (int)parameters[0];
+        handMap[0].Remove(instanceMap[instanceId]);
+        handMap[1].Remove(instanceMap[instanceId]);
+        Destroy(instanceMap[instanceId]);
+        instanceMap.Remove(instanceId);
+    }
+
+
     // parameters[0]: int cardId
-    // parameters[1]: int playerId
-    // parameters[2]: bool isHoleCard
+    // parameters[1]: int instanceId
+    // parameters[2]: int playerId
+    // parameters[3]: bool isHoleCard
     public void DrawCard(object[] parameters)
     {
-        Card card = CardDatabase.Get((int)parameters[0]);
+        int cardId = (int)parameters[0];
+        int instanceId = (int)parameters[1];
+        int playerId = (int)parameters[2];
+        bool isHoreCard = (bool)parameters[3];
+
+        Card card = CardDatabase.Get(cardId);
         if (card == null)
         {
-            Debug.Log($"Card with id {(int)parameters[0]} not found");
+            Debug.Log($"Card with id {cardId} not found");
             return;
         }
-
-        int playerId = 0;
-        if (parameters.Length > 1 && parameters[1] is int)
-            playerId = (int)parameters[1];
 
         // 生成卡牌
         GameObject cardPrefab = Resources.Load<GameObject>("Prefabs/Card");
@@ -47,8 +55,12 @@ public class DrawCardTest : MonoBehaviour
 
         // 先创建对象，位置会由 ArrangeHand 重排
         GameObject newCard = Instantiate(cardPrefab, Vector3.zero, Quaternion.identity);
+        instanceMap[instanceId] = newCard;
+        newCard.GetComponent<CardView>().cardId = cardId;
+        newCard.GetComponent<CardView>().instanceId = instanceId;
+
         var text = newCard.GetComponentInChildren<TextMeshPro>();
-        if (text != null && (playerId == ClientGameState.playerSlot || !(bool)parameters[2]))
+        if (text != null && (playerId == ClientGameState.playerSlot || !isHoreCard))
             text.text = card.point.ToString();
         else
             text.text = "";

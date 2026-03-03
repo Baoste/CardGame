@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 
 namespace Game.Domain
 {
@@ -22,9 +23,11 @@ namespace Game.Domain
         public Random rng;
 
         public PlayerState[] players;
-        public SkillCardsDeckState skillCardsDeck = new SkillCardsDeckState();
-        public PointCardsDeckState pointCardsDeck = new PointCardsDeckState();
-        //public BoardState Board = new BoardState();
+        public SkillCardsDeck skillCardsDeck = new SkillCardsDeck();
+        public PointCardsDeck pointCardsDeck = new PointCardsDeck();
+        public DiscardPile discardPile = new DiscardPile();
+
+        Dictionary<int, CardZone> cardLocationMap = new Dictionary<int, CardZone>();
 
         public GameState()
         {
@@ -35,13 +38,45 @@ namespace Game.Domain
                 players[i] = new PlayerState();
             }
         }
+
+        public void AddCard(int playerId, int instanceId, CardType type)
+        {
+            if (instanceId == -1)   return;
+
+            CardZone board = players[playerId].pointCardsOnBoard;
+            if (type == CardType.Skill)
+                board = players[playerId].skillCardsInHand;
+            
+            cardLocationMap[instanceId] = board;
+            board._Add(instanceId);
+        }
+
+        public void RemoveCard(int instanceId)
+        {
+            if (!cardLocationMap.ContainsKey(instanceId))   return;
+
+            CardZone board = cardLocationMap[instanceId];
+            board._Remove(instanceId);
+            discardPile._Add(instanceId);
+            cardLocationMap[instanceId] = discardPile;
+        }
+
+        public void MoveCard(int instanceId, CardZone targetZone)
+        {
+            if (!cardLocationMap.ContainsKey(instanceId)) return;
+
+            CardZone board = cardLocationMap[instanceId];
+            board._Remove(instanceId);
+            targetZone._Add(instanceId);
+            cardLocationMap[instanceId] = targetZone;
+        }
     }
 
     public static class ClientGameState
     {
         public static int playerSlot = -1;
-        public static bool GetDone = false;     // 是否已经拿到 ClientGameState 的数据了
-        public static GameState Instance;
+        public static bool GetServerGameStateDone = false;     // 是否已经拿到 ClientGameState 的数据了
+        public static GameState Instance = new GameState();
 
         public static MatchGateway gateway;
         public static string matchId;

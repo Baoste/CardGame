@@ -34,7 +34,7 @@ public class MatchGateway : NetworkBehaviour
     // Client -> Server: Send Command
     // =======================
     [ServerRpc(RequireOwnership = false)]
-    public void SendCommandServerRpc(string type, string jsonData, NetworkConnection sender = null)
+    public void SendCommandServerRpc(string type, string jsonData, int playerId = -1, NetworkConnection sender = null)
     {
         if (sender == null) return;
 
@@ -45,7 +45,7 @@ public class MatchGateway : NetworkBehaviour
         }
 
         if (type == "GetCtx")           ClientEffectContext.GetServerCtxDone = false;
-        if (type == "GetGameState")     ClientGameState.GetDone = false;
+        if (type == "GetGameState")     ClientGameState.GetServerGameStateDone = false;
 
         if (type == "JoinOrCreateGame")
         {
@@ -137,7 +137,15 @@ public class MatchGateway : NetworkBehaviour
 
                 // ·µ»Øevent£¬¹ã²¥¸øclient
                 var ev = session.AddEvent(res.type, res.jsonData);
-                BroadcastToSession(session, ev);
+                if (playerId == -1)
+                {
+                    BroadcastToSession(session, ev);
+                }
+                else
+                {
+                    var conn = session.Slots[playerId].Conn;
+                    TargetEvent(conn, ev);
+                }
             }
         }
     }

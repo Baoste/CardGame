@@ -23,6 +23,6 @@ namespace Game.Domain
         public static bool IsValidateDone = false;      // 是否已经完成了合法性验证了
         public static bool IsCommandValid = false;      // 上一个命令是否合法（比如玩家选的目标是否合法）
         public static bool IsExecuteDone = false;       // 是否正在执行技能卡效果（从玩家选好目标到服务器验证通过再到客户端执行完技能卡效果，这段时间都算在内）
-        public static EffectContext Instance;
+        public static EffectContext Instance = new EffectContext();
     }
 }

@@ -14,7 +14,7 @@ public class DrawSkillCardCmdHandler : CommandHandler, ICommandHandler
 
         // TODO: 服务器端需要做什么
         int drawCardInstanceId = session.gameState.skillCardsDeck.Draw();
-        session.gameState.players[payload.playerId].SkillCardsInHand.Add(drawCardInstanceId);
+        session.gameState.AddCard(payload.playerId, drawCardInstanceId, CardType.Skill);
 
         // return
         CommandResult results = new CommandResult();

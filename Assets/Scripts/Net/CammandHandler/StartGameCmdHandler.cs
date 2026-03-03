@@ -39,12 +39,12 @@ public class StartGameCmdHandler : CommandHandler, ICommandHandler
         StaticFunction.Shuffle(skillCardInstanceIds, session.gameState.rng);
 
         var pointCardsDeck = session.gameState.pointCardsDeck;
-        pointCardsDeck.Clear();
-        pointCardsDeck.Add(pointCardInstanceIds);
+        pointCardsDeck._Clear();
+        pointCardsDeck._Add(pointCardInstanceIds);
 
         var skillCardsDeck = session.gameState.skillCardsDeck;
-        skillCardsDeck.Clear();
-        skillCardsDeck.Add(skillCardInstanceIds);
+        skillCardsDeck._Clear();
+        skillCardsDeck._Add(skillCardInstanceIds);
 
         // return results
         CommandResult results = new CommandResult();
@@ -85,7 +85,7 @@ public class StartGameCmdHandler : CommandHandler, ICommandHandler
 
         // ³é¼¼ÄÜÅÆ
         drawCardInstanceId = skillCardsDeck.Draw();
-        session.gameState.players[payload.playerId].SkillCardsInHand.Add(drawCardInstanceId);
+        session.gameState.AddCard(payload.playerId, drawCardInstanceId, CardType.Skill);
         results.events.Enqueue(MakeEvent(
             "DrawSkillCard",
             new DrawSkillCardEvent    // need change
@@ -96,7 +96,7 @@ public class StartGameCmdHandler : CommandHandler, ICommandHandler
             }
         ));
         drawCardInstanceId = skillCardsDeck.Draw();
-        session.gameState.players[1 - payload.playerId].SkillCardsInHand.Add(drawCardInstanceId);
+        session.gameState.AddCard(1- payload.playerId, drawCardInstanceId, CardType.Skill);
         results.events.Enqueue(MakeEvent(
             "DrawSkillCard",
             new DrawSkillCardEvent    // need change

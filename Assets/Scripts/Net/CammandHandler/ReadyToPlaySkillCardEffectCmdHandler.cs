@@ -44,7 +44,9 @@ public sealed class ReadyToPlaySkillCardEffectCmdHandler : CommandHandler, IComm
                 sourceNeedChoose = sourceNeedChoose,
                 targetNeedChoose = targetNeedChoose,
                 candidateSourceIds = candidateSourceIds,
-                candidateTargetIds = candidateTargetIds
+                candidateTargetIds = candidateTargetIds,
+                sourceSelectCount = payload.effect.source.maxSelectCount.Evaluate(session.gameState, session.ctx, -1),
+                targetSelectCount = payload.effect.target.maxSelectCount.Evaluate(session.gameState, session.ctx, -1),
             }
         ));
         return results;

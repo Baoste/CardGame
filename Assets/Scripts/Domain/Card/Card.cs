@@ -15,10 +15,9 @@ namespace Game.Domain
         public string name;
         public string description;
         public int point;
+
         public CardType type;
-
         public int count;       // 生成牌堆中的初始数量
-
         public List<EffectOp> effects; // 核心：效果序列
     }
 }

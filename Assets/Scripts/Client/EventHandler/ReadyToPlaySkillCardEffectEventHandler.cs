@@ -15,7 +15,9 @@ public sealed class ReadyToPlaySkillCardEffectEventHandler : IEventProcess, IEve
             payload.sourceNeedChoose,
             payload.targetNeedChoose,
             payload.candidateSourceIds, 
-            payload.candidateTargetIds 
+            payload.candidateTargetIds,
+            payload.sourceSelectCount,
+            payload.targetSelectCount,
         });
 
         // TODO

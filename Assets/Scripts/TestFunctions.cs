@@ -16,7 +16,7 @@ public class TestFunctions : MonoBehaviour
                 participantType = ParticipantType.None,
                 participantSelectionMode = ParticipantSelectionMode.None,
                 filter = new NoneCondition(),
-                maxCandidateCount = new NoneValue(),
+                maxCandidateCountWhenRandom = new NoneValue(),
                 maxSelectCount = new NoneValue()
             },
             target = new ParticipantSpec
@@ -24,7 +24,7 @@ public class TestFunctions : MonoBehaviour
                 participantType = ParticipantType.OpponentPointCardsOnBoard,
                 participantSelectionMode = ParticipantSelectionMode.None,
                 filter = new NoneCondition(),
-                maxCandidateCount = new NoneValue(),
+                maxCandidateCountWhenRandom = new NoneValue(),
                 maxSelectCount = new NoneValue()
             },
             value = new ConstValue
@@ -32,8 +32,33 @@ public class TestFunctions : MonoBehaviour
                 value = 1
             }
         };
-        
-        SkillCard tmp = new SkillCard
+
+        EffectOp effect1 = new EffectOp
+        {
+            type = EffectType.Discard,
+            source = new ParticipantSpec
+            {
+                participantType = ParticipantType.None,
+                participantSelectionMode = ParticipantSelectionMode.None,
+                filter = new NoneCondition(),
+                maxCandidateCountWhenRandom = new NoneValue(),
+                maxSelectCount = new NoneValue()
+            },
+            target = new ParticipantSpec
+            {
+                participantType = ParticipantType.OpponentPointCardsOnBoard,
+                participantSelectionMode = ParticipantSelectionMode.Choose,
+                filter = new AllCondition(),
+                maxCandidateCountWhenRandom = new NoneValue(),
+                maxSelectCount = new ConstValue
+                {
+                    value = 1
+                }
+            },
+            value = new NoneValue()
+        };
+
+        SkillCard tmp0 = new SkillCard
         {
             id = 999,
             name = "抽牌",
@@ -44,7 +69,18 @@ public class TestFunctions : MonoBehaviour
             effects = new List<EffectOp> { effect0 }
         };
 
-        List<SkillCard> cards = new List<SkillCard> { tmp };
+        SkillCard tmp1 = new SkillCard
+        {
+            id = 9999,
+            name = "弃牌",
+            description = "选择对面场上的一张牌丢弃",
+            point = 0,
+            type = CardType.Skill,
+            count = 2,
+            effects = new List<EffectOp> { effect1 }
+        };
+
+        List<SkillCard> cards = new List<SkillCard> { tmp0, tmp1 };
         CardJsonUtility.ConvertCardsToJson(cards, "SkillCards.json");
     }
 

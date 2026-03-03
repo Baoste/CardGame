@@ -60,6 +60,12 @@ namespace Game.Domain
         public bool isHoleCard;
     }
 
+    public class DiscardCardEvent : INetEventPayload
+    {
+        public int playerId;
+        public int instanceId;
+    }
+
     public class ReadyToPlaySkillCardEffectEvent : INetEventPayload
     {
         public int playerId;
@@ -67,6 +73,8 @@ namespace Game.Domain
         public bool targetNeedChoose;
         public List<int> candidateSourceIds;
         public List<int> candidateTargetIds;
+        public int sourceSelectCount;
+        public int targetSelectCount;
     }
 
     public class ValidateSkillCardEvent : INetEventPayload

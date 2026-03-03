@@ -12,17 +12,17 @@ namespace Game.Domain
 
             // ParticipantType 决定从哪来
             if ((spec.participantType & ParticipantType.MySkillCardsInHand) != 0)
-                pool.AddRange(new List<int>(state.players[ctx.caster].SkillCardsInHand.cardInstanceIds));
+                pool.AddRange(new List<int>(state.players[ctx.caster].skillCardsInHand.instanceIds));
             if ((spec.participantType & ParticipantType.OpponentSkillCardsInHand) != 0)
-                pool.AddRange(new List<int>(state.players[ctx.opponent].SkillCardsInHand.cardInstanceIds));
+                pool.AddRange(new List<int>(state.players[ctx.opponent].skillCardsInHand.instanceIds));
             if ((spec.participantType & ParticipantType.MyPointCardsOnBoard) != 0)
-                pool.AddRange(new List<int>(state.players[ctx.caster].PointCardsOnBoard.cardInstanceIds));
+                pool.AddRange(new List<int>(state.players[ctx.caster].pointCardsOnBoard.instanceIds));
             if ((spec.participantType & ParticipantType.OpponentPointCardsOnBoard) != 0)
-                pool.AddRange(new List<int>(state.players[ctx.opponent].PointCardsOnBoard.cardInstanceIds));
+                pool.AddRange(new List<int>(state.players[ctx.opponent].pointCardsOnBoard.instanceIds));
             if ((spec.participantType & ParticipantType.SkillCardsInDeck) != 0)
-                pool.AddRange(new List<int>(state.skillCardsDeck.instanceIdsInDeck));
+                pool.AddRange(new List<int>(state.skillCardsDeck.instanceIds));
             if ((spec.participantType & ParticipantType.PointCardsInDeck) != 0)
-                pool.AddRange(new List<int>(state.pointCardsDeck.instanceIdsInDeck));
+                pool.AddRange(new List<int>(state.pointCardsDeck.instanceIds));
 
             // filter 过滤
             pool = pool.FindAll(c => spec.filter.Evaluate(state, ctx, c));
@@ -49,7 +49,7 @@ namespace Game.Domain
                 case ParticipantSelectionMode.Random:
                     StaticFunction.Shuffle(pool, state.rng);
                     int cid = ctx.tmpSelectedIds.Count > 0 ? ctx.tmpSelectedIds[0] : -1;
-                    for (int i = 0; i < spec.maxCandidateCount.Evaluate(state, ctx, cid); i++)
+                    for (int i = 0; i < spec.maxCandidateCountWhenRandom.Evaluate(state, ctx, cid); i++)
                     {
                         if (pool.Count > i)
                         {

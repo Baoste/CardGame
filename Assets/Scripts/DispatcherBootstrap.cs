@@ -12,6 +12,7 @@ public static class DispatcherBootstrap
         EventDispatcher.Register("Chat", new ChatEventHandler());
         EventDispatcher.Register("DrawPointCard", new DrawPointCardEventHandler());
         EventDispatcher.Register("DrawSkillCard", new DrawSkillCardEventHandler());
+        EventDispatcher.Register("DiscardCard", new DiscardCardEventHandler());
         EventDispatcher.Register("ReadyToPlaySkillCardEffect", new ReadyToPlaySkillCardEffectEventHandler());
         EventDispatcher.Register("ValidateSkillCard", new ValidateSkillCardEventHandler());
 
@@ -24,6 +25,7 @@ public static class DispatcherBootstrap
         CommandDispatcher.Register("Chat", new ChatCmdHandler());
         CommandDispatcher.Register("DrawPointCard", new DrawPointCardCmdHandler());
         CommandDispatcher.Register("DrawSkillCard", new DrawSkillCardCmdHandler());
+        CommandDispatcher.Register("DiscardCard", new DiscardCardCmdHandler());
         CommandDispatcher.Register("ReadyToPlaySkillCardEffect", new ReadyToPlaySkillCardEffectCmdHandler());
         CommandDispatcher.Register("ValidateSkillCard", new ValidateSkillCardCmdHandler());
     }

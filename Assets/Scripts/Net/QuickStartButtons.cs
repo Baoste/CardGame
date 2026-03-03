@@ -37,7 +37,10 @@ public class QuickStartButtons : MonoBehaviour
         if (GUI.Button(new Rect(1700, 160, w, h), "Start Game"))
             ClientCommand.StartGame();
 
-        if (GUI.Button(new Rect(1700, 210, w, h), "Draw Point Card"))
+        if (GUI.Button(new Rect(1700, 210, w, h), "Start Turn"))
+            ClientCommand.StartTurn();
+
+        if (GUI.Button(new Rect(1700, 260, w, h), "Draw Point Card"))
             ClientCommand.DrawPointCard();
     }
 }

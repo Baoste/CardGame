@@ -25,6 +25,12 @@ public static class ClientCommand
         ClientGameState.gateway.SendCommandServerRpc("StartGame", JsonConvert.SerializeObject(cmd));
     }
 
+    public static void StartTurn()
+    {
+        StartTurnCommand cmd = new StartTurnCommand { playerId = ClientGameState.playerSlot };
+        ClientGameState.gateway.SendCommandServerRpc("StartTurn", JsonConvert.SerializeObject(cmd));
+    }
+
     public static void Chat(string chatContext)
     {
         ChatCommand cmd = new ChatCommand { playerId = ClientGameState.playerSlot, chatContext = chatContext };

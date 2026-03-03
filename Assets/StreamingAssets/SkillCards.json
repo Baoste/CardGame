@@ -16,7 +16,7 @@
               "$type": "Game.Domain.NoneCondition, Assembly-CSharp"
             },
             "participantSelectionMode": 0,
-            "maxCandidateCount": {
+            "maxCandidateCountWhenRandom": {
               "$type": "Game.Domain.NoneValue, Assembly-CSharp"
             },
             "maxSelectCount": {
@@ -29,7 +29,7 @@
               "$type": "Game.Domain.NoneCondition, Assembly-CSharp"
             },
             "participantSelectionMode": 0,
-            "maxCandidateCount": {
+            "maxCandidateCountWhenRandom": {
               "$type": "Game.Domain.NoneValue, Assembly-CSharp"
             },
             "maxSelectCount": {
@@ -39,6 +39,49 @@
           "value": {
             "$type": "Game.Domain.ConstValue, Assembly-CSharp",
             "value": 1
+          }
+        }
+      ]
+    },
+    {
+      "id": 9999,
+      "name": "弃牌",
+      "description": "选择对面场上的一张牌丢弃",
+      "point": 0,
+      "type": 1,
+      "count": 2,
+      "effects": [
+        {
+          "type": 2,
+          "source": {
+            "participantType": 0,
+            "filter": {
+              "$type": "Game.Domain.NoneCondition, Assembly-CSharp"
+            },
+            "participantSelectionMode": 0,
+            "maxCandidateCountWhenRandom": {
+              "$type": "Game.Domain.NoneValue, Assembly-CSharp"
+            },
+            "maxSelectCount": {
+              "$type": "Game.Domain.NoneValue, Assembly-CSharp"
+            }
+          },
+          "target": {
+            "participantType": 8,
+            "filter": {
+              "$type": "Game.Domain.AllCondition, Assembly-CSharp"
+            },
+            "participantSelectionMode": 2,
+            "maxCandidateCountWhenRandom": {
+              "$type": "Game.Domain.NoneValue, Assembly-CSharp"
+            },
+            "maxSelectCount": {
+              "$type": "Game.Domain.ConstValue, Assembly-CSharp",
+              "value": 1
+            }
+          },
+          "value": {
+            "$type": "Game.Domain.NoneValue, Assembly-CSharp"
           }
         }
       ]

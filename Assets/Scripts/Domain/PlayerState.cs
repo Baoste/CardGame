@@ -16,25 +16,7 @@ namespace Game.Domain
     {
         public int playerId;
         public int holeCard = -1;
-        public CardBoard SkillCardsInHand = new CardBoard();
-        public CardBoard PointCardsOnBoard = new CardBoard();
-    }
-
-    // 卡牌列表，指在玩家手牌或场上存在的卡牌，包含技能牌和点数牌
-    public class CardBoard
-    {
-        public List<int> _cardInstanceIds = new List<int>();
-        public IReadOnlyList<int> cardInstanceIds => _cardInstanceIds;
-
-        public void Add(int id)
-        {
-            if (id == -1)   return;
-            _cardInstanceIds.Add(id);
-        }
-
-        public int GetCount()
-        {
-            return _cardInstanceIds.Count;
-        }
+        public SkillCardsInHand skillCardsInHand = new SkillCardsInHand();
+        public PointCardsOnBoard pointCardsOnBoard = new PointCardsOnBoard();
     }
 }

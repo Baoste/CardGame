@@ -63,6 +63,12 @@ namespace Game.Domain
         public int playerId;
     }
 
+    public class DiscardCardCommand : ICommand
+    {
+        public int playerId;
+        public int instanceId;
+    }
+
     // 根据效果返回可选的操作源、目标列表
     public class ReadyToPlaySkillCardEffectCommand : ICommand
     {

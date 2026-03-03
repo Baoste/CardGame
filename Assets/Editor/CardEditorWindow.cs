@@ -245,8 +245,8 @@ public class CardEditorWindow : EditorWindow
             EditorGUILayout.Space(4);
             // maxCandidateCount / maxSelectCount (ValueExpr)
             EditorGUILayout.LabelField("Max Candidate Count", EditorStyles.miniBoldLabel);
-            if (spec.maxCandidateCount == null) spec.maxCandidateCount = new NoneValue();
-            DrawValueExprEditor(ref spec.maxCandidateCount);
+            if (spec.maxCandidateCountWhenRandom == null) spec.maxCandidateCountWhenRandom = new NoneValue();
+            DrawValueExprEditor(ref spec.maxCandidateCountWhenRandom);
 
             EditorGUILayout.LabelField("Max Select Count", EditorStyles.miniBoldLabel);
             if (spec.maxSelectCount == null) spec.maxSelectCount = new NoneValue();
