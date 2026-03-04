@@ -15,8 +15,9 @@ public static class DispatcherBootstrap
         EventDispatcher.Register("DiscardCard", new DiscardCardEventHandler());
         EventDispatcher.Register("ReadyToPlaySkillCardEffect", new ReadyToPlaySkillCardEffectEventHandler());
         EventDispatcher.Register("ValidateSkillCard", new ValidateSkillCardEventHandler());
+        EventDispatcher.Register("EndTurn", new EndTurnEventHandler());
 
-
+        CommandDispatcher.Register("LeaveGame", new LeaveGameCmdHandler());
         CommandDispatcher.Register("JoinOrCreateGame", new JoinOrCreateGameCmdHandler());
         CommandDispatcher.Register("StartGame", new StartGameCmdHandler());
         CommandDispatcher.Register("StartTurn", new StartTurnCmdHandler());
@@ -28,5 +29,6 @@ public static class DispatcherBootstrap
         CommandDispatcher.Register("DiscardCard", new DiscardCardCmdHandler());
         CommandDispatcher.Register("ReadyToPlaySkillCardEffect", new ReadyToPlaySkillCardEffectCmdHandler());
         CommandDispatcher.Register("ValidateSkillCard", new ValidateSkillCardCmdHandler());
+        CommandDispatcher.Register("EndTurn", new EndTurnCmdHandler());
     }
 }

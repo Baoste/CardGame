@@ -24,6 +24,11 @@ namespace Game.Domain
         public string matchIdOrEmpty;
     }
 
+    public class LeaveGameCommand : ICommand
+    {
+        public int playerId;
+    }
+
     public class StartGameCommand : ICommand
     {
         public int playerId;
@@ -33,6 +38,11 @@ namespace Game.Domain
     /// 开始回合命令
     /// </summary>
     public class StartTurnCommand : ICommand
+    {
+        public int playerId;
+    }
+
+    public class EndTurnCommand : ICommand
     {
         public int playerId;
     }
@@ -84,4 +94,5 @@ namespace Game.Domain
         public List<int> selectedSourceIds;
         public List<int> selectedTargetIds;
     }
+
 }

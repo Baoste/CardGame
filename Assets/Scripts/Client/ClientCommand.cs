@@ -19,15 +19,21 @@ public static class ClientCommand
         Debug.Log($"[Client] Requested join match {matchId}");
     }
 
+    public static void LeaveMatch()
+    {
+        LeaveGameCommand cmd = new LeaveGameCommand { playerId = ClientGameState.playerSlot };
+        ClientGameState.gateway.SendCommandServerRpc("LeaveGame", JsonConvert.SerializeObject(cmd));
+    }
+
     public static void StartGame()
     {
         StartGameCommand cmd = new StartGameCommand { playerId = ClientGameState.playerSlot };
         ClientGameState.gateway.SendCommandServerRpc("StartGame", JsonConvert.SerializeObject(cmd));
     }
 
-    public static void StartTurn()
+    public static void StartTurn(int turnPlayerId)
     {
-        StartTurnCommand cmd = new StartTurnCommand { playerId = ClientGameState.playerSlot };
+        StartTurnCommand cmd = new StartTurnCommand { playerId = turnPlayerId };
         ClientGameState.gateway.SendCommandServerRpc("StartTurn", JsonConvert.SerializeObject(cmd));
     }
 
@@ -47,5 +53,11 @@ public static class ClientCommand
     {
         DrawPointCardCommand cmd = new DrawPointCardCommand { playerId = ClientGameState.playerSlot };
         ClientGameState.gateway.SendCommandServerRpc("DrawPointCard", JsonConvert.SerializeObject(cmd));
+    }
+
+    public static void EndTurn()
+    {
+        EndTurnCommand cmd = new EndTurnCommand { playerId = ClientGameState.playerSlot };
+        ClientGameState.gateway.SendCommandServerRpc("EndTurn", JsonConvert.SerializeObject(cmd));
     }
 }

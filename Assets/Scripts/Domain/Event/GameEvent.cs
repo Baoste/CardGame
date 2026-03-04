@@ -85,10 +85,9 @@ namespace Game.Domain
         public List<int> targetIds;
     }
 
-    public class CardChangeEvent : INetEventPayload
+    public class EndTurnEvent : INetEventPayload
     {
         public int playerId;
-        public int instanceId;
-        public int cardId;
+        public int opponentId;
     }
 }

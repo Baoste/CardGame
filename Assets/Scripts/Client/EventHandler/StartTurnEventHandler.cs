@@ -11,6 +11,10 @@ public class StartTurnEventHandler : IEventProcess, IEventHandler
         var payload = JsonConvert.DeserializeObject<StartTurnEvent>(ev.jsonData); // need change
         // need change, 需要把参数在这里传进去
         ProcessQueueManager.Instance.Enqueue(Process, new object[] { });
+        
+        ClientGameState.Instance.Turn++;
+        ClientGameState.Instance.CurrentPlayerId = payload.playerId;
+        
         ClientEffectContext.Instance.caster = payload.playerId;
         ClientEffectContext.Instance.opponent = payload.opponentId;
 

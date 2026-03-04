@@ -11,6 +11,8 @@ public class StartGameCmdHandler : CommandHandler, ICommandHandler
         var payload = JsonConvert.DeserializeObject<StartGameCommand>(cmd.jsonData);  // need change
 
         // TODO: 服务器端需要做什么
+        session.gameState.Init();
+
         // 初始化牌堆
         List<int> pointCardInstanceIds = new List<int>();
         List<int> skillCardInstanceIds = new List<int>();
@@ -39,11 +41,9 @@ public class StartGameCmdHandler : CommandHandler, ICommandHandler
         StaticFunction.Shuffle(skillCardInstanceIds, session.gameState.rng);
 
         var pointCardsDeck = session.gameState.pointCardsDeck;
-        pointCardsDeck._Clear();
         pointCardsDeck._Add(pointCardInstanceIds);
 
         var skillCardsDeck = session.gameState.skillCardsDeck;
-        skillCardsDeck._Clear();
         skillCardsDeck._Add(skillCardInstanceIds);
 
         // return results

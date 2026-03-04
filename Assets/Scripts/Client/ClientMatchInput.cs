@@ -1,9 +1,6 @@
 using Game.Domain;
-using Newtonsoft.Json;
 using System.Collections;
 using System.Collections.Generic;
-using TMPro;
-using Unity.VisualScripting;
 using UnityEngine;
 
 
@@ -47,19 +44,6 @@ public class ClientMatchInput : MonoBehaviour
     void Update()
     {
         if (ClientGameState.gateway == null) return;
-
-        if (Input.GetKeyDown(KeyCode.F1))
-        {
-            Card tmp = CardDatabase.Get(999);
-            StartCoroutine(ClientEffectExecutor.ExcuteCard(tmp, ClientGameState.gateway, ClientGameState.playerSlot, -1));
-        }
-
-        if (Input.GetKeyDown(KeyCode.F2))
-        {
-            Card tmp = CardDatabase.Get(9999);
-            StartCoroutine(ClientEffectExecutor.ExcuteCard(tmp, ClientGameState.gateway, ClientGameState.playerSlot, -1));
-        }
-
     }
 
 

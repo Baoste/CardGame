@@ -16,18 +16,19 @@ namespace Game.Domain
      */
     public class GameState
     {
-        public int Turn;
-        public int CurrentPlayerId;
+        public int Turn = 0;
+        public int CurrentPlayerId = -1;
         public int RandomSeed = 12345;
 
         public Random rng;
+        public bool isStart = false;
 
         public PlayerState[] players;
         public SkillCardsDeck skillCardsDeck = new SkillCardsDeck();
         public PointCardsDeck pointCardsDeck = new PointCardsDeck();
         public DiscardPile discardPile = new DiscardPile();
 
-        Dictionary<int, CardZone> cardLocationMap = new Dictionary<int, CardZone>();
+        private Dictionary<int, CardZone> cardLocationMap = new Dictionary<int, CardZone>();
 
         public GameState()
         {
@@ -37,6 +38,22 @@ namespace Game.Domain
             {
                 players[i] = new PlayerState();
             }
+        }
+
+        public void Init()
+        {
+            Turn = 0;
+            CurrentPlayerId = -1;
+
+            skillCardsDeck._Clear();
+            pointCardsDeck._Clear();
+            discardPile._Clear();
+            foreach (PlayerState player in players)
+            {
+                player.skillCardsInHand._Clear();
+                player.pointCardsOnBoard._Clear();
+            }
+            cardLocationMap.Clear();
         }
 
         public void AddCard(int playerId, int instanceId, CardType type)

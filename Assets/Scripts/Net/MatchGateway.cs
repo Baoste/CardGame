@@ -26,7 +26,7 @@ public class MatchGateway : NetworkBehaviour
     private readonly Dictionary<int, (string matchId, int slot)> _connMap = new();
 
     // 两人都离线后保留多久再回收
-    private static readonly TimeSpan KeepAlive = TimeSpan.FromMinutes(5);
+    private static readonly TimeSpan KeepAlive = TimeSpan.FromSeconds(5);
     private float _gcTimer;
 
 
@@ -106,6 +106,16 @@ public class MatchGateway : NetworkBehaviour
                     BroadcastToSession(session, ev);
                 }
             }
+        }
+        else if (type == "LeaveGame")
+        {
+            if (!_connMap.TryGetValue(sender.ClientId, out var info))
+            {
+                TargetError(sender, "Not in a match.");
+                return;
+            }
+            DetachConnection(sender.ClientId, info.matchId, info.slot);
+            // TargetInfo(sender, "Left the match.");
         }
         else
         {
@@ -229,6 +239,7 @@ public class MatchGateway : NetworkBehaviour
             // 只清掉当前槽位的 Conn（token/状态保留，以便重连）
             if (session.Slots[slot].Conn != null && session.Slots[slot].Conn.ClientId == clientId)
             {
+                Debug.Log($"[Server] Detach connection {clientId} from match {matchId}, slot {slot}");
                 session.Slots[slot].Conn = null;
                 session.Slots[slot].LastSeenUtc = DateTime.UtcNow;
 
@@ -270,7 +281,7 @@ public class MatchGateway : NetworkBehaviour
         foreach (var id in remove)
         {
             _sessions.Remove(id);
-            // Debug.Log($"[Server] GC session {id}");
+            Debug.Log($"[Server] GC session {id}");
         }
     }
 

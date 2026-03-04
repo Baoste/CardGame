@@ -1,9 +1,6 @@
 using Game.Domain;
 using Game.Server;
 using Newtonsoft.Json;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
 
 public class StartTurnCmdHandler : CommandHandler, ICommandHandler
 {
@@ -12,6 +9,9 @@ public class StartTurnCmdHandler : CommandHandler, ICommandHandler
         var payload = JsonConvert.DeserializeObject<StartTurnCommand>(cmd.jsonData);  // need change
 
         // TODO: 服务器端需要做什么
+        session.gameState.Turn++;
+        session.gameState.CurrentPlayerId = payload.playerId;
+
         int opponentId = 1 - payload.playerId;
         session.ctx.caster = payload.playerId;
         session.ctx.opponent = opponentId;

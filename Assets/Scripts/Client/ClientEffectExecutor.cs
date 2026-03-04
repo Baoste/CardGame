@@ -27,6 +27,7 @@ namespace Game.Domain
                 ClientEffectContext.IsExecuteDone = false;
             }
 
+            // TODO: 这里直接丢弃了，后续可能需要根据效果来决定是否丢弃
             //DiscardCardCommand discardCmd = new DiscardCardCommand { playerId = playerSlot, instanceId = cardIstanceId };
             //gateway.SendCommandServerRpc("DiscardCard", JsonConvert.SerializeObject(discardCmd));
         }

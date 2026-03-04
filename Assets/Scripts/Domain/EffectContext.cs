@@ -14,6 +14,17 @@ namespace Game.Domain
         // 技能卡效果需要用到这两个字段来区分玩家
         public int caster;      // 施法者玩家ID
         public int opponent;    // 对手玩家ID
+
+        public void ClearContext()
+        {
+            selectedSourceIds.Clear();
+            selectedTargetIds.Clear();
+            candidateSourceIds.Clear();
+            candidateTargetIds.Clear();
+            tmpSelectedIds.Clear();
+            caster = -1;
+            opponent = -1;
+        }
     }
 
     public static class ClientEffectContext
