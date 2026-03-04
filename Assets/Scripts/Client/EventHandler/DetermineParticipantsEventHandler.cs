@@ -3,13 +3,13 @@ using Newtonsoft.Json;
 using System.Collections.Generic;
 using UnityEngine;
 
-public sealed class ReadyToPlaySkillCardEffectEventHandler : IEventProcess, IEventHandler
+public sealed class DetermineParticipantsEventHandler : IEventProcess, IEventHandler
 {
-    private ReadyToPlaySkillCardEffectEvent payload;
+    private DetermineParticipantsEvent payload;
 
     public bool Handle(NetEvent ev)
     {
-        payload = JsonConvert.DeserializeObject<ReadyToPlaySkillCardEffectEvent>(ev.jsonData); // need change
+        payload = JsonConvert.DeserializeObject<DetermineParticipantsEvent>(ev.jsonData); // need change
         // need change, 需要把参数在这里传进去
         ProcessQueueManager.Instance.Enqueue(Process, new object[] { 
             payload.sourceNeedChoose,

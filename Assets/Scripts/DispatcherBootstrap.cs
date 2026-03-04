@@ -14,8 +14,9 @@ public static class DispatcherBootstrap
         EventDispatcher.Register("DrawSkillCard", new DrawSkillCardEventHandler());
         EventDispatcher.Register("DiscardCard", new DiscardCardEventHandler());
         EventDispatcher.Register("ModifyPoint", new ModifyPointEventHandler());
-        EventDispatcher.Register("ReadyToPlaySkillCardEffect", new ReadyToPlaySkillCardEffectEventHandler());
-        EventDispatcher.Register("ValidateSkillCard", new ValidateSkillCardEventHandler());
+        EventDispatcher.Register("ValidatePlayCard", new ValidatePlayCardEventHandler());
+        EventDispatcher.Register("DetermineParticipants", new DetermineParticipantsEventHandler());
+        EventDispatcher.Register("ValidateParticipants", new ValidateParticipantsEventHandler());
         EventDispatcher.Register("EndTurn", new EndTurnEventHandler());
 
         CommandDispatcher.Register("LeaveGame", new LeaveGameCmdHandler());
@@ -29,8 +30,9 @@ public static class DispatcherBootstrap
         CommandDispatcher.Register("DrawSkillCard", new DrawSkillCardCmdHandler());
         CommandDispatcher.Register("DiscardCard", new DiscardCardCmdHandler());
         CommandDispatcher.Register("ModifyPoint", new ModifyPointCmdHandler());
-        CommandDispatcher.Register("ReadyToPlaySkillCardEffect", new ReadyToPlaySkillCardEffectCmdHandler());
-        CommandDispatcher.Register("ValidateSkillCard", new ValidateSkillCardCmdHandler());
+        CommandDispatcher.Register("ValidatePlayCard", new ValidatePlayCardCmdHandler());
+        CommandDispatcher.Register("DetermineParticipants", new DetermineParticipantsCmdHandler());
+        CommandDispatcher.Register("ValidateParticipants", new ValidateParticipantsCmdHandler());
         CommandDispatcher.Register("EndTurn", new EndTurnCmdHandler());
     }
 }

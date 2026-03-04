@@ -3,11 +3,11 @@ using Newtonsoft.Json;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ValidateSkillCardEventHandler : IEventProcess, IEventHandler
+public class ValidateParticipantsEventHandler : IEventProcess, IEventHandler
 {
     public bool Handle(NetEvent ev)
     {
-        var payload = JsonConvert.DeserializeObject<ValidateSkillCardEvent>(ev.jsonData); // need change
+        var payload = JsonConvert.DeserializeObject<ValidateParticipantsEvent>(ev.jsonData); // need change
         ProcessQueueManager.Instance.Enqueue(Process, new object[] { });
 
         // TODO

@@ -86,15 +86,22 @@ namespace Game.Domain
         public int pointChange;
     }
 
+    // 验证玩家打出某张牌是否合法（例如是否满足卡牌的使用条件）
+    public class ValidatePlayCardCommand : ICommand
+    {
+        public int playerId;
+        public EffectOp effect;
+    }
+
     // 根据效果返回可选的操作源、目标列表
-    public class ReadyToPlaySkillCardEffectCommand : ICommand
+    public class DetermineParticipantsCommand : ICommand
     {
         public int playerId;
         public EffectOp effect;
     }
 
     // 验证玩家选择的操作源、目标是否合法
-    public class ValidateSkillCardCommand : ICommand
+    public class ValidateParticipantsCommand : ICommand
     {
         public int playerId;
         public EffectOp effect;

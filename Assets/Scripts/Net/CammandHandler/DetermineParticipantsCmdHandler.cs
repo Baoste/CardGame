@@ -4,11 +4,11 @@ using Newtonsoft.Json;
 using System.Collections.Generic;
 using UnityEngine;
 
-public sealed class ReadyToPlaySkillCardEffectCmdHandler : CommandHandler, ICommandHandler
+public sealed class DetermineParticipantsCmdHandler : CommandHandler, ICommandHandler
 {
     public CommandResult Handle(MatchSession session, NetCommand cmd)
     {
-        var payload = JsonConvert.DeserializeObject<ReadyToPlaySkillCardEffectCommand>(cmd.jsonData);  // need change
+        var payload = JsonConvert.DeserializeObject<DetermineParticipantsCommand>(cmd.jsonData);  // need change
 
         // TODO: 服务器端需要做什么
         List<int> candidateSourceIds = ParticipantResolver.DetermineCandidates(payload.effect.source, session.gameState, session.ctx);
@@ -37,8 +37,8 @@ public sealed class ReadyToPlaySkillCardEffectCmdHandler : CommandHandler, IComm
         bool targetNeedChoose = payload.effect.target.participantSelectionMode == ParticipantSelectionMode.Choose;
 
         results.events.Enqueue(MakeEvent(
-            "ReadyToPlaySkillCardEffect",
-            new ReadyToPlaySkillCardEffectEvent    // need change
+            "DetermineParticipants",
+            new DetermineParticipantsEvent    // need change
             {
                 playerId = payload.playerId,
                 sourceNeedChoose = sourceNeedChoose,
