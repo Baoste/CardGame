@@ -73,7 +73,13 @@ namespace Game.Domain
         public int pointChange;
     }
 
-    public class ReadyToPlaySkillCardEffectEvent : INetEventPayload
+    public class ValidatePlayCardEvent : INetEventPayload
+    {
+        public int playerId;
+        public bool success;
+    }
+
+    public class DetermineParticipantsEvent : INetEventPayload
     {
         public int playerId;
         public bool sourceNeedChoose;
@@ -84,7 +90,7 @@ namespace Game.Domain
         public int targetSelectCount;
     }
 
-    public class ValidateSkillCardEvent : INetEventPayload
+    public class ValidateParticipantsEvent : INetEventPayload
     {
         public int playerId;
         public bool success;

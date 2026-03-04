@@ -68,20 +68,20 @@ namespace Game.Domain
 
         public IEnumerator ValidateCommand(EffectOp op, MatchGateway gateway, GameState gameState, EffectContext ctx, Action onSuccess)
         {
-            ValidateSkillCardCommand cmd = new ValidateSkillCardCommand
+            ValidateParticipantsCommand cmd = new ValidateParticipantsCommand
             {
                 playerId = ctx.caster,
                 effect = op,
                 selectedSourceIds = ctx.selectedSourceIds,
                 selectedTargetIds = ctx.selectedTargetIds
             };
-            gateway.SendCommandServerRpc("ValidateSkillCard", JsonConvert.SerializeObject(cmd));
+            gateway.SendCommandServerRpc("ValidateParticipants", JsonConvert.SerializeObject(cmd), ClientGameState.playerSlot);
             yield return new WaitUntil(() => ClientEffectContext.IsValidateDone);
             ClientEffectContext.IsValidateDone = false;
 
             if (!ClientEffectContext.IsCommandValid)
             {
-                Debug.Log($"[Client] Validate failed");
+                Debug.Log($"[Client] Validate Cmd failed");
                 yield break;
             }
             onSuccess.Invoke();

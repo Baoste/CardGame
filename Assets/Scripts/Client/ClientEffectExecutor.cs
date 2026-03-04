@@ -6,16 +6,31 @@ namespace Game.Domain
 {
     public static class ClientEffectExecutor
     {
-        public static IEnumerator ExcuteCard(Card card, MatchGateway gateway, int playerSlot, int cardIstanceId)
+        public static IEnumerator ExecuteCard(Card card, MatchGateway gateway, int playerSlot, int cardIstanceId)
         {
+            // 先检查能不能打这张牌（比如资源够不够，或者有没有特定的牌在场上等）
+            foreach (var op in card.effects)
+            {
+                ValidatePlayCardCommand cmd = new ValidatePlayCardCommand { playerId = playerSlot, effect = op };
+                gateway.SendCommandServerRpc("ValidatePlayCard", JsonConvert.SerializeObject(cmd), ClientGameState.playerSlot);
+                yield return new WaitUntil(() => ClientEffectContext.IsValidateDone);
+                ClientEffectContext.IsValidateDone = false;
+
+                if (!ClientEffectContext.IsCommandValid)
+                {
+                    Debug.Log($"[Client] Validate Play Card failed");
+                    yield break;
+                }
+            }
+
             // 这里模拟一个需要玩家选择目标的效果执行流程：
             // 1. 客户端收到事件，解析出 Card 和 EffectOp（这里直接用参数传了）
             // 2. 弹 UI 让玩家选目标（这里直接等 0.1 秒模拟玩家选择）
             // 3. 玩家选好后，继续执行效果
             foreach (var op in card.effects)
             {
-                ReadyToPlaySkillCardEffectCommand cmd = new ReadyToPlaySkillCardEffectCommand { playerId = playerSlot, effect = op };
-                gateway.SendCommandServerRpc("ReadyToPlaySkillCardEffect", JsonConvert.SerializeObject(cmd), ClientGameState.playerSlot);
+                DetermineParticipantsCommand cmd = new DetermineParticipantsCommand { playerId = playerSlot, effect = op };
+                gateway.SendCommandServerRpc("DetermineParticipants", JsonConvert.SerializeObject(cmd), ClientGameState.playerSlot);
                 yield return new WaitUntil(() =>
                     ClientGameState.GetServerGameStateDone &&
                     ClientEffectContext.GetServerCtxDone &&
@@ -28,6 +43,7 @@ namespace Game.Domain
             }
 
             // TODO: 这里直接丢弃了，后续可能需要根据效果来决定是否丢弃
+            Debug.Log($"[Client] Discard skill card instance {cardIstanceId}");
             //DiscardCardCommand discardCmd = new DiscardCardCommand { playerId = playerSlot, instanceId = cardIstanceId };
             //gateway.SendCommandServerRpc("DiscardCard", JsonConvert.SerializeObject(discardCmd));
         }

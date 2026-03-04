@@ -6,6 +6,39 @@ namespace Game.Domain
 {
     public static class ParticipantResolver
     {
+        public static bool ValidateCard(ParticipantSpec spec, GameState state, EffectContext ctx)
+        {
+            if (spec.participantType == ParticipantType.None)
+                return true;
+            List<int> pool = DetermineCandidates(spec, state, ctx);
+            switch (spec.participantSelectionMode)
+            {
+                case ParticipantSelectionMode.None:
+                    return true;
+                case ParticipantSelectionMode.All:
+                    if (pool.Count == 0)
+                        return false;
+                    break;
+                case ParticipantSelectionMode.Random:
+                    if (pool.Count == 0)
+                        return false;
+                    break;
+                case ParticipantSelectionMode.Choose:
+                    if (pool.Count == 0)
+                        return false;
+                    break;
+                case ParticipantSelectionMode.First:
+                    if (pool.Count == 0)
+                        return false;
+                    break;
+                case ParticipantSelectionMode.Last:
+                    if (pool.Count == 0)
+                        return false;
+                    break;
+            }
+            return true;
+        }
+
         public static List<int> DetermineCandidates(ParticipantSpec spec, GameState state, EffectContext ctx)
         {
             List<int> pool = new List<int>();
@@ -44,6 +77,8 @@ namespace Game.Domain
                 case ParticipantSelectionMode.None:
                     return true;
                 case ParticipantSelectionMode.All:
+                    if (pool.Count == 0)
+                        return false;
                     participantIds = pool;
                     break;
                 case ParticipantSelectionMode.Random:
@@ -55,6 +90,10 @@ namespace Game.Domain
                         {
                             participantIds.Add(pool[i]);
                         }
+                        else
+                        {
+                            return false;
+                        }
                     }
                     break;
                 case ParticipantSelectionMode.Choose:
@@ -65,10 +104,14 @@ namespace Game.Domain
                 case ParticipantSelectionMode.First:
                     if (pool.Count > 0)
                         participantIds.Add(pool[0]);
+                    else
+                        return false;
                     break;
                 case ParticipantSelectionMode.Last:
                     if (pool.Count > 0)
                         participantIds.Add(pool[pool.Count - 1]);
+                    else
+                        return false;
                     break;
             }
 

@@ -4,11 +4,11 @@ using Newtonsoft.Json;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ValidateSkillCardCmdHandler : CommandHandler, ICommandHandler
+public class ValidateParticipantsCmdHandler : CommandHandler, ICommandHandler
 {
     public CommandResult Handle(MatchSession session, NetCommand cmd)
     {
-        var payload = JsonConvert.DeserializeObject<ValidateSkillCardCommand>(cmd.jsonData);  // need change
+        var payload = JsonConvert.DeserializeObject<ValidateParticipantsCommand>(cmd.jsonData);  // need change
 
         // TODO: 服务器端需要做什么
         // 验证 payload 里的 playerId 和 cardId 是否有效，是否符合游戏规则（比如玩家是否有这张牌，牌能否在当前阶段打出等等）
@@ -21,8 +21,8 @@ public class ValidateSkillCardCmdHandler : CommandHandler, ICommandHandler
         // return event
         CommandResult results = new CommandResult();
         results.events.Enqueue(MakeEvent(
-            "ValidateSkillCard",
-            new ValidateSkillCardEvent    // need change
+            "ValidateParticipants",
+            new ValidateParticipantsEvent    // need change
             {
                 playerId = payload.playerId,
                 success = success,
