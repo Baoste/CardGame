@@ -14,15 +14,15 @@ namespace Game.Domain
         PointCardsInDeck            = 1 << 5,   // 牌堆的点数牌
     }
 
-    public enum ParticipantSelectionMode
-    {
-        None,
-        All,
-        Choose,
-        First,
-        Last,
-        Random,
-    }
+    //public enum ParticipantSelectionMode
+    //{
+    //    None,
+    //    All,
+    //    Choose,
+    //    First,
+    //    Last,
+    //    Random,
+    //}
 
     public class ParticipantSpec
     {
@@ -30,7 +30,6 @@ namespace Game.Domain
         public ConditionExpr filter;        // 例如对手牌进行过滤：只选“攻击牌”、只选“点数>=5”
 
         public ParticipantSelectionMode participantSelectionMode;
-        public ValueExpr maxCandidateCountWhenRandom;    // 候选最大数量，只有在Random情况下起作用
         public ValueExpr maxSelectCount;       // 选择的最大数量
     }
 }

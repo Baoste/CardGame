@@ -33,8 +33,8 @@ public sealed class DetermineParticipantsCmdHandler : CommandHandler, ICommandHa
             }
         ));
 
-        bool sourceNeedChoose = payload.effect.source.participantSelectionMode == ParticipantSelectionMode.Choose;
-        bool targetNeedChoose = payload.effect.target.participantSelectionMode == ParticipantSelectionMode.Choose;
+        bool sourceNeedChoose = payload.effect.source.participantSelectionMode is SelectionModeChoose;
+        bool targetNeedChoose = payload.effect.target.participantSelectionMode is SelectionModeChoose;
 
         results.events.Enqueue(MakeEvent(
             "DetermineParticipants",
@@ -45,8 +45,8 @@ public sealed class DetermineParticipantsCmdHandler : CommandHandler, ICommandHa
                 targetNeedChoose = targetNeedChoose,
                 candidateSourceIds = candidateSourceIds,
                 candidateTargetIds = candidateTargetIds,
-                sourceSelectCount = payload.effect.source.maxSelectCount.Evaluate(session.gameState, session.ctx, -1),
-                targetSelectCount = payload.effect.target.maxSelectCount.Evaluate(session.gameState, session.ctx, -1),
+                sourceSelectCount = payload.effect.source.maxSelectCount.Evaluate(session.gameState, session.ctx),
+                targetSelectCount = payload.effect.target.maxSelectCount.Evaluate(session.gameState, session.ctx),
             }
         ));
         return results;

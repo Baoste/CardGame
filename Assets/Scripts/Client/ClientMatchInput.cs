@@ -100,6 +100,7 @@ public class ClientMatchInput : MonoBehaviour
             if (!candidateTargetIds.Contains(instanceId))
                 continue;
             selectedTargetIds.Add(instanceId);
+            Debug.Log($"[Client] Select instaceId {instanceId}");
             count++;
         }
         ClientEffectContext.Instance.selectedTargetIds = selectedTargetIds;

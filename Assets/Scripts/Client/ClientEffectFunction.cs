@@ -12,8 +12,7 @@ namespace Game.Domain
         public void DrawPointCards(EffectOp op, MatchGateway gateway, GameState gameState, EffectContext ctx)
         {
             // TODO: 目前只能自己抽点数牌，后续需要根据op参数区分抽不同类型的牌
-            int selectedCardId = ctx.selectedTargetIds.Count > 0 ? ctx.selectedTargetIds[0] : -1;
-            int drawNum = op.value.Evaluate(gameState, ctx, selectedCardId);
+            int drawNum = op.value.Evaluate(gameState, ctx);
 
             int casterId = ctx.caster;
             int opponentId = ctx.opponent;
@@ -52,7 +51,7 @@ namespace Game.Domain
         public void ModifyPoint(EffectOp op, MatchGateway gateway, GameState gameState, EffectContext ctx)
         {
             int count = ctx.selectedTargetIds.Count;
-            int value = op.value.Evaluate(gameState, ctx, ctx.selectedTargetIds.Count > 0 ? ctx.selectedTargetIds[0] : -1);
+            int value = op.value.Evaluate(gameState, ctx);
             List<int> selectedTargetIds = ctx.selectedTargetIds;
             for (int i = 0; i < count; i++)
             {

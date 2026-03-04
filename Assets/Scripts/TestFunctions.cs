@@ -14,17 +14,15 @@ public class TestFunctions : MonoBehaviour
             source = new ParticipantSpec
             {
                 participantType = ParticipantType.None,
-                participantSelectionMode = ParticipantSelectionMode.None,
+                participantSelectionMode = new SelectionModeNone(),
                 filter = new NoneCondition(),
-                maxCandidateCountWhenRandom = new NoneValue(),
                 maxSelectCount = new NoneValue()
             },
             target = new ParticipantSpec
             {
                 participantType = ParticipantType.OpponentPointCardsOnBoard,
-                participantSelectionMode = ParticipantSelectionMode.None,
+                participantSelectionMode = new SelectionModeNone(),
                 filter = new NoneCondition(),
-                maxCandidateCountWhenRandom = new NoneValue(),
                 maxSelectCount = new NoneValue()
             },
             value = new ConstValue
@@ -39,17 +37,15 @@ public class TestFunctions : MonoBehaviour
             source = new ParticipantSpec
             {
                 participantType = ParticipantType.None,
-                participantSelectionMode = ParticipantSelectionMode.None,
+                participantSelectionMode = new SelectionModeNone(),
                 filter = new NoneCondition(),
-                maxCandidateCountWhenRandom = new NoneValue(),
                 maxSelectCount = new NoneValue()
             },
             target = new ParticipantSpec
             {
                 participantType = ParticipantType.OpponentPointCardsOnBoard,
-                participantSelectionMode = ParticipantSelectionMode.Choose,
+                participantSelectionMode = new SelectionModeChoose(),
                 filter = new AllCondition(),
-                maxCandidateCountWhenRandom = new NoneValue(),
                 maxSelectCount = new ConstValue
                 {
                     value = 1
@@ -64,17 +60,15 @@ public class TestFunctions : MonoBehaviour
             source = new ParticipantSpec
             {
                 participantType = ParticipantType.None,
-                participantSelectionMode = ParticipantSelectionMode.None,
+                participantSelectionMode = new SelectionModeNone(),
                 filter = new NoneCondition(),
-                maxCandidateCountWhenRandom = new NoneValue(),
                 maxSelectCount = new NoneValue()
             },
             target = new ParticipantSpec
             {
                 participantType = ParticipantType.OpponentPointCardsOnBoard | ParticipantType.MyPointCardsOnBoard,
-                participantSelectionMode = ParticipantSelectionMode.Choose,
+                participantSelectionMode = new SelectionModeChoose(),
                 filter = new AllCondition(),
-                maxCandidateCountWhenRandom = new NoneValue(),
                 maxSelectCount = new ConstValue
                 {
                     value = 1

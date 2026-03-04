@@ -86,4 +86,9 @@ namespace Game.Domain
     public class DiscardPile : CardZone
     {
     }
+
+    // 正在结算的牌堆，包含正在结算的技能牌和点数牌
+    public class CardsToResolve : CardZone
+    {
+    }
 }

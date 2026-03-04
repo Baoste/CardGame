@@ -27,6 +27,7 @@ namespace Game.Domain
         public SkillCardsDeck skillCardsDeck = new SkillCardsDeck();
         public PointCardsDeck pointCardsDeck = new PointCardsDeck();
         public DiscardPile discardPile = new DiscardPile();
+        public CardsToResolve cardsToResolve = new CardsToResolve();
 
         // CardInstanceID -> CardZone 的映射，方便快速查询某张牌当前在哪个牌堆/玩家的哪个区域
         private Dictionary<int, CardZone> cardLocationMap = new Dictionary<int, CardZone>();

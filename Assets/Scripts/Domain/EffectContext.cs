@@ -10,7 +10,6 @@ namespace Game.Domain
         public List<int> selectedTargetIds = new List<int>();       // 已选的目标ID列表，可能是技能牌或点数牌的 InstanceID
         public List<int> candidateSourceIds = new List<int>();      // 可选的来源ID列表，可能是技能牌或点数牌的 InstanceID
         public List<int> candidateTargetIds = new List<int>();      // 可选的目标ID列表，可能是技能牌或点数牌的 InstanceID
-        public List<int> tmpSelectedIds = new List<int>();          // 临时选项列表，用于临时储存 selectedSourceIds 或 selectedTargetIds
         // 技能卡效果需要用到这两个字段来区分玩家
         public int caster;      // 施法者玩家ID
         public int opponent;    // 对手玩家ID
@@ -21,7 +20,6 @@ namespace Game.Domain
             selectedTargetIds.Clear();
             candidateSourceIds.Clear();
             candidateTargetIds.Clear();
-            tmpSelectedIds.Clear();
             caster = -1;
             opponent = -1;
         }

@@ -231,7 +231,8 @@ public class CardEditorWindow : EditorWindow
         using (new EditorGUILayout.VerticalScope("box"))
         {
             spec.participantType = (ParticipantType)EditorGUILayout.EnumFlagsField("Participant Type", spec.participantType);
-            spec.participantSelectionMode = (ParticipantSelectionMode)EditorGUILayout.EnumPopup("Selection Mode", spec.participantSelectionMode);
+            //spec.participantSelectionMode = (ParticipantSelectionMode)EditorGUILayout.EnumPopup("Selection Mode", spec.participantSelectionMode);
+            DrawSelectionModeEditor(ref spec.participantSelectionMode);
 
             EditorGUILayout.Space(4);
             // filter (ConditionExpr) - always present (default to AllCondition)
@@ -243,11 +244,7 @@ public class CardEditorWindow : EditorWindow
             DrawConditionExprEditor(ref spec.filter);
 
             EditorGUILayout.Space(4);
-            // maxCandidateCount / maxSelectCount (ValueExpr)
-            EditorGUILayout.LabelField("Max Candidate Count", EditorStyles.miniBoldLabel);
-            if (spec.maxCandidateCountWhenRandom == null) spec.maxCandidateCountWhenRandom = new NoneValue();
-            DrawValueExprEditor(ref spec.maxCandidateCountWhenRandom);
-
+            // maxSelectCount (ValueExpr)
             EditorGUILayout.LabelField("Max Select Count", EditorStyles.miniBoldLabel);
             if (spec.maxSelectCount == null) spec.maxSelectCount = new NoneValue();
             DrawValueExprEditor(ref spec.maxSelectCount);
@@ -341,6 +338,46 @@ public class CardEditorWindow : EditorWindow
         }
     }
 
+    private void DrawSelectionModeEditor(ref ParticipantSelectionMode mode)
+    {
+        using (new EditorGUILayout.VerticalScope("box"))
+        {
+            int sel = SelectionModeToIndex(mode);
+            int newSel = EditorGUILayout.Popup("Selection Mode", sel, new[] { "None", "All", "Choose", "First", "Last", "Random" });
+            if (newSel != sel)
+            {
+                mode = CreateSelectionModeByIndex(newSel);
+            }
+
+            switch (mode)
+            {
+                case SelectionModeNone _:
+                    EditorGUILayout.LabelField("None", EditorStyles.helpBox);
+                    break;
+
+                case SelectionModeAll _:
+                    EditorGUILayout.LabelField("All", EditorStyles.helpBox);
+                    break;
+
+                case SelectionModeChoose _:
+                    EditorGUILayout.LabelField("Choose", EditorStyles.helpBox);
+                    break;
+
+                case SelectionModeFirst _:
+                    EditorGUILayout.LabelField("First", EditorStyles.helpBox);
+                    break;
+
+                case SelectionModeLast _:
+                    EditorGUILayout.LabelField("Last", EditorStyles.helpBox);
+                    break;
+
+                case SelectionModeRandom _:
+                    EditorGUILayout.LabelField("Random", EditorStyles.helpBox);
+                    break;
+            }
+        }
+    }
+
     private void EnsureEffectFoldoutsCount()
     {
         if (effectFoldouts == null) effectFoldouts = new List<bool>();
@@ -395,6 +432,34 @@ public class CardEditorWindow : EditorWindow
             2 => new CompareCondition(),
             3 => new AndCondition(),
             _ => new NoneCondition()
+        };
+    }
+
+    private int SelectionModeToIndex(ParticipantSelectionMode m)
+    {
+        return m switch
+        {
+            SelectionModeNone _ => 0,
+            SelectionModeAll _ => 1,
+            SelectionModeChoose _ => 2,
+            SelectionModeFirst _ => 3,
+            SelectionModeLast _ => 4,
+            SelectionModeRandom _ => 5,
+            _ => 0
+        };
+    }
+
+    private ParticipantSelectionMode CreateSelectionModeByIndex(int idx)
+    {
+        return idx switch
+        {
+            0 => new SelectionModeNone(),
+            1 => new SelectionModeAll(),
+            2 => new SelectionModeChoose(),
+            3 => new SelectionModeFirst(),
+            4 => new SelectionModeLast(),
+            5 => new SelectionModeRandom(),
+            _ => new SelectionModeNone()
         };
     }
 

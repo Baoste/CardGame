@@ -4,13 +4,13 @@ namespace Game.Domain
 {
     public class ValueExpr
     {
-        public virtual int Evaluate(GameState state, EffectContext ctx, int target) { return -1; }   
+        public virtual int Evaluate(GameState state, EffectContext ctx) { return -1; }   
     }
 
     // 无值
     public class NoneValue : ValueExpr
     {
-        public override int Evaluate(GameState state, EffectContext ctx, int target)
+        public override int Evaluate(GameState state, EffectContext ctx)
             => -1;
     }
 
@@ -18,7 +18,7 @@ namespace Game.Domain
     public class ConstValue : ValueExpr
     {
         public int value;
-        public override int Evaluate(GameState state, EffectContext ctx, int target)
+        public override int Evaluate(GameState state, EffectContext ctx)
             => value;
     }
 
@@ -26,18 +26,31 @@ namespace Game.Domain
     public class VariableValue : ValueExpr
     {
         public ValueSource source;
-        public override int Evaluate(GameState state, EffectContext ctx, int target)
+        public override int Evaluate(GameState state, EffectContext ctx)
         {
             switch (source)
             {
                 case ValueSource.CasterSkillCardsCount:
-                    return state.players[ctx.caster].skillCardsInHand.GetCount();
+                    return state.players[state.CurrentPlayerId].skillCardsInHand.GetCount();
 
                 case ValueSource.CasterPointCardsCount:
-                    return state.players[ctx.caster].pointCardsOnBoard.GetCount();
+                    return state.players[state.CurrentPlayerId].pointCardsOnBoard.GetCount();
 
-                case ValueSource.TargetPoints:
-                    return CardDatabase.Get(target).point;
+                case ValueSource.SourceSpecSelectedPointsSum:
+                {
+                    int sum = 0;
+                    foreach (int id in ctx.selectedSourceIds)
+                        sum += CardDatabase.Get(id).point;
+                    return sum;
+                }
+
+                case ValueSource.TargetSpecSelectedPointsSum:
+                {
+                    int sum = 0;
+                    foreach (int id in ctx.selectedTargetIds)
+                        sum += CardDatabase.Get(id).point;
+                    return sum;
+                }
             }
             return 0;
         }
@@ -50,10 +63,10 @@ namespace Game.Domain
         public ValueExpr right;
         public BinaryOp op;
 
-        public override int Evaluate(GameState state, EffectContext ctx, int target)
+        public override int Evaluate(GameState state, EffectContext ctx)
         {
-            int l = left.Evaluate(state, ctx, target);
-            int r = right.Evaluate(state, ctx, target);
+            int l = left.Evaluate(state, ctx);
+            int r = right.Evaluate(state, ctx);
 
             return op switch
             {

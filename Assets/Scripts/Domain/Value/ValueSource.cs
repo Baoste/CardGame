@@ -6,8 +6,8 @@ namespace Game.Domain
     {
         CasterSkillCardsCount,          // 施法者技能牌数
         CasterPointCardsCount,          // 施法者点数牌数
-        TargetPoints,                   // 目标牌点数
-        //PointsOfCardsDrawnThisTurn,     // 抽到的牌的点数
+        SourceSpecSelectedPointsSum,    // 源效果指定的牌的点数总和
+        TargetSpecSelectedPointsSum,    // 目标效果指定的牌的点数总和
     }
 
     public enum BinaryOp
