@@ -49,6 +49,23 @@ namespace Game.Domain
             ClientEffectContext.IsExecuteDone = true;
         }
 
+        public void ModifyPoint(EffectOp op, MatchGateway gateway, GameState gameState, EffectContext ctx)
+        {
+            int count = ctx.selectedTargetIds.Count;
+            int value = op.value.Evaluate(gameState, ctx, ctx.selectedTargetIds.Count > 0 ? ctx.selectedTargetIds[0] : -1);
+            List<int> selectedTargetIds = ctx.selectedTargetIds;
+            for (int i = 0; i < count; i++)
+            {
+                int idx = i;    // ·ÀÖ¹±Õ°ü²¶»ñ
+                StartCoroutine(ValidateCommand(op, gateway, gameState, ctx, () =>
+                {
+                    ModifyPointCommand cmd = new ModifyPointCommand { playerId = ctx.caster, instanceId = selectedTargetIds[idx], pointChange = value };
+                    gateway.SendCommandServerRpc("ModifyPoint", JsonConvert.SerializeObject(cmd));
+                }));
+            }
+            ClientEffectContext.IsExecuteDone = true;
+        }
+
         public IEnumerator ValidateCommand(EffectOp op, MatchGateway gateway, GameState gameState, EffectContext ctx, Action onSuccess)
         {
             ValidateSkillCardCommand cmd = new ValidateSkillCardCommand

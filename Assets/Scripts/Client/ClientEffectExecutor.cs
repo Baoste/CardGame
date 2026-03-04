@@ -46,7 +46,7 @@ namespace Game.Domain
                     break;
 
                 case EffectType.ModifyPoint:
-                    //ModifyPoint(op, state, ctx);
+                    clientEffectFunction.ModifyPoint(op, gateway, gameState, ctx);
                     break;
 
                 case EffectType.Move:

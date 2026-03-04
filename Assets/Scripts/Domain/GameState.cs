@@ -28,7 +28,10 @@ namespace Game.Domain
         public PointCardsDeck pointCardsDeck = new PointCardsDeck();
         public DiscardPile discardPile = new DiscardPile();
 
+        // CardInstanceID -> CardZone 的映射，方便快速查询某张牌当前在哪个牌堆/玩家的哪个区域
         private Dictionary<int, CardZone> cardLocationMap = new Dictionary<int, CardZone>();
+        // CardInstanceID -> PointCard的点数 的映射，方便快速查询某张点数牌实例的点数
+        public Dictionary<int, int> instancePointMap = new Dictionary<int, int>();
 
         public GameState()
         {
@@ -56,7 +59,7 @@ namespace Game.Domain
             cardLocationMap.Clear();
         }
 
-        public void AddCard(int playerId, int instanceId, CardType type)
+        public void AddCard(int playerId, int cardId, int instanceId, CardType type)
         {
             if (instanceId == -1)   return;
 
@@ -65,6 +68,7 @@ namespace Game.Domain
                 board = players[playerId].skillCardsInHand;
             
             cardLocationMap[instanceId] = board;
+            instancePointMap[instanceId] = CardDatabase.Get(cardId).point;
             board._Add(instanceId);
         }
 
@@ -76,6 +80,7 @@ namespace Game.Domain
             board._Remove(instanceId);
             discardPile._Add(instanceId);
             cardLocationMap[instanceId] = discardPile;
+            instancePointMap.Remove(instanceId);
         }
 
         public void MoveCard(int instanceId, CardZone targetZone)

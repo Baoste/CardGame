@@ -66,6 +66,13 @@ namespace Game.Domain
         public int instanceId;
     }
 
+    public class ModifyPointEvent : INetEventPayload
+    {
+        public int playerId;
+        public int instanceId;
+        public int pointChange;
+    }
+
     public class ReadyToPlaySkillCardEffectEvent : INetEventPayload
     {
         public int playerId;

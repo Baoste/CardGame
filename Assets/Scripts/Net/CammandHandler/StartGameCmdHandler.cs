@@ -85,7 +85,7 @@ public class StartGameCmdHandler : CommandHandler, ICommandHandler
 
         // ³é¼¼ÄÜÅÆ
         drawCardInstanceId = skillCardsDeck.Draw();
-        session.gameState.AddCard(payload.playerId, drawCardInstanceId, CardType.Skill);
+        session.gameState.AddCard(payload.playerId, session.instanceToCardId[drawCardInstanceId], drawCardInstanceId, CardType.Skill);
         results.events.Enqueue(MakeEvent(
             "DrawSkillCard",
             new DrawSkillCardEvent    // need change
@@ -96,7 +96,7 @@ public class StartGameCmdHandler : CommandHandler, ICommandHandler
             }
         ));
         drawCardInstanceId = skillCardsDeck.Draw();
-        session.gameState.AddCard(1- payload.playerId, drawCardInstanceId, CardType.Skill);
+        session.gameState.AddCard(1 - payload.playerId, session.instanceToCardId[drawCardInstanceId], drawCardInstanceId, CardType.Skill);
         results.events.Enqueue(MakeEvent(
             "DrawSkillCard",
             new DrawSkillCardEvent    // need change

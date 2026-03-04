@@ -15,8 +15,22 @@ public class DrawCardTest : MonoBehaviour
     {
         ProcessDispatcher.Register("DrawCardTest", DrawCard);
         ProcessDispatcher.Register("DiscardCardTest", DiscardCard);
+        ProcessDispatcher.Register("ModifyPointTest", ModifyPoint);
     }
 
+    // parameters[0]: int instanceId
+    // parameters[1]: int pointChange
+    public void ModifyPoint(object[] parameters)
+    {
+        int instanceId = (int)parameters[0];
+        int pointChange = (int)parameters[1];
+
+        int point = int.Parse(instanceMap[instanceId].GetComponentInChildren<TextMeshPro>().text) + pointChange;
+        instanceMap[instanceId].GetComponentInChildren<TextMeshPro>().text = point.ToString();
+    }
+
+
+    // parameters[0]: int instanceId
     public void DiscardCard(object[] parameters)
     {
         int instanceId = (int)parameters[0];

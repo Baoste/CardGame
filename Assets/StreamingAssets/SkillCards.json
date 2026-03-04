@@ -85,6 +85,50 @@
           }
         }
       ]
+    },
+    {
+      "id": 99999,
+      "name": "改牌",
+      "description": "使场上的一张牌的点数-1",
+      "point": 0,
+      "type": 1,
+      "count": 2,
+      "effects": [
+        {
+          "type": 3,
+          "source": {
+            "participantType": 0,
+            "filter": {
+              "$type": "Game.Domain.NoneCondition, Assembly-CSharp"
+            },
+            "participantSelectionMode": 0,
+            "maxCandidateCountWhenRandom": {
+              "$type": "Game.Domain.NoneValue, Assembly-CSharp"
+            },
+            "maxSelectCount": {
+              "$type": "Game.Domain.NoneValue, Assembly-CSharp"
+            }
+          },
+          "target": {
+            "participantType": 12,
+            "filter": {
+              "$type": "Game.Domain.AllCondition, Assembly-CSharp"
+            },
+            "participantSelectionMode": 2,
+            "maxCandidateCountWhenRandom": {
+              "$type": "Game.Domain.NoneValue, Assembly-CSharp"
+            },
+            "maxSelectCount": {
+              "$type": "Game.Domain.ConstValue, Assembly-CSharp",
+              "value": 1
+            }
+          },
+          "value": {
+            "$type": "Game.Domain.ConstValue, Assembly-CSharp",
+            "value": -1
+          }
+        }
+      ]
     }
   ]
 }

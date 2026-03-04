@@ -79,6 +79,13 @@ namespace Game.Domain
         public int instanceId;
     }
 
+    public class ModifyPointCommand : ICommand
+    {
+        public int playerId;
+        public int instanceId;
+        public int pointChange;
+    }
+
     // 根据效果返回可选的操作源、目标列表
     public class ReadyToPlaySkillCardEffectCommand : ICommand
     {

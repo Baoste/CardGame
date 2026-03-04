@@ -13,6 +13,7 @@ public static class DispatcherBootstrap
         EventDispatcher.Register("DrawPointCard", new DrawPointCardEventHandler());
         EventDispatcher.Register("DrawSkillCard", new DrawSkillCardEventHandler());
         EventDispatcher.Register("DiscardCard", new DiscardCardEventHandler());
+        EventDispatcher.Register("ModifyPoint", new ModifyPointEventHandler());
         EventDispatcher.Register("ReadyToPlaySkillCardEffect", new ReadyToPlaySkillCardEffectEventHandler());
         EventDispatcher.Register("ValidateSkillCard", new ValidateSkillCardEventHandler());
         EventDispatcher.Register("EndTurn", new EndTurnEventHandler());
@@ -27,6 +28,7 @@ public static class DispatcherBootstrap
         CommandDispatcher.Register("DrawPointCard", new DrawPointCardCmdHandler());
         CommandDispatcher.Register("DrawSkillCard", new DrawSkillCardCmdHandler());
         CommandDispatcher.Register("DiscardCard", new DiscardCardCmdHandler());
+        CommandDispatcher.Register("ModifyPoint", new ModifyPointCmdHandler());
         CommandDispatcher.Register("ReadyToPlaySkillCardEffect", new ReadyToPlaySkillCardEffectCmdHandler());
         CommandDispatcher.Register("ValidateSkillCard", new ValidateSkillCardCmdHandler());
         CommandDispatcher.Register("EndTurn", new EndTurnCmdHandler());
