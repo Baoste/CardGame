@@ -32,6 +32,29 @@ namespace Game.Domain
             ClientEffectContext.IsExecuteDone = true;
         }
 
+        public void DrawSkillCards(EffectOp op, MatchGateway gateway, GameState gameState, EffectContext ctx)
+        {
+            // TODO: 目前只能自己抽点数牌，后续需要根据op参数区分抽不同类型的牌
+            int drawNum = op.value.Evaluate(gameState, ctx);
+
+            int casterId = ctx.caster;
+            int opponentId = ctx.opponent;
+            ParticipantType participantType = op.target.participantType;
+
+            for (int i = 0; i < drawNum; i++)
+            {
+                StartCoroutine(ValidateCommand(op, gateway, gameState, ctx, () =>
+                {
+                    int playerId = casterId;
+                    if (participantType == ParticipantType.OpponentSkillCardsInHand)
+                        playerId = opponentId;
+                    DrawSkillCardCommand cmd = new DrawSkillCardCommand { playerId = playerId };
+                    gateway.SendCommandServerRpc("DrawSkillCard", JsonConvert.SerializeObject(cmd));
+                }));
+            }
+            ClientEffectContext.IsExecuteDone = true;
+        }
+
         public void DiscardCards(EffectOp op, MatchGateway gateway, GameState gameState, EffectContext ctx)
         {
             int count = ctx.selectedTargetIds.Count;
@@ -60,6 +83,22 @@ namespace Game.Domain
                 {
                     ModifyPointCommand cmd = new ModifyPointCommand { playerId = ctx.caster, instanceId = selectedTargetIds[idx], pointChange = value };
                     gateway.SendCommandServerRpc("ModifyPoint", JsonConvert.SerializeObject(cmd));
+                }));
+            }
+            ClientEffectContext.IsExecuteDone = true;
+        }
+
+        public void MoveCards(EffectOp op, MatchGateway gateway, GameState gameState, EffectContext ctx)
+        {
+            int count = ctx.selectedSourceIds.Count;
+            List<int> selectedSourceIds = ctx.selectedSourceIds;
+            for (int i = 0; i < count; i++)
+            {
+                int idx = i;    // 防止闭包捕获
+                StartCoroutine(ValidateCommand(op, gateway, gameState, ctx, () =>
+                {
+                    MoveCardCommand cmd = new MoveCardCommand { playerId = ctx.caster, instanceId = selectedSourceIds[idx] };
+                    gateway.SendCommandServerRpc("MoveCard", JsonConvert.SerializeObject(cmd));
                 }));
             }
             ClientEffectContext.IsExecuteDone = true;

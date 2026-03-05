@@ -12,6 +12,7 @@ namespace Game.Domain
         OpponentPointCardsOnBoard   = 1 << 3,   // 对手场上的牌，不包括底牌
         SkillCardsInDeck            = 1 << 4,   // 牌堆的技能牌
         PointCardsInDeck            = 1 << 5,   // 牌堆的点数牌
+        CardsToResolve              = 1 << 6,   // 要继续解决的牌，例如某些牌需要多次选择目标或多次触发效果
     }
 
     //public enum ParticipantSelectionMode

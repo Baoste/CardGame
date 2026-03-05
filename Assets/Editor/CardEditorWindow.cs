@@ -343,7 +343,7 @@ public class CardEditorWindow : EditorWindow
         using (new EditorGUILayout.VerticalScope("box"))
         {
             int sel = SelectionModeToIndex(mode);
-            int newSel = EditorGUILayout.Popup("Selection Mode", sel, new[] { "None", "All", "Choose", "First", "Last", "Random" });
+            int newSel = EditorGUILayout.Popup("Selection Mode", sel, new[] { "None", "All", "Choose", "First", "Last", "Random", "Min", "Max" });
             if (newSel != sel)
             {
                 mode = CreateSelectionModeByIndex(newSel);
@@ -373,6 +373,14 @@ public class CardEditorWindow : EditorWindow
 
                 case SelectionModeRandom _:
                     EditorGUILayout.LabelField("Random", EditorStyles.helpBox);
+                    break;
+
+                case SelectionModeMin _:
+                    EditorGUILayout.LabelField("Min", EditorStyles.helpBox);
+                    break;
+
+                case SelectionModeMax _:
+                    EditorGUILayout.LabelField("Max", EditorStyles.helpBox);
                     break;
             }
         }
@@ -445,6 +453,8 @@ public class CardEditorWindow : EditorWindow
             SelectionModeFirst _ => 3,
             SelectionModeLast _ => 4,
             SelectionModeRandom _ => 5,
+            SelectionModeMin _ => 6,
+            SelectionModeMax _ => 7,
             _ => 0
         };
     }
@@ -459,6 +469,8 @@ public class CardEditorWindow : EditorWindow
             3 => new SelectionModeFirst(),
             4 => new SelectionModeLast(),
             5 => new SelectionModeRandom(),
+            6 => new SelectionModeMin(),
+            7 => new SelectionModeMax(),
             _ => new SelectionModeNone()
         };
     }

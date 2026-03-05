@@ -51,7 +51,7 @@ public class DrawCardTest : MonoBehaviour
         int instanceId = (int)parameters[1];
         int playerId = (int)parameters[2];
         bool isHoreCard = (bool)parameters[3];
-
+        
         Card card = CardDatabase.Get(cardId);
         if (card == null)
         {
@@ -102,7 +102,7 @@ public class DrawCardTest : MonoBehaviour
         int n = list.Count;
 
         // 视口（Viewport）Y：己方在上半屏，对方在下半屏
-        // 约定：playerId == 0 表示己方（上半屏）；其他 playerId 为对方（下半屏）
+        // 己方（上半屏）；对方（下半屏）
         float viewportY = (playerId != ClientGameState.playerSlot) ? 0.75f : 0.25f;
 
         // 可用宽度（视口单位），以及每张牌的间距（视卡数量自适应）

@@ -14,6 +14,9 @@ public sealed class DetermineParticipantsCmdHandler : CommandHandler, ICommandHa
         List<int> candidateSourceIds = ParticipantResolver.DetermineCandidates(payload.effect.source, session.gameState, session.ctx);
         List<int> candidateTargetIds = ParticipantResolver.DetermineCandidates(payload.effect.target, session.gameState, session.ctx);
 
+        session.ctx.candidateSourceIds = candidateSourceIds;
+        session.ctx.candidateTargetIds = candidateTargetIds;
+
         // return event
         CommandResult results = new CommandResult();
 

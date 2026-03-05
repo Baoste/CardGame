@@ -80,12 +80,57 @@ public class TestFunctions : MonoBehaviour
             }
         };
 
+        EffectOp effect3 = new EffectOp
+        {
+            type = EffectType.Move,
+            source = new ParticipantSpec
+            {
+                participantType = ParticipantType.PointCardsInDeck,
+                participantSelectionMode = new SelectionModeRandom(),
+                filter = new AllCondition(),
+                maxSelectCount = new ConstValue
+                {
+                    value = 3
+                }
+            },
+            target = new ParticipantSpec
+            {
+                participantType = ParticipantType.CardsToResolve,
+                participantSelectionMode = new SelectionModeNone(),
+                filter = new NoneCondition(),
+                maxSelectCount = new NoneValue()
+            },
+            value = new NoneValue()
+        };
+        EffectOp effect4 = new EffectOp
+        {
+            type = EffectType.Move,
+            source = new ParticipantSpec
+            {
+                participantType = ParticipantType.CardsToResolve,
+                participantSelectionMode = new SelectionModeChoose(),
+                filter = new AllCondition(),
+                maxSelectCount = new ConstValue
+                {
+                    value = 1
+                }
+            },
+            target = new ParticipantSpec
+            {
+                participantType = ParticipantType.MyPointCardsOnBoard,
+                participantSelectionMode = new SelectionModeNone(),
+                filter = new NoneCondition(),
+                maxSelectCount = new NoneValue()
+            },
+            value = new NoneValue()
+        };
+
         SkillCard tmp0 = new SkillCard
         {
             id = 999,
-            name = "抽牌",
+            name = "抽1牌",
             description = "让对面抽一张牌",
-            point = 0,
+            point = 1,
             type = CardType.Skill,
             count = 2,
             effects = new List<EffectOp> { effect0 }
@@ -94,9 +139,9 @@ public class TestFunctions : MonoBehaviour
         SkillCard tmp1 = new SkillCard
         {
             id = 9999,
-            name = "弃牌",
+            name = "弃对方1牌",
             description = "选择对面场上的一张牌丢弃",
-            point = 0,
+            point = 1,
             type = CardType.Skill,
             count = 2,
             effects = new List<EffectOp> { effect1 }
@@ -105,7 +150,7 @@ public class TestFunctions : MonoBehaviour
         SkillCard tmp2 = new SkillCard
         {
             id = 99999,
-            name = "改牌",
+            name = "点数-1",
             description = "使场上的一张牌的点数-1",
             point = 0,
             type = CardType.Skill,
@@ -113,7 +158,18 @@ public class TestFunctions : MonoBehaviour
             effects = new List<EffectOp> { effect2 }
         };
 
-        List<SkillCard> cards = new List<SkillCard> { tmp0, tmp1, tmp2 };
+        SkillCard tmp3 = new SkillCard
+        {
+            id = 999999,
+            name = "抽3选1",
+            description = "抽取三张牌，选择一张牌到自己场上",
+            point = 0,
+            type = CardType.Skill,
+            count = 2,
+            effects = new List<EffectOp> { effect3, effect4 }
+        };
+
+        List<SkillCard> cards = new List<SkillCard> { tmp0, tmp1, tmp2, tmp3 };
         CardJsonUtility.ConvertCardsToJson(cards, "SkillCards.json");
     }
 

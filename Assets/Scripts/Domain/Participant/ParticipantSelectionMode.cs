@@ -1,6 +1,7 @@
 using Game.Domain;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class ParticipantSelectionMode
@@ -95,6 +96,38 @@ public class SelectionModeRandom : ParticipantSelectionMode
             if (pool.Count >= count - i)
                 res.Add(pool[i]);
         }
+        return res;
+    }
+    public override bool ValidatePool(List<int> pool, int count) => pool.Count >= count;
+    public override bool ValidateSelected(List<int> pool, List<int> selected)
+    {
+        return base.ValidateSelected(pool, selected);
+    }
+}
+
+public class SelectionModeMin : ParticipantSelectionMode
+{
+    public override List<int> Execute(GameState state, List<int> pool, int count, List<int> selected)
+    {
+        List<int> res = new List<int>();
+        if (pool.Count > 0)
+            res.Add(pool.Min());
+        return res;
+    }
+    public override bool ValidatePool(List<int> pool, int count) => pool.Count >= count;
+    public override bool ValidateSelected(List<int> pool, List<int> selected)
+    {
+        return base.ValidateSelected(pool, selected);
+    }
+}
+
+public class SelectionModeMax : ParticipantSelectionMode
+{
+    public override List<int> Execute(GameState state, List<int> pool, int count, List<int> selected)
+    {
+        List<int> res = new List<int>();
+        if (pool.Count > 0)
+            res.Add(pool.Max());
         return res;
     }
     public override bool ValidatePool(List<int> pool, int count) => pool.Count >= count;

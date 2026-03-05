@@ -60,6 +60,20 @@ namespace Game.Domain
             cardLocationMap.Clear();
         }
 
+        public void AddCardsToDeck(List<int> instaceIds, CardType type)
+        {
+            foreach (int instanceId in instaceIds)
+            {
+                if (instanceId == -1) continue;
+                CardZone board = pointCardsDeck;
+                if (type == CardType.Skill)
+                    board = skillCardsDeck;
+
+                cardLocationMap[instanceId] = board;
+                board._Add(instanceId);
+            }
+        }
+
         public void AddCard(int playerId, int cardId, int instanceId, CardType type)
         {
             if (instanceId == -1)   return;

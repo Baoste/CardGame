@@ -57,6 +57,10 @@ namespace Game.Domain
                     clientEffectFunction.DrawPointCards(op, gateway, gameState, ctx);
                     break;
 
+                case EffectType.DrawSkill:
+                    clientEffectFunction.DrawSkillCards(op, gateway, gameState, ctx);
+                    break;
+
                 case EffectType.Discard:
                     clientEffectFunction.DiscardCards(op, gateway, gameState, ctx);
                     break;
@@ -66,7 +70,7 @@ namespace Game.Domain
                     break;
 
                 case EffectType.Move:
-                    //Draw(op, state, ctx);
+                    clientEffectFunction.MoveCards(op, gateway, gameState, ctx);
                     break;
             }
         }

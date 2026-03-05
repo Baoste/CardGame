@@ -41,10 +41,10 @@ public class StartGameCmdHandler : CommandHandler, ICommandHandler
         StaticFunction.Shuffle(skillCardInstanceIds, session.gameState.rng);
 
         var pointCardsDeck = session.gameState.pointCardsDeck;
-        pointCardsDeck._Add(pointCardInstanceIds);
+        session.gameState.AddCardsToDeck(pointCardInstanceIds, CardType.Point);
 
         var skillCardsDeck = session.gameState.skillCardsDeck;
-        skillCardsDeck._Add(skillCardInstanceIds);
+        session.gameState.AddCardsToDeck(skillCardInstanceIds, CardType.Skill);
 
         // return results
         CommandResult results = new CommandResult();

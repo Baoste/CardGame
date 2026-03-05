@@ -73,6 +73,13 @@ namespace Game.Domain
         public int pointChange;
     }
 
+    public class MoveCardEvent : INetEventPayload
+    {
+        public int playerId;
+        public int selectedId;
+        public ParticipantType toZone;
+    }
+
     public class ValidatePlayCardEvent : INetEventPayload
     {
         public int playerId;

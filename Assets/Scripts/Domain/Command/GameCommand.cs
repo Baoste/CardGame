@@ -86,6 +86,13 @@ namespace Game.Domain
         public int pointChange;
     }
 
+    public class MoveCardCommand : ICommand
+    {
+        public int playerId;
+        public int instanceId;
+        public EffectOp effect;
+    }
+
     // 验证玩家打出某张牌是否合法（例如是否满足卡牌的使用条件）
     public class ValidatePlayCardCommand : ICommand
     {

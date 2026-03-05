@@ -25,6 +25,8 @@ public class ValidateParticipantsCmdHandler : CommandHandler, ICommandHandler
         bool success1 = target.participantSelectionMode.ValidateSelected(pool, selectedTargetIds);
 
         bool success = success0 && success1;
+        session.ctx.selectedSourceIds = selectedSourceIds;
+        session.ctx.selectedTargetIds = selectedTargetIds;
         // return event
         CommandResult results = new CommandResult();
         results.events.Enqueue(MakeEvent(
