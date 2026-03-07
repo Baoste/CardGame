@@ -10,8 +10,8 @@ public class TestSystem : MonoBehaviour
     {
         if(Input.GetKeyDown(KeyCode.Space))
         {
-            CardView cardView = CardViewCreator.Instance.CreateCardView(transform.position, Quaternion.identity);
-            StartCoroutine(handView.AddCard(cardView));
+            GameObject instace = CardViewCreator.Instance.CreateCardInstace(999, 1,transform.position, Quaternion.identity);
+            StartCoroutine(handView.AddCard(instace));
         }
     }
 }

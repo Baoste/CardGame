@@ -578,7 +578,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 01b820d2f691a3d4782f98de202902f0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cardViewPrefab: {fileID: 8572882947714257987, guid: 45e96def11be71a4da51cca61e2ff766,
+  cardViewPrefab: {fileID: 699601284007552369, guid: 45e96def11be71a4da51cca61e2ff766,
     type: 3}
 --- !u!1 &562846706
 GameObject:
