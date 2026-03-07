@@ -10,10 +10,10 @@ using Newtonsoft.Json;
 
 public class MatchGateway : NetworkBehaviour
 {
-    public static event System.Action<string, int, string, string> OnClientJoined;
-    public static event System.Action<Game.Domain.NetEvent> OnClientEvent;
-    public static event System.Action<string> OnClientSnapshot;
-
+    public static event Action<string, int, string, string> OnClientJoined;
+    public static event Action<NetEvent> OnClientEvent;
+    public static event Action<string> OnClientSnapshot;
+   
     private CommandResult ProcessCommand(MatchSession session, NetCommand cmd)
         => CommandDispatcher.Process(session, cmd);
     private bool ProcessEvent(NetEvent ev)
