@@ -4,13 +4,11 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
-public class SkillCardInstance : MonoBehaviour
+public class SkillCardInstance : CardInstance
 {
     [Header("Value")]
-    public int instanceId;
     public string cardName;
     public string description;
-    public int point;
     public List<EffectOp> effects;
 
     [Header("Component")]

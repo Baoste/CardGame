@@ -92,11 +92,15 @@ public class ClientMatchInput : MonoBehaviour
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             if (!Physics.Raycast(ray, out RaycastHit hit, 1000f))
                 continue;
-            CardView cardView = hit.collider.GetComponentInParent<CardView>();
-            if (!cardView)
-                continue;
+            CardInstance cardInstance = hit.collider.GetComponentInParent<PointCardInstance>();
+            if (!cardInstance)
+            {
+                cardInstance = hit.collider.GetComponentInParent<SkillCardInstance>();
+                if (!cardInstance)
+                    continue;
+            }
 
-            int instanceId = cardView.instanceId;
+            int instanceId = cardInstance.instanceId;
             if (!candidateTargetIds.Contains(instanceId))
                 continue;
             selectedTargetIds.Add(instanceId);

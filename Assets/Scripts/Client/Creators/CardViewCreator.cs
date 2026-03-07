@@ -6,7 +6,12 @@ using UnityEngine;
 
 public class CardViewCreator : Singleton<CardViewCreator>
 {
-    [SerializeField] private GameObject cardViewPrefab;
+    [SerializeField] private GameObject skillCardInstancePrefab;
+    [SerializeField] private GameObject pointCardInstancePrefab;
+
+    [SerializeField] private Vector3 pointCardSpawnPosition;
+
+    public float scaleFactor = 0.5f;
 
     public GameObject CreateCardInstace(int cardId, int instaceId, Vector3 position, Quaternion rotation)
     {
@@ -16,18 +21,24 @@ public class CardViewCreator : Singleton<CardViewCreator>
         switch (cardType)
         {
             case CardType.Point:
-                cardInstace = Instantiate(cardViewPrefab, position, rotation);
+                cardInstace = Instantiate(pointCardInstancePrefab, pointCardSpawnPosition, rotation);
                 cardInstace.GetComponent<PointCardInstance>().InitCardInstance(cardId, instaceId);
                 break;
             case CardType.Skill:
-                cardInstace = Instantiate(cardViewPrefab, position, rotation);
+                cardInstace = Instantiate(skillCardInstancePrefab, position, rotation);
                 SkillCardInstance sci = cardInstace.GetComponent<SkillCardInstance>();
                 sci.InitCardInstance(cardId, instaceId);
                 break;
         }
 
         cardInstace.transform.localScale = Vector3.zero;
-        cardInstace.transform.DOScale(Vector3.one, 0.15f);
+        cardInstace.transform.DOScale(Vector3.one * scaleFactor, 0.15f);
         return cardInstace;
+    }
+
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = Color.red;
+        Gizmos.DrawSphere(pointCardSpawnPosition, 0.05f);
     }
 }

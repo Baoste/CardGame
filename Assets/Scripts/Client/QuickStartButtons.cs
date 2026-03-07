@@ -53,7 +53,9 @@ public class QuickStartButtons : MonoBehaviour
         if (ClientGameState.Instance.CurrentPlayerId != -1 && ClientGameState.Instance.CurrentPlayerId == ClientGameState.playerSlot)
         {
             if (GUI.Button(new Rect(1700, 310, w, h), "Draw Point Card"))
+            {
                 ClientCommand.DrawPointCard();
+            }
 
             if (GUI.Button(new Rect(1700, 360, w, h), "S: Opponent draw"))
             {
