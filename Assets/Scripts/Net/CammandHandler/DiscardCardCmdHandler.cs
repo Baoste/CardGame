@@ -12,17 +12,18 @@ public class DiscardCardCmdHandler : CommandHandler, ICommandHandler
 
         // TODO: 服务器端需要做什么
         int cardInstanceId = payload.instanceId;
-        session.gameState.RemoveCard(cardInstanceId);
+        bool success = session.gameState.RemoveCard(cardInstanceId);
 
         // return
         CommandResult results = new CommandResult();
         results.events.Enqueue(MakeEvent(
             "DiscardCard",
             new DiscardCardEvent    // need change
-            {
-                playerId = payload.playerId,
-                instanceId = payload.instanceId
-            }
+            (
+                payload.playerId,
+                success,
+                payload.instanceId
+            )
         ));
         return results;
     }

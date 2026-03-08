@@ -88,13 +88,33 @@ public class DraggableSkillCard : MonoBehaviour
 
         if (shouldRemove)
         {
-            transform.localScale = Vector3.one * 0.01f;
-            Card card = CardDatabase.Get(cardId);
-            StartCoroutine(ClientEffectExecutor.ExecuteCard(card, ClientGameState.gateway, ClientGameState.playerSlot, instanceId));
+            StartCoroutine(ExecuteCard());
         }
         else
         {
             StartCoroutine(ReturnToHand());
+        }
+    }
+
+    IEnumerator ExecuteCard()
+    {
+        transform.localScale = Vector3.one * 0.01f;
+
+        Dictionary<int, List<int>> selectedSourceIds = new Dictionary<int, List<int>>();
+        Dictionary<int, List<int>> selectedTargetIds = new Dictionary<int, List<int>>();
+
+        Card card = CardDatabase.Get(cardId);
+        StartCoroutine(ClientEffectExecutor.ValidateCard(card, ClientGameState.gateway, ClientGameState.playerSlot, instanceId, selectedSourceIds, selectedTargetIds));
+        yield return new WaitUntil(() => ClientEffectContext.IsValidateDone);
+
+        if (!ClientEffectContext.IsCommandValid)
+        {
+            transform.localScale = Vector3.one * 0.3f;
+            StartCoroutine(ReturnToHand());
+        }
+        else
+        {
+            StartCoroutine(ClientEffectExecutor.ExecuteCard(card, ClientGameState.gateway, ClientGameState.playerSlot, instanceId, selectedSourceIds, selectedTargetIds));
         }
     }
 

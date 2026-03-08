@@ -37,7 +37,7 @@ public class ClientMatchInput : MonoBehaviour
 
     private void Awake()
     {
-        ProcessDispatcher.Register("PlaySkillCardTest", WaitForChoose);
+        ProcessDispatcher.Register("PlaySkillCardTest", PlaySkillCardTest);
     }
 
 
@@ -48,16 +48,23 @@ public class ClientMatchInput : MonoBehaviour
 
 
     // Debug Test
-    public void WaitForChoose(object[] parameters)
+    public void PlaySkillCardTest(object[] parameters)
     {
-        bool sourceNeedChoose = (bool)parameters[0];
-        bool targetNeedChoose = (bool)parameters[1];
-        List<int> candidateSourceIds = (List<int>)parameters[2];
-        List<int> candidateTargetIds = (List<int>)parameters[3];
-        int sourceSelectCount = (int)parameters[4];
-        int targetSelectCount = (int)parameters[5];
+        bool success = (bool)parameters[0];
+        bool sourceNeedChoose = (bool)parameters[1];
+        bool targetNeedChoose = (bool)parameters[2];
+        List<int> candidateSourceIds = (List<int>)parameters[3];
+        List<int> candidateTargetIds = (List<int>)parameters[4];
+        int sourceSelectCount = (int)parameters[5];
+        int targetSelectCount = (int)parameters[6];
 
-        if ((!sourceNeedChoose && !targetNeedChoose) || (candidateSourceIds.Count == 0 && candidateTargetIds.Count == 0))
+        if (!success)
+        {
+            ClientEffectContext.Instance.selectedSourceIds = new List<int>();
+            ClientEffectContext.Instance.selectedTargetIds = new List<int>();
+            ClientEffectContext.ChooseDone = true;
+        }
+        else if ((!sourceNeedChoose && !targetNeedChoose) || (candidateSourceIds.Count == 0 && candidateTargetIds.Count == 0))
         {
             Debug.Log("[Client] No target to choose, executing effect directly");
             ClientEffectContext.Instance.selectedSourceIds = new List<int>();

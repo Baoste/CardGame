@@ -19,10 +19,11 @@ public sealed class ChatCmdHandler : CommandHandler, ICommandHandler
         results.events.Enqueue(MakeEvent(
             "Chat",
             new ChatEvent
-            {
-                playerId = payload.playerId,
-                text = message
-            }
+            (
+                payload.playerId,
+                true,
+                message
+            )
         ));
         return results;
     }

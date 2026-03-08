@@ -3,6 +3,7 @@ using Game.Server;
 using Newtonsoft.Json;
 using System.Collections.Generic;
 using UnityEngine;
+using static Unity.VisualScripting.Member;
 
 public sealed class DetermineParticipantsCmdHandler : CommandHandler, ICommandHandler
 {
@@ -11,8 +12,15 @@ public sealed class DetermineParticipantsCmdHandler : CommandHandler, ICommandHa
         var payload = JsonConvert.DeserializeObject<DetermineParticipantsCommand>(cmd.jsonData);  // need change
 
         // TODO: 服务器端需要做什么
-        List<int> candidateSourceIds = ParticipantResolver.DetermineCandidates(payload.effect.source, session.gameState, session.ctx);
-        List<int> candidateTargetIds = ParticipantResolver.DetermineCandidates(payload.effect.target, session.gameState, session.ctx);
+        ParticipantSpec source = payload.effect.source;
+        List<int> candidateSourceIds = ParticipantResolver.DetermineCandidates(source, session.gameState, session.ctx);
+        bool success0 = source.participantSelectionMode.ValidatePool(candidateSourceIds, source.maxSelectCount.Evaluate(session.gameState, session.ctx));
+
+        ParticipantSpec target = payload.effect.target;
+        List<int> candidateTargetIds = ParticipantResolver.DetermineCandidates(target, session.gameState, session.ctx);
+        bool success1 = target.participantSelectionMode.ValidatePool(candidateTargetIds, target.maxSelectCount.Evaluate(session.gameState, session.ctx));
+
+        bool success = success0 && success1;
 
         session.ctx.candidateSourceIds = candidateSourceIds;
         session.ctx.candidateTargetIds = candidateTargetIds;
@@ -23,17 +31,21 @@ public sealed class DetermineParticipantsCmdHandler : CommandHandler, ICommandHa
         results.events.Enqueue(MakeEvent(
             "GetGameState",
             new GetGameStateEvent    // need change
-            {
-                gameState = session.gameState,
-            }
+            (
+                payload.playerId,
+                true,
+                session.gameState
+            )
         ));
 
         results.events.Enqueue(MakeEvent(
             "GetCtx",
             new GetCtxEvent    // need change
-            {
-                ctx = session.ctx,
-            }
+            (
+                payload.playerId,
+                true,
+                session.ctx
+            )
         ));
 
         bool sourceNeedChoose = payload.effect.source.participantSelectionMode is SelectionModeChoose;
@@ -42,15 +54,16 @@ public sealed class DetermineParticipantsCmdHandler : CommandHandler, ICommandHa
         results.events.Enqueue(MakeEvent(
             "DetermineParticipants",
             new DetermineParticipantsEvent    // need change
-            {
-                playerId = payload.playerId,
-                sourceNeedChoose = sourceNeedChoose,
-                targetNeedChoose = targetNeedChoose,
-                candidateSourceIds = candidateSourceIds,
-                candidateTargetIds = candidateTargetIds,
-                sourceSelectCount = payload.effect.source.maxSelectCount.Evaluate(session.gameState, session.ctx),
-                targetSelectCount = payload.effect.target.maxSelectCount.Evaluate(session.gameState, session.ctx),
-            }
+            (
+                payload.playerId,
+                success,
+                sourceNeedChoose,
+                targetNeedChoose,
+                candidateSourceIds,
+                candidateTargetIds,
+                payload.effect.source.maxSelectCount.Evaluate(session.gameState, session.ctx),
+                payload.effect.target.maxSelectCount.Evaluate(session.gameState, session.ctx)
+            )
         ));
         return results;
     }

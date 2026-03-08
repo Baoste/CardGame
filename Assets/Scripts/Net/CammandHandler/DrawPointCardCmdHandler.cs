@@ -21,12 +21,13 @@ public sealed class DrawPointCardCmdHandler : CommandHandler, ICommandHandler
         results.events.Enqueue(MakeEvent(
             "DrawPointCard",
             new DrawPointCardEvent    // need change
-            {
-                playerId = payload.playerId,
-                cardId = session.instanceToCardId.GetValueOrDefault(drawCardInstanceId, -1),
-                instanceId = drawCardInstanceId,
-                isHoleCard = false
-            }
+            (
+                payload.playerId,
+                drawCardInstanceId != -1,
+                session.instanceToCardId.GetValueOrDefault(drawCardInstanceId, -1),
+                drawCardInstanceId,
+                false
+            )
         ));
         return results;
     }

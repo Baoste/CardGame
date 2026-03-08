@@ -21,11 +21,12 @@ public class DrawSkillCardCmdHandler : CommandHandler, ICommandHandler
         results.events.Enqueue(MakeEvent(
             "DrawSkillCard",
             new DrawSkillCardEvent    // need change
-            {
-                playerId = payload.playerId,
-                cardId = session.instanceToCardId.GetValueOrDefault(drawCardInstanceId, -1),
-                instanceId = drawCardInstanceId,
-            }
+            (
+                payload.playerId,
+                drawCardInstanceId != -1,
+                session.instanceToCardId.GetValueOrDefault(drawCardInstanceId, -1),
+                drawCardInstanceId
+            )
         ));
         return results;
     }

@@ -50,11 +50,13 @@ namespace Game.Domain
     // 获取牌局快照
     public class GetGameStateCommand : ICommand
     {
+        public int playerId;
     }
 
     // 获取牌局上下文（例如当前技能卡的目标选择规范等）
     public class GetCtxCommand : ICommand
     {
+        public int playerId;
     }
 
     public class ChatCommand : ICommand
@@ -63,7 +65,12 @@ namespace Game.Domain
         public string chatContext;
     }
 
-    public class DrawSkillCardCommand : ICommand
+    public class SpendActionPointCommand : ICommand
+    {
+        public int playerId;
+    }
+
+public class DrawSkillCardCommand : ICommand
     {
         public int playerId;
     }
@@ -90,13 +97,6 @@ namespace Game.Domain
     {
         public int playerId;
         public int instanceId;
-        public EffectOp effect;
-    }
-
-    // 验证玩家打出某张牌是否合法（例如是否满足卡牌的使用条件）
-    public class ValidatePlayCardCommand : ICommand
-    {
-        public int playerId;
         public EffectOp effect;
     }
 

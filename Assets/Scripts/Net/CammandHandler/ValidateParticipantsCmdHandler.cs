@@ -32,12 +32,12 @@ public class ValidateParticipantsCmdHandler : CommandHandler, ICommandHandler
         results.events.Enqueue(MakeEvent(
             "ValidateParticipants",
             new ValidateParticipantsEvent    // need change
-            {
-                playerId = payload.playerId,
-                success = success,
-                sourceIds = payload.selectedSourceIds,
-                targetIds = payload.selectedTargetIds
-            }
+            (
+                payload.playerId,
+                success,
+                payload.selectedSourceIds,
+                payload.selectedTargetIds
+            )
         ));
 
         return results;

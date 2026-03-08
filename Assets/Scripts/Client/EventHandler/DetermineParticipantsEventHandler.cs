@@ -12,6 +12,7 @@ public sealed class DetermineParticipantsEventHandler : IEventProcess, IEventHan
         payload = JsonConvert.DeserializeObject<DetermineParticipantsEvent>(ev.jsonData); // need change
         // need change, 需要把参数在这里传进去
         ProcessQueueManager.Instance.Enqueue(Process, new object[] { 
+            payload.success,
             payload.sourceNeedChoose,
             payload.targetNeedChoose,
             payload.candidateSourceIds, 
@@ -22,6 +23,8 @@ public sealed class DetermineParticipantsEventHandler : IEventProcess, IEventHan
 
         // TODO
         // START
+        ClientEffectContext.IsCommandValid = payload.success;
+
         ClientEffectContext.Instance.candidateSourceIds = payload.candidateSourceIds;
         ClientEffectContext.Instance.candidateTargetIds = payload.candidateTargetIds;
         List<int> candidateSourceIds = payload.candidateSourceIds;

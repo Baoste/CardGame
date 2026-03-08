@@ -14,7 +14,8 @@ public class StartTurnEventHandler : IEventProcess, IEventHandler
         
         ClientGameState.Instance.Turn++;
         ClientGameState.Instance.CurrentPlayerId = payload.playerId;
-        
+        ClientGameState.Instance.players[payload.playerId].actionPoint = 1;
+
         ClientEffectContext.Instance.caster = payload.playerId;
         ClientEffectContext.Instance.opponent = payload.opponentId;
 

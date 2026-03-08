@@ -16,6 +16,7 @@ namespace Game.Domain
     {
         public int playerId;
         public int holeCard = -1;
+        public int actionPoint = 0;
         public SkillCardsInHand skillCardsInHand = new SkillCardsInHand();
         public PointCardsOnBoard pointCardsOnBoard = new PointCardsOnBoard();
     }

@@ -51,9 +51,10 @@ public class StartGameCmdHandler : CommandHandler, ICommandHandler
         results.events.Enqueue(MakeEvent(
             "StartGame",
             new StartGameEvent    // need change
-            {
-                playerId = payload.playerId,
-            }
+            (
+                payload.playerId,
+                true
+            )
         ));
 
         // ³éµ×ÅÆ
@@ -63,24 +64,26 @@ public class StartGameCmdHandler : CommandHandler, ICommandHandler
         results.events.Enqueue(MakeEvent(
             "DrawPointCard",
             new DrawPointCardEvent    // need change
-            {
-                playerId = payload.playerId,
-                cardId = session.instanceToCardId.GetValueOrDefault(drawCardInstanceId, -1),
-                instanceId = drawCardInstanceId,
-                isHoleCard = true
-            }
+            (
+                payload.playerId,
+                drawCardInstanceId != -1,
+                session.instanceToCardId.GetValueOrDefault(drawCardInstanceId, -1),
+                drawCardInstanceId,
+                true
+            )
         ));
         drawCardInstanceId = pointCardsDeck.Draw();
         session.gameState.players[1 - payload.playerId].holeCard = drawCardInstanceId;
         results.events.Enqueue(MakeEvent(
             "DrawPointCard",
             new DrawPointCardEvent    // need change
-            {
-                playerId = 1 - payload.playerId,
-                cardId = session.instanceToCardId.GetValueOrDefault(drawCardInstanceId, -1),
-                instanceId = drawCardInstanceId,
-                isHoleCard = true
-            }
+            (
+                1 - payload.playerId,
+                drawCardInstanceId != -1,
+                session.instanceToCardId.GetValueOrDefault(drawCardInstanceId, -1),
+                drawCardInstanceId,
+                true
+            )
         ));
 
         // ³é¼¼ÄÜÅÆ
@@ -89,22 +92,24 @@ public class StartGameCmdHandler : CommandHandler, ICommandHandler
         results.events.Enqueue(MakeEvent(
             "DrawSkillCard",
             new DrawSkillCardEvent    // need change
-            {
-                playerId = payload.playerId,
-                cardId = session.instanceToCardId.GetValueOrDefault(drawCardInstanceId, -1),
-                instanceId = drawCardInstanceId,
-            }
+            (
+                payload.playerId,
+                drawCardInstanceId != -1,
+                session.instanceToCardId.GetValueOrDefault(drawCardInstanceId, -1),
+                drawCardInstanceId
+            )
         ));
         drawCardInstanceId = skillCardsDeck.Draw();
         session.gameState.AddCard(1 - payload.playerId, session.instanceToCardId[drawCardInstanceId], drawCardInstanceId, CardType.Skill);
         results.events.Enqueue(MakeEvent(
             "DrawSkillCard",
             new DrawSkillCardEvent    // need change
-            {
-                playerId = 1 - payload.playerId,
-                cardId = session.instanceToCardId.GetValueOrDefault(drawCardInstanceId, -1),
-                instanceId = drawCardInstanceId,
-            }
+            (
+                1 - payload.playerId,
+                drawCardInstanceId != -1,
+                session.instanceToCardId.GetValueOrDefault(drawCardInstanceId, -1),
+                drawCardInstanceId
+            )
         ));
 
         return results;

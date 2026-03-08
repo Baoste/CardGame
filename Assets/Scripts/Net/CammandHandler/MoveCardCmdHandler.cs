@@ -36,18 +36,19 @@ public class MoveCardCmdHandler : CommandHandler, ICommandHandler
                 toZone = session.gameState.cardsToResolve;
                 break;
         }
-        session.gameState.MoveCard(payload.instanceId, toZone);
+        bool success = session.gameState.MoveCard(payload.instanceId, toZone);
 
         // return
         CommandResult results = new CommandResult();
         results.events.Enqueue(MakeEvent(
             "MoveCards",
             new MoveCardEvent    // need change
-            {
-                playerId = payload.playerId,
-                selectedId = payload.instanceId,
-                toZone = payload.effect.target.participantType
-            }
+            (
+                payload.playerId,
+                success,
+                payload.instanceId,
+                payload.effect.target.participantType
+            )
         ));
         return results;
     }

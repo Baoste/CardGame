@@ -55,49 +55,49 @@ namespace Game.Domain
             ClientEffectContext.IsExecuteDone = true;
         }
 
-        public void DiscardCards(EffectOp op, MatchGateway gateway, GameState gameState, EffectContext ctx)
+        public void DiscardCards(EffectOp op, MatchGateway gateway, GameState gameState, EffectContext ctx, List<int> selectedTargetIds)
         {
-            int count = ctx.selectedTargetIds.Count;
-            List<int> selectedTargetIds = ctx.selectedTargetIds;
+            int count = selectedTargetIds.Count;
+            List<int> _selectedTargetIds = selectedTargetIds;
             for (int i = 0; i < count; i++)
             {
                 int idx = i;    // ·ÀÖ¹±Õ°ü²¶»ñ
                 StartCoroutine(ValidateCommand(op, gateway, gameState, ctx, () =>
                 {
-                    DiscardCardCommand cmd = new DiscardCardCommand { playerId = ctx.caster, instanceId = selectedTargetIds[idx] };
+                    DiscardCardCommand cmd = new DiscardCardCommand { playerId = ctx.caster, instanceId = _selectedTargetIds[idx] };
                     gateway.SendCommandServerRpc("DiscardCard", JsonConvert.SerializeObject(cmd));
                 }));
             }
             ClientEffectContext.IsExecuteDone = true;
         }
 
-        public void ModifyPoint(EffectOp op, MatchGateway gateway, GameState gameState, EffectContext ctx)
+        public void ModifyPoint(EffectOp op, MatchGateway gateway, GameState gameState, EffectContext ctx, List<int> selectedTargetIds)
         {
-            int count = ctx.selectedTargetIds.Count;
+            int count = selectedTargetIds.Count;
+            List<int> _selectedTargetIds = selectedTargetIds;
             int value = op.value.Evaluate(gameState, ctx);
-            List<int> selectedTargetIds = ctx.selectedTargetIds;
             for (int i = 0; i < count; i++)
             {
                 int idx = i;    // ·ÀÖ¹±Õ°ü²¶»ñ
                 StartCoroutine(ValidateCommand(op, gateway, gameState, ctx, () =>
                 {
-                    ModifyPointCommand cmd = new ModifyPointCommand { playerId = ctx.caster, instanceId = selectedTargetIds[idx], pointChange = value };
+                    ModifyPointCommand cmd = new ModifyPointCommand { playerId = ctx.caster, instanceId = _selectedTargetIds[idx], pointChange = value };
                     gateway.SendCommandServerRpc("ModifyPoint", JsonConvert.SerializeObject(cmd));
                 }));
             }
             ClientEffectContext.IsExecuteDone = true;
         }
 
-        public void MoveCards(EffectOp op, MatchGateway gateway, GameState gameState, EffectContext ctx)
+        public void MoveCards(EffectOp op, MatchGateway gateway, GameState gameState, EffectContext ctx, List<int> selectedSourceIds)
         {
-            int count = ctx.selectedSourceIds.Count;
-            List<int> selectedSourceIds = ctx.selectedSourceIds;
+            int count = selectedSourceIds.Count;
+            List<int> _selectedSourceIds = selectedSourceIds;
             for (int i = 0; i < count; i++)
             {
                 int idx = i;    // ·ÀÖ¹±Õ°ü²¶»ñ
                 StartCoroutine(ValidateCommand(op, gateway, gameState, ctx, () =>
                 {
-                    MoveCardCommand cmd = new MoveCardCommand { playerId = ctx.caster, instanceId = selectedSourceIds[idx] };
+                    MoveCardCommand cmd = new MoveCardCommand { playerId = ctx.caster, instanceId = _selectedSourceIds[idx] };
                     gateway.SendCommandServerRpc("MoveCard", JsonConvert.SerializeObject(cmd));
                 }));
             }

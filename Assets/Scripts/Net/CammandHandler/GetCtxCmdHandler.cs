@@ -14,9 +14,11 @@ public class GetCtxCmdHandler : CommandHandler, ICommandHandler
         results.events.Enqueue(MakeEvent(
             "GetCtx",
             new GetCtxEvent    // need change
-            {
-                ctx = session.ctx,
-            }
+            (
+                payload.playerId,
+                true,
+                session.ctx
+            )
         ));
         return results;
     }

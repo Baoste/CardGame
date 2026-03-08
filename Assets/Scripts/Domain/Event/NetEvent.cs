@@ -9,7 +9,7 @@ namespace Game.Domain
             = new Dictionary<string, System.Type>();
 
         public static void Register<T>(string typeName)
-            where T : INetEventPayload
+            where T : PlayerEvent
         {
             _typeMap[typeName] = typeof(T);
         }

@@ -10,18 +10,21 @@ public class ModifyPointCmdHandler : CommandHandler, ICommandHandler
         var payload = JsonConvert.DeserializeObject<ModifyPointCommand>(cmd.jsonData);
 
         // TODO: 服务器端需要做什么
-        session.gameState.instancePointMap[payload.instanceId] += payload.pointChange;
+        bool success = session.gameState.instancePointMap.TryGetValue(1, out int value);
+        if (success)
+            session.gameState.instancePointMap[payload.instanceId] = value + payload.pointChange;
 
         // return
         CommandResult results = new CommandResult();
         results.events.Enqueue(MakeEvent(
             "ModifyPoint",
             new ModifyPointEvent    // need change
-            {
-                playerId = payload.playerId,
-                instanceId = payload.instanceId,
-                pointChange = payload.pointChange
-            }
+            (
+                payload.playerId,
+                success,
+                payload.instanceId,
+                payload.pointChange
+            )
         ));
         return results;
     }

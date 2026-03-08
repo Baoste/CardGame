@@ -18,10 +18,11 @@ public sealed class JoinOrCreateGameCmdHandler : CommandHandler, ICommandHandler
         results.events.Enqueue(MakeEvent(
             "JoinOrCreateGame",
             new JoinOrCreateGameEvent    // need change
-            {
-                playerId = payload.playerId,
-                matchIdOrEmpty = payload.matchIdOrEmpty
-            }
+            (
+                payload.playerId,
+                true,
+                payload.matchIdOrEmpty
+            )
         ));
         return results;
     }

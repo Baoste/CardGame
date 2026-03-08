@@ -17,10 +17,11 @@ public class EndTurnCmdHandler : CommandHandler, ICommandHandler
         results.events.Enqueue(MakeEvent(
             "EndTurn",
             new EndTurnEvent    // need change
-            {
-                playerId = payload.playerId,
-                opponentId = 1 - payload.playerId
-            }
+            (
+                payload.playerId,
+                true,
+                1 - payload.playerId
+            )
         ));
 
         return results;

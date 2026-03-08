@@ -87,25 +87,27 @@ namespace Game.Domain
             board._Add(instanceId);
         }
 
-        public void RemoveCard(int instanceId)
+        public bool RemoveCard(int instanceId)
         {
-            if (!cardLocationMap.ContainsKey(instanceId))   return;
+            if (!cardLocationMap.ContainsKey(instanceId))   return false;
 
             CardZone board = cardLocationMap[instanceId];
             board._Remove(instanceId);
             discardPile._Add(instanceId);
             cardLocationMap[instanceId] = discardPile;
             instancePointMap.Remove(instanceId);
+            return true;
         }
 
-        public void MoveCard(int instanceId, CardZone targetZone)
+        public bool MoveCard(int instanceId, CardZone targetZone)
         {
-            if (!cardLocationMap.ContainsKey(instanceId)) return;
+            if (!cardLocationMap.ContainsKey(instanceId)) return false;
 
             CardZone board = cardLocationMap[instanceId];
             board._Remove(instanceId);
             targetZone._Add(instanceId);
             cardLocationMap[instanceId] = targetZone;
+            return true;
         }
     }
 

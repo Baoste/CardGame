@@ -1,9 +1,6 @@
 using Game.Domain;
 using Game.Server;
 using Newtonsoft.Json;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
 
 public class GetGameStateCmdHandler : CommandHandler, ICommandHandler
 {
@@ -17,9 +14,11 @@ public class GetGameStateCmdHandler : CommandHandler, ICommandHandler
         results.events.Enqueue(MakeEvent(
             "GetGameState",
             new GetGameStateEvent    // need change
-            {
-                gameState = session.gameState,
-            }
+            (
+                payload.playerId,
+                true,
+                session.gameState
+            )
         ));
         return results;
     }
