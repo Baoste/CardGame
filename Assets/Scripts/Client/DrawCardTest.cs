@@ -12,6 +12,7 @@ public class DrawCardTest : MonoBehaviour
 
     [SerializeField] private HandView handView;
     [SerializeField] private BoardView boardView;
+    [SerializeField] private ResolveZoneView ResolveZoneView;
 
     // Start is called before the first frame update
     void Start()
@@ -60,13 +61,13 @@ public class DrawCardTest : MonoBehaviour
 
         bool isOpponent = playerId != ClientGameState.playerSlot;
 
-        GameObject instace = CardViewCreator.Instance.CreateCardInstace(cardId, instanceId, transform.position, Quaternion.identity);
+        GameObject instance = CardViewCreator.Instance.CreateCardInstance(cardId, instanceId, transform.position, Quaternion.identity);
         if (isHoreCard && isOpponent)
-            instace.GetComponent<PointCardInstance>().pointText.text = "";
+            instance.GetComponent<PointCardInstance>().pointText.text = "";
 
-        handMap[playerId].Add(instace);
-        instanceMap[instanceId] = instace;
-        StartCoroutine(boardView.AddCard(instace, playerId));
+        handMap[playerId].Add(instance);
+        instanceMap[instanceId] = instance;
+        StartCoroutine(boardView.AddCard(instance, playerId));
     }
 
     // parameters[0]: int cardId
@@ -80,12 +81,29 @@ public class DrawCardTest : MonoBehaviour
 
         bool isOpponent = playerId != ClientGameState.playerSlot;
 
-        GameObject instace = CardViewCreator.Instance.CreateCardInstace(cardId, instanceId, transform.position, Quaternion.identity);
+        GameObject instance = CardViewCreator.Instance.CreateCardInstance(cardId, instanceId, transform.position, Quaternion.identity);
 
-        handMap[playerId].Add(instace);
-        instanceMap[instanceId] = instace;
+        handMap[playerId].Add(instance);
+        instanceMap[instanceId] = instance;
 
         if (isOpponent) return;
-        StartCoroutine(handView.AddCard(instace));
+        StartCoroutine(handView.AddCard(instance));
+    }
+
+    // parameters[0]: int cardId
+    // parameters[1]: int instanceId
+    // parameters[2]: ParticipantType toZone
+    // parameters[3]: int playerId
+    public void MoveCard(object[] parameters)
+    {
+        int cardId = (int)parameters[0];
+        int instanceId = (int)parameters[1];
+        ParticipantType toZone = (ParticipantType)parameters[2];
+        int playerId = (int)parameters[3];
+
+        if (toZone != ParticipantType.CardsToResolve) return;    // 这里只处理从手牌移到候选场上的情况
+
+        GameObject instance = CardViewCreator.Instance.CreateCardInstance(cardId, instanceId, transform.position, Quaternion.identity);
+        StartCoroutine(ResolveZoneView.AddCard(instance, playerId));
     }
 }
