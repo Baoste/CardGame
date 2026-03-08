@@ -7,6 +7,7 @@ using UnityEngine;
 public class SkillCardInstance : CardInstance
 {
     [Header("Value")]
+    public int cardId;
     public string cardName;
     public string description;
     public List<EffectOp> effects;
@@ -25,7 +26,9 @@ public class SkillCardInstance : CardInstance
 
     public void InitCardInstance(int cardId, int instaceId)
     {
-        instanceId = instaceId;
+        this.instanceId = instaceId;
+        this.cardId = cardId;
+
         cardName = CardDatabase.Get(cardId).name;
         description = CardDatabase.Get(cardId).description;
         point = CardDatabase.Get(cardId).point;

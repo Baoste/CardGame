@@ -12,7 +12,7 @@ public class DrawSkillCardEventHandler : IEventProcess, IEventHandler
     {
         payload = JsonConvert.DeserializeObject<DrawSkillCardEvent>(ev.jsonData);   // need change
         // need change, 需要把参数在这里传进去
-        // ProcessQueueManager.Instance.Enqueue(Process, new object[] { payload.cardId, payload.playerId });
+        ProcessQueueManager.Instance.Enqueue(Process, new object[] { payload.cardId, payload.instanceId, payload.playerId });
 
         // TODO
         // START
@@ -25,6 +25,6 @@ public class DrawSkillCardEventHandler : IEventProcess, IEventHandler
 
     public void Process(object[] objects)
     {
-        // ProcessDispatcher.Process("DrawCardTest", objects);
+        ProcessDispatcher.Process("DrawSkillCardTest", objects);
     }
 }

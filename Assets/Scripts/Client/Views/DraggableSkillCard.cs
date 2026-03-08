@@ -3,7 +3,6 @@ using Game.Domain;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using static Unity.Burst.Intrinsics.X86.Avx;
 
 public class DraggableSkillCard : MonoBehaviour
 {
@@ -16,13 +15,18 @@ public class DraggableSkillCard : MonoBehaviour
     private Vector3 dragOffset;
     private Plane dragPlane;
 
+    private int cardId;
+    private int instanceId;
+
     public bool IsDragging => isDragging;
 
-    public void Init(HandView handView, BoxCollider validArea, float dragFollowDepth)
+    public void Init(HandView handView, int cardId, int instanceId, BoxCollider validArea, float dragFollowDepth)
     {
         this.handView = handView;
         this.validArea = validArea;
         this.dragFollowDepth = dragFollowDepth;
+        this.cardId = cardId;
+        this.instanceId = instanceId;
         cam = Camera.main;
     }
 
@@ -84,9 +88,9 @@ public class DraggableSkillCard : MonoBehaviour
 
         if (shouldRemove)
         {
-            Card card = CardDatabase.Get(999);
-            // StartCoroutine(ClientEffectExecutor.ExecuteCard(card, ClientGameState.gateway, ClientGameState.playerSlot, -1));
-            StartCoroutine(RemoveAndDestroy());
+            transform.localScale = Vector3.one * 0.01f;
+            Card card = CardDatabase.Get(cardId);
+            StartCoroutine(ClientEffectExecutor.ExecuteCard(card, ClientGameState.gateway, ClientGameState.playerSlot, instanceId));
         }
         else
         {
@@ -113,13 +117,5 @@ public class DraggableSkillCard : MonoBehaviour
     {
         if (handView != null)
             yield return handView.UpdateCardPositions(0.15f);
-    }
-
-    private IEnumerator RemoveAndDestroy()
-    {
-        if (handView != null)
-            yield return handView.RemoveCard(gameObject);
-
-        Destroy(gameObject);
     }
 }

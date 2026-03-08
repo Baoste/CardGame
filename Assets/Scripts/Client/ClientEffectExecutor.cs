@@ -44,8 +44,8 @@ namespace Game.Domain
 
             // TODO: 这里直接丢弃了，后续可能需要根据效果来决定是否丢弃
             Debug.Log($"[Client] Discard skill card instance {cardIstanceId}");
-            //DiscardCardCommand discardCmd = new DiscardCardCommand { playerId = playerSlot, instanceId = cardIstanceId };
-            //gateway.SendCommandServerRpc("DiscardCard", JsonConvert.SerializeObject(discardCmd));
+            DiscardCardCommand discardCmd = new DiscardCardCommand { playerId = playerSlot, instanceId = cardIstanceId };
+            gateway.SendCommandServerRpc("DiscardCard", JsonConvert.SerializeObject(discardCmd));
         }
 
         private static void ExecuteOp(EffectOp op, MatchGateway gateway, GameState gameState, EffectContext ctx) 

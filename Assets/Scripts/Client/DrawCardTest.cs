@@ -17,6 +17,7 @@ public class DrawCardTest : MonoBehaviour
     void Start()
     {
         ProcessDispatcher.Register("DrawCardTest", DrawCard);
+        ProcessDispatcher.Register("DrawSkillCardTest", DrawSkillCard);
         ProcessDispatcher.Register("DiscardCardTest", DiscardCard);
         ProcessDispatcher.Register("ModifyPointTest", ModifyPoint);
         handMap[0] = new List<GameObject>();
@@ -57,9 +58,34 @@ public class DrawCardTest : MonoBehaviour
         int playerId = (int)parameters[2];
         bool isHoreCard = (bool)parameters[3];
 
+        bool isOpponent = playerId != ClientGameState.playerSlot;
+
         GameObject instace = CardViewCreator.Instance.CreateCardInstace(cardId, instanceId, transform.position, Quaternion.identity);
+        if (isHoreCard && isOpponent)
+            instace.GetComponent<PointCardInstance>().pointText.text = "";
+
         handMap[playerId].Add(instace);
         instanceMap[instanceId] = instace;
         StartCoroutine(boardView.AddCard(instace, playerId));
+    }
+
+    // parameters[0]: int cardId
+    // parameters[1]: int instanceId
+    // parameters[2]: int playerId
+    public void DrawSkillCard(object[] parameters)
+    {
+        int cardId = (int)parameters[0];
+        int instanceId = (int)parameters[1];
+        int playerId = (int)parameters[2];
+
+        bool isOpponent = playerId != ClientGameState.playerSlot;
+
+        GameObject instace = CardViewCreator.Instance.CreateCardInstace(cardId, instanceId, transform.position, Quaternion.identity);
+
+        handMap[playerId].Add(instace);
+        instanceMap[instanceId] = instace;
+
+        if (isOpponent) return;
+        StartCoroutine(handView.AddCard(instace));
     }
 }

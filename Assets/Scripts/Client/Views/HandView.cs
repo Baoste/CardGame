@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Splines;
 using DG.Tweening;
+using Game.Domain;
 
 public class HandView : MonoBehaviour
 {
@@ -17,9 +18,7 @@ public class HandView : MonoBehaviour
     public IEnumerator AddCard(GameObject instance)
     {
         skillCardInstances.Add(instance);
-
         BindDragComponent(instance);
-
         yield return UpdateCardPositions(0.15f);
     }
 
@@ -37,7 +36,9 @@ public class HandView : MonoBehaviour
         if (dragCard == null)
             dragCard = instance.AddComponent<DraggableSkillCard>();
 
-        dragCard.Init(this, dragValidArea, dragFollowDepth);
+        int cardId = instance.GetComponent<SkillCardInstance>().cardId;
+        int instanceId = instance.GetComponent<SkillCardInstance>().instanceId;
+        dragCard.Init(this, cardId, instanceId, dragValidArea, dragFollowDepth);
     }
 
     public IEnumerator UpdateCardPositions(float duration)

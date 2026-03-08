@@ -11,20 +11,19 @@ public class TestSystem : MonoBehaviour
     {
         if(Input.GetKeyDown(KeyCode.Space))
         {
-            GameObject instace = CardViewCreator.Instance.CreateCardInstace(999, 1,transform.position, Quaternion.identity);
-            StartCoroutine(handView.AddCard(instace));
+            ClientCommand.DrawSkillCard();
         }
 
-        if (Input.GetKeyDown(KeyCode.Q))
-        {
-            GameObject instace = CardViewCreator.Instance.CreateCardInstace(1, 2, transform.position, Quaternion.identity);
-            StartCoroutine(boardView.AddCard(instace, -1));
-        }
+        //if (Input.GetKeyDown(KeyCode.Q))
+        //{
+        //    GameObject instace = CardViewCreator.Instance.CreateCardInstace(1, 2, transform.position, Quaternion.identity);
+        //    StartCoroutine(boardView.AddCard(instace, -1));
+        //}
 
-        if (Input.GetKeyDown(KeyCode.W))
-        {
-            GameObject instace = CardViewCreator.Instance.CreateCardInstace(1, 2, transform.position, Quaternion.identity);
-            StartCoroutine(boardView.AddCard(instace, 1));
-        }
+        //if (Input.GetKeyDown(KeyCode.W))
+        //{
+        //    GameObject instace = CardViewCreator.Instance.CreateCardInstace(1, 2, transform.position, Quaternion.identity);
+        //    StartCoroutine(boardView.AddCard(instace, 1));
+        //}
     }
 }
