@@ -166,11 +166,13 @@ namespace Game.Domain
     /// </summary>
     public class MoveCardEvent : PlayerEvent
     {
+        public int cardId;
         public int selectedId;
         public ParticipantType toZone;
-        public MoveCardEvent(int playerId, bool success, int selectedId, ParticipantType toZone)
+        public MoveCardEvent(int playerId, bool success, int cardId, int selectedId, ParticipantType toZone)
             : base(playerId, success)
         {
+            this.cardId = cardId;
             this.selectedId = selectedId;
             this.toZone = toZone;
         }

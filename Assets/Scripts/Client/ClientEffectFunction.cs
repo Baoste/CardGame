@@ -4,6 +4,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static UnityEngine.Rendering.DebugUI;
 
 namespace Game.Domain
 {
@@ -102,6 +103,14 @@ namespace Game.Domain
                 }));
             }
             ClientEffectContext.IsExecuteDone = true;
+        }
+
+        public void MoveValid(EffectOp op, MatchGateway gateway, GameState gameState, EffectContext ctx)
+        {
+            StartCoroutine(ValidateCommand(op, gateway, gameState, ctx, () =>
+            {
+                return;
+            }));
         }
 
         public IEnumerator ValidateCommand(EffectOp op, MatchGateway gateway, GameState gameState, EffectContext ctx, Action onSuccess)

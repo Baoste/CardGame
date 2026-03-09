@@ -30,7 +30,7 @@ public sealed class DetermineParticipantsEventHandler : IEventProcess, IEventHan
         List<int> candidateSourceIds = payload.candidateSourceIds;
         List<int> candidateTargetIds = payload.candidateTargetIds;
 
-        string context = "S:";
+        string context = $"{payload.success} - S:";
         if (candidateSourceIds.Count > 0)
         {
             context += $"{string.Join(",", candidateSourceIds)}";

@@ -10,7 +10,7 @@ public class MoveCardEventHandler : IEventProcess, IEventHandler
     {
         var payload = JsonConvert.DeserializeObject<MoveCardEvent>(ev.jsonData);   // need change
         // need change, 需要把参数在这里传进去
-        ProcessQueueManager.Instance.Enqueue(Process, new object[] {  });
+        ProcessQueueManager.Instance.Enqueue(Process, new object[] { payload.cardId, payload.selectedId, payload.toZone, payload.playerId });
 
         // TODO
         // START
@@ -23,6 +23,6 @@ public class MoveCardEventHandler : IEventProcess, IEventHandler
 
     public void Process(object[] objects)
     {
-        // ProcessDispatcher.Process("DrawCardTest", objects);
+        ProcessDispatcher.Process("MoveCardTest", objects);
     }
 }

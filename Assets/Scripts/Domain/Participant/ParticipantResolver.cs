@@ -23,6 +23,8 @@ namespace Game.Domain
                 pool.AddRange(new List<int>(state.skillCardsDeck.instanceIds));
             if ((spec.participantType & ParticipantType.PointCardsInDeck) != 0)
                 pool.AddRange(new List<int>(state.pointCardsDeck.instanceIds));
+            if ((spec.participantType & ParticipantType.CardsToResolve) != 0)
+                pool.AddRange(new List<int>(state.cardsToResolve.instanceIds));
 
             // filter 过滤
             pool = pool.FindAll(c => spec.filter.Evaluate(state, ctx));

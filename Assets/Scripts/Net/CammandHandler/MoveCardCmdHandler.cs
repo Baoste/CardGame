@@ -37,6 +37,7 @@ public class MoveCardCmdHandler : CommandHandler, ICommandHandler
                 break;
         }
         bool success = session.gameState.MoveCard(payload.instanceId, toZone);
+        int cardId = session.instanceToCardId[payload.instanceId];
 
         // return
         CommandResult results = new CommandResult();
@@ -46,6 +47,7 @@ public class MoveCardCmdHandler : CommandHandler, ICommandHandler
             (
                 payload.playerId,
                 success,
+                cardId,
                 payload.instanceId,
                 payload.effect.target.participantType
             )

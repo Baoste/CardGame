@@ -67,16 +67,15 @@ public class ClientMatchInput : MonoBehaviour
         else if ((!sourceNeedChoose && !targetNeedChoose) || (candidateSourceIds.Count == 0 && candidateTargetIds.Count == 0))
         {
             Debug.Log("[Client] No target to choose, executing effect directly");
-            ClientEffectContext.Instance.selectedSourceIds = new List<int>();
-            ClientEffectContext.Instance.selectedTargetIds = new List<int>();
+            ClientEffectContext.Instance.selectedSourceIds = candidateSourceIds;
+            ClientEffectContext.Instance.selectedTargetIds = candidateTargetIds;
             ClientEffectContext.ChooseDone = true;
         }
         else
         {
             Debug.Log($"[Client] Waiting for player to choose target");
-            ClientEffectContext.Instance.selectedSourceIds = candidateSourceIds;
             // StartCoroutine(DelayedTest(10f));
-            StartCoroutine(ClickTest(candidateTargetIds, targetSelectCount));
+            StartCoroutine(ClickTest(candidateSourceIds, sourceSelectCount, candidateTargetIds, targetSelectCount));
         }
     }
 
@@ -86,11 +85,40 @@ public class ClientMatchInput : MonoBehaviour
         ClientEffectContext.ChooseDone = true;
     }
 
-    private IEnumerator ClickTest(List<int> candidateTargetIds, int targetSelectCount)
+    private IEnumerator ClickTest(List<int> candidateSouceIds, int SourceSelectCount, List<int> candidateTargetIds, int targetSelectCount)
     {
+        List<int> selectedSourceIds = new List<int>();
         List<int> selectedTargetIds = new List<int>();
-        int count = 0;
-        while (count < targetSelectCount)
+
+        int count0 = 0;
+        while (count0 < SourceSelectCount)
+        {
+            yield return null;
+            if (!Input.GetMouseButtonDown(0))
+                continue;
+
+            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+            if (!Physics.Raycast(ray, out RaycastHit hit, 1000f))
+                continue;
+            CardInstance cardInstance = hit.collider.GetComponentInParent<PointCardInstance>();
+            if (!cardInstance)
+            {
+                cardInstance = hit.collider.GetComponentInParent<SkillCardInstance>();
+                if (!cardInstance)
+                    continue;
+            }
+
+            int instanceId = cardInstance.instanceId;
+            if (!candidateSouceIds.Contains(instanceId))
+                continue;
+            selectedSourceIds.Add(instanceId);
+            Debug.Log($"[Client] Select Source instaceId {instanceId}");
+            count0++;
+        }
+        ClientEffectContext.Instance.selectedSourceIds = selectedSourceIds;
+
+        int count1 = 0;
+        while (count1 < targetSelectCount)
         {
             yield return null;
             if (!Input.GetMouseButtonDown(0))
@@ -111,8 +139,8 @@ public class ClientMatchInput : MonoBehaviour
             if (!candidateTargetIds.Contains(instanceId))
                 continue;
             selectedTargetIds.Add(instanceId);
-            Debug.Log($"[Client] Select instaceId {instanceId}");
-            count++;
+            Debug.Log($"[Client] Select Target instaceId {instanceId}");
+            count1++;
         }
         ClientEffectContext.Instance.selectedTargetIds = selectedTargetIds;
         ClientEffectContext.ChooseDone = true;

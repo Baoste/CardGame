@@ -21,6 +21,7 @@ public class DrawCardTest : MonoBehaviour
         ProcessDispatcher.Register("DrawSkillCardTest", DrawSkillCard);
         ProcessDispatcher.Register("DiscardCardTest", DiscardCard);
         ProcessDispatcher.Register("ModifyPointTest", ModifyPoint);
+        ProcessDispatcher.Register("MoveCardTest", MoveCard);
         handMap[0] = new List<GameObject>();
         handMap[1] = new List<GameObject>();
     }
@@ -101,9 +102,21 @@ public class DrawCardTest : MonoBehaviour
         ParticipantType toZone = (ParticipantType)parameters[2];
         int playerId = (int)parameters[3];
 
-        if (toZone != ParticipantType.CardsToResolve) return;    // 这里只处理从手牌移到候选场上的情况
+        switch (toZone)
+        {
+            case ParticipantType.CardsToResolve:
+            {
+                GameObject instance = CardViewCreator.Instance.CreateCardInstance(cardId, instanceId, transform.position, Quaternion.identity);
+                StartCoroutine(ResolveZoneView.AddCard(instance, playerId));    
+                break;
+            }
+            case ParticipantType.MyPointCardsOnBoard:
+            {
+                GameObject instance = CardViewCreator.Instance.CreateCardInstance(cardId, instanceId, transform.position, Quaternion.identity);
+                StartCoroutine(boardView.AddCard(instance, playerId));
+                break;
+            }
+        }
 
-        GameObject instance = CardViewCreator.Instance.CreateCardInstance(cardId, instanceId, transform.position, Quaternion.identity);
-        StartCoroutine(ResolveZoneView.AddCard(instance, playerId));
     }
 }
