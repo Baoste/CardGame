@@ -9,7 +9,6 @@ public class TestSystem : MonoBehaviour
     [SerializeField] private HandView handView;
     [SerializeField] private BoardView boardView;
     [SerializeField] private ResolveZoneView ResolveZoneView;
-    private DrawCardTest drawCardTest;
 
     private void Update()
     {

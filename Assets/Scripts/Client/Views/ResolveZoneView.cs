@@ -37,6 +37,13 @@ public class ResolveZoneView : MonoBehaviour
 
     public IEnumerator ClearCards()
     {
+        foreach (var card in resolveCards)
+        {
+            if (card != null)
+            {
+                Destroy(card);
+            }
+        }
         resolveCards.Clear();
         yield return null;
     }

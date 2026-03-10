@@ -87,6 +87,27 @@ namespace Game.Domain
             board._Add(instanceId);
         }
 
+        public void AddToResolve(int cardId, int instanceId)
+        {
+            if (instanceId == -1) return;
+
+            cardLocationMap[instanceId] = cardsToResolve;
+            instancePointMap[instanceId] = CardDatabase.Get(cardId).point;
+            cardsToResolve._Add(instanceId);
+        }
+
+        public void ClearResolve()
+        {
+            IReadOnlyList<int> ids = cardsToResolve.instanceIds;
+            foreach(int instanceId in ids)
+            {
+                discardPile._Add(instanceId);
+                cardLocationMap[instanceId] = discardPile;
+                // instancePointMap.Remove(instanceId);
+            }
+            cardsToResolve._Clear();
+        }
+
         public bool RemoveCard(int instanceId)
         {
             if (!cardLocationMap.ContainsKey(instanceId))   return false;
@@ -95,12 +116,13 @@ namespace Game.Domain
             board._Remove(instanceId);
             discardPile._Add(instanceId);
             cardLocationMap[instanceId] = discardPile;
-            instancePointMap.Remove(instanceId);
+            // instancePointMap.Remove(instanceId);
             return true;
         }
 
         public bool MoveCard(int instanceId, CardZone targetZone)
         {
+            if (targetZone == null) return false;
             if (!cardLocationMap.ContainsKey(instanceId)) return false;
 
             CardZone board = cardLocationMap[instanceId];

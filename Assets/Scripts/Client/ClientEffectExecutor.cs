@@ -14,13 +14,6 @@ namespace Game.Domain
             {
                 EffectOp op = card.effects[i];
 
-                // TODO: 暂时 Move 效果的验证，因为 Move 效果的验证比较特殊，后续再单独处理
-                if (op.type == EffectType.Move && op.target.participantType == ParticipantType.CardsToResolve)
-                {
-                    // excute move effect
-                }
-                yield return new WaitForSecondsRealtime(2f);
-
                 DetermineParticipantsCommand cmd = new DetermineParticipantsCommand { playerId = playerSlot, effect = op };
                 gateway.SendCommandServerRpc("DetermineParticipants", JsonConvert.SerializeObject(cmd), ClientGameState.playerSlot);
                 yield return new WaitUntil(() =>
@@ -29,13 +22,6 @@ namespace Game.Domain
                     ClientEffectContext.ChooseDone
                 );
                 ClientEffectContext.ChooseDone = false;
-
-                // TODO: 暂时 Move 效果的验证，因为 Move 效果的验证比较特殊，后续再单独处理
-                if (op.type == EffectType.Move && op.target.participantType == ParticipantType.CardsToResolve)
-                {
-                    MoveValid(op, gateway, ClientGameState.Instance, ClientEffectContext.Instance);
-                }
-                yield return new WaitForSecondsRealtime(2f);
 
                 if (!ClientEffectContext.IsCommandValid)
                 {
@@ -86,6 +72,10 @@ namespace Game.Domain
                     clientEffectFunction.DrawSkillCards(op, gateway, gameState, ctx);
                     break;
 
+                case EffectType.DrawPointToResolve:
+                    ClientEffectContext.IsExecuteDone = true;  // 这个效果不需要客户端执行，直接告诉流程继续往下走就行了
+                    break;
+
                 case EffectType.Discard:
                     clientEffectFunction.DiscardCards(op, gateway, gameState, ctx, selectedTargetIds);
                     break;
@@ -98,12 +88,6 @@ namespace Game.Domain
                     clientEffectFunction.MoveCards(op, gateway, gameState, ctx, selectedSourceIds);
                     break;
             }
-        }
-
-        private static void MoveValid(EffectOp op, MatchGateway gateway, GameState gameState, EffectContext ctx)
-        {
-            ClientEffectFunction clientEffectFunction = GameObject.Find("ClientEffectFunction").GetComponent<ClientEffectFunction>();
-            clientEffectFunction.MoveValid(op, gateway, gameState, ctx);
         }
     }
 }

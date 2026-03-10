@@ -134,6 +134,29 @@ namespace Game.Domain
     }
 
     /// <summary>
+    /// 抽取一张牌到待处理区事件，成功时 playerId 是玩家ID，cardId 是牌ID，instanceId 是牌的实例ID；失败时 playerId 是玩家ID，cardId 是 -1，instanceId 是 -1
+    /// </summary>
+    public class DrawPointCardToResolveEvent : PlayerEvent
+    {
+        public int cardId;
+        public int instanceId;
+        public DrawPointCardToResolveEvent(int playerId, bool success, int cardId, int instanceId)
+            : base(playerId, success)
+        {
+            this.cardId = cardId;
+            this.instanceId = instanceId;
+        }
+    }
+
+    public class ClearCardsToResolveEvent : PlayerEvent
+    {
+        public ClearCardsToResolveEvent(int playerId, bool success)
+            : base(playerId, success)
+        {
+        }
+    }
+
+    /// <summary>
     /// 弃牌事件，成功时 playerId 是玩家ID，instanceId 是牌的实例ID；失败时 playerId 是玩家ID，instanceId 是 -1
     /// </summary>
     public class DiscardCardEvent : PlayerEvent

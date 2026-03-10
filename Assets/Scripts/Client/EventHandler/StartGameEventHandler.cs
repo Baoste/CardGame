@@ -22,6 +22,6 @@ public class StartGameEventHandler : IEventProcess, IEventHandler
     }
     public void Process(object[] objects)
     {
-        // TODO:
+        ProcessDispatcher.Process("StartGameTest", objects);
     }
 }

@@ -1,3 +1,4 @@
+using Cinemachine;
 using Game.Domain;
 using System.Collections;
 using System.Collections.Generic;
@@ -17,13 +18,21 @@ public class DrawCardTest : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        ProcessDispatcher.Register("StartGameTest", StartGameTest);
         ProcessDispatcher.Register("DrawCardTest", DrawCard);
         ProcessDispatcher.Register("DrawSkillCardTest", DrawSkillCard);
         ProcessDispatcher.Register("DiscardCardTest", DiscardCard);
         ProcessDispatcher.Register("ModifyPointTest", ModifyPoint);
         ProcessDispatcher.Register("MoveCardTest", MoveCard);
+        ProcessDispatcher.Register("ClearCardsToResolveTest", ClearResolve);
         handMap[0] = new List<GameObject>();
         handMap[1] = new List<GameObject>();
+    }
+
+    public void StartGameTest(object[] parameters)
+    {
+        CinemachineVirtualCamera vcam = GameObject.Find("VCamera_Playing").GetComponent<CinemachineVirtualCamera>();
+        vcam.Priority = 20;
     }
 
     // parameters[0]: int instanceId
@@ -117,6 +126,10 @@ public class DrawCardTest : MonoBehaviour
                 break;
             }
         }
+    }
 
+    public void ClearResolve(object[] parameters)
+    {
+        StartCoroutine(ResolveZoneView.ClearCards());
     }
 }

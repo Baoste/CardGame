@@ -37,7 +37,7 @@ public class ClientMatchInput : MonoBehaviour
 
     private void Awake()
     {
-        ProcessDispatcher.Register("PlaySkillCardTest", PlaySkillCardTest);
+        ProcessDispatcher.Register("DetermineParticipantsTest", DetermineParticipantsTest);
     }
 
 
@@ -48,7 +48,7 @@ public class ClientMatchInput : MonoBehaviour
 
 
     // Debug Test
-    public void PlaySkillCardTest(object[] parameters)
+    public void DetermineParticipantsTest(object[] parameters)
     {
         bool success = (bool)parameters[0];
         bool sourceNeedChoose = (bool)parameters[1];
@@ -67,8 +67,8 @@ public class ClientMatchInput : MonoBehaviour
         else if ((!sourceNeedChoose && !targetNeedChoose) || (candidateSourceIds.Count == 0 && candidateTargetIds.Count == 0))
         {
             Debug.Log("[Client] No target to choose, executing effect directly");
-            ClientEffectContext.Instance.selectedSourceIds = candidateSourceIds;
-            ClientEffectContext.Instance.selectedTargetIds = candidateTargetIds;
+            ClientEffectContext.Instance.selectedSourceIds = new List<int>();
+            ClientEffectContext.Instance.selectedTargetIds = new List<int>();
             ClientEffectContext.ChooseDone = true;
         }
         else

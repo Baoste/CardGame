@@ -32,9 +32,6 @@ public class MoveCardCmdHandler : CommandHandler, ICommandHandler
             case ParticipantType.PointCardsInDeck:
                 toZone = session.gameState.pointCardsDeck;
                 break;
-            case ParticipantType.CardsToResolve:
-                toZone = session.gameState.cardsToResolve;
-                break;
         }
         bool success = session.gameState.MoveCard(payload.instanceId, toZone);
         int cardId = session.instanceToCardId[payload.instanceId];
@@ -42,7 +39,7 @@ public class MoveCardCmdHandler : CommandHandler, ICommandHandler
         // return
         CommandResult results = new CommandResult();
         results.events.Enqueue(MakeEvent(
-            "MoveCards",
+            "MoveCard",
             new MoveCardEvent    // need change
             (
                 payload.playerId,

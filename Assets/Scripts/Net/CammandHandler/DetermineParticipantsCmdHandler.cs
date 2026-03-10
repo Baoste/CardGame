@@ -25,6 +25,9 @@ public sealed class DetermineParticipantsCmdHandler : CommandHandler, ICommandHa
         session.ctx.candidateSourceIds = candidateSourceIds;
         session.ctx.candidateTargetIds = candidateTargetIds;
 
+        bool sourceNeedChoose = payload.effect.source.participantSelectionMode is SelectionModeChoose;
+        bool targetNeedChoose = payload.effect.target.participantSelectionMode is SelectionModeChoose;
+
         // return event
         CommandResult results = new CommandResult();
 
@@ -48,8 +51,28 @@ public sealed class DetermineParticipantsCmdHandler : CommandHandler, ICommandHa
             )
         ));
 
-        bool sourceNeedChoose = payload.effect.source.participantSelectionMode is SelectionModeChoose;
-        bool targetNeedChoose = payload.effect.target.participantSelectionMode is SelectionModeChoose;
+        // 如果是抽点数牌到待处理区，需要先把牌抽出来
+        if (payload.effect.type == EffectType.DrawPointToResolve)
+        {
+            int count = payload.effect.source.maxSelectCount.Evaluate(session.gameState, session.ctx);
+            for (int i = 0; i < count; i++)
+            {
+                int drawCardInstanceId = session.gameState.pointCardsDeck.Draw();
+                int drawCardId = session.instanceToCardId[drawCardInstanceId];
+                session.gameState.AddToResolve(drawCardId, drawCardInstanceId);
+
+                results.events.Enqueue(MakeEvent(
+                    "DrawPointCardToResolve",
+                    new DrawPointCardToResolveEvent    // need change
+                    (
+                        payload.playerId,
+                        success,
+                        drawCardId,
+                        drawCardInstanceId
+                    )
+                ));
+            }
+        }
 
         results.events.Enqueue(MakeEvent(
             "DetermineParticipants",

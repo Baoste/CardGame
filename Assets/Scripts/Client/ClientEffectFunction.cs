@@ -98,19 +98,18 @@ namespace Game.Domain
                 int idx = i;    // ·ÀÖ¹±Õ°ü²¶»ñ
                 StartCoroutine(ValidateCommand(op, gateway, gameState, ctx, () =>
                 {
-                    MoveCardCommand cmd = new MoveCardCommand { playerId = ctx.caster, instanceId = _selectedSourceIds[idx] };
+                    MoveCardCommand cmd = new MoveCardCommand { playerId = ctx.caster, instanceId = _selectedSourceIds[idx], effect=op};
                     gateway.SendCommandServerRpc("MoveCard", JsonConvert.SerializeObject(cmd));
                 }));
             }
-            ClientEffectContext.IsExecuteDone = true;
-        }
 
-        public void MoveValid(EffectOp op, MatchGateway gateway, GameState gameState, EffectContext ctx)
-        {
-            StartCoroutine(ValidateCommand(op, gateway, gameState, ctx, () =>
+            if (op.source.participantType == ParticipantType.CardsToResolve)
             {
-                return;
-            }));
+                ClearCardsToResolveCommand cmd = new ClearCardsToResolveCommand { playerId = ctx.caster };
+                gateway.SendCommandServerRpc("ClearCardsToResolve", JsonConvert.SerializeObject(cmd), ClientGameState.playerSlot);
+            }
+            
+            ClientEffectContext.IsExecuteDone = true;
         }
 
         public IEnumerator ValidateCommand(EffectOp op, MatchGateway gateway, GameState gameState, EffectContext ctx, Action onSuccess)

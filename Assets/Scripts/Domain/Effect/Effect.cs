@@ -4,11 +4,12 @@ namespace Game.Domain
 {
     public enum EffectType
     {
-        DrawPoint,     // 抽点数牌
-        DrawSkill,     // 抽技能牌
-        Discard,       // 弃牌
-        ModifyPoint,   // 改变目标牌点数
-        Move,          // 移动目标牌
+        DrawPoint,          // 抽点数牌
+        DrawSkill,          // 抽技能牌
+        DrawPointToResolve, // 抽点数牌到待处理区
+        Discard,            // 弃牌
+        ModifyPoint,        // 改变目标牌点数
+        Move,               // 移动目标牌
     }
 
     /*

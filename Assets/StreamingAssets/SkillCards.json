@@ -50,7 +50,7 @@
       "count": 2,
       "effects": [
         {
-          "type": 2,
+          "type": 3,
           "source": {
             "participantType": 0,
             "filter": {
@@ -91,7 +91,7 @@
       "count": 2,
       "effects": [
         {
-          "type": 3,
+          "type": 4,
           "source": {
             "participantType": 0,
             "filter": {
@@ -133,14 +133,14 @@
       "count": 2,
       "effects": [
         {
-          "type": 4,
+          "type": 2,
           "source": {
             "participantType": 32,
             "filter": {
-              "$type": "Game.Domain.AllCondition, Assembly-CSharp"
+              "$type": "Game.Domain.NoneCondition, Assembly-CSharp"
             },
             "participantSelectionMode": {
-              "$type": "SelectionModeRandom, Assembly-CSharp"
+              "$type": "SelectionModeNone, Assembly-CSharp"
             },
             "maxSelectCount": {
               "$type": "Game.Domain.ConstValue, Assembly-CSharp",
@@ -164,7 +164,7 @@
           }
         },
         {
-          "type": 4,
+          "type": 5,
           "source": {
             "participantType": 64,
             "filter": {

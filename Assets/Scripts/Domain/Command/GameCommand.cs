@@ -80,6 +80,11 @@ public class DrawSkillCardCommand : ICommand
         public int playerId;
     }
 
+    public class ClearCardsToResolveCommand : ICommand
+    {
+        public int playerId;
+    }
+
     public class DiscardCardCommand : ICommand
     {
         public int playerId;

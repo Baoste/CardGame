@@ -82,12 +82,12 @@ public class TestFunctions : MonoBehaviour
 
         EffectOp effect3 = new EffectOp
         {
-            type = EffectType.Move,
+            type = EffectType.DrawPointToResolve,
             source = new ParticipantSpec
             {
                 participantType = ParticipantType.PointCardsInDeck,
-                participantSelectionMode = new SelectionModeRandom(),
-                filter = new AllCondition(),
+                participantSelectionMode = new SelectionModeNone(),
+                filter = new NoneCondition(),
                 maxSelectCount = new ConstValue
                 {
                     value = 3

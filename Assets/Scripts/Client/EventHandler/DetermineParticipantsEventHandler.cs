@@ -50,6 +50,6 @@ public sealed class DetermineParticipantsEventHandler : IEventProcess, IEventHan
         // TODO: 这里之后要绑定一个专门的函数来处理这个事件，暂时先写个测试函数
         // 这里的函数是为了打出技能卡之后，返回了一个候选目标列表，玩家需要选择一个目标来执行技能卡的效果
         // 所以这个函数的作用就是把候选目标列表展示出来，让玩家选择一个目标
-        ProcessDispatcher.Process("PlaySkillCardTest", objects);
+        ProcessDispatcher.Process("DetermineParticipantsTest", objects);
     }
 }
