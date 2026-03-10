@@ -50,6 +50,11 @@ public class QuickStartButtons : MonoBehaviour
             ClientCommand.StartTurn(1 - ClientGameState.playerSlot);
         }
 
+        if (GUI.Button(new Rect(1700, 660, w, h), "Reveal Cards"))
+        {
+            ClientCommand.RevealCardsAndScore();
+        }
+
         if (ClientGameState.Instance.CurrentPlayerId != -1 && ClientGameState.Instance.CurrentPlayerId == ClientGameState.playerSlot)
         {
             if (GUI.Button(new Rect(1700, 310, w, h), "Draw Point Card"))

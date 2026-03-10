@@ -201,6 +201,16 @@ namespace Game.Domain
         }
     }
 
+    public class RevealCardsAndScoreEvent : PlayerEvent
+    {
+        public int winnerId;
+        public RevealCardsAndScoreEvent(int playerId, bool success, int winnerId)
+            : base(playerId, success)
+        {
+            this.winnerId = winnerId;
+        }
+    }
+
     /// <summary>
     /// 确定参与者事件，成功时 playerId 是玩家ID，
     /// sourceNeedChoose 和 targetNeedChoose 分别表示是否需要选择来源和目标，

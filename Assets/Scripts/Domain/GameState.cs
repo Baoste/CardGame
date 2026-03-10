@@ -60,6 +60,19 @@ namespace Game.Domain
             cardLocationMap.Clear();
         }
 
+        public int SumPoint(int playerId)
+        {
+            int sum = 0;
+            IReadOnlyList<int> pointCardIds = players[playerId].pointCardsOnBoard.instanceIds;
+            foreach (int instanceId in pointCardIds)
+            {
+                if (instancePointMap.ContainsKey(instanceId))
+                    sum += instancePointMap[instanceId];
+            }
+            sum += instancePointMap[players[playerId]._holeCard];
+            return sum;
+        }
+
         public void AddCardsToDeck(List<int> instaceIds, CardType type)
         {
             foreach (int instanceId in instaceIds)
@@ -85,6 +98,14 @@ namespace Game.Domain
             cardLocationMap[instanceId] = board;
             instancePointMap[instanceId] = CardDatabase.Get(cardId).point;
             board._Add(instanceId);
+        }
+
+        public void AddHoleCard(int playerId, int cardId, int instanceId)
+        {
+            if (instanceId == -1) return;
+
+            players[playerId]._holeCard = instanceId;
+            instancePointMap[instanceId] = CardDatabase.Get(cardId).point;
         }
 
         public void AddToResolve(int cardId, int instanceId)

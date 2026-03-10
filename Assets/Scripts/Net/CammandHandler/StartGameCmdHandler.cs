@@ -60,7 +60,7 @@ public class StartGameCmdHandler : CommandHandler, ICommandHandler
         // ³éµ×ÅÆ
         int drawCardInstanceId = -1;
         drawCardInstanceId = pointCardsDeck.Draw();
-        session.gameState.players[payload.playerId].holeCard = drawCardInstanceId;
+        session.gameState.AddHoleCard(payload.playerId, session.instanceToCardId[drawCardInstanceId], drawCardInstanceId);
         results.events.Enqueue(MakeEvent(
             "DrawPointCard",
             new DrawPointCardEvent    // need change
@@ -73,7 +73,7 @@ public class StartGameCmdHandler : CommandHandler, ICommandHandler
             )
         ));
         drawCardInstanceId = pointCardsDeck.Draw();
-        session.gameState.players[1 - payload.playerId].holeCard = drawCardInstanceId;
+        session.gameState.AddHoleCard(1 - payload.playerId, session.instanceToCardId[drawCardInstanceId], drawCardInstanceId);
         results.events.Enqueue(MakeEvent(
             "DrawPointCard",
             new DrawPointCardEvent    // need change

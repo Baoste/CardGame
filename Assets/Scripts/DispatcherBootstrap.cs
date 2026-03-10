@@ -18,6 +18,7 @@ public static class DispatcherBootstrap
         EventDispatcher.Register("DiscardCard", new DiscardCardEventHandler());
         EventDispatcher.Register("ModifyPoint", new ModifyPointEventHandler());
         EventDispatcher.Register("MoveCard", new MoveCardEventHandler());
+        EventDispatcher.Register("RevealCardsAndScore", new RevealCardsAndScoreEventHandler());
         EventDispatcher.Register("DetermineParticipants", new DetermineParticipantsEventHandler());
         EventDispatcher.Register("ValidateParticipants", new ValidateParticipantsEventHandler());
         EventDispatcher.Register("EndTurn", new EndTurnEventHandler());
@@ -36,6 +37,7 @@ public static class DispatcherBootstrap
         CommandDispatcher.Register("DiscardCard", new DiscardCardCmdHandler());
         CommandDispatcher.Register("ModifyPoint", new ModifyPointCmdHandler());
         CommandDispatcher.Register("MoveCard", new MoveCardCmdHandler());
+        CommandDispatcher.Register("RevealCardsAndScore", new RevealCardsAndScoreCmdHandler());
         CommandDispatcher.Register("DetermineParticipants", new DetermineParticipantsCmdHandler());
         CommandDispatcher.Register("ValidateParticipants", new ValidateParticipantsCmdHandler());
         CommandDispatcher.Register("EndTurn", new EndTurnCmdHandler());

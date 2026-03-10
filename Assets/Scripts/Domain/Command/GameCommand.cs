@@ -105,6 +105,11 @@ public class DrawSkillCardCommand : ICommand
         public EffectOp effect;
     }
 
+    public class RevealCardsAndScoreCommand : ICommand
+    {
+        public int playerId;
+    }
+
     // 根据效果返回可选的操作源、目标列表
     public class DetermineParticipantsCommand : ICommand
     {

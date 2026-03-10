@@ -15,8 +15,8 @@ namespace Game.Domain
     public class PlayerState
     {
         public int playerId;
-        public int holeCard = -1;
         public int actionPoint = 0;
+        public int _holeCard = -1;
         public SkillCardsInHand skillCardsInHand = new SkillCardsInHand();
         public PointCardsOnBoard pointCardsOnBoard = new PointCardsOnBoard();
     }

@@ -60,4 +60,10 @@ public static class ClientCommand
         EndTurnCommand cmd = new EndTurnCommand { playerId = ClientGameState.playerSlot };
         ClientGameState.gateway.SendCommandServerRpc("EndTurn", JsonConvert.SerializeObject(cmd));
     }
+
+    public static void RevealCardsAndScore()
+    {
+        RevealCardsAndScoreCommand cmd = new RevealCardsAndScoreCommand { playerId = ClientGameState.playerSlot };
+        ClientGameState.gateway.SendCommandServerRpc("RevealCardsAndScore", JsonConvert.SerializeObject(cmd));
+    }
 }
