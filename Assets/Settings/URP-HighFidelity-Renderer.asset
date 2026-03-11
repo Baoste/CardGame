@@ -1,5 +1,37 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!114 &-2844421258491889345
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eab25731ba89e3340a99c5edc82e476c, type: 3}
+  m_Name: PixelPostProcessFeature
+  m_EditorClassIdentifier: 
+  m_Active: 0
+  settings:
+    blitMaterial: {fileID: 2100000, guid: 1aee61cb7a7c93e47b94e75f86a092ec, type: 2}
+    passEvent: 600
+--- !u!114 &-2427978327660320497
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9ed7232d196b72541996d61a93907c6e, type: 3}
+  m_Name: BrightnessPostProcessing
+  m_EditorClassIdentifier: 
+  m_Active: 1
+  settings:
+    blitMaterial: {fileID: 2100000, guid: cea7bae995270784b9007425bdacda3d, type: 2}
+    passEvent: 600
 --- !u!114 &-1878332245247344467
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -53,7 +85,9 @@ MonoBehaviour:
     hdrDebugViewPS: {fileID: 4800000, guid: 573620ae32aec764abd4d728906d2587, type: 3}
   m_RendererFeatures:
   - {fileID: -1878332245247344467}
-  m_RendererFeatureMap: adc0de57c6d2eee5
+  - {fileID: -2427978327660320497}
+  - {fileID: -2844421258491889345}
+  m_RendererFeatureMap: adc0de57c6d2eee50fa9753193164ede3f790590ef9586d8
   m_UseNativeRenderPass: 0
   postProcessData: {fileID: 11400000, guid: 41439944d30ece34e96484bdb6645b55, type: 2}
   xrSystemData: {fileID: 11400000, guid: 60e1133243b97e347b653163a8c01b64, type: 2}

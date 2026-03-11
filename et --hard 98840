@@ -1,0 +1,313 @@
+[33mcommit d6fb25b4e841f2925bd6254cba8aebd6f7497587[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmaster[m[33m)[m
+Merge: acf1c99 98840f6
+Author: BlackEel <3513924511@qq.com>
+Date:   Wed Mar 11 17:15:17 2026 +0800
+
+    Merge branch 'master' of https://github.com/Baoste/CardGame
+
+[33mcommit 98840f650912fe16480785f63a65e0e0031dcd6e[m[33m ([m[1;31morigin/master[m[33m, [m[1;31morigin/HEAD[m[33m)[m
+Author: Baoste <594096787@qq.com>
+Date:   Wed Mar 11 16:49:50 2026 +0800
+
+    volume
+
+[33mcommit acf1c9944f00f44453cae990eb420401e014ab45[m
+Merge: 1515513 bb515b0
+Author: BlackEel <3513924511@qq.com>
+Date:   Wed Mar 11 16:48:09 2026 +0800
+
+    Merge branch 'master' of https://github.com/Baoste/CardGame
+
+[33mcommit 151551393d1647c0c2145ec2e0d34d3c9e9bc6e1[m
+Author: BlackEel <3513924511@qq.com>
+Date:   Wed Mar 11 16:48:04 2026 +0800
+
+    postprocessingrenderfeaturePROBLEM
+
+[33mcommit bb515b0da2916aeb01994c4595ce65d54e78100d[m
+Author: Baoste <594096787@qq.com>
+Date:   Wed Mar 11 15:23:14 2026 +0800
+
+    add obj
+
+[33mcommit 8dbbd48d8d5cf23dd4a3bf0de0e047a8f1414baa[m
+Author: Baoste <594096787@qq.com>
+Date:   Wed Mar 11 15:17:30 2026 +0800
+
+    add obj
+
+[33mcommit 9ee6b2b81c996c7882075a0ef72e73b20db0b155[m
+Author: Baoste <594096787@qq.com>
+Date:   Tue Mar 10 23:38:47 2026 +0800
+
+    add rhythm shader
+
+[33mcommit 3f7ba98de90a5b48af5e6f2538105ed85d335bf3[m
+Author: Baoste <594096787@qq.com>
+Date:   Tue Mar 10 16:36:07 2026 +0800
+
+    add reveal card score
+
+[33mcommit dd8cd11503845772d302394f2977e065368fef79[m
+Author: Baoste <594096787@qq.com>
+Date:   Tue Mar 10 12:51:03 2026 +0800
+
+    update resolve move
+
+[33mcommit 09ad83296ce7b5a4a9d378cd84105a4aa0bf14c2[m
+Author: Baoste <594096787@qq.com>
+Date:   Tue Mar 10 01:13:29 2026 +0800
+
+    add models
+
+[33mcommit f584f0606a9329bf6e610a79a5c7f95a4f014846[m
+Author: Baoste <594096787@qq.com>
+Date:   Sun Mar 8 23:48:31 2026 +0800
+
+    update vfx
+
+[33mcommit 7a354c9489797643ac7bd11c89f726a062c5692f[m
+Author: Baoste <594096787@qq.com>
+Date:   Sun Mar 8 21:52:12 2026 +0800
+
+    add vfx
+
+[33mcommit c26c32e14e225da967d23f21e6c41f5fe692c3d0[m
+Author: BlackEel <3513924511@qq.com>
+Date:   Sun Mar 8 21:49:24 2026 +0800
+
+    ResolveCardZone
+
+[33mcommit f8f01ad117011754b9cd33853e031c5522fd3a32[m
+Author: Baoste <594096787@qq.com>
+Date:   Sun Mar 8 17:54:57 2026 +0800
+
+    update
+
+[33mcommit 5f76df75dac38e9a49e4610fb0a68b23a7d356c0[m
+Author: Baoste <594096787@qq.com>
+Date:   Sun Mar 8 14:42:41 2026 +0800
+
+    update
+
+[33mcommit d2264a5b5d179500f5049360a63da191234ca058[m
+Author: Baoste <594096787@qq.com>
+Date:   Sun Mar 8 00:13:22 2026 +0800
+
+    client update
+
+[33mcommit 8607e410b563fa2a7905f125fb254daf8a9deb13[m
+Merge: b04b3f1 f9eea4d
+Author: Baoste <594096787@qq.com>
+Date:   Sat Mar 7 14:57:41 2026 +0800
+
+    Merge branch 'master' of https://github.com/Baoste/CardGame
+
+[33mcommit b04b3f13b1faf7ad8bd38b85663ce9ed5b4af098[m
+Author: Baoste <594096787@qq.com>
+Date:   Sat Mar 7 14:57:38 2026 +0800
+
+    update
+
+[33mcommit f9eea4d6848a876a1b6f0df767d4faf019eec794[m
+Author: Baoste <594096787@qq.com>
+Date:   Fri Mar 6 11:34:31 2026 +0800
+
+    client hand view
+
+[33mcommit c77660d90b4c4660e70ff2f9560397e776a69bf3[m
+Author: Baoste <594096787@qq.com>
+Date:   Thu Mar 5 17:42:32 2026 +0800
+
+    add move effectop
+
+[33mcommit 5ad1e7075dedd8c94e1e2f7ad372ed2ea03a4ad0[m
+Author: Baoste <594096787@qq.com>
+Date:   Thu Mar 5 00:46:48 2026 +0800
+
+    modify selectionMode class
+
+[33mcommit a9254142febe57532714125da8e69f56647dcdda[m
+Merge: 4df97ef 7fab58f
+Author: BlackEel <166525275+BlackEel@users.noreply.github.com>
+Date:   Wed Mar 4 21:23:30 2026 +0800
+
+    Merge branch 'master' of https://github.com/Baoste/CardGame
+
+[33mcommit 7fab58fe8149e888e519fe3cbfe716b9228a5076[m
+Author: QianZer <2316203066@qq.com>
+Date:   Wed Mar 4 21:11:44 2026 +0800
+
+    zilong test
+
+[33mcommit 4df97ef1eea9be901696886a1605cd0bd8c43af0[m
+Author: BlackEel <166525275+BlackEel@users.noreply.github.com>
+Date:   Wed Mar 4 20:11:35 2026 +0800
+
+    handview1
+
+[33mcommit 4b3c020d2fb237bbf76a3ec492e73aa29207128d[m
+Merge: c27d3ad bc6281a
+Author: BlackEel <3513924511@qq.com>
+Date:   Wed Mar 4 17:29:08 2026 +0800
+
+    Merge branch 'master' of https://github.com/Baoste/CardGame
+
+[33mcommit c27d3ad8870b48d16ec23f7bf0b3c75238a7a475[m
+Author: BlackEel <3513924511@qq.com>
+Date:   Wed Mar 4 17:28:10 2026 +0800
+
+    111
+
+[33mcommit bc6281aafad01f8f132e54c07d3a7a1960a2f4ad[m
+Author: Baoste <594096787@qq.com>
+Date:   Wed Mar 4 15:43:01 2026 +0800
+
+    add validate play skill card
+
+[33mcommit 4b124da24fb9ab38ceeed44e5c1e93f815651440[m
+Author: Baoste <594096787@qq.com>
+Date:   Wed Mar 4 12:16:08 2026 +0800
+
+    add modify effect
+
+[33mcommit f7bdee5455ea8b73a8ec93ae79961efe3f7ec6d8[m
+Author: Baoste <594096787@qq.com>
+Date:   Wed Mar 4 11:36:58 2026 +0800
+
+    update UI
+
+[33mcommit 44857f56fcbdc20353e0151983451fd20caffa7c[m
+Author: Baoste <594096787@qq.com>
+Date:   Wed Mar 4 00:34:42 2026 +0800
+
+    update
+
+[33mcommit 75d2be8ddead912c4dd847c5c96a799af7a96047[m
+Author: Baoste <594096787@qq.com>
+Date:   Tue Mar 3 17:55:02 2026 +0800
+
+    update
+
+[33mcommit 499a81c7a5768920f0136efebec0a103e44f4f97[m
+Author: Baoste <594096787@qq.com>
+Date:   Mon Mar 2 23:23:37 2026 +0800
+
+    fix event process bug
+
+[33mcommit fca3893c66c7df74f506ed05c3ca146bfe06f028[m
+Author: BlackEel <3513924511@qq.com>
+Date:   Mon Mar 2 22:16:00 2026 +0800
+
+    card order
+
+[33mcommit 6e8c40ab9aa8a123dfb5771be20f8981bce8e3ce[m
+Author: Baoste <594096787@qq.com>
+Date:   Mon Mar 2 21:42:03 2026 +0800
+
+    del serializable
+
+[33mcommit b77d15ce426d8fdfb4a8ce56ec1c2f84edca634f[m
+Author: Baoste <594096787@qq.com>
+Date:   Mon Mar 2 21:34:09 2026 +0800
+
+    add newtonsoft
+
+[33mcommit d5b28eea3ce0cc1d61d3b0b100d5643a1123f7fe[m
+Author: Baoste <594096787@qq.com>
+Date:   Mon Mar 2 17:59:14 2026 +0800
+
+    add card editor
+
+[33mcommit 793c591932e778fa12447278b5d91c84bb79d3ed[m
+Author: Baoste <594096787@qq.com>
+Date:   Mon Mar 2 14:18:31 2026 +0800
+
+    update structure
+
+[33mcommit f842e313eab0de37ff106ec1e0a92b1b9cf1dfd5[m
+Author: Baoste <594096787@qq.com>
+Date:   Mon Mar 2 13:40:42 2026 +0800
+
+    update effectop
+
+[33mcommit 933b73baf4f68290e8af47ff907ff3e048450875[m
+Author: Baoste <594096787@qq.com>
+Date:   Mon Mar 2 01:22:58 2026 +0800
+
+    update param name
+
+[33mcommit 9ad79f5f0a51c2091a80b59d67725779b6b729bf[m
+Author: Baoste <594096787@qq.com>
+Date:   Mon Mar 2 01:20:12 2026 +0800
+
+    finish skill card effect excute
+
+[33mcommit 0f8f0bf880745fcc114223b71f56eea8e0020909[m
+Author: Baoste <594096787@qq.com>
+Date:   Sun Mar 1 17:26:31 2026 +0800
+
+    update card serialize
+
+[33mcommit d02f4f6dd2f3a52120babb5b5d8e349447e83921[m
+Author: Baoste <594096787@qq.com>
+Date:   Sat Feb 28 23:01:52 2026 +0800
+
+    draw test
+
+[33mcommit 0b9a80b315d00dacc1e561fb518686ef12132136[m
+Author: Baoste <594096787@qq.com>
+Date:   Sat Feb 28 22:36:47 2026 +0800
+
+    update
+
+[33mcommit 9a529e5cf8700151339f91e299014af2942298d9[m
+Author: Baoste <594096787@qq.com>
+Date:   Sat Feb 28 22:05:04 2026 +0800
+
+    update
+
+[33mcommit 88697d726c4c7b52cf8de9001b03f902923f1031[m
+Merge: 7f18bfd 45b29be
+Author: Baoste <594096787@qq.com>
+Date:   Sat Feb 28 22:01:30 2026 +0800
+
+    conflict merge
+
+[33mcommit 7f18bfdc0a65c00d504872c53074f721238c1a6d[m
+Author: Baoste <594096787@qq.com>
+Date:   Sat Feb 28 21:59:41 2026 +0800
+
+    add draw card logic
+
+[33mcommit 45b29be7f361460a2524291029bb6154b82b9558[m
+Author: BlackEel <3513924511@qq.com>
+Date:   Sat Feb 28 21:45:30 2026 +0800
+
+    DrawCardAndQueue
+
+[33mcommit 88e135960125e102c5a9ac23fb1dc01e2be018a2[m
+Author: Baoste <594096787@qq.com>
+Date:   Sat Feb 28 20:43:17 2026 +0800
+
+    add gamestate
+
+[33mcommit 3da2ad4326194cebf6d23b78655f5e404b199d4a[m
+Author: Baoste <594096787@qq.com>
+Date:   Sat Feb 28 19:18:15 2026 +0800
+
+    update
+
+[33mcommit 82a8596ed808a1bedb70a60f97f8396a9c27d2b2[m
+Author: Baoste <594096787@qq.com>
+Date:   Sat Feb 28 18:27:19 2026 +0800
+
+    update net struct
+
+[33mcommit c5578deb7840018f3dee45295a3639e2efdc010b[m
+Author: Baoste <594096787@qq.com>
+Date:   Sat Feb 28 18:14:21 2026 +0800
+
+    update net struct
+
+[33m
