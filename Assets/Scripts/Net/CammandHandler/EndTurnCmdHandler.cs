@@ -1,6 +1,7 @@
 using Game.Domain;
 using Game.Server;
 using Newtonsoft.Json;
+using System;
 
 public class EndTurnCmdHandler : CommandHandler, ICommandHandler
 {
@@ -12,6 +13,17 @@ public class EndTurnCmdHandler : CommandHandler, ICommandHandler
         session.ctx.ClearContext();
         session.gameState.CurrentPlayerId = 1 - payload.playerId;
 
+        bool reveal = false;
+        int endTurnCount = 8;
+        if (session.gameState.Turn > endTurnCount)
+        {
+            float p = 1f - 0.5f * MathF.Exp(-(session.gameState.Turn - endTurnCount - 1) * 0.22f);
+            p = Math.Min(p, 1f);
+
+            float r = (float)session.gameState.rng.NextDouble();
+            reveal = r < p;
+        }
+
         // return results
         CommandResult results = new CommandResult();
         results.events.Enqueue(MakeEvent(
@@ -20,7 +32,8 @@ public class EndTurnCmdHandler : CommandHandler, ICommandHandler
             (
                 payload.playerId,
                 true,
-                1 - payload.playerId
+                1 - payload.playerId,
+                reveal
             )
         ));
 

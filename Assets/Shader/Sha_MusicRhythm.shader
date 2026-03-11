@@ -29,7 +29,7 @@ Shader "Unlit/Sha_MusicRhythm"
             Name "ForwardLit"
             Tags { "LightMode"="UniversalForward" }
 
-            Blend SrcAlpha OneMinusSrcAlpha
+            Blend SrcAlpha One
             ZWrite Off
             Cull Off
 
@@ -98,23 +98,24 @@ Shader "Unlit/Sha_MusicRhythm"
                 ss *= step(radius, distY);
 
                 float2 tuv = uv;
-                float random = RandomStep(_Time.y, _Interval);
+                float random = RandomStep(_Time.y, _Interval * 0.5);
                 tuv.x += (floor(random * _FreqX) + 0.5) / _FreqX;
                 //tuv.x += (floor(_Time.y * _MoveSpeed * 20)+0.5) / _FreqX;
-
                 //tuv.x += 0.5 / _FreqX;
+                tuv.y += 0.5 / _FreqY;
                 tuv.x = floor(tuv.x * _FreqX) / _FreqX;
                 tuv.y = floor(tuv.y * _FreqY) / _FreqY;
-                float mask1 = SAMPLE_TEXTURE2D(_NoiseMap, sampler_NoiseMap, tuv).r;
 
-                tuv.x += 0.7;
+                float mask1 = SAMPLE_TEXTURE2D(_NoiseMap, sampler_NoiseMap, tuv).r;
                 float mask2 = SAMPLE_TEXTURE2D(_PeaceMap, sampler_PeaceMap, tuv).r;
 
-                float t = (1.0 + sin(_Time.y * 2)) * 0.5;
+                //float t = (1.0 + sin(_Time.y * 2 * 3.14159265 / _Interval)) * 0.5;
+                float t = abs(frac(_Time.y / _Interval + _Interval/2) * 2 - 1);
+                t = pow(t, 0.4);
                 float mask = lerp(mask2, mask1, t);
 
                 float m = step(_MaskThreshold, ss * mask);
-                return lerp(bgColor, halftoneColor, m);
+                return lerp(bgColor, halftoneColor+half4(0,0.5,1,1)*5, m);
             }
 
             v2f vert (a2v v)
@@ -135,6 +136,7 @@ Shader "Unlit/Sha_MusicRhythm"
                 Light mainLight = GetMainLight();
 
                 half4 col = half4(CalcHalftone(i.uv, _HalftoneColor, _BaseColor, _Radius));
+                col.a = 0.8;
                 return col;
             }
 

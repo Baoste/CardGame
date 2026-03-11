@@ -18,7 +18,7 @@ public class EndTurnEventHandler : IEventProcess, IEventHandler
         // TODO
         // START
         // TODO: Client start game function
-        Debug.Log($"[Client] Event#{ev.Index} type={ev.type} slot={payload.playerId} payload=end_turn");
+        Debug.Log($"[Client] Event#{ev.Index} type={ev.type} slot={payload.playerId} payload={payload.reveal.ToString()}");
         // END
 
         return true;

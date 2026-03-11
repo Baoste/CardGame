@@ -38,15 +38,15 @@ Material:
     m_Ints: []
     m_Floats:
     - _Freq: 12.11
-    - _FreqX: 32
-    - _FreqY: 32
-    - _Interval: 0.2
-    - _MaskThreshold: 0.4
+    - _FreqX: 64
+    - _FreqY: 24
+    - _Interval: 0.5
+    - _MaskThreshold: 0.06
     - _MoveSpeed: 0.1
     - _QuadHeight: 0.5
     - _QuadWidth: 0.5
     - _Radius: 0.4
     m_Colors:
     - _BaseColor: {r: 0, g: 0, b: 0, a: 0}
-    - _HalftoneColor: {r: 0.31760997, g: 0.9118694, b: 1, a: 1}
+    - _HalftoneColor: {r: 0.47843137, g: 0.9050338, b: 0.92941177, a: 1}
   m_BuildTextureStacks: []
