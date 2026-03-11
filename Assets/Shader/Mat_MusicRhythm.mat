@@ -38,7 +38,7 @@ Material:
     m_Ints: []
     m_Floats:
     - _Freq: 12.11
-    - _FreqX: 64
+    - _FreqX: 38
     - _FreqY: 24
     - _Interval: 0.5
     - _MaskThreshold: 0.06
