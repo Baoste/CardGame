@@ -8,7 +8,10 @@ EditorBuildSettings:
   - enabled: 0
     path: Assets/Scenes/ServerScene.unity
     guid: 99c9720ab356a0642a771bea13969a05
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/ClientScene.unity
     guid: 1db86ce8acc55094d86085748d069a9c
+  - enabled: 1
+    path: Assets/Scenes/ClientTest.unity
+    guid: ae15fc893f193db4482736732da2d5db
   m_configObjects: {}
