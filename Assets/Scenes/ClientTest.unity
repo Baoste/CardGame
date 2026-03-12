@@ -242,7 +242,6 @@ MonoBehaviour:
     type: 3}
   pointCardInstancePrefab: {fileID: 699601284007552369, guid: 05eb0ce8e77793f4c88a56d83a56e05d,
     type: 3}
-  pointCardSpawnPosition: {x: 0, y: 1.23, z: 0}
   scaleFactor: 0.4
 --- !u!1 &330585543
 GameObject:
@@ -746,15 +745,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 398e4a8572db86c4691437e7ed3e5e0b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  boardCenter: {x: 0, y: 1.09, z: 0}
-  boardWidth: 2.46
+  boardCenter: {x: 0, y: 1, z: 0}
+  boardWidth: 2.22
   boardHeight: 2.56
   selfAreaHeightRatio: 0.5
-  cardSpacing: 0.2
   depthOffsetPerCard: 0.01
-  animationDuration: 0.15
   selfEuler: {x: 90, y: 0, z: 0}
   opponentEuler: {x: 90, y: 0, z: 0}
+  selfSpawnPosition: {x: 1.22, y: 1, z: -0.7}
+  opponentSpawnPosition: {x: -1.23, y: 1, z: 0.7}
 --- !u!4 &711737597
 Transform:
   m_ObjectHideFlags: 0

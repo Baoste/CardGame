@@ -47,13 +47,16 @@ public class DrawCardTest : MonoBehaviour
     }
 
 
-    // parameters[0]: int instanceId
+    // parameters[0]: int playerId
+    // parameters[1]: int instanceId
     public void DiscardCard(object[] parameters)
     {
-        int instanceId = (int)parameters[0];
+        int playerId = (int)parameters[0];
+        int instanceId = (int)parameters[1];
+
         handMap[0].Remove(instanceMap[instanceId]);
         handMap[1].Remove(instanceMap[instanceId]);
-        Destroy(instanceMap[instanceId]);
+        handView.RemoveCard(instanceMap[instanceId], playerId);
         instanceMap.Remove(instanceId);
     }
 

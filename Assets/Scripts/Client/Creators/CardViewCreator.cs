@@ -9,8 +9,6 @@ public class CardViewCreator : Singleton<CardViewCreator>
     [SerializeField] private GameObject skillCardInstancePrefab;
     [SerializeField] private GameObject pointCardInstancePrefab;
 
-    [SerializeField] private Vector3 pointCardSpawnPosition;
-
     public float scaleFactor = 0.4f;
 
     public GameObject CreateCardInstance(int cardId, int instaceId, Vector3 position, Quaternion rotation)
@@ -22,7 +20,7 @@ public class CardViewCreator : Singleton<CardViewCreator>
         switch (cardType)
         {
             case CardType.Point:
-                cardObj = Instantiate(pointCardInstancePrefab, pointCardSpawnPosition, rotation);
+                cardObj = Instantiate(pointCardInstancePrefab, position, rotation);
                 cardInstance = cardObj.GetComponent<PointCardInstance>();
                 break;
             case CardType.Skill:
@@ -32,14 +30,7 @@ public class CardViewCreator : Singleton<CardViewCreator>
         }
 
         cardInstance.InitCardInstance(cardId, instaceId);
-        cardObj.transform.localScale = Vector3.zero;
-        cardObj.transform.DOScale(Vector3.one * cardInstance.localScaleFactor, 0.15f);
+        cardObj.transform.localScale = Vector3.one * cardInstance.localScaleFactor;
         return cardObj;
-    }
-
-    private void OnDrawGizmos()
-    {
-        Gizmos.color = Color.red;
-        Gizmos.DrawSphere(pointCardSpawnPosition, 0.05f);
     }
 }

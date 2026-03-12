@@ -7,8 +7,6 @@ using UnityEngine;
 public class SkillCardDraggable : MonoBehaviour
 {
     private HandView handView;
-    private BoxCollider validArea;
-    private float dragFollowDepth;
 
     private Camera cam;
     private bool isDragging;
@@ -22,11 +20,9 @@ public class SkillCardDraggable : MonoBehaviour
     private SkillCardInstance instance;
     private SkillCardMouseTilt mouseTilt;
 
-    public void Init(HandView handView, int cardId, int instanceId, BoxCollider validArea, float dragFollowDepth)
+    public void Init(HandView handView, int cardId, int instanceId)
     {
         this.handView = handView;
-        this.validArea = validArea;
-        this.dragFollowDepth = dragFollowDepth;
         this.cardId = cardId;
         this.instanceId = instanceId;
         cam = Camera.main;
@@ -104,7 +100,12 @@ public class SkillCardDraggable : MonoBehaviour
 
     IEnumerator ExecuteCard()
     {
+        // TODO: 这里应该放一些特效
         transform.localScale = Vector3.one * 0.01f;
+
+        // TODO: Debug
+        StartCoroutine(handView.RemoveCard(gameObject, ClientGameState.playerSlot));
+        yield break;
 
         Dictionary<int, List<int>> selectedSourceIds = new Dictionary<int, List<int>>();
         Dictionary<int, List<int>> selectedTargetIds = new Dictionary<int, List<int>>();

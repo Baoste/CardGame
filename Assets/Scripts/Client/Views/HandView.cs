@@ -45,6 +45,7 @@ public class HandView : MonoBehaviour
     {
         if (skillCardInstances.Remove(instance))
         {
+            Destroy(instance);
             yield return UpdateCardPositions(0.15f, playerId);
         }
     }
@@ -57,7 +58,7 @@ public class HandView : MonoBehaviour
 
         int cardId = instance.GetComponent<SkillCardInstance>().cardId;
         int instanceId = instance.GetComponent<SkillCardInstance>().instanceId;
-        dragCard.Init(this, cardId, instanceId, dragValidArea, dragFollowDepth);
+        dragCard.Init(this, cardId, instanceId);
     }
 
      public IEnumerator UpdateCardPositions(float duration, int playerId)

@@ -27,10 +27,16 @@ public class TestSystem : MonoBehaviour
             StartCoroutine(ResolveZoneView.AddCard(instance, -1));
         }
 
-        //if (Input.GetKeyDown(KeyCode.W))
-        //{
-        //    GameObject instace = CardViewCreator.Instance.CreateCardInstace(1, 2, transform.position, Quaternion.identity);
-        //    StartCoroutine(boardView.AddCard(instace, 1));
-        //}
+        if (Input.GetKeyDown(KeyCode.W))
+        {
+            GameObject instace = CardViewCreator.Instance.CreateCardInstance(1, 98, transform.position, Quaternion.identity);
+            StartCoroutine(boardView.AddCard(instace, ClientGameState.playerSlot));
+        }
+        if (Input.GetKeyDown(KeyCode.E))
+        {
+            GameObject instace = CardViewCreator.Instance.CreateCardInstance(2, 99, transform.position, Quaternion.identity);
+            StartCoroutine(boardView.AddCard(instace, 99));
+        }
+
     }
 }
