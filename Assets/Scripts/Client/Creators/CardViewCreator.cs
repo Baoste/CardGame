@@ -11,29 +11,30 @@ public class CardViewCreator : Singleton<CardViewCreator>
 
     [SerializeField] private Vector3 pointCardSpawnPosition;
 
-    public float scaleFactor = 0.5f;
+    public float scaleFactor = 0.4f;
 
     public GameObject CreateCardInstance(int cardId, int instaceId, Vector3 position, Quaternion rotation)
     {
         CardType cardType = CardDatabase.Get(cardId).type;
 
-        GameObject cardInstance = null;
+        GameObject cardObj = null;
+        CardInstance cardInstance = null;
         switch (cardType)
         {
             case CardType.Point:
-                cardInstance = Instantiate(pointCardInstancePrefab, pointCardSpawnPosition, rotation);
-                cardInstance.GetComponent<PointCardInstance>().InitCardInstance(cardId, instaceId);
+                cardObj = Instantiate(pointCardInstancePrefab, pointCardSpawnPosition, rotation);
+                cardInstance = cardObj.GetComponent<PointCardInstance>();
                 break;
             case CardType.Skill:
-                cardInstance = Instantiate(skillCardInstancePrefab, position, rotation);
-                SkillCardInstance sci = cardInstance.GetComponent<SkillCardInstance>();
-                sci.InitCardInstance(cardId, instaceId);
+                cardObj = Instantiate(skillCardInstancePrefab, position, rotation);
+                cardInstance = cardObj.GetComponent<SkillCardInstance>();
                 break;
         }
 
-        cardInstance.transform.localScale = Vector3.zero;
-        cardInstance.transform.DOScale(Vector3.one * scaleFactor, 0.15f);
-        return cardInstance;
+        cardInstance.InitCardInstance(cardId, instaceId);
+        cardObj.transform.localScale = Vector3.zero;
+        cardObj.transform.DOScale(Vector3.one * cardInstance.localScaleFactor, 0.15f);
+        return cardObj;
     }
 
     private void OnDrawGizmos()

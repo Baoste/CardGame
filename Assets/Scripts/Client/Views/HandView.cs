@@ -4,9 +4,23 @@ using UnityEngine;
 using UnityEngine.Splines;
 using DG.Tweening;
 using Game.Domain;
+using FishNet.Demo.AdditiveScenes;
 
 public class HandView : MonoBehaviour
 {
+    [Header("Resolve Zone Size")]
+    [SerializeField] private float zoneWidth = 6f;
+    [SerializeField] private float zoneHeight = 2.5f;
+
+    [Header("Card Layout")]
+    [SerializeField] private float cardSpacing = 1.8f;
+    [SerializeField] private float depthOffsetPerCard = 0.02f;
+    [SerializeField] private float animationDuration = 0.2f;
+
+    [Header("Card Rotation")]
+    [SerializeField] private Vector3 cardEuler = new Vector3(90f, 0f, 0f);
+
+
     [SerializeField] private SplineContainer splineContainer;
 
     [Header("Drag Settings")]
@@ -15,64 +29,99 @@ public class HandView : MonoBehaviour
 
     private readonly List<GameObject> skillCardInstances = new();
 
-    public IEnumerator AddCard(GameObject instance)
+    private void Start()
+    {
+        transform.up = -Camera.main.transform.forward;
+    }
+
+    public IEnumerator AddCard(GameObject instance, int playerId)
     {
         skillCardInstances.Add(instance);
         BindDragComponent(instance);
-        yield return UpdateCardPositions(0.15f);
+        yield return UpdateCardPositions(0.15f, playerId);
     }
 
-    public IEnumerator RemoveCard(GameObject instance)
+    public IEnumerator RemoveCard(GameObject instance, int playerId)
     {
         if (skillCardInstances.Remove(instance))
         {
-            yield return UpdateCardPositions(0.15f);
+            yield return UpdateCardPositions(0.15f, playerId);
         }
     }
 
     private void BindDragComponent(GameObject instance)
     {
-        DraggableSkillCard dragCard = instance.GetComponent<DraggableSkillCard>();
+        SkillCardDraggable dragCard = instance.GetComponent<SkillCardDraggable>();
         if (dragCard == null)
-            dragCard = instance.AddComponent<DraggableSkillCard>();
+            dragCard = instance.AddComponent<SkillCardDraggable>();
 
         int cardId = instance.GetComponent<SkillCardInstance>().cardId;
         int instanceId = instance.GetComponent<SkillCardInstance>().instanceId;
         dragCard.Init(this, cardId, instanceId, dragValidArea, dragFollowDepth);
     }
 
-    public IEnumerator UpdateCardPositions(float duration)
+     public IEnumerator UpdateCardPositions(float duration, int playerId)
     {
-        if (skillCardInstances.Count == 0)
-            yield break;
+        LayoutCards(duration, playerId);
+        yield return new WaitForSeconds(duration);
+    }
 
-        float cardSpacing = 1f / 50f;
-        float firstCardPosition = 0.5f - (cardSpacing * (skillCardInstances.Count - 1) / 2f);
-        Spline spline = splineContainer.Spline;
+    private void LayoutCards(float duration, int playerId)
+    {
+        if (skillCardInstances.Count == 0) return;
+
+        float spacing = cardSpacing;
+        if (skillCardInstances.Count > 1)
+        {
+            float maxAllowedSpacing = zoneWidth / (skillCardInstances.Count - 1);
+            spacing = Mathf.Min(cardSpacing, maxAllowedSpacing);
+        }
+
+        float totalWidth = (skillCardInstances.Count - 1) * spacing;
+        bool isOpponent = playerId != ClientGameState.playerSlot;
 
         for (int i = 0; i < skillCardInstances.Count; i++)
         {
             GameObject card = skillCardInstances[i];
             if (card == null) continue;
 
-            DraggableSkillCard dragCard = card.GetComponent<DraggableSkillCard>();
-            if (dragCard != null && dragCard.IsDragging)
-                continue; // 正在拖拽的牌不参与重排
+            float localX = -totalWidth * 0.5f + i * spacing;
+            float localZ = 0f; // 所有牌严格排成一条线，不做前后错位
 
-            float p = firstCardPosition + i * cardSpacing;
+            Vector3 localPos = new Vector3(localX, 0f, localZ);
+            Vector3 targetPos = transform.TransformPoint(localPos);
+            card.GetComponent<SkillCardInstance>().originalPos = targetPos;
 
-            Vector3 splinePosition = spline.EvaluatePosition(p);
-            Vector3 worldPos = splinePosition + transform.position + 0.01f * i * Vector3.back;
+            Quaternion targetRotation = transform.rotation * Quaternion.Euler(cardEuler);
 
-            Vector3 dir = new Vector3(26, 0, 0);
-            Quaternion rotation = Quaternion.Euler(dir);
+            // 对手牌翻面
+            if (isOpponent)
+            {
+                targetRotation *= Quaternion.Euler(0f, 180f, 0f);
+            }
 
-            // card.transform.DOKill();
-            card.transform.DOMove(worldPos, duration);
-            card.transform.DORotateQuaternion(rotation, duration);
+            card.transform.DOMove(targetPos, duration);
+            card.transform.DORotateQuaternion(targetRotation, duration);
         }
+    }
 
-        yield return new WaitForSeconds(duration);
+    private void OnDrawGizmosSelected()
+    {
+        Gizmos.color = Color.cyan;
+        DrawRect(transform.position, transform.rotation, zoneWidth, zoneHeight);
+    }
+
+    private void DrawRect(Vector3 center, Quaternion rotation, float width, float height)
+    {
+        Vector3 a = center + rotation * new Vector3(-width * 0.5f, 0f, -height * 0.5f);
+        Vector3 b = center + rotation * new Vector3(width * 0.5f, 0f, -height * 0.5f);
+        Vector3 c = center + rotation * new Vector3(width * 0.5f, 0f, height * 0.5f);
+        Vector3 d = center + rotation * new Vector3(-width * 0.5f, 0f, height * 0.5f);
+
+        Gizmos.DrawLine(a, b);
+        Gizmos.DrawLine(b, c);
+        Gizmos.DrawLine(c, d);
+        Gizmos.DrawLine(d, a);
     }
 
     public bool IsOutsideValidArea(Vector3 worldPos)
@@ -87,4 +136,5 @@ public class HandView : MonoBehaviour
                Mathf.Abs(local.y) > half.y ||
                Mathf.Abs(local.z) > half.z;
     }
+
 }

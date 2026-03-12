@@ -4,21 +4,23 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class DraggableSkillCard : MonoBehaviour
+public class SkillCardDraggable : MonoBehaviour
 {
     private HandView handView;
     private BoxCollider validArea;
-    private float dragFollowDepth = 8f;
+    private float dragFollowDepth;
 
     private Camera cam;
     private bool isDragging;
-    private Vector3 dragOffset;
     private Plane dragPlane;
 
     private int cardId;
     private int instanceId;
 
     public bool IsDragging => isDragging;
+
+    private SkillCardInstance instance;
+    private SkillCardMouseTilt mouseTilt;
 
     public void Init(HandView handView, int cardId, int instanceId, BoxCollider validArea, float dragFollowDepth)
     {
@@ -28,6 +30,8 @@ public class DraggableSkillCard : MonoBehaviour
         this.cardId = cardId;
         this.instanceId = instanceId;
         cam = Camera.main;
+        instance = GetComponent<SkillCardInstance>();
+        mouseTilt = GetComponent<SkillCardMouseTilt>();
     }
 
     private void OnMouseDown()
@@ -38,16 +42,15 @@ public class DraggableSkillCard : MonoBehaviour
         isDragging = true;
         transform.DOKill();
 
-        // 用一个和摄像机朝向近似平行的拖拽平面
-        dragPlane = new Plane(-cam.transform.forward, transform.position);
+        Vector3 planeNormal = handView.transform.rotation * Vector3.up;
+        dragPlane = new Plane(planeNormal, handView.transform.position);
 
         if (TryGetMouseWorldPosition(out Vector3 mouseWorld))
         {
-            dragOffset = transform.position - mouseWorld;
-        }
-        else
-        {
-            dragOffset = Vector3.zero;
+            transform.position = mouseWorld;
+            // 转到 handView 的坐标系下
+            Vector3 mouseLocal = handView.transform.InverseTransformDirection(mouseWorld);
+            mouseTilt.InitTilt(mouseLocal);
         }
     }
 
@@ -57,24 +60,27 @@ public class DraggableSkillCard : MonoBehaviour
 
         if (TryGetMouseWorldPosition(out Vector3 mouseWorld))
         {
-            Vector3 targetPos = mouseWorld + dragOffset;
-            transform.position = targetPos;
+            transform.position = mouseWorld;
+            Vector3 mouseLocal = handView.transform.InverseTransformDirection(mouseWorld);
+            mouseTilt.Tilt(mouseLocal);
 
-            // 拖拽时仍然朝向摄像机
-            Vector3 dir = cam.transform.position - transform.position;
-            Quaternion rotation = Quaternion.LookRotation(-dir);
-            transform.rotation = rotation;
+            //// 拖拽时仍然朝向摄像机
+            //Vector3 dir = cam.transform.position - transform.position;
+            //Quaternion rotation = Quaternion.LookRotation(-dir);
+            //transform.rotation = rotation;
 
             // ===== 新增：检测是否离开合法区域 =====
             bool outside = handView != null && handView.IsOutsideValidArea(transform.position);
 
             if (outside)
             {
-                transform.localScale = Vector3.one * 0.4f;
+                instance.meshRenderer.sharedMaterial = instance.outsideAreaMaterial;
+                transform.localScale = Vector3.one * instance.localScaleFactor * 1.1f;
             }
             else
             {
-                transform.localScale = Vector3.one * 0.3f;
+                instance.meshRenderer.sharedMaterial = instance.defaultMaterial;
+                transform.localScale = Vector3.one * instance.localScaleFactor;
             }
         }
     }
@@ -109,7 +115,7 @@ public class DraggableSkillCard : MonoBehaviour
 
         if (!ClientEffectContext.IsCommandValid)
         {
-            transform.localScale = Vector3.one * 0.3f;
+            transform.localScale = Vector3.one * instance.localScaleFactor;
             StartCoroutine(ReturnToHand());
         }
         else
@@ -135,7 +141,8 @@ public class DraggableSkillCard : MonoBehaviour
 
     private IEnumerator ReturnToHand()
     {
+        mouseTilt.ResetBaseRotation();
         if (handView != null)
-            yield return handView.UpdateCardPositions(0.15f);
+            yield return handView.UpdateCardPositions(0.15f, ClientGameState.playerSlot);
     }
 }

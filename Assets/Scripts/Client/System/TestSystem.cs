@@ -2,6 +2,7 @@ using FishNet.Demo.AdditiveScenes;
 using Game.Domain;
 using System.Collections;
 using System.Collections.Generic;
+using System.ComponentModel;
 using UnityEngine;
 
 public class TestSystem : MonoBehaviour
@@ -14,7 +15,9 @@ public class TestSystem : MonoBehaviour
     {
         if(Input.GetKeyDown(KeyCode.Space))
         {
-            ClientCommand.DrawSkillCard();
+            //ClientCommand.DrawSkillCard();
+            GameObject instance = CardViewCreator.Instance.CreateCardInstance(999, 9999, transform.position, Quaternion.identity);
+            StartCoroutine(handView.AddCard(instance, ClientGameState.playerSlot));
         }
 
         if (Input.GetKeyDown(KeyCode.Q))

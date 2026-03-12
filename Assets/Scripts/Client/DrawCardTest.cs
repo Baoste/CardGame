@@ -97,7 +97,7 @@ public class DrawCardTest : MonoBehaviour
         instanceMap[instanceId] = instance;
 
         if (isOpponent) return;
-        StartCoroutine(handView.AddCard(instance));
+        StartCoroutine(handView.AddCard(instance, playerId));
     }
 
     // parameters[0]: int cardId

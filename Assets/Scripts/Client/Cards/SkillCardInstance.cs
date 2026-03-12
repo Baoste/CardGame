@@ -15,7 +15,12 @@ public class SkillCardInstance : CardInstance
     [Header("Component")]
     public TMP_Text nameText;
     public TMP_Text descriptionText;
-    public TMP_Text pointText;
+    public TMP_Text pointText; 
+    public MeshRenderer meshRenderer;
+    public Material outsideAreaMaterial;
+    public Material defaultMaterial { get; private set; }
+
+    public Vector3 originalPos;
 
     public void Awake()
     {
@@ -24,18 +29,20 @@ public class SkillCardInstance : CardInstance
         //pointText = transform.Find("Point").GetComponent<TMP_Text>();
     }
 
-    public void InitCardInstance(int cardId, int instaceId)
+    public override void InitCardInstance(int cardId, int instaceId)
     {
-        this.instanceId = instaceId;
+        base.InitCardInstance(cardId, instaceId);
+
         this.cardId = cardId;
 
         cardName = CardDatabase.Get(cardId).name;
         description = CardDatabase.Get(cardId).description;
-        point = CardDatabase.Get(cardId).point;
         effects = CardDatabase.Get(cardId).effects;
 
         nameText.text = cardName;
         descriptionText.text = description;
         pointText.text = point.ToString();
+
+        defaultMaterial = meshRenderer.sharedMaterial;
     }
 }
