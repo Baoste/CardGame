@@ -119,7 +119,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   tiltStrength: 30
-  maxTilt: 60
+  maxTilt: 40
   smoothSpeed: 10
   useUnscaledDelta: 1
   meshTransform: {fileID: 317130330711080027}

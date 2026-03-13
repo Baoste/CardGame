@@ -43,8 +43,12 @@ public class SkillCardMouseTilt : MonoBehaviour
         currentTilt = Mathf.Lerp(currentTilt, targetTilt, smoothSpeed * dt);
 
         mouseDelta.z = -mouseDelta.z;   // 上下移动和左右移动的转向不一样
-        Vector3 rotAxis = Quaternion.AngleAxis(90f, Vector3.right) * Quaternion.AngleAxis(90f, Vector3.up) * mouseDelta;    // 从 handView 的坐标系转到 model 的坐标系下
-        Quaternion targetRot = Quaternion.AngleAxis(currentTilt, rotAxis);
+        Quaternion targetRot = Quaternion.identity;
+        if (mouseVelocity > 0.01f)
+        {
+            Vector3 rotAxis = Quaternion.AngleAxis(90f, Vector3.right) * Quaternion.AngleAxis(90f, Vector3.up) * mouseDelta;    // 从 handView 的坐标系转到 model 的坐标系下
+            targetRot = Quaternion.AngleAxis(currentTilt, rotAxis);
+        }
         currentRot = Quaternion.Slerp(currentRot, targetRot, smoothSpeed * dt);
         meshTransform.localRotation = currentRot * baseRotation;
     }
