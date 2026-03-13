@@ -29,7 +29,7 @@ public class HandView : MonoBehaviour
 
     private readonly List<GameObject> skillCardInstances = new();
 
-    private void Start()
+    private void Update()
     {
         transform.up = -Camera.main.transform.forward;
     }
@@ -58,7 +58,7 @@ public class HandView : MonoBehaviour
 
         int cardId = instance.GetComponent<SkillCardInstance>().cardId;
         int instanceId = instance.GetComponent<SkillCardInstance>().instanceId;
-        dragCard.Init(this, cardId, instanceId);
+        dragCard.Init(cardId, instanceId);
     }
 
      public IEnumerator UpdateCardPositions(float duration, int playerId)

@@ -6,8 +6,6 @@ using UnityEngine;
 
 public class SkillCardDraggable : MonoBehaviour
 {
-    private HandView handView;
-
     private Camera cam;
     private bool isDragging;
     private Plane dragPlane;
@@ -16,18 +14,19 @@ public class SkillCardDraggable : MonoBehaviour
     private int instanceId;
 
     public bool IsDragging => isDragging;
+    public bool isExecuting;
 
     private SkillCardInstance instance;
     private SkillCardMouseTilt mouseTilt;
 
-    public void Init(HandView handView, int cardId, int instanceId)
+    public void Init(int cardId, int instanceId)
     {
-        this.handView = handView;
         this.cardId = cardId;
         this.instanceId = instanceId;
         cam = Camera.main;
         instance = GetComponent<SkillCardInstance>();
         mouseTilt = GetComponent<SkillCardMouseTilt>();
+        isExecuting = false;
     }
 
     private void OnMouseDown()
@@ -38,14 +37,14 @@ public class SkillCardDraggable : MonoBehaviour
         isDragging = true;
         transform.DOKill();
 
-        Vector3 planeNormal = handView.transform.rotation * Vector3.up;
-        dragPlane = new Plane(planeNormal, handView.transform.position);
+        Vector3 planeNormal = SceneViewManager.myHandView.transform.rotation * Vector3.up;
+        dragPlane = new Plane(planeNormal, SceneViewManager.myHandView.transform.position);
 
         if (TryGetMouseWorldPosition(out Vector3 mouseWorld))
         {
             transform.position = mouseWorld;
             // 转到 handView 的坐标系下
-            Vector3 mouseLocal = handView.transform.InverseTransformDirection(mouseWorld);
+            Vector3 mouseLocal = SceneViewManager.myHandView.transform.InverseTransformDirection(mouseWorld);
             mouseTilt.InitTilt(mouseLocal);
         }
     }
@@ -57,7 +56,7 @@ public class SkillCardDraggable : MonoBehaviour
         if (TryGetMouseWorldPosition(out Vector3 mouseWorld))
         {
             transform.position = mouseWorld;
-            Vector3 mouseLocal = handView.transform.InverseTransformDirection(mouseWorld);
+            Vector3 mouseLocal = SceneViewManager.myHandView.transform.InverseTransformDirection(mouseWorld);
             mouseTilt.Tilt(mouseLocal);
 
             //// 拖拽时仍然朝向摄像机
@@ -66,7 +65,7 @@ public class SkillCardDraggable : MonoBehaviour
             //transform.rotation = rotation;
 
             // ===== 新增：检测是否离开合法区域 =====
-            bool outside = handView != null && handView.IsOutsideValidArea(transform.position);
+            bool outside = SceneViewManager.myHandView != null && SceneViewManager.myHandView.IsOutsideValidArea(transform.position);
 
             if (outside)
             {
@@ -86,7 +85,7 @@ public class SkillCardDraggable : MonoBehaviour
         if (!isDragging) return;
         isDragging = false;
 
-        bool shouldRemove = handView != null && handView.IsOutsideValidArea(transform.position);
+        bool shouldRemove = SceneViewManager.myHandView != null && SceneViewManager.myHandView.IsOutsideValidArea(transform.position);
 
         if (shouldRemove)
         {
@@ -101,10 +100,14 @@ public class SkillCardDraggable : MonoBehaviour
     IEnumerator ExecuteCard()
     {
         // TODO: 这里应该放一些特效
-        transform.localScale = Vector3.one * 0.01f;
+        isExecuting = true;
 
         // TODO: Debug
-        StartCoroutine(handView.RemoveCard(gameObject, ClientGameState.playerSlot));
+        yield return StartCoroutine(SceneViewManager.myExecuteCardView.MoveToFallPosition(gameObject));
+        yield return new WaitForSeconds(1f);
+        yield return StartCoroutine(SceneViewManager.myExecuteCardView.MoveToExecutePosition(gameObject));
+        yield return new WaitForSeconds(0.5f);
+        yield return StartCoroutine(SceneViewManager.myHandView.RemoveCard(gameObject, ClientGameState.playerSlot));
         yield break;
 
         Dictionary<int, List<int>> selectedSourceIds = new Dictionary<int, List<int>>();
@@ -143,7 +146,6 @@ public class SkillCardDraggable : MonoBehaviour
     private IEnumerator ReturnToHand()
     {
         mouseTilt.ResetBaseRotation();
-        if (handView != null)
-            yield return handView.UpdateCardPositions(0.15f, ClientGameState.playerSlot);
+        yield return SceneViewManager.myHandView.UpdateCardPositions(0.15f, ClientGameState.playerSlot);
     }
 }
