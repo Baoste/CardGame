@@ -106,8 +106,8 @@ public class SkillCardDraggable : MonoBehaviour
         yield return StartCoroutine(SceneViewManager.myExecuteCardView.MoveToFallPosition(gameObject));
         yield return new WaitForSeconds(1f);
         yield return StartCoroutine(SceneViewManager.myExecuteCardView.MoveToExecutePosition(gameObject));
-        yield return new WaitForSeconds(0.5f);
-        yield return StartCoroutine(SceneViewManager.myHandView.RemoveCard(gameObject, ClientGameState.playerSlot));
+        //yield return new WaitForSeconds(0.5f);
+        //yield return StartCoroutine(SceneViewManager.myHandView.RemoveCard(gameObject, ClientGameState.playerSlot));
         yield break;
 
         Dictionary<int, List<int>> selectedSourceIds = new Dictionary<int, List<int>>();

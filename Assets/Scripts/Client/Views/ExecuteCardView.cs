@@ -30,13 +30,27 @@ public class ExecuteCardView : MonoBehaviour
     public IEnumerator MoveToExecutePosition(GameObject card)
     {
         Vector3 start = card.transform.position;
-        Vector3 dir = (executePosition - start).normalized;
+        Vector3 dir = (executePosition - start).normalized;     // 朝下
+        // 小回撤
         float backDist = 0.1f;
         Vector3 backPos = start - dir * backDist;
+        // 卡顿插入前
+        float readyDist = 0.05f;
+        Vector3 readyPos = executePosition - dir * readyDist;
+        // 插入后回弹
+        float spingDist = 0.02f;
+        Vector3 spingPos = executePosition + dir * spingDist;
 
         Sequence seq = DOTween.Sequence();
         seq.Append(card.transform.DOMove(backPos, 0.1f));
-        seq.Append(card.transform.DOMove(executePosition, 0.3f).SetEase(Ease.InExpo));
+        seq.Append(card.transform.DOMove(readyPos, 0.3f).SetEase(Ease.InExpo));
+        seq.AppendInterval(0.6f);
+        seq.AppendCallback(() =>
+        {
+            StartCoroutine(SceneViewManager.boardView.ShakeCards());
+        });
+        seq.Append(card.transform.DOMove(spingPos, 0.08f).SetEase(Ease.OutCubic));
+        seq.Append(card.transform.DOMove(executePosition, 0.04f).SetEase(Ease.InCubic));
 
         yield return seq.WaitForCompletion();
     }

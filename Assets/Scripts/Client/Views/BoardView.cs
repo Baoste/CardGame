@@ -1,3 +1,4 @@
+using Cinemachine;
 using DG.Tweening;
 using Game.Domain;
 using System.Collections;
@@ -29,6 +30,13 @@ public class BoardView : MonoBehaviour
 
     private readonly List<GameObject> selfCards = new();
     private readonly List<GameObject> opponentCards = new();
+
+    private CinemachineImpulseSource impulseSource;
+
+    private void Start()
+    {
+        impulseSource = GetComponent<CinemachineImpulseSource>();
+    }
 
     public IEnumerator AddCard(GameObject instance, int playerId)
     {
@@ -159,6 +167,20 @@ public class BoardView : MonoBehaviour
             during = Mathf.Max(0.25f, during * 2f);
             card.transform.DOMove(targetPos, during).SetEase(Ease.OutCubic);
         }
+    }
+
+    public IEnumerator ShakeCards()
+    {
+        impulseSource.GenerateImpulse();
+        foreach (var card in selfCards)
+        {
+            card.GetComponent<PointCardShake>().CardShake();
+        }
+        foreach (var card in opponentCards)
+        {
+            card.GetComponent<PointCardShake>().CardShake();
+        }
+        yield break;
     }
 
     private void OnDrawGizmosSelected()

@@ -10,7 +10,7 @@ public class SceneViewRegistry : MonoBehaviour
 
     private void Awake()
     {
-        SceneViewManager.myBoardView = myBoardView;
+        SceneViewManager.boardView = myBoardView;
         SceneViewManager.myHandView = myHandView;
         SceneViewManager.myExecuteCardView = myExecuteCardView;
     }
