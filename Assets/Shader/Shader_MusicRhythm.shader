@@ -1,4 +1,4 @@
-Shader "Unlit/Sha_MusicRhythm"
+Shader "Unlit/Shader_MusicRhythm"
 {
     Properties
     {

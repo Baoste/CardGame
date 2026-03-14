@@ -1,4 +1,4 @@
-Shader "Unlit/Sha_Halftone"
+Shader "Unlit/Shader_Halftone"
 {
     Properties
     {
