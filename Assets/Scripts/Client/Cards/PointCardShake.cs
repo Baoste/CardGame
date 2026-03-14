@@ -1,7 +1,4 @@
 using DG.Tweening;
-using GameKit.Dependencies.Utilities;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class PointCardShake : MonoBehaviour

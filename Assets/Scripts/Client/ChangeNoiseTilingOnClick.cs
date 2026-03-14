@@ -12,7 +12,7 @@ public class ChangeNoiseTilingOnClick : MonoBehaviour
     private Vector2 originalTiling;
     private Vector2 currentTiling;
 
-    private void Awake()
+    private void Start()
     {
         targetRenderer = GetComponent<Renderer>();
         runtimeMat = targetRenderer.material;

@@ -77,11 +77,19 @@ public class BoardView : MonoBehaviour
         yield return UpdateCardPositions(isOpponent);
     }
 
-    public IEnumerator RemoveCard(bool isOpponent, GameObject instance)
+    public IEnumerator RemoveCard(GameObject instance)
     {
-        selfCards.Remove(instance);
-        opponentCards.Remove(instance);
-
+        bool isOpponent = false;
+        if (opponentCards.Remove(instance))
+        {
+            Destroy(instance);
+            isOpponent = true;
+        }
+        if (selfCards.Remove(instance))
+        {
+            Destroy(instance);
+            isOpponent = false;
+        }
         yield return UpdateCardPositions(isOpponent);
     }
 

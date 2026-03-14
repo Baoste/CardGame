@@ -99,17 +99,27 @@ public class SkillCardDraggable : MonoBehaviour
 
     IEnumerator ExecuteCard()
     {
-        // TODO: 这里应该放一些特效
         isExecuting = true;
 
         // TODO: Debug
-        yield return StartCoroutine(SceneViewManager.myExecuteCardView.MoveToFallPosition(gameObject));
-        yield return new WaitForSeconds(1f);
-        yield return StartCoroutine(SceneViewManager.myExecuteCardView.MoveToExecutePosition(gameObject));
+        //yield return StartCoroutine(SceneViewManager.myExecuteCardView.MoveToFallPosition(gameObject));
+        //yield return new WaitForSeconds(1f);
+        //yield return StartCoroutine(SceneViewManager.myExecuteCardView.MoveToExecutePosition(gameObject));
         //yield return new WaitForSeconds(0.5f);
         //yield return StartCoroutine(SceneViewManager.myHandView.RemoveCard(gameObject, ClientGameState.playerSlot));
-        yield break;
+        //yield break;
 
+        // Start Executing
+        yield return StartCoroutine(ClientEffectExecutor.ValidateActionPoint(ClientGameState.gateway, ClientGameState.playerSlot));
+        if (!CommandExecutionState<ValidateActionPointCommand>.Success)
+        {
+            transform.localScale = Vector3.one * instance.localScaleFactor;
+            Debug.Log("没有足够的行动点");
+            StartCoroutine(ReturnToHand());
+            yield break;
+        }
+
+        yield return StartCoroutine(SceneViewManager.myExecuteCardView.MoveToFallPosition(gameObject));
         Dictionary<int, List<int>> selectedSourceIds = new Dictionary<int, List<int>>();
         Dictionary<int, List<int>> selectedTargetIds = new Dictionary<int, List<int>>();
 
@@ -120,11 +130,14 @@ public class SkillCardDraggable : MonoBehaviour
         if (!ClientEffectContext.IsCommandValid)
         {
             transform.localScale = Vector3.one * instance.localScaleFactor;
+            Debug.Log("你不能打出这张牌");
             StartCoroutine(ReturnToHand());
         }
         else
         {
+            yield return StartCoroutine(SceneViewManager.myExecuteCardView.MoveToExecutePosition(gameObject));
             StartCoroutine(ClientEffectExecutor.ExecuteCard(card, ClientGameState.gateway, ClientGameState.playerSlot, instanceId, selectedSourceIds, selectedTargetIds));
+            // yield return StartCoroutine(SceneViewManager.myHandView.RemoveCard(gameObject, ClientGameState.playerSlot));
         }
     }
 

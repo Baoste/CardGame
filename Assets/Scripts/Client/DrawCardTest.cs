@@ -56,7 +56,8 @@ public class DrawCardTest : MonoBehaviour
 
         handMap[0].Remove(instanceMap[instanceId]);
         handMap[1].Remove(instanceMap[instanceId]);
-        handView.RemoveCard(instanceMap[instanceId], playerId);
+        StartCoroutine(handView.RemoveCard(instanceMap[instanceId], playerId));
+        StartCoroutine(boardView.RemoveCard(instanceMap[instanceId]));
         instanceMap.Remove(instanceId);
     }
 

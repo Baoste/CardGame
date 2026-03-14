@@ -65,12 +65,17 @@ namespace Game.Domain
         public string chatContext;
     }
 
+    public class ValidateActionPointCommand : ICommand
+    {
+        public int playerId;
+    }
+
     public class SpendActionPointCommand : ICommand
     {
         public int playerId;
     }
 
-public class DrawSkillCardCommand : ICommand
+    public class DrawSkillCardCommand : ICommand
     {
         public int playerId;
     }

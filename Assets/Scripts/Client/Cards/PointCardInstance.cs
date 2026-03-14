@@ -33,6 +33,14 @@ public class PointCardInstance : CardInstance
         pointText.text = point.ToString();
     }
 
+    void OnTriggerEnter(Collider other)
+    {
+        if (other.GetComponent<PointCardInstance>() != null)
+        {
+            touchAnotherCard = true;
+        }
+    }
+
     void OnTriggerStay(Collider other)
     {
         if (other.GetComponent<PointCardInstance>() != null)

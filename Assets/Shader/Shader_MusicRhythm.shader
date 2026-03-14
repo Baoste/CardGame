@@ -18,17 +18,12 @@ Shader "Unlit/Shader_MusicRhythm"
     {
         Tags
         {
-            "RenderPipeline"="UniversalRenderPipeline"
-            "RenderType"="Transparent"
-            "Queue"="Transparent"
+            "RenderPipeline"="UniversalPipeline"
         }
         LOD 100
 
         Pass
         {
-            Name "ForwardLit"
-            Tags { "LightMode"="UniversalForward" }
-
             Blend SrcAlpha One
             ZWrite Off
             Cull Off

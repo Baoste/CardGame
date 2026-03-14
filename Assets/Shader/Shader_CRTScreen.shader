@@ -12,17 +12,12 @@ Shader "Custom/Shader_CRTScreen"
 	{
 		Tags
         {
-            "RenderPipeline"="UniversalRenderPipeline"
-            "RenderType"="Opaque"
-            "Queue"="Geometry"
+            "RenderPipeline"="UniversalPipeline"
         }
         LOD 100
 
 		Pass
 		{
-			Name "ForwardLit"
-            Tags { "LightMode"="UniversalForward" }
-
             HLSLPROGRAM
             #pragma vertex vert
             #pragma fragment frag
@@ -118,7 +113,8 @@ Shader "Custom/Shader_CRTScreen"
 				// scroll scan
 				float2 scanUV = i.uv;
 				scanUV.y += _Time.x;
-				scanCol *= SAMPLE_TEXTURE2D(_ScanTex, sampler_ScanTex, scanUV);
+				half4 scanLine = SAMPLE_TEXTURE2D(_ScanTex, sampler_ScanTex, scanUV);
+				scanCol *= scanLine.rgb;
 				float screenSvaerScanlineBrightness = 0.6;
 				scanCol = scanCol * (1 - screenSvaerScanlineBrightness) + screenSvaerScanlineBrightness;
 				col.rgb *= scanCol;
@@ -128,19 +124,20 @@ Shader "Custom/Shader_CRTScreen"
 				float dy = newUV.y;
 				float ex = 0.2;
 				if (newUV.x < 0.5)
-					col.rgb *= pow(dx/0.5, ex);
+					col.rgb *= pow(abs(dx)/0.5, ex);
 				else
-					col.rgb *= pow((1-dx)/0.5, ex);
+					col.rgb *= pow(abs(1-dx)/0.5, ex);
 				if (newUV.y < 0.5)
-					col.rgb *= pow(dy/0.5, ex);
+					col.rgb *= pow(abs(dy)/0.5, ex);
 				else
-					col.rgb *= pow((1-dy)/0.5, ex);
+					col.rgb *= pow(abs(1-dy)/0.5, ex);
 				
 				// black corner
 				if (newUV.x < 0 || newUV.x > 1 || newUV.y < 0 || newUV.y > 1)
 					col.rgb *= 0;
 				return col * 1.5;
 			}
+
 			ENDHLSL
 		}
 	}

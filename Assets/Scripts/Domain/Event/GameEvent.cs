@@ -91,6 +91,17 @@ namespace Game.Domain
     }
 
     /// <summary>
+    /// 检查行动点事件
+    /// </summary>
+    public class ValidateActionPointEvent : PlayerEvent
+    {
+        public ValidateActionPointEvent(int playerId, bool success)
+            : base(playerId, success)
+        {
+        }
+    }
+
+    /// <summary>
     /// 消耗行动点事件，成功时 playerId 是玩家ID；失败时 playerId 是玩家ID
     /// </summary>
     public class SpendActionPointEvent : PlayerEvent

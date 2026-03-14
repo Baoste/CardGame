@@ -12,17 +12,12 @@ Shader "Unlit/Shader_Halftone"
     {
         Tags
         {
-            "RenderPipeline"="UniversalRenderPipeline"
-            "RenderType"="Opaque"
-            "Queue"="Geometry"
+            "RenderPipeline"="UniversalPipeline"
         }
         LOD 100
 
         Pass
         {
-            Name "ForwardLit"
-            Tags { "LightMode"="UniversalForward" }
-
             HLSLPROGRAM
             #pragma vertex vert
             #pragma fragment frag
