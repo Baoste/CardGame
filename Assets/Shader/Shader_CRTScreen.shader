@@ -4,6 +4,7 @@ Shader "Custom/Shader_CRTScreen"
 	{
 		_MainTex("Texture", 2D) = "white" {}
 		_ScanTex("Scan Texture", 2D) = "white" {}
+		_NoiseTex("Noise Texture", 2D) = "white" {}
 		_ScreenWidth("Screen Width", Float) = 512
 		_ScreenHeight("Screen Height", Float) = 512
 	}
@@ -30,6 +31,7 @@ Shader "Custom/Shader_CRTScreen"
 
             CBUFFER_START(UnityPerMaterial)
 				float4 _MainTex_ST;
+				float4 _NoiseTex_ST;
                 float _ScreenWidth;
                 float _ScreenHeight;
             CBUFFER_END
@@ -38,6 +40,8 @@ Shader "Custom/Shader_CRTScreen"
             SAMPLER(sampler_MainTex);
             TEXTURE2D(_ScanTex);
             SAMPLER(sampler_ScanTex);
+            TEXTURE2D(_NoiseTex);
+            SAMPLER(sampler_NoiseTex);
 
 			struct a2v
 			{
@@ -96,6 +100,9 @@ Shader "Custom/Shader_CRTScreen"
 					newUV = uv + float2((1-tx)*2*abs(uv.x-0.5), (1-ty)*2*abs(uv.y-0.5));
 				}
 
+				// noise offset
+				float2 noiseUV = TRANSFORM_TEX(i.uv, _NoiseTex);
+				newUV.x += 0.1 * SAMPLE_TEXTURE2D(_NoiseTex, sampler_NoiseTex, noiseUV).r;
 
 				half4 col = SAMPLE_TEXTURE2D(_MainTex, sampler_MainTex, newUV);
 				col.rb *= step(0, sin(newUV.x * _ScreenWidth)+1) * 0.5 + 1;

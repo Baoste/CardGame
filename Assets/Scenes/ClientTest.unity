@@ -1868,8 +1868,9 @@ GameObject:
   - component: {fileID: 1301736381}
   - component: {fileID: 1301736380}
   - component: {fileID: 1301736379}
+  - component: {fileID: 1301736382}
   m_Layer: 0
-  m_Name: Quad
+  m_Name: TVScreen
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1883,12 +1884,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1301736377}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0.37840626, z: 0, w: 0.9256396}
-  m_LocalPosition: {x: 0.626, y: 1.61, z: 2.193}
-  m_LocalScale: {x: 0.7, y: 0.7, z: 0.7}
+  m_LocalRotation: {x: -0, y: -0.3869524, z: -0, w: 0.92209965}
+  m_LocalPosition: {x: -2.1930003, y: 1.61, z: 0.6259999}
+  m_LocalScale: {x: 0.70000017, y: 0.7, z: 0.70000017}
   m_ConstrainProportionsScale: 1
   m_Children: []
-  m_Father: {fileID: 1324977441}
+  m_Father: {fileID: 1976948066}
   m_LocalEulerAnglesHint: {x: 0, y: 44.47, z: 0}
 --- !u!64 &1301736379
 MeshCollider:
@@ -1962,6 +1963,18 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1301736377}
   m_Mesh: {fileID: 10210, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &1301736382
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1301736377}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6ca4a96ce7c380946a7d9a2a17003bfc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1324977440
 GameObject:
   m_ObjectHideFlags: 0
@@ -1995,7 +2008,6 @@ Transform:
   - {fileID: 891971525}
   - {fileID: 742072367}
   - {fileID: 1810868757}
-  - {fileID: 1301736378}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: -90, z: 0}
 --- !u!1001 &1397417154
@@ -3015,6 +3027,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 1301736378}
   - {fileID: 1787145186}
   - {fileID: 888793736}
   m_Father: {fileID: 0}
