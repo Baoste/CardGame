@@ -8,6 +8,7 @@ using FishNet.Demo.AdditiveScenes;
 
 public class HandView : MonoBehaviour
 {
+    [SerializeField] private bool isOpponent = false;
     [Header("Resolve Zone Size")]
     [SerializeField] private float zoneWidth = 6f;
     [SerializeField] private float zoneHeight = 2.5f;
@@ -31,7 +32,8 @@ public class HandView : MonoBehaviour
 
     private void Update()
     {
-        transform.up = -Camera.main.transform.forward;
+        if (!isOpponent)
+            transform.up = -Camera.main.transform.forward;
     }
 
     public IEnumerator AddCard(GameObject instance, int playerId)

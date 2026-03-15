@@ -5,17 +5,10 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
-public class DrawCardTest : MonoBehaviour
+public class EventProcessFunction : MonoBehaviour
 {
-    // 按 playerId 存储在屏幕上显示的牌（用于重排）
-    private static readonly Dictionary<int, List<GameObject>> handMap = new();
     private static Dictionary<int, GameObject> instanceMap = new();
 
-    [SerializeField] private HandView handView;
-    [SerializeField] private BoardView boardView;
-    [SerializeField] private ResolveZoneView ResolveZoneView;
-
-    // Start is called before the first frame update
     void Start()
     {
         ProcessDispatcher.Register("StartGameTest", StartGameTest);
@@ -25,8 +18,6 @@ public class DrawCardTest : MonoBehaviour
         ProcessDispatcher.Register("ModifyPointTest", ModifyPoint);
         ProcessDispatcher.Register("MoveCardTest", MoveCard);
         ProcessDispatcher.Register("ClearCardsToResolveTest", ClearResolve);
-        handMap[0] = new List<GameObject>();
-        handMap[1] = new List<GameObject>();
     }
 
     public void StartGameTest(object[] parameters)
@@ -54,10 +45,9 @@ public class DrawCardTest : MonoBehaviour
         int playerId = (int)parameters[0];
         int instanceId = (int)parameters[1];
 
-        handMap[0].Remove(instanceMap[instanceId]);
-        handMap[1].Remove(instanceMap[instanceId]);
-        StartCoroutine(handView.RemoveCard(instanceMap[instanceId], playerId));
-        StartCoroutine(boardView.RemoveCard(instanceMap[instanceId]));
+        StartCoroutine(SceneViewManager.myHandView.RemoveCard(instanceMap[instanceId], playerId));
+        StartCoroutine(SceneViewManager.opponentHandView.RemoveCard(instanceMap[instanceId], 1 - playerId));
+        StartCoroutine(SceneViewManager.boardView.RemoveCard(instanceMap[instanceId]));
         instanceMap.Remove(instanceId);
     }
 
@@ -79,9 +69,8 @@ public class DrawCardTest : MonoBehaviour
         if (isHoreCard && isOpponent)
             instance.GetComponent<PointCardInstance>().pointText.text = "";
 
-        handMap[playerId].Add(instance);
         instanceMap[instanceId] = instance;
-        StartCoroutine(boardView.AddCard(instance, playerId));
+        StartCoroutine(SceneViewManager.boardView.AddCard(instance, playerId));
     }
 
     // parameters[0]: int cardId
@@ -97,11 +86,16 @@ public class DrawCardTest : MonoBehaviour
 
         GameObject instance = CardViewCreator.Instance.CreateCardInstance(cardId, instanceId, transform.position, Quaternion.identity);
 
-        handMap[playerId].Add(instance);
         instanceMap[instanceId] = instance;
 
-        if (isOpponent) return;
-        StartCoroutine(handView.AddCard(instance, playerId));
+        if (isOpponent)
+        {
+            StartCoroutine(SceneViewManager.opponentHandView.AddCard(instance, 1 - playerId));
+        }
+        else
+        {
+            StartCoroutine(SceneViewManager.myHandView.AddCard(instance, playerId));
+        }
     }
 
     // parameters[0]: int cardId
@@ -120,22 +114,20 @@ public class DrawCardTest : MonoBehaviour
             case ParticipantType.CardsToResolve:
             {
                 GameObject instance = CardViewCreator.Instance.CreateCardInstance(cardId, instanceId, transform.position, Quaternion.identity);
-                StartCoroutine(ResolveZoneView.AddCard(instance, playerId));    
+                StartCoroutine(SceneViewManager.resolveZoneView.AddCard(instance, playerId));    
                 break;
             }
             case ParticipantType.MyBoardZone:
             {
                 GameObject instance = CardViewCreator.Instance.CreateCardInstance(cardId, instanceId, transform.position, Quaternion.identity);
-                StartCoroutine(boardView.AddCard(instance, playerId));
-                handMap[playerId].Add(instance);
+                StartCoroutine(SceneViewManager.boardView.AddCard(instance, playerId));
                 instanceMap[instanceId] = instance;
                 break;
             }
             case ParticipantType.OppentBoardZone:
             {
                 GameObject instance = CardViewCreator.Instance.CreateCardInstance(cardId, instanceId, transform.position, Quaternion.identity);
-                StartCoroutine(boardView.AddCard(instance, 1 - playerId));
-                handMap[1 - playerId].Add(instance);
+                StartCoroutine(SceneViewManager.boardView.AddCard(instance, 1 - playerId));
                 instanceMap[instanceId] = instance;
                 break;
             }
@@ -144,6 +136,6 @@ public class DrawCardTest : MonoBehaviour
 
     public void ClearResolve(object[] parameters)
     {
-        StartCoroutine(ResolveZoneView.ClearCards());
+        StartCoroutine(SceneViewManager.resolveZoneView.ClearCards());
     }
 }

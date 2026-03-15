@@ -26,6 +26,6 @@ public class SpendActionPointEventHandler : IEventProcess, IEventHandler
 
     public void Process(object[] objects)
     {
-        // ProcessDispatcher.Process("DrawCardTest", objects);
+        // ProcessDispatcher.Process("EventProcessFunction", objects);
     }
 }

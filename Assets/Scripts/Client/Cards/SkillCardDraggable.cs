@@ -109,8 +109,6 @@ public class SkillCardDraggable : MonoBehaviour
             yield break;
         }
 
-        ClientEffectContext.isExecutingSkillCard = true;
-
         // TODO: Debug
         //yield return StartCoroutine(SceneViewManager.myExecuteCardView.MoveToFallPosition(gameObject));
         //yield return new WaitForSeconds(1f);
@@ -128,7 +126,10 @@ public class SkillCardDraggable : MonoBehaviour
             StartCoroutine(ReturnToHand());
             yield break;
         }
+        ClientEffectContext.isExecutingSkillCard = true;
 
+        // 准备执行技能
+        // TODO: 需要广播动画
         yield return StartCoroutine(SceneViewManager.myExecuteCardView.MoveToFallPosition(gameObject));
         Dictionary<int, List<int>> selectedSourceIds = new Dictionary<int, List<int>>();
         Dictionary<int, List<int>> selectedTargetIds = new Dictionary<int, List<int>>();
@@ -139,21 +140,24 @@ public class SkillCardDraggable : MonoBehaviour
 
         if (!ClientEffectContext.IsCommandValid)
         {
-            transform.localScale = Vector3.one * instance.localScaleFactor;
+            // 执行技能失败
             Debug.Log("你不能打出这张牌");
+            // TODO: 需要广播动画
+            transform.localScale = Vector3.one * instance.localScaleFactor;
             StartCoroutine(ReturnToHand());
         }
         else
         {
+            // 执行
+            // TODO: 需要广播动画
             yield return StartCoroutine(SceneViewManager.myExecuteCardView.MoveToExecutePosition(gameObject));
-            // TODO: 这里直接丢弃了，后续可能需要根据效果来决定是否丢弃
-            Debug.Log($"[Client] Discard skill card instance {instanceId}");
-            DiscardCardCommand discardCmd = new DiscardCardCommand { playerId = ClientGameState.playerSlot, instanceId = instanceId };
-            ClientGameState.gateway.SendCommandServerRpc("DiscardCard", JsonConvert.SerializeObject(discardCmd));
-
             yield return StartCoroutine(ClientEffectExecutor.ExecuteCard(card, ClientGameState.gateway, ClientGameState.playerSlot, instanceId, selectedSourceIds, selectedTargetIds));
         }
         ClientEffectContext.isExecutingSkillCard = false;
+        // 这里直接丢弃
+        Debug.Log($"[Client] Discard skill card instance {instanceId}");
+        DiscardCardCommand discardCmd = new DiscardCardCommand { playerId = ClientGameState.playerSlot, instanceId = instanceId };
+        ClientGameState.gateway.SendCommandServerRpc("DiscardCard", JsonConvert.SerializeObject(discardCmd));
     }
 
     private bool TryGetMouseWorldPosition(out Vector3 worldPos)

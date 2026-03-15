@@ -147,7 +147,6 @@ namespace Game.Domain
                 }));
             }
 
-            
             ClientEffectContext.IsExecuteDone = true;
         }
 

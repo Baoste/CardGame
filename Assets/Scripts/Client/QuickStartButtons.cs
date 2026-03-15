@@ -47,15 +47,18 @@ public class QuickStartButtons : MonoBehaviour
             ClientCommand.StartTurn(ClientGameState.playerSlot);
         }
 
-        if (GUI.Button(new Rect(1700, 610, w, h), "End Turn"))
+        if (ClientGameState.playerSlot == ClientGameState.Instance.CurrentPlayerId)
         {
-            ClientCommand.EndTurn();
-            ClientCommand.StartTurn(1 - ClientGameState.playerSlot);
-        }
+            if (GUI.Button(new Rect(1700, 610, w, h), "End Turn"))
+            {
+                ClientCommand.EndTurn();
+                ClientCommand.StartTurn(1 - ClientGameState.playerSlot);
+            }
 
-        if (GUI.Button(new Rect(1700, 660, w, h), "Reveal Cards"))
-        {
-            ClientCommand.RevealCardsAndScore();
+            if (GUI.Button(new Rect(1700, 660, w, h), "Reveal Cards"))
+            {
+                ClientCommand.RevealCardsAndScore();
+            }
         }
 
         //if (GUI.Button(new Rect(1700, 360, w, h), "S: Opponent draw"))
