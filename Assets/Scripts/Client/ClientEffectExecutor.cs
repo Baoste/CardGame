@@ -2,7 +2,6 @@ using Newtonsoft.Json;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using static Unity.Burst.Intrinsics.X86.Avx;
 
 namespace Game.Domain
 {
@@ -68,42 +67,12 @@ namespace Game.Domain
                 yield return new WaitUntil(() => ClientEffectContext.IsExecuteDone);
                 ClientEffectContext.IsExecuteDone = false;
             }
-
-            // TODO: 这里直接丢弃了，后续可能需要根据效果来决定是否丢弃
-            Debug.Log($"[Client] Discard skill card instance {cardInstanceId}");
-            DiscardCardCommand discardCmd = new DiscardCardCommand { playerId = playerSlot, instanceId = cardInstanceId };
-            gateway.SendCommandServerRpc("DiscardCard", JsonConvert.SerializeObject(discardCmd));
         }
 
         private static void ExecuteOp(EffectOp op, MatchGateway gateway, GameState gameState, EffectContext ctx, List<int> selectedSourceIds, List<int> selectedTargetIds) 
         {
             ClientEffectFunction clientEffectFunction = GameObject.Find("ClientEffectFunction").GetComponent<ClientEffectFunction>();
-            switch (op.type)
-            {
-                case EffectType.DrawPoint:
-                    clientEffectFunction.DrawPointCards(op, gateway, gameState, ctx);
-                    break;
-
-                case EffectType.DrawSkill:
-                    clientEffectFunction.DrawSkillCards(op, gateway, gameState, ctx);
-                    break;
-
-                case EffectType.DrawPointToResolve:
-                    ClientEffectContext.IsExecuteDone = true;  // 这个效果不需要客户端执行，直接告诉流程继续往下走就行了
-                    break;
-
-                case EffectType.Discard:
-                    clientEffectFunction.DiscardCards(op, gateway, gameState, ctx, selectedTargetIds);
-                    break;
-
-                case EffectType.ModifyPoint:
-                    clientEffectFunction.ModifyPoint(op, gateway, gameState, ctx, selectedTargetIds);
-                    break;
-
-                case EffectType.Move:
-                    clientEffectFunction.MoveCards(op, gateway, gameState, ctx, selectedSourceIds, selectedTargetIds);
-                    break;
-            }
+            clientEffectFunction.ExecuteOp(op, gateway, gameState, ctx, selectedSourceIds, selectedTargetIds);
         }
     }
 }

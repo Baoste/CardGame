@@ -4,13 +4,42 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using static UnityEngine.Rendering.DebugUI;
 
 namespace Game.Domain
 {
     public class ClientEffectFunction : MonoBehaviour
     {
-        public void DrawPointCards(EffectOp op, MatchGateway gateway, GameState gameState, EffectContext ctx)
+        public void ExecuteOp(EffectOp op, MatchGateway gateway, GameState gameState, EffectContext ctx, List<int> selectedSourceIds, List<int> selectedTargetIds)
+        {
+            switch (op.type)
+            {
+                case EffectType.DrawPoint:
+                    StartCoroutine(DrawPointCards(op, gateway, gameState, ctx));
+                    break;
+
+                case EffectType.DrawSkill:
+                    StartCoroutine(DrawSkillCards(op, gateway, gameState, ctx));
+                    break;
+
+                case EffectType.DrawPointToResolve:
+                    ClientEffectContext.IsExecuteDone = true;  // 这个效果不需要客户端执行，直接告诉流程继续往下走就行了
+                    break;
+
+                case EffectType.Discard:
+                    StartCoroutine(DiscardCards(op, gateway, gameState, ctx, selectedTargetIds));
+                    break;
+
+                case EffectType.ModifyPoint:
+                    StartCoroutine(ModifyPoint(op, gateway, gameState, ctx, selectedTargetIds));
+                    break;
+
+                case EffectType.Move:
+                    StartCoroutine(MoveCards(op, gateway, gameState, ctx, selectedSourceIds, selectedTargetIds));
+                    break;
+            }
+        }
+
+        public IEnumerator DrawPointCards(EffectOp op, MatchGateway gateway, GameState gameState, EffectContext ctx)
         {
             // TODO: 目前只能自己抽点数牌，后续需要根据op参数区分抽不同类型的牌
             int drawNum = op.value.Evaluate(gameState, ctx);
@@ -21,7 +50,7 @@ namespace Game.Domain
 
             for (int i = 0; i < drawNum; i++)
             {
-                StartCoroutine(ValidateCommand(op, gateway, gameState, ctx, new List<int>(), new List<int>(), () =>
+                yield return StartCoroutine(ValidateCommand(op, gateway, gameState, ctx, new List<int>(), new List<int>(), () =>
                 {
                     int playerId = casterId;
                     if (participantType == ParticipantType.OpponentPointCardsOnBoard)
@@ -33,9 +62,8 @@ namespace Game.Domain
             ClientEffectContext.IsExecuteDone = true;
         }
 
-        public void DrawSkillCards(EffectOp op, MatchGateway gateway, GameState gameState, EffectContext ctx)
+        private IEnumerator DrawSkillCards(EffectOp op, MatchGateway gateway, GameState gameState, EffectContext ctx)
         {
-            // TODO: 目前只能自己抽点数牌，后续需要根据op参数区分抽不同类型的牌
             int drawNum = op.value.Evaluate(gameState, ctx);
 
             int casterId = ctx.caster;
@@ -44,9 +72,10 @@ namespace Game.Domain
 
             for (int i = 0; i < drawNum; i++)
             {
-                StartCoroutine(ValidateCommand(op, gateway, gameState, ctx, new List<int>(), new List<int>(), () =>
+                yield return StartCoroutine(ValidateCommand(op, gateway, gameState, ctx, new List<int>(), new List<int>(), () =>
                 {
                     int playerId = casterId;
+                    // 根据op参数区分抽到不同的玩家手里
                     if (participantType == ParticipantType.OpponentSkillCardsInHand)
                         playerId = opponentId;
                     DrawSkillCardCommand cmd = new DrawSkillCardCommand { playerId = playerId };
@@ -56,14 +85,14 @@ namespace Game.Domain
             ClientEffectContext.IsExecuteDone = true;
         }
 
-        public void DiscardCards(EffectOp op, MatchGateway gateway, GameState gameState, EffectContext ctx, List<int> selectedTargetIds)
+        public IEnumerator DiscardCards(EffectOp op, MatchGateway gateway, GameState gameState, EffectContext ctx, List<int> selectedTargetIds)
         {
             int count = selectedTargetIds.Count;
             List<int> _selectedTargetIds = selectedTargetIds;
             for (int i = 0; i < count; i++)
             {
                 int idx = i;    // 防止闭包捕获
-                StartCoroutine(ValidateCommand(op, gateway, gameState, ctx, new List<int>(), selectedTargetIds, () =>
+                yield return StartCoroutine(ValidateCommand(op, gateway, gameState, ctx, new List<int>(), selectedTargetIds, () =>
                 {
                     DiscardCardCommand cmd = new DiscardCardCommand { playerId = ctx.caster, instanceId = _selectedTargetIds[idx] };
                     gateway.SendCommandServerRpc("DiscardCard", JsonConvert.SerializeObject(cmd));
@@ -72,7 +101,7 @@ namespace Game.Domain
             ClientEffectContext.IsExecuteDone = true;
         }
 
-        public void ModifyPoint(EffectOp op, MatchGateway gateway, GameState gameState, EffectContext ctx, List<int> selectedTargetIds)
+        public IEnumerator ModifyPoint(EffectOp op, MatchGateway gateway, GameState gameState, EffectContext ctx, List<int> selectedTargetIds)
         {
             int count = selectedTargetIds.Count;
             List<int> _selectedTargetIds = selectedTargetIds;
@@ -80,7 +109,7 @@ namespace Game.Domain
             for (int i = 0; i < count; i++)
             {
                 int idx = i;    // 防止闭包捕获
-                StartCoroutine(ValidateCommand(op, gateway, gameState, ctx, new List<int>(), selectedTargetIds, () =>
+                yield return StartCoroutine(ValidateCommand(op, gateway, gameState, ctx, new List<int>(), selectedTargetIds, () =>
                 {
                     ModifyPointCommand cmd = new ModifyPointCommand { playerId = ctx.caster, instanceId = _selectedTargetIds[idx], pointChange = value };
                     gateway.SendCommandServerRpc("ModifyPoint", JsonConvert.SerializeObject(cmd));
@@ -89,7 +118,7 @@ namespace Game.Domain
             ClientEffectContext.IsExecuteDone = true;
         }
 
-        public void MoveCards(EffectOp op, MatchGateway gateway, GameState gameState, EffectContext ctx, List<int> selectedSourceIds, List<int> selectedTargetIds)
+        public IEnumerator MoveCards(EffectOp op, MatchGateway gateway, GameState gameState, EffectContext ctx, List<int> selectedSourceIds, List<int> selectedTargetIds)
         {
             int count = selectedSourceIds.Count;
             List<int> _selectedSourceIds = selectedSourceIds;
@@ -106,7 +135,7 @@ namespace Game.Domain
             for (int i = 0; i < count; i++)
             {
                 int idx = i;    // 防止闭包捕获
-                StartCoroutine(ValidateCommand(op, gateway, gameState, ctx, selectedSourceIds, selectedTargetIds, () =>
+                yield return StartCoroutine(ValidateCommand(op, gateway, gameState, ctx, selectedSourceIds, selectedTargetIds, () =>
                 {
                     MoveCardCommand cmd = new MoveCardCommand { playerId = ctx.caster, instanceId = _selectedSourceIds[idx], toZone=selectZone };
                     gateway.SendCommandServerRpc("MoveCard", JsonConvert.SerializeObject(cmd));

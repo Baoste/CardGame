@@ -1,5 +1,7 @@
 using DG.Tweening;
 using Game.Domain;
+using Game.Server;
+using Newtonsoft.Json;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -144,8 +146,12 @@ public class SkillCardDraggable : MonoBehaviour
         else
         {
             yield return StartCoroutine(SceneViewManager.myExecuteCardView.MoveToExecutePosition(gameObject));
-            StartCoroutine(ClientEffectExecutor.ExecuteCard(card, ClientGameState.gateway, ClientGameState.playerSlot, instanceId, selectedSourceIds, selectedTargetIds));
-            // yield return StartCoroutine(SceneViewManager.myHandView.RemoveCard(gameObject, ClientGameState.playerSlot));
+            // TODO: 这里直接丢弃了，后续可能需要根据效果来决定是否丢弃
+            Debug.Log($"[Client] Discard skill card instance {instanceId}");
+            DiscardCardCommand discardCmd = new DiscardCardCommand { playerId = ClientGameState.playerSlot, instanceId = instanceId };
+            ClientGameState.gateway.SendCommandServerRpc("DiscardCard", JsonConvert.SerializeObject(discardCmd));
+
+            yield return StartCoroutine(ClientEffectExecutor.ExecuteCard(card, ClientGameState.gateway, ClientGameState.playerSlot, instanceId, selectedSourceIds, selectedTargetIds));
         }
         ClientEffectContext.isExecutingSkillCard = false;
     }
