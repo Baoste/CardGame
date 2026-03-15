@@ -15,8 +15,13 @@ public class PointCardHover : MonoBehaviour
     private Coroutine fadeCoroutine;
     private Color baseColor;
 
+    private int cardLayerMask;
+    private PointCardHover currentHover;
+
     private void Awake()
     {
+        cardLayerMask = LayerMask.GetMask("Card");
+
         if (pointsText != null)
         {
             baseColor = pointsText.color;
@@ -27,15 +32,43 @@ public class PointCardHover : MonoBehaviour
             pointsRoot.SetActive(false);
     }
 
-    private void OnMouseEnter()
+    private void Update()
     {
-        ShowPoints();
+        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+
+        if (Physics.Raycast(ray, out RaycastHit hit, 1000f, cardLayerMask))
+        {
+            PointCardHover card = hit.collider.GetComponent<PointCardHover>();
+
+            if (card != currentHover)
+            {
+                currentHover = card;
+
+                if (card != null)
+                    ShowPoints();
+                else
+                    HidePoints();
+            }
+        }
+        else
+        {
+            if (currentHover != null)
+            {
+                currentHover = null;
+                HidePoints();
+            }
+        }
     }
 
-    private void OnMouseExit()
-    {
-        HidePoints();
-    }
+    //private void OnMouseEnter()
+    //{
+    //    ShowPoints();
+    //}
+
+    //private void OnMouseExit()
+    //{
+    //    HidePoints();
+    //}
 
     public void ShowPoints()
     {
