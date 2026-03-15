@@ -91,6 +91,21 @@ namespace Game.Domain
     }
 
     /// <summary>
+    /// 播放动画
+    /// </summary>
+    public class PlayAnimationEvent : PlayerEvent
+    {
+        public AnimationType animType;
+        public int instanceId;
+        public PlayAnimationEvent(int playerId, bool success, AnimationType animType, int instanceId)
+            : base(playerId, success)
+        {
+            this.animType = animType;
+            this.instanceId = instanceId;
+        }
+    }
+
+    /// <summary>
     /// 检查行动点事件
     /// </summary>
     public class ValidateActionPointEvent : PlayerEvent

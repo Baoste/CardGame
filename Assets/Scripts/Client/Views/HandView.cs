@@ -28,7 +28,7 @@ public class HandView : MonoBehaviour
     [SerializeField] private BoxCollider dragValidArea; // 手牌安全区域，松手时如果不在这里就销毁
     [SerializeField] private float dragFollowDepth = 8f; // 鼠标拖拽时离摄像机多远
 
-    private readonly List<GameObject> skillCardInstances = new();
+    public List<GameObject> skillCardInstances = new();
 
     private void Update()
     {
@@ -36,19 +36,18 @@ public class HandView : MonoBehaviour
             transform.up = -Camera.main.transform.forward;
     }
 
-    public IEnumerator AddCard(GameObject instance, int playerId)
+    public IEnumerator AddCard(GameObject instance)
     {
         skillCardInstances.Add(instance);
         BindDragComponent(instance);
-        yield return UpdateCardPositions(0.15f, playerId);
+        yield return UpdateCardPositions(0.15f);
     }
 
-    public IEnumerator RemoveCard(GameObject instance, int playerId)
+    public IEnumerator RemoveCard(GameObject instance)
     {
         if (skillCardInstances.Remove(instance))
         {
-            Destroy(instance);
-            yield return UpdateCardPositions(0.15f, playerId);
+            yield return UpdateCardPositions(0.15f);
         }
     }
 
@@ -63,13 +62,13 @@ public class HandView : MonoBehaviour
         dragCard.Init(cardId, instanceId);
     }
 
-     public IEnumerator UpdateCardPositions(float duration, int playerId)
-    {
-        LayoutCards(duration, playerId);
-        yield return new WaitForSeconds(duration);
-    }
+     public IEnumerator UpdateCardPositions(float duration)
+     {
+         LayoutCards(duration);
+         yield return new WaitForSeconds(duration);
+     }
 
-    private void LayoutCards(float duration, int playerId)
+    private void LayoutCards(float duration)
     {
         if (skillCardInstances.Count == 0) return;
 
@@ -81,7 +80,6 @@ public class HandView : MonoBehaviour
         }
 
         float totalWidth = (skillCardInstances.Count - 1) * spacing;
-        bool isOpponent = playerId != ClientGameState.playerSlot;
 
         for (int i = 0; i < skillCardInstances.Count; i++)
         {
@@ -98,10 +96,10 @@ public class HandView : MonoBehaviour
             Quaternion targetRotation = transform.rotation * Quaternion.Euler(cardEuler);
 
             // 对手牌翻面
-            if (isOpponent)
-            {
-                targetRotation *= Quaternion.Euler(0f, 180f, 0f);
-            }
+            //if (isOpponent)
+            //{
+            //    targetRotation *= Quaternion.Euler(0f, 180f, 0f);
+            //}
 
             card.transform.DOMove(targetPos, duration);
             card.transform.DORotateQuaternion(targetRotation, duration);

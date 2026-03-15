@@ -1,4 +1,5 @@
 using DG.Tweening;
+using Game.Domain;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -25,10 +26,15 @@ public class ExecuteCardView : MonoBehaviour
         seq.Join(card.transform.DORotateQuaternion(targetRot, 0.6f));
 
         yield return seq.WaitForCompletion();
+        CommandExecutionState<PlayAnimationCommand>.IsDone = true;
     }
 
     public IEnumerator MoveToExecutePosition(GameObject card)
     {
+        card.GetComponent<SkillCardDraggable>().executed = true;
+        StartCoroutine(SceneViewManager.myHandView.RemoveCard(card));
+        StartCoroutine(SceneViewManager.opponentHandView.RemoveCard(card));
+
         Vector3 start = card.transform.position;
         Vector3 dir = (executePosition - start).normalized;     // ³¯ÏÂ
         // Ð¡»Ø³·
@@ -53,6 +59,7 @@ public class ExecuteCardView : MonoBehaviour
         seq.Append(card.transform.DOMove(executePosition, 0.04f).SetEase(Ease.InCubic));
 
         yield return seq.WaitForCompletion();
+        CommandExecutionState<PlayAnimationCommand>.IsDone = true;
     }
 
 

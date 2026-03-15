@@ -10,6 +10,7 @@ public static class DispatcherBootstrap
         EventDispatcher.Register("GetGameState", new GetGameStateEventHandler());
         EventDispatcher.Register("GetCtx", new GetCtxEventHandler());
         EventDispatcher.Register("Chat", new ChatEventHandler());
+        EventDispatcher.Register("PlayAnimation", new PlayAnimationEventHandler());
         EventDispatcher.Register("ValidateActionPoint", new ValidateActionPointEventHandler());
         EventDispatcher.Register("SpendActionPoint", new SpendActionPointEventHandler());
         EventDispatcher.Register("DrawPointCard", new DrawPointCardEventHandler());
@@ -31,6 +32,7 @@ public static class DispatcherBootstrap
         CommandDispatcher.Register("GetGameState", new GetGameStateCmdHandler());
         CommandDispatcher.Register("GetCtx", new GetCtxCmdHandler());
         CommandDispatcher.Register("Chat", new ChatCmdHandler());
+        CommandDispatcher.Register("PlayAnimation", new PlayAnimationCmdHandler());
         CommandDispatcher.Register("ValidateActionPoint", new ValidateActionPointCmdHandler());
         CommandDispatcher.Register("SpendActionPoint", new SpendActionPointCmdHandler());
         CommandDispatcher.Register("DrawPointCard", new DrawPointCardCmdHandler());

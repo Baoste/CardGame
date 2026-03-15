@@ -65,6 +65,13 @@ namespace Game.Domain
         public string chatContext;
     }
 
+    public class PlayAnimationCommand : ICommand
+    {
+        public int playerId;
+        public AnimationType animType;
+        public int instanceId;
+    }
+
     public class ValidateActionPointCommand : ICommand
     {
         public int playerId;

@@ -19,6 +19,7 @@ public class SkillCardHover : MonoBehaviour
 
     void OnMouseEnter()
     {
+        if (draggable.executed) return;
         if (draggable.IsDragging || ClientEffectContext.isExecutingSkillCard) return;
         transform.DOScale(Vector3.one * instance.localScaleFactor * 2.0f, 0.15f);
         
@@ -30,6 +31,7 @@ public class SkillCardHover : MonoBehaviour
 
     void OnMouseExit()
     {
+        if (draggable.executed) return;
         if (draggable.IsDragging || ClientEffectContext.isExecutingSkillCard) return;
         transform.DOScale(Vector3.one * instance.localScaleFactor, 0.15f);
 

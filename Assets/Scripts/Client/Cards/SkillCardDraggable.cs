@@ -16,6 +16,7 @@ public class SkillCardDraggable : MonoBehaviour
     private int instanceId;
 
     public bool IsDragging => isDragging;
+    public bool executed = false;
 
     private SkillCardInstance instance;
     private SkillCardMouseTilt mouseTilt;
@@ -31,6 +32,7 @@ public class SkillCardDraggable : MonoBehaviour
 
     private void OnMouseDown()
     {
+        if (executed) return;
         if (ClientEffectContext.isExecutingSkillCard) return;
         if (cam == null) cam = Camera.main;
         if (cam == null) return;
@@ -52,6 +54,7 @@ public class SkillCardDraggable : MonoBehaviour
 
     private void OnMouseDrag()
     {
+        if (executed) return;
         if (ClientEffectContext.isExecutingSkillCard) return;
         if (!isDragging || cam == null) return;
 
@@ -84,6 +87,7 @@ public class SkillCardDraggable : MonoBehaviour
 
     private void OnMouseUp()
     {
+        if (executed) return;
         if (ClientEffectContext.isExecutingSkillCard) return;
         if (!isDragging) return;
         isDragging = false;
@@ -130,7 +134,11 @@ public class SkillCardDraggable : MonoBehaviour
 
         // 准备执行技能
         // TODO: 需要广播动画
-        yield return StartCoroutine(SceneViewManager.myExecuteCardView.MoveToFallPosition(gameObject));
+        PlayAnimationCommand animCmd = new PlayAnimationCommand { playerId = ClientGameState.playerSlot, animType = AnimationType.MoveToFallPosition, instanceId = instanceId};
+        ClientGameState.gateway.SendCommandServerRpc("PlayAnimation", JsonConvert.SerializeObject(animCmd));
+        CommandExecutionState<PlayAnimationCommand>.IsDone = false;
+        yield return new WaitUntil(() => CommandExecutionState<PlayAnimationCommand>.IsDone);
+
         Dictionary<int, List<int>> selectedSourceIds = new Dictionary<int, List<int>>();
         Dictionary<int, List<int>> selectedTargetIds = new Dictionary<int, List<int>>();
 
@@ -142,22 +150,30 @@ public class SkillCardDraggable : MonoBehaviour
         {
             // 执行技能失败
             Debug.Log("你不能打出这张牌");
-            // TODO: 需要广播动画
             transform.localScale = Vector3.one * instance.localScaleFactor;
-            StartCoroutine(ReturnToHand());
+            ClientEffectContext.isExecutingSkillCard = false;
+            // TODO: 需要广播动画
+            animCmd = new PlayAnimationCommand { playerId = ClientGameState.playerSlot, animType = AnimationType.ReturnToHand, instanceId = instanceId };
+            ClientGameState.gateway.SendCommandServerRpc("PlayAnimation", JsonConvert.SerializeObject(animCmd));
+            yield return new WaitUntil(() => CommandExecutionState<PlayAnimationCommand>.IsDone);
         }
         else
         {
             // 执行
             // TODO: 需要广播动画
-            yield return StartCoroutine(SceneViewManager.myExecuteCardView.MoveToExecutePosition(gameObject));
+            animCmd = new PlayAnimationCommand { playerId = ClientGameState.playerSlot, animType = AnimationType.MoveToExecutePosition, instanceId = instanceId };
+            ClientGameState.gateway.SendCommandServerRpc("PlayAnimation", JsonConvert.SerializeObject(animCmd));
+            CommandExecutionState<PlayAnimationCommand>.IsDone = false;
+            yield return new WaitUntil(() => CommandExecutionState<PlayAnimationCommand>.IsDone);
+
             yield return StartCoroutine(ClientEffectExecutor.ExecuteCard(card, ClientGameState.gateway, ClientGameState.playerSlot, instanceId, selectedSourceIds, selectedTargetIds));
+            ClientEffectContext.isExecutingSkillCard = false;
+            // 这里直接丢弃
+            Debug.Log($"[Client] Discard skill card instance {instanceId}");
+            DiscardCardCommand discardCmd = new DiscardCardCommand { playerId = ClientGameState.playerSlot, instanceId = instanceId };
+            ClientGameState.gateway.SendCommandServerRpc("DiscardCard", JsonConvert.SerializeObject(discardCmd));
+            //Destroy(gameObject);
         }
-        ClientEffectContext.isExecutingSkillCard = false;
-        // 这里直接丢弃
-        Debug.Log($"[Client] Discard skill card instance {instanceId}");
-        DiscardCardCommand discardCmd = new DiscardCardCommand { playerId = ClientGameState.playerSlot, instanceId = instanceId };
-        ClientGameState.gateway.SendCommandServerRpc("DiscardCard", JsonConvert.SerializeObject(discardCmd));
     }
 
     private bool TryGetMouseWorldPosition(out Vector3 worldPos)
@@ -175,12 +191,13 @@ public class SkillCardDraggable : MonoBehaviour
         return false;
     }
 
-    private IEnumerator ReturnToHand()
+    public IEnumerator ReturnToHand()
     {
         ClientEffectContext.isExecutingSkillCard = false;
         mouseTilt.ResetBaseRotation();
         instance.meshRenderer.sharedMaterial = instance.defaultMaterial;
         transform.localScale = Vector3.one * instance.localScaleFactor;
-        yield return SceneViewManager.myHandView.UpdateCardPositions(0.15f, ClientGameState.playerSlot);
+        yield return SceneViewManager.myHandView.UpdateCardPositions(0.15f);
+        yield return SceneViewManager.opponentHandView.UpdateCardPositions(0.15f);
     }
 }

@@ -12,6 +12,7 @@ public class EventProcessFunction : MonoBehaviour
     void Start()
     {
         ProcessDispatcher.Register("StartGameTest", StartGameTest);
+        ProcessDispatcher.Register("PlayAnimation", PlayAnimation);
         ProcessDispatcher.Register("DrawCardTest", DrawCard);
         ProcessDispatcher.Register("DrawSkillCardTest", DrawSkillCard);
         ProcessDispatcher.Register("DiscardCardTest", DiscardCard);
@@ -24,6 +25,41 @@ public class EventProcessFunction : MonoBehaviour
     {
         CinemachineVirtualCamera vcam = GameObject.Find("VCamera_Playing").GetComponent<CinemachineVirtualCamera>();
         vcam.Priority = 20;
+    }
+
+    // parameters[0]: int playerId
+    // parameters[1]: AnimationType animType
+    // parameters[2]: int instanceId
+    public void PlayAnimation(object[] parameters)
+    {
+        int playerId = (int)parameters[0];
+        AnimationType animType = (AnimationType)parameters[1];
+        int instanceId = (int)parameters[2];
+
+        GameObject obj = instanceMap[instanceId];
+        bool isOpponent = playerId != ClientGameState.playerSlot;
+
+        switch (animType)
+        {
+            case AnimationType.MoveToFallPosition:
+                if (isOpponent)
+                    StartCoroutine(SceneViewManager.opponentExecuteCardView.MoveToFallPosition(obj));
+                else
+                    StartCoroutine(SceneViewManager.myExecuteCardView.MoveToFallPosition(obj));
+                break;
+            case AnimationType.ReturnToHand:
+                if (isOpponent)
+                    StartCoroutine(obj.GetComponent<SkillCardDraggable>().ReturnToHand());
+                else
+                    StartCoroutine(obj.GetComponent<SkillCardDraggable>().ReturnToHand());
+                break;
+            case AnimationType.MoveToExecutePosition:
+                if (isOpponent)
+                    StartCoroutine(SceneViewManager.opponentExecuteCardView.MoveToExecutePosition(obj));
+                else
+                    StartCoroutine(SceneViewManager.myExecuteCardView.MoveToExecutePosition(obj));
+                break;
+        }
     }
 
     // parameters[0]: int instanceId
@@ -45,10 +81,21 @@ public class EventProcessFunction : MonoBehaviour
         int playerId = (int)parameters[0];
         int instanceId = (int)parameters[1];
 
-        StartCoroutine(SceneViewManager.myHandView.RemoveCard(instanceMap[instanceId], playerId));
-        StartCoroutine(SceneViewManager.opponentHandView.RemoveCard(instanceMap[instanceId], 1 - playerId));
-        StartCoroutine(SceneViewManager.boardView.RemoveCard(instanceMap[instanceId]));
+        GameObject obj = instanceMap[instanceId];
         instanceMap.Remove(instanceId);
+
+        if (obj.GetComponent<SkillCardInstance>() != null)
+        {
+            bool isOpponent = playerId != ClientGameState.playerSlot;
+            if (isOpponent)
+                StartCoroutine(SceneViewManager.opponentHandView.RemoveCard(obj));
+            else
+                StartCoroutine(SceneViewManager.myHandView.RemoveCard(obj));
+        }
+        else
+        {
+            StartCoroutine(SceneViewManager.boardView.RemoveCard(obj));
+        }
     }
 
 
@@ -90,11 +137,11 @@ public class EventProcessFunction : MonoBehaviour
 
         if (isOpponent)
         {
-            StartCoroutine(SceneViewManager.opponentHandView.AddCard(instance, 1 - playerId));
+            StartCoroutine(SceneViewManager.opponentHandView.AddCard(instance));
         }
         else
         {
-            StartCoroutine(SceneViewManager.myHandView.AddCard(instance, playerId));
+            StartCoroutine(SceneViewManager.myHandView.AddCard(instance));
         }
     }
 
