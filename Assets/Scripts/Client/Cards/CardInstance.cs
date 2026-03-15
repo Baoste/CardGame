@@ -10,9 +10,9 @@ public class CardInstance : MonoBehaviour
     public int point;
     public float localScaleFactor;
 
-    public virtual void InitCardInstance(int cardId, int instaceId)
+    public virtual void InitCardInstance(int cardId, int _instanceId)
     {
-        instanceId = instaceId;
+        instanceId = _instanceId;
         point = CardDatabase.Get(cardId).point;
         localScaleFactor = 0.4f;
     }

@@ -11,7 +11,7 @@ public class CardViewCreator : Singleton<CardViewCreator>
 
     public float scaleFactor = 0.4f;
 
-    public GameObject CreateCardInstance(int cardId, int instaceId, Vector3 position, Quaternion rotation)
+    public GameObject CreateCardInstance(int cardId, int instanceId, Vector3 position, Quaternion rotation)
     {
         CardType cardType = CardDatabase.Get(cardId).type;
 
@@ -29,7 +29,7 @@ public class CardViewCreator : Singleton<CardViewCreator>
                 break;
         }
 
-        cardInstance.InitCardInstance(cardId, instaceId);
+        cardInstance.InitCardInstance(cardId, instanceId);
         cardObj.transform.localScale = Vector3.one * cardInstance.localScaleFactor;
         return cardObj;
     }
