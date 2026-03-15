@@ -6,9 +6,10 @@ namespace Game.Domain
 {
     public static class ParticipantResolver
     {
-        public static List<int> DetermineCandidates(ParticipantSpec spec, GameState state, EffectContext ctx)
+        public static List<int> DetermineCandidates(ParticipantSpec spec, GameState state, EffectContext ctx, out bool isParticipantZone)
         {
             List<int> pool = new List<int>();
+            isParticipantZone = false;
 
             // ParticipantType 决定从哪来
             if ((spec.participantType & ParticipantType.MySkillCardsInHand) != 0)
@@ -25,6 +26,17 @@ namespace Game.Domain
                 pool.AddRange(new List<int>(state.pointCardsDeck.instanceIds));
             if ((spec.participantType & ParticipantType.CardsToResolve) != 0)
                 pool.AddRange(new List<int>(state.cardsToResolve.instanceIds));
+
+            if ((spec.participantType & ParticipantType.MyBoardZone) != 0)
+            {
+                pool.Add((int)ParticipantType.MyBoardZone);
+                isParticipantZone = true;
+            }
+            if ((spec.participantType & ParticipantType.OppentBoardZone) != 0)
+            {
+                pool.Add((int)ParticipantType.OppentBoardZone);
+                isParticipantZone = true;
+            }
 
             // filter 过滤
             pool = pool.FindAll(c => spec.filter.Evaluate(state, ctx));

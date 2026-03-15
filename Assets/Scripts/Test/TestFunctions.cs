@@ -117,8 +117,8 @@ public class TestFunctions : MonoBehaviour
             },
             target = new ParticipantSpec
             {
-                participantType = ParticipantType.MyPointCardsOnBoard,
-                participantSelectionMode = new SelectionModeNone(),
+                participantType = ParticipantType.MyBoardZone,
+                participantSelectionMode = new SelectionModeAll(),
                 filter = new NoneCondition(),
                 maxSelectCount = new NoneValue()
             },

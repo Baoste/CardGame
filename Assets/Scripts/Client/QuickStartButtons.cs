@@ -5,6 +5,7 @@ using UnityEngine;
 public class QuickStartButtons : MonoBehaviour
 {
     public NetworkManager nm;
+    private string matchId = "123";
 
     private void OnGUI()
     {
@@ -25,12 +26,14 @@ public class QuickStartButtons : MonoBehaviour
             nm.ServerManager.StopConnection(true);
         }
 
+        matchId = GUI.TextField(new Rect(10, 160, w, h), matchId);
+
         // These buttons are for testing the ClientCommand methods. They will not work without a server and client connection.
         if (GUI.Button(new Rect(1700, 10, w, h), "Create Match"))
-            ClientCommand.CreateMatch();
+            ClientCommand.CreateMatch(matchId);
 
         if (GUI.Button(new Rect(1700, 60, w, h), "Join Match"))
-            ClientCommand.JoinMatch("123");
+            ClientCommand.JoinMatch(matchId);
 
         if (GUI.Button(new Rect(1700, 110, w, h), "Leave Match"))
             ClientCommand.LeaveMatch();
@@ -55,30 +58,22 @@ public class QuickStartButtons : MonoBehaviour
             ClientCommand.RevealCardsAndScore();
         }
 
-        if (ClientGameState.Instance.CurrentPlayerId != -1 && ClientGameState.Instance.CurrentPlayerId == ClientGameState.playerSlot)
-        {
-            if (GUI.Button(new Rect(1700, 310, w, h), "Draw Point Card"))
-            {
-                ClientCommand.DrawPointCard();
-            }
+        //if (GUI.Button(new Rect(1700, 360, w, h), "S: Opponent draw"))
+        //{
+        //    Card tmp = CardDatabase.Get(999);
+        //    StartCoroutine(ClientEffectExecutor.ExecuteCard(tmp, ClientGameState.gateway, ClientGameState.playerSlot, -1));
+        //}
 
-            //if (GUI.Button(new Rect(1700, 360, w, h), "S: Opponent draw"))
-            //{
-            //    Card tmp = CardDatabase.Get(999);
-            //    StartCoroutine(ClientEffectExecutor.ExecuteCard(tmp, ClientGameState.gateway, ClientGameState.playerSlot, -1));
-            //}
+        //if (GUI.Button(new Rect(1700, 410, w, h), "S: Discard"))
+        //{
+        //    Card tmp = CardDatabase.Get(9999);
+        //    StartCoroutine(ClientEffectExecutor.ExecuteCard(tmp, ClientGameState.gateway, ClientGameState.playerSlot, -1));
+        //}
 
-            //if (GUI.Button(new Rect(1700, 410, w, h), "S: Discard"))
-            //{
-            //    Card tmp = CardDatabase.Get(9999);
-            //    StartCoroutine(ClientEffectExecutor.ExecuteCard(tmp, ClientGameState.gateway, ClientGameState.playerSlot, -1));
-            //}
-
-            //if (GUI.Button(new Rect(1700, 460, w, h), "S: Point - 1"))
-            //{
-            //    Card tmp = CardDatabase.Get(99999);
-            //    StartCoroutine(ClientEffectExecutor.ExecuteCard(tmp, ClientGameState.gateway, ClientGameState.playerSlot, -1));
-            //}
-        }
+        //if (GUI.Button(new Rect(1700, 460, w, h), "S: Point - 1"))
+        //{
+        //    Card tmp = CardDatabase.Get(99999);
+        //    StartCoroutine(ClientEffectExecutor.ExecuteCard(tmp, ClientGameState.gateway, ClientGameState.playerSlot, -1));
+        //}
     }
 }

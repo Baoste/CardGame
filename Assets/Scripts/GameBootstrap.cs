@@ -16,7 +16,7 @@ public class GameBootstrap : MonoBehaviour
         ClientGameState.gateway = gateway;
 
         CardDatabase.Init("PointCards.json", CardDatabaseType.PointCard);
-        CardDatabase.Init("SkillCards.json", CardDatabaseType.SkillCard);
+        CardDatabase.Init("SkillCardsT.json", CardDatabaseType.SkillCard);
 
         DispatcherBootstrap.Init();
         Debug.Log("NetEvent ×¢²áÍê³É");

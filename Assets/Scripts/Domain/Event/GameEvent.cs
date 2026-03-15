@@ -232,15 +232,19 @@ namespace Game.Domain
     {
         public bool sourceNeedChoose;
         public bool targetNeedChoose;
+        public bool isSourceParticipantZone;
+        public bool isTargetParticipantZone;
         public List<int> candidateSourceIds;
         public List<int> candidateTargetIds;
         public int sourceSelectCount;
         public int targetSelectCount;
-        public DetermineParticipantsEvent(int playerId, bool success, bool sourceNeedChoose, bool targetNeedChoose, List<int> candidateSourceIds, List<int> candidateTargetIds, int sourceSelectCount, int targetSelectCount)
+        public DetermineParticipantsEvent(int playerId, bool success, bool sourceNeedChoose, bool targetNeedChoose, bool isSourceParticipantZone, bool isTargetParticipantZone, List<int> candidateSourceIds, List<int> candidateTargetIds, int sourceSelectCount, int targetSelectCount)
             : base(playerId, success)
         {
             this.sourceNeedChoose = sourceNeedChoose;
             this.targetNeedChoose = targetNeedChoose;
+            this.isSourceParticipantZone = isSourceParticipantZone;
+            this.isTargetParticipantZone = isTargetParticipantZone;
             this.candidateSourceIds = candidateSourceIds;
             this.candidateTargetIds = candidateTargetIds;
             this.sourceSelectCount = sourceSelectCount;

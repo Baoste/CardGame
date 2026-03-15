@@ -87,30 +87,33 @@ public class StartGameCmdHandler : CommandHandler, ICommandHandler
         ));
 
         // ³é¼¼ÄÜÅÆ
-        drawCardInstanceId = skillCardsDeck.Draw();
-        session.gameState.AddCard(payload.playerId, session.instanceToCardId[drawCardInstanceId], drawCardInstanceId, CardType.Skill);
-        results.events.Enqueue(MakeEvent(
-            "DrawSkillCard",
-            new DrawSkillCardEvent    // need change
-            (
-                payload.playerId,
-                drawCardInstanceId != -1,
-                session.instanceToCardId.GetValueOrDefault(drawCardInstanceId, -1),
-                drawCardInstanceId
-            )
-        ));
-        drawCardInstanceId = skillCardsDeck.Draw();
-        session.gameState.AddCard(1 - payload.playerId, session.instanceToCardId[drawCardInstanceId], drawCardInstanceId, CardType.Skill);
-        results.events.Enqueue(MakeEvent(
-            "DrawSkillCard",
-            new DrawSkillCardEvent    // need change
-            (
-                1 - payload.playerId,
-                drawCardInstanceId != -1,
-                session.instanceToCardId.GetValueOrDefault(drawCardInstanceId, -1),
-                drawCardInstanceId
-            )
-        ));
+        for ( int i = 0; i < 4; i++ )
+        {
+            drawCardInstanceId = skillCardsDeck.Draw();
+            session.gameState.AddCard(payload.playerId, session.instanceToCardId[drawCardInstanceId], drawCardInstanceId, CardType.Skill);
+            results.events.Enqueue(MakeEvent(
+                "DrawSkillCard",
+                new DrawSkillCardEvent    // need change
+                (
+                    payload.playerId,
+                    drawCardInstanceId != -1,
+                    session.instanceToCardId.GetValueOrDefault(drawCardInstanceId, -1),
+                    drawCardInstanceId
+                )
+            ));
+            drawCardInstanceId = skillCardsDeck.Draw();
+            session.gameState.AddCard(1 - payload.playerId, session.instanceToCardId[drawCardInstanceId], drawCardInstanceId, CardType.Skill);
+            results.events.Enqueue(MakeEvent(
+                "DrawSkillCard",
+                new DrawSkillCardEvent    // need change
+                (
+                    1 - payload.playerId,
+                    drawCardInstanceId != -1,
+                    session.instanceToCardId.GetValueOrDefault(drawCardInstanceId, -1),
+                    drawCardInstanceId
+                )
+            ));
+        }
 
         return results;
     }

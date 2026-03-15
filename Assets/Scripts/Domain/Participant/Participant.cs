@@ -13,6 +13,8 @@ namespace Game.Domain
         SkillCardsInDeck            = 1 << 4,   // 牌堆的技能牌
         PointCardsInDeck            = 1 << 5,   // 牌堆的点数牌
         CardsToResolve              = 1 << 6,   // 要继续解决的牌，例如某些牌需要多次选择目标或多次触发效果
+        MyBoardZone                 = 1 << 7,   // 自己的点数牌区域
+        OppentBoardZone             = 1 << 8,   // 对方的点数牌区域
     }
 
     //public enum ParticipantSelectionMode

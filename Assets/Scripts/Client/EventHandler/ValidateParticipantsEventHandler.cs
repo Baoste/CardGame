@@ -17,7 +17,17 @@ public class ValidateParticipantsEventHandler : IEventProcess, IEventHandler
         ClientEffectContext.Instance.selectedTargetIds = payload.targetIds;
         ClientEffectContext.IsCommandValid = payload.success;
         ClientEffectContext.IsValidateDone = true;
-        string context = $"{payload.success.ToString()}";
+
+        string context = $"{payload.success} - S:";
+        if (payload.sourceIds.Count > 0)
+        {
+            context += $"{string.Join(",", payload.sourceIds)}";
+        }
+        context += " ; T:";
+        if (payload.targetIds.Count > 0)
+        {
+            context += $"{string.Join(",", payload.targetIds)}";
+        }
         Debug.Log($"[Client] Event#{ev.Index} type={ev.type} slot={payload.playerId} payload={context}");
         // END
 

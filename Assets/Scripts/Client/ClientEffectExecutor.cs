@@ -58,7 +58,7 @@ namespace Game.Domain
             // 2. 弹 UI 让玩家选目标（这里直接等 0.1 秒模拟玩家选择）
             // 3. 玩家选好后，继续执行效果
             SpendActionPointCommand apCmd = new SpendActionPointCommand { playerId = playerSlot };
-            gateway.SendCommandServerRpc("SpendActionPoint", JsonConvert.SerializeObject(apCmd), ClientGameState.playerSlot);
+            gateway.SendCommandServerRpc("SpendActionPoint", JsonConvert.SerializeObject(apCmd), playerSlot);
             yield return new WaitUntil(() => CommandExecutionState<SpendActionPointCommand>.IsDone);
 
             for (int i = 0; i < card.effects.Count; i++)
@@ -101,7 +101,7 @@ namespace Game.Domain
                     break;
 
                 case EffectType.Move:
-                    clientEffectFunction.MoveCards(op, gateway, gameState, ctx, selectedSourceIds);
+                    clientEffectFunction.MoveCards(op, gateway, gameState, ctx, selectedSourceIds, selectedTargetIds);
                     break;
             }
         }

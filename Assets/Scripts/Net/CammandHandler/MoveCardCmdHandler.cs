@@ -12,7 +12,7 @@ public class MoveCardCmdHandler : CommandHandler, ICommandHandler
 
         // TODO: 服务器端需要做什么
         CardZone toZone = null;
-        switch (payload.effect.target.participantType)
+        switch (payload.toZone)
         {
             case ParticipantType.MySkillCardsInHand:
                 toZone = session.gameState.players[payload.playerId].skillCardsInHand;
@@ -32,6 +32,12 @@ public class MoveCardCmdHandler : CommandHandler, ICommandHandler
             case ParticipantType.PointCardsInDeck:
                 toZone = session.gameState.pointCardsDeck;
                 break;
+            case ParticipantType.MyBoardZone:
+                toZone = session.gameState.players[payload.playerId].pointCardsOnBoard;
+                break;
+            case ParticipantType.OppentBoardZone:
+                toZone = session.gameState.players[1 - payload.playerId].pointCardsOnBoard;
+                break;
         }
         bool success = session.gameState.MoveCard(payload.instanceId, toZone);
         int cardId = session.instanceToCardId[payload.instanceId];
@@ -46,7 +52,7 @@ public class MoveCardCmdHandler : CommandHandler, ICommandHandler
                 success,
                 cardId,
                 payload.instanceId,
-                payload.effect.target.participantType
+                payload.toZone
             )
         ));
         return results;

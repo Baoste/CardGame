@@ -2,8 +2,6 @@ using Game.Domain;
 using Game.Server;
 using Newtonsoft.Json;
 using System.Collections.Generic;
-using UnityEngine;
-using static Unity.VisualScripting.Member;
 
 public sealed class DetermineParticipantsCmdHandler : CommandHandler, ICommandHandler
 {
@@ -13,11 +11,11 @@ public sealed class DetermineParticipantsCmdHandler : CommandHandler, ICommandHa
 
         // TODO: 服务器端需要做什么
         ParticipantSpec source = payload.effect.source;
-        List<int> candidateSourceIds = ParticipantResolver.DetermineCandidates(source, session.gameState, session.ctx);
+        List<int> candidateSourceIds = ParticipantResolver.DetermineCandidates(source, session.gameState, session.ctx, out bool isSourceParticipantZone);
         bool success0 = source.participantSelectionMode.ValidatePool(candidateSourceIds, source.maxSelectCount.Evaluate(session.gameState, session.ctx));
 
         ParticipantSpec target = payload.effect.target;
-        List<int> candidateTargetIds = ParticipantResolver.DetermineCandidates(target, session.gameState, session.ctx);
+        List<int> candidateTargetIds = ParticipantResolver.DetermineCandidates(target, session.gameState, session.ctx, out bool isTargetParticipantZone);
         bool success1 = target.participantSelectionMode.ValidatePool(candidateTargetIds, target.maxSelectCount.Evaluate(session.gameState, session.ctx));
 
         bool success = success0 && success1;
@@ -82,6 +80,8 @@ public sealed class DetermineParticipantsCmdHandler : CommandHandler, ICommandHa
                 success,
                 sourceNeedChoose,
                 targetNeedChoose,
+                isSourceParticipantZone,
+                isTargetParticipantZone,
                 candidateSourceIds,
                 candidateTargetIds,
                 payload.effect.source.maxSelectCount.Evaluate(session.gameState, session.ctx),

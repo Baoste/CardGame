@@ -1,6 +1,7 @@
 using Game.Domain;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 
@@ -53,96 +54,151 @@ public class ClientMatchInput : MonoBehaviour
         bool success = (bool)parameters[0];
         bool sourceNeedChoose = (bool)parameters[1];
         bool targetNeedChoose = (bool)parameters[2];
-        List<int> candidateSourceIds = (List<int>)parameters[3];
-        List<int> candidateTargetIds = (List<int>)parameters[4];
-        int sourceSelectCount = (int)parameters[5];
-        int targetSelectCount = (int)parameters[6];
+        bool isSourceParticipantZone = (bool)parameters[3];
+        bool isTargetParticipantZone = (bool)parameters[4];
+        List<int> candidateSourceIds = (List<int>)parameters[5];
+        List<int> candidateTargetIds = (List<int>)parameters[6];
+        int sourceSelectCount = (int)parameters[7];
+        int targetSelectCount = (int)parameters[8];
 
         if (!success)
         {
             ClientEffectContext.Instance.selectedSourceIds = new List<int>();
             ClientEffectContext.Instance.selectedTargetIds = new List<int>();
             ClientEffectContext.ChooseDone = true;
+            return;
         }
-        else if ((!sourceNeedChoose && !targetNeedChoose) || (candidateSourceIds.Count == 0 && candidateTargetIds.Count == 0))
+
+        bool sourceClick = true;
+        bool targetClick = true;
+        if (!sourceNeedChoose  || candidateSourceIds.Count <= 1)
         {
-            Debug.Log("[Client] No target to choose, executing effect directly");
-            ClientEffectContext.Instance.selectedSourceIds = new List<int>();
-            ClientEffectContext.Instance.selectedTargetIds = new List<int>();
-            ClientEffectContext.ChooseDone = true;
+            Debug.Log("[Client] No SOURCE to choose, executing effect directly");
+            ClientEffectContext.Instance.selectedSourceIds = candidateSourceIds;
+            sourceClick = false;
         }
-        else
+        if (!targetNeedChoose || candidateTargetIds.Count <= 1)
         {
-            Debug.Log($"[Client] Waiting for player to choose target");
-            // StartCoroutine(DelayedTest(10f));
-            StartCoroutine(ClickTest(candidateSourceIds, sourceSelectCount, candidateTargetIds, targetSelectCount));
+            Debug.Log("[Client] No TARGET to choose, executing effect directly");
+            ClientEffectContext.Instance.selectedTargetIds = candidateTargetIds;
+            targetClick = false;
         }
+        StartCoroutine(ClickTest(
+            isSourceParticipantZone, candidateSourceIds, sourceSelectCount, sourceClick,
+            isTargetParticipantZone, candidateTargetIds, targetSelectCount, targetClick
+        ));
     }
 
-    private IEnumerator DelayedTest(float time)
-    {
-        yield return new WaitForSeconds(time);
-        ClientEffectContext.ChooseDone = true;
-    }
-
-    private IEnumerator ClickTest(List<int> candidateSouceIds, int SourceSelectCount, List<int> candidateTargetIds, int targetSelectCount)
+    private IEnumerator ClickTest(bool isSourceParticipantZone, List<int> candidateSouceIds, int SourceSelectCount, bool sourceClick, 
+        bool isTargetParticipantZone, List<int> candidateTargetIds, int targetSelectCount, bool targetClick)
     {
         List<int> selectedSourceIds = new List<int>();
         List<int> selectedTargetIds = new List<int>();
 
-        int count0 = 0;
-        while (count0 < SourceSelectCount)
+        int cardLayerMask = LayerMask.GetMask("Card");
+        int zoneLayerMask = LayerMask.GetMask("Zone");
+
+        if (sourceClick)
         {
-            yield return null;
-            if (!Input.GetMouseButtonDown(0))
-                continue;
-
-            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-            if (!Physics.Raycast(ray, out RaycastHit hit, 1000f))
-                continue;
-            CardInstance cardInstance = hit.collider.GetComponentInParent<PointCardInstance>();
-            if (!cardInstance)
+            Debug.Log($"[Client] Wating for select source {candidateSouceIds}");
+            int count0 = 0;
+            while (count0 < SourceSelectCount)
             {
-                cardInstance = hit.collider.GetComponentInParent<SkillCardInstance>();
-                if (!cardInstance)
+                yield return null;
+                if (!Input.GetMouseButtonDown(0))
                     continue;
+
+                // 如果候选有zone
+                if (isSourceParticipantZone)
+                {
+                    Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+                    if (!Physics.Raycast(ray, out RaycastHit hit, 1000f, zoneLayerMask)) continue;
+
+                    ZoneInstance zoneInstance = hit.collider.GetComponent<ZoneInstance>();
+                    if (!zoneInstance) continue;
+
+                    int instanceId = (int)zoneInstance.zoneType;
+                    if (!candidateSouceIds.Contains(instanceId)) continue;
+
+                    selectedSourceIds.Add(instanceId);
+                    Debug.Log($"[Client] Select Source instaceId {instanceId}");
+                    count0++;
+                }
+                // 如果候选没有zone
+                else
+                {
+                    Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+                    if (!Physics.Raycast(ray, out RaycastHit hit, 1000f, cardLayerMask)) continue;
+
+                    CardInstance cardInstance = hit.collider.GetComponent<PointCardInstance>();
+                    if (!cardInstance)
+                    {
+                        cardInstance = hit.collider.GetComponent<SkillCardInstance>();
+                        if (!cardInstance)
+                            continue;
+                    }
+
+                    int instanceId = cardInstance.instanceId;
+                    if (!candidateSouceIds.Contains(instanceId)) continue;
+
+                    selectedSourceIds.Add(instanceId);
+                    Debug.Log($"[Client] Select Source instaceId {instanceId}");
+                    count0++;
+                }
             }
-
-            int instanceId = cardInstance.instanceId;
-            if (!candidateSouceIds.Contains(instanceId))
-                continue;
-            selectedSourceIds.Add(instanceId);
-            Debug.Log($"[Client] Select Source instaceId {instanceId}");
-            count0++;
+            ClientEffectContext.Instance.selectedSourceIds = selectedSourceIds;
         }
-        ClientEffectContext.Instance.selectedSourceIds = selectedSourceIds;
 
-        int count1 = 0;
-        while (count1 < targetSelectCount)
+        if (targetClick)
         {
-            yield return null;
-            if (!Input.GetMouseButtonDown(0))
-                continue;
-
-            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-            if (!Physics.Raycast(ray, out RaycastHit hit, 1000f))
-                continue;
-            CardInstance cardInstance = hit.collider.GetComponentInParent<PointCardInstance>();
-            if (!cardInstance)
+            Debug.Log("[Client] Wating for select target");
+            int count1 = 0;
+            while (count1 < targetSelectCount)
             {
-                cardInstance = hit.collider.GetComponentInParent<SkillCardInstance>();
-                if (!cardInstance)
+                yield return null;
+                if (!Input.GetMouseButtonDown(0))
                     continue;
-            }
 
-            int instanceId = cardInstance.instanceId;
-            if (!candidateTargetIds.Contains(instanceId))
-                continue;
-            selectedTargetIds.Add(instanceId);
-            Debug.Log($"[Client] Select Target instaceId {instanceId}");
-            count1++;
+                // 如果候选有zone
+                if (isTargetParticipantZone)
+                {
+                    Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+                    if (!Physics.Raycast(ray, out RaycastHit hit, 1000f, zoneLayerMask)) continue;
+
+                    ZoneInstance zoneInstance = hit.collider.GetComponent<ZoneInstance>();
+                    if (!zoneInstance) continue;
+
+                    int instanceId = (int)zoneInstance.zoneType;
+                    if (!candidateTargetIds.Contains(instanceId)) continue;
+
+                    selectedTargetIds.Add(instanceId);
+                    Debug.Log($"[Client] Select Source instaceId {instanceId}");
+                    count1++;
+                }
+                // 如果候选没有zone
+                else
+                {
+                    Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+                    if (!Physics.Raycast(ray, out RaycastHit hit, 1000f, cardLayerMask)) continue;
+
+                    CardInstance cardInstance = hit.collider.GetComponent<PointCardInstance>();
+                    if (!cardInstance)
+                    {
+                        cardInstance = hit.collider.GetComponent<SkillCardInstance>();
+                        if (!cardInstance)
+                            continue;
+                    }
+
+                    int instanceId = cardInstance.instanceId;
+                    if (!candidateTargetIds.Contains(instanceId)) continue;
+
+                    selectedTargetIds.Add(instanceId);
+                    Debug.Log($"[Client] Select Source instaceId {instanceId}");
+                    count1++;
+                }
+            }
+            ClientEffectContext.Instance.selectedTargetIds = selectedTargetIds;
         }
-        ClientEffectContext.Instance.selectedTargetIds = selectedTargetIds;
         ClientEffectContext.ChooseDone = true;
     }
 

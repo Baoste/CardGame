@@ -62,6 +62,7 @@ namespace Game.Domain
             }
         }
 
+        public static bool isExecutingSkillCard = false;
         // 是否正在执行技能卡效果（从玩家选好目标到服务器验证通过再到客户端执行完技能卡效果，这段时间都算在内）
         private static bool _isExecuteDone = false;
         public static bool IsExecuteDone

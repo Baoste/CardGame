@@ -123,10 +123,20 @@ public class DrawCardTest : MonoBehaviour
                 StartCoroutine(ResolveZoneView.AddCard(instance, playerId));    
                 break;
             }
-            case ParticipantType.MyPointCardsOnBoard:
+            case ParticipantType.MyBoardZone:
             {
                 GameObject instance = CardViewCreator.Instance.CreateCardInstance(cardId, instanceId, transform.position, Quaternion.identity);
                 StartCoroutine(boardView.AddCard(instance, playerId));
+                handMap[playerId].Add(instance);
+                instanceMap[instanceId] = instance;
+                break;
+            }
+            case ParticipantType.OppentBoardZone:
+            {
+                GameObject instance = CardViewCreator.Instance.CreateCardInstance(cardId, instanceId, transform.position, Quaternion.identity);
+                StartCoroutine(boardView.AddCard(instance, 1 - playerId));
+                handMap[1 - playerId].Add(instance);
+                instanceMap[instanceId] = instance;
                 break;
             }
         }

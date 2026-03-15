@@ -206,12 +206,12 @@ public class CardEditorWindow : EditorWindow
                     // Source editor
                     EditorGUILayout.Space(4);
                     EditorGUILayout.LabelField("Source", EditorStyles.boldLabel);
-                    if (op.source == null) op.source = new ParticipantSpec { filter = new AllCondition() };
+                    if (op.source == null) op.source = new ParticipantSpec { filter = new AllCondition(), participantSelectionMode = new SelectionModeNone() };
                     DrawParticipantSpecEditor(op.source);
 
                     EditorGUILayout.Space(4);
                     EditorGUILayout.LabelField("Target", EditorStyles.boldLabel);
-                    if (op.target == null) op.target = new ParticipantSpec { filter = new AllCondition() };
+                    if (op.target == null) op.target = new ParticipantSpec { filter = new AllCondition(), participantSelectionMode = new SelectionModeNone() };
                     DrawParticipantSpecEditor(op.target);
 
                     EditorGUILayout.Space(4);

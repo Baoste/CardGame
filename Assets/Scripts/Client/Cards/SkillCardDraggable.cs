@@ -14,7 +14,6 @@ public class SkillCardDraggable : MonoBehaviour
     private int instanceId;
 
     public bool IsDragging => isDragging;
-    public bool isExecuting;
 
     private SkillCardInstance instance;
     private SkillCardMouseTilt mouseTilt;
@@ -26,11 +25,11 @@ public class SkillCardDraggable : MonoBehaviour
         cam = Camera.main;
         instance = GetComponent<SkillCardInstance>();
         mouseTilt = GetComponent<SkillCardMouseTilt>();
-        isExecuting = false;
     }
 
     private void OnMouseDown()
     {
+        if (ClientEffectContext.isExecutingSkillCard) return;
         if (cam == null) cam = Camera.main;
         if (cam == null) return;
 
@@ -51,6 +50,7 @@ public class SkillCardDraggable : MonoBehaviour
 
     private void OnMouseDrag()
     {
+        if (ClientEffectContext.isExecutingSkillCard) return;
         if (!isDragging || cam == null) return;
 
         if (TryGetMouseWorldPosition(out Vector3 mouseWorld))
@@ -82,6 +82,7 @@ public class SkillCardDraggable : MonoBehaviour
 
     private void OnMouseUp()
     {
+        if (ClientEffectContext.isExecutingSkillCard) return;
         if (!isDragging) return;
         isDragging = false;
 
@@ -99,7 +100,14 @@ public class SkillCardDraggable : MonoBehaviour
 
     IEnumerator ExecuteCard()
     {
-        isExecuting = true;
+        if (ClientGameState.playerSlot != ClientGameState.Instance.CurrentPlayerId)
+        {
+            Debug.Log("不是你的回合");
+            StartCoroutine(ReturnToHand());
+            yield break;
+        }
+
+        ClientEffectContext.isExecutingSkillCard = true;
 
         // TODO: Debug
         //yield return StartCoroutine(SceneViewManager.myExecuteCardView.MoveToFallPosition(gameObject));
@@ -139,6 +147,7 @@ public class SkillCardDraggable : MonoBehaviour
             StartCoroutine(ClientEffectExecutor.ExecuteCard(card, ClientGameState.gateway, ClientGameState.playerSlot, instanceId, selectedSourceIds, selectedTargetIds));
             // yield return StartCoroutine(SceneViewManager.myHandView.RemoveCard(gameObject, ClientGameState.playerSlot));
         }
+        ClientEffectContext.isExecutingSkillCard = false;
     }
 
     private bool TryGetMouseWorldPosition(out Vector3 worldPos)
@@ -158,7 +167,10 @@ public class SkillCardDraggable : MonoBehaviour
 
     private IEnumerator ReturnToHand()
     {
+        ClientEffectContext.isExecutingSkillCard = false;
         mouseTilt.ResetBaseRotation();
+        instance.meshRenderer.sharedMaterial = instance.defaultMaterial;
+        transform.localScale = Vector3.one * instance.localScaleFactor;
         yield return SceneViewManager.myHandView.UpdateCardPositions(0.15f, ClientGameState.playerSlot);
     }
 }

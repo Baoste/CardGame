@@ -15,6 +15,8 @@ public sealed class DetermineParticipantsEventHandler : IEventProcess, IEventHan
             payload.success,
             payload.sourceNeedChoose,
             payload.targetNeedChoose,
+            payload.isSourceParticipantZone,
+            payload.isTargetParticipantZone,
             payload.candidateSourceIds, 
             payload.candidateTargetIds,
             payload.sourceSelectCount,

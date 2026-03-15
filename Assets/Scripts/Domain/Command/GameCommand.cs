@@ -107,7 +107,7 @@ namespace Game.Domain
     {
         public int playerId;
         public int instanceId;
-        public EffectOp effect;
+        public ParticipantType toZone;
     }
 
     public class RevealCardsAndScoreCommand : ICommand
