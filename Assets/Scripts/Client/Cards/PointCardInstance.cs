@@ -26,9 +26,9 @@ public class PointCardInstance : CardInstance
     {
     }
 
-    public override void InitCardInstance(int cardId, int instaceId)
+    public override void InitCardInstance(int cardId, int instanceId)
     {
-        base.InitCardInstance(cardId, instaceId);
+        base.InitCardInstance(cardId, instanceId);
 
         pointText.text = point.ToString();
     }

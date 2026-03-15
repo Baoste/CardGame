@@ -23,19 +23,19 @@ public class TestSystem : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Q))
         {
 
-            GameObject instance = CardViewCreator.Instance.CreateCardInstance(1, 99999, transform.position, Quaternion.identity);
+            GameObject instance = CardViewCreator.Instance.CreateCardInstance(2, 99999, transform.position, Quaternion.identity);
             StartCoroutine(ResolveZoneView.AddCard(instance, -1));
         }
 
         if (Input.GetKeyDown(KeyCode.W))
         {
-            GameObject instace = CardViewCreator.Instance.CreateCardInstance(1, 98, transform.position, Quaternion.identity);
-            StartCoroutine(boardView.AddCard(instace, ClientGameState.playerSlot));
+            GameObject instance = CardViewCreator.Instance.CreateCardInstance(2, 98, transform.position, Quaternion.identity);
+            StartCoroutine(boardView.AddCard(instance, ClientGameState.playerSlot));
         }
         if (Input.GetKeyDown(KeyCode.E))
         {
-            GameObject instace = CardViewCreator.Instance.CreateCardInstance(2, 99, transform.position, Quaternion.identity);
-            StartCoroutine(boardView.AddCard(instace, 99));
+            GameObject instance = CardViewCreator.Instance.CreateCardInstance(2, 99, transform.position, Quaternion.identity);
+            StartCoroutine(boardView.AddCard(instance, 99));
         }
 
     }
