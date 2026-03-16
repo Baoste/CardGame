@@ -129,9 +129,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   pointsRoot: {fileID: 1334968689503423970}
   pointsText: {fileID: 8765886965579585810}
-  pointNumber: 1
   pointCardInstance: {fileID: 6146138188785704976}
   fadeDuration: 0.5
+  isHovering: 0
 --- !u!1 &1334968689503423970
 GameObject:
   m_ObjectHideFlags: 0
@@ -444,8 +444,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4278190080
-  m_fontColor: {r: 0, g: 0, b: 0, a: 1}
+    rgba: 4294967295
+  m_fontColor: {r: 1, g: 1, b: 1, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
