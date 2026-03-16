@@ -141,9 +141,10 @@ public class SkillCardDraggable : MonoBehaviour
 
         Dictionary<int, List<int>> selectedSourceIds = new Dictionary<int, List<int>>();
         Dictionary<int, List<int>> selectedTargetIds = new Dictionary<int, List<int>>();
+        Dictionary<int, bool> judgeList = new Dictionary<int, bool>();
 
         Card card = CardDatabase.Get(cardId);
-        StartCoroutine(ClientEffectExecutor.ValidateCard(card, ClientGameState.gateway, ClientGameState.playerSlot, instanceId, selectedSourceIds, selectedTargetIds));
+        StartCoroutine(ClientEffectExecutor.ValidateCard(card, ClientGameState.gateway, ClientGameState.playerSlot, instanceId, selectedSourceIds, selectedTargetIds, judgeList));
         yield return new WaitUntil(() => ClientEffectContext.IsValidateDone);
 
         if (!ClientEffectContext.IsCommandValid)
@@ -166,7 +167,7 @@ public class SkillCardDraggable : MonoBehaviour
             CommandExecutionState<PlayAnimationCommand>.IsDone = false;
             yield return new WaitUntil(() => CommandExecutionState<PlayAnimationCommand>.IsDone);
 
-            yield return StartCoroutine(ClientEffectExecutor.ExecuteCard(card, ClientGameState.gateway, ClientGameState.playerSlot, instanceId, selectedSourceIds, selectedTargetIds));
+            yield return StartCoroutine(ClientEffectExecutor.ExecuteCard(card, ClientGameState.gateway, ClientGameState.playerSlot, instanceId, selectedSourceIds, selectedTargetIds, judgeList));
             ClientEffectContext.isExecutingSkillCard = false;
             // 这里直接丢弃
             Debug.Log($"[Client] Discard skill card instance {instanceId}");

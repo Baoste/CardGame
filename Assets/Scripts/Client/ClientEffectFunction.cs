@@ -36,6 +36,10 @@ namespace Game.Domain
                 case EffectType.Move:
                     StartCoroutine(MoveCards(op, gateway, gameState, ctx, selectedSourceIds, selectedTargetIds));
                     break;
+
+                case EffectType.Judge:
+                    ClientEffectContext.IsExecuteDone = true;  // 这个效果不需要客户端执行，直接告诉流程继续往下走就行了
+                    break;
             }
         }
 

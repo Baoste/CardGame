@@ -29,6 +29,7 @@ namespace Game.Domain
     {
         public static bool ChooseDone = false;          // 是否已经选好目标了
         public static bool GetServerCtxDone = false;    // 是否已经拿到 EffectContext 的数据了
+        public static bool JudgeResult = true;         // 判断结果
         
         // 是否已经完成了合法性验证了
         public static bool _isValidateDone = false;      

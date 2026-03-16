@@ -9,6 +9,8 @@
     "effects": [
       {
         "type": 3,
+        "trueNode": 1,
+        "falseNode": -1,
         "source": {
           "participantType": 0,
           "filter": {
@@ -40,6 +42,8 @@
       },
       {
         "type": 2,
+        "trueNode": 2,
+        "falseNode": -1,
         "source": {
           "participantType": 0,
           "filter": {
@@ -71,6 +75,8 @@
       },
       {
         "type": 5,
+        "trueNode": -1,
+        "falseNode": -1,
         "source": {
           "participantType": 64,
           "filter": {

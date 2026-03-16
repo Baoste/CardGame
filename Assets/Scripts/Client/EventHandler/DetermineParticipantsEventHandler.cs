@@ -26,6 +26,7 @@ public sealed class DetermineParticipantsEventHandler : IEventProcess, IEventHan
         // TODO
         // START
         ClientEffectContext.IsCommandValid = payload.success;
+        ClientEffectContext.JudgeResult = payload.judgeResult;
 
         ClientEffectContext.Instance.candidateSourceIds = payload.candidateSourceIds;
         ClientEffectContext.Instance.candidateTargetIds = payload.candidateTargetIds;

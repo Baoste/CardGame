@@ -72,12 +72,20 @@ public sealed class DetermineParticipantsCmdHandler : CommandHandler, ICommandHa
             }
         }
 
+        // 如果是抽点数牌到待处理区，需要先把牌抽出来
+        bool judgeResult = true;
+        if (payload.effect.type == EffectType.Judge)
+        {
+            judgeResult = payload.effect.source.filter.Evaluate(session.gameState, session.ctx);
+        }
+
         results.events.Enqueue(MakeEvent(
             "DetermineParticipants",
             new DetermineParticipantsEvent    // need change
             (
                 payload.playerId,
                 success,
+                judgeResult,
                 sourceNeedChoose,
                 targetNeedChoose,
                 isSourceParticipantZone,

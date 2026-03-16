@@ -10,14 +10,14 @@
       "effects": [
         {
           "type": 3,
+          "trueNode": -1,
+          "falseNode": -1,
           "source": {
             "participantType": 0,
             "filter": {
               "$type": "Game.Domain.NoneCondition, Assembly-CSharp"
             },
-            "participantSelectionMode": {
-              "$type": "SelectionModeNone, Assembly-CSharp"
-            },
+            "participantSelectionMode": null,
             "maxSelectCount": {
               "$type": "Game.Domain.NoneValue, Assembly-CSharp"
             }
@@ -51,6 +51,8 @@
       "effects": [
         {
           "type": 2,
+          "trueNode": 1,
+          "falseNode": -1,
           "source": {
             "participantType": 0,
             "filter": {
@@ -82,6 +84,8 @@
         },
         {
           "type": 5,
+          "trueNode": -1,
+          "falseNode": -1,
           "source": {
             "participantType": 64,
             "filter": {
@@ -123,6 +127,8 @@
       "effects": [
         {
           "type": 1,
+          "trueNode": -1,
+          "falseNode": -1,
           "source": {
             "participantType": 0,
             "filter": {
@@ -164,6 +170,8 @@
       "effects": [
         {
           "type": 3,
+          "trueNode": 1,
+          "falseNode": -1,
           "source": {
             "participantType": 0,
             "filter": {
@@ -195,6 +203,8 @@
         },
         {
           "type": 2,
+          "trueNode": 2,
+          "falseNode": -1,
           "source": {
             "participantType": 0,
             "filter": {
@@ -226,6 +236,8 @@
         },
         {
           "type": 5,
+          "trueNode": -1,
+          "falseNode": -1,
           "source": {
             "participantType": 64,
             "filter": {

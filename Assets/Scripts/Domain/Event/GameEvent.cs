@@ -245,6 +245,7 @@ namespace Game.Domain
     /// </summary>
     public class DetermineParticipantsEvent : PlayerEvent
     {
+        public bool judgeResult;
         public bool sourceNeedChoose;
         public bool targetNeedChoose;
         public bool isSourceParticipantZone;
@@ -253,9 +254,10 @@ namespace Game.Domain
         public List<int> candidateTargetIds;
         public int sourceSelectCount;
         public int targetSelectCount;
-        public DetermineParticipantsEvent(int playerId, bool success, bool sourceNeedChoose, bool targetNeedChoose, bool isSourceParticipantZone, bool isTargetParticipantZone, List<int> candidateSourceIds, List<int> candidateTargetIds, int sourceSelectCount, int targetSelectCount)
+        public DetermineParticipantsEvent(int playerId, bool success, bool judgeResult, bool sourceNeedChoose, bool targetNeedChoose, bool isSourceParticipantZone, bool isTargetParticipantZone, List<int> candidateSourceIds, List<int> candidateTargetIds, int sourceSelectCount, int targetSelectCount)
             : base(playerId, success)
         {
+            this.judgeResult = judgeResult;
             this.sourceNeedChoose = sourceNeedChoose;
             this.targetNeedChoose = targetNeedChoose;
             this.isSourceParticipantZone = isSourceParticipantZone;

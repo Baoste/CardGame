@@ -10,6 +10,7 @@ namespace Game.Domain
         Discard,            // 弃牌
         ModifyPoint,        // 改变目标牌点数
         Move,               // 移动目标牌
+        Judge,              // 判断
     }
 
     /*
@@ -22,6 +23,8 @@ namespace Game.Domain
     public class EffectOp
     {
         public EffectType type;
+        public int trueNode = -1;    // 如果effectType是判断，true则进入这个下标
+        public int falseNode = -1;   // 如果effectType是判断，false则进入这个下标
         public ParticipantSpec source;
         public ParticipantSpec target;
         public ValueExpr value;

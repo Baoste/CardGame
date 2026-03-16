@@ -203,6 +203,10 @@ public class CardEditorWindow : EditorWindow
 
                     op.type = (EffectType)EditorGUILayout.EnumPopup("Type", op.type);
 
+                    EditorGUILayout.Space(4);
+                    op.trueNode = EditorGUILayout.IntField("TrueNode", op.trueNode);
+                    op.falseNode = EditorGUILayout.IntField("FalseNode", op.falseNode);
+
                     // Source editor
                     EditorGUILayout.Space(4);
                     EditorGUILayout.LabelField("Source", EditorStyles.boldLabel);
