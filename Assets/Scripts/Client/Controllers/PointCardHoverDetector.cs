@@ -22,9 +22,16 @@ public class PointCardHoverDetector : MonoBehaviour
 
             if (card != currentHover)
             {
+                if (currentHover != null)
+                {
+                    currentHover.HidePoints();
+                }
                 currentHover = card;
 
-                currentHover.ShowPoints();
+                if (currentHover != null)
+                {
+                    currentHover.ShowPoints();
+                }
             }
         }
         else
