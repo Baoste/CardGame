@@ -9,11 +9,13 @@ public class SkillCardHover : MonoBehaviour
     private SkillCardInstance instance;
     private SkillCardDraggable draggable;
     private float hoveredMoveDirY;
+    private Outline outlineControl;
 
     private void Start()
     {
         instance = GetComponent<SkillCardInstance>();
         draggable = GetComponent<SkillCardDraggable>();
+        outlineControl = GetComponent<Outline>();
         hoveredMoveDirY = 0.4f;
     }
 
@@ -21,6 +23,8 @@ public class SkillCardHover : MonoBehaviour
     {
         if (draggable.executed) return;
         if (draggable.IsDragging || ClientEffectContext.isExecutingSkillCard) return;
+
+        outlineControl.Enable = 1f;
         transform.DOScale(Vector3.one * instance.localScaleFactor * 2.0f, 0.15f);
         
         Vector3 newPos = instance.originalPos;
@@ -33,6 +37,8 @@ public class SkillCardHover : MonoBehaviour
     {
         if (draggable.executed) return;
         if (draggable.IsDragging || ClientEffectContext.isExecutingSkillCard) return;
+
+        outlineControl.Enable = 0f;
         transform.DOScale(Vector3.one * instance.localScaleFactor, 0.15f);
 
         Vector3 newPos = instance.originalPos;

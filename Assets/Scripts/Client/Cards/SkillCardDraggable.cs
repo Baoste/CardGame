@@ -20,6 +20,7 @@ public class SkillCardDraggable : MonoBehaviour
 
     private SkillCardInstance instance;
     private SkillCardMouseTilt mouseTilt;
+    private Outline outlineControl;
 
     public void Init(int cardId, int instanceId)
     {
@@ -28,6 +29,7 @@ public class SkillCardDraggable : MonoBehaviour
         cam = Camera.main;
         instance = GetComponent<SkillCardInstance>();
         mouseTilt = GetComponent<SkillCardMouseTilt>();
+        outlineControl = GetComponent<Outline>();
     }
 
     private void OnMouseDown()
@@ -74,12 +76,13 @@ public class SkillCardDraggable : MonoBehaviour
 
             if (outside)
             {
-                // instance.meshRenderer.sharedMaterial = instance.outsideAreaMaterial;
-                transform.localScale = Vector3.one * instance.localScaleFactor * 1.1f;
+                outlineControl.OutlineColor = outlineControl.outAreaColor;
+                transform.localScale = Vector3.one * instance.localScaleFactor;
             }
             else
             {
-                instance.meshRenderer.sharedMaterial = instance.defaultMaterial;
+                // instance.meshRenderer.sharedMaterial = instance.defaultMaterial;
+                outlineControl.OutlineColor = outlineControl.defaultColor;
                 transform.localScale = Vector3.one * instance.localScaleFactor;
             }
         }

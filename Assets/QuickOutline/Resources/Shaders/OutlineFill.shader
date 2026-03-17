@@ -16,6 +16,7 @@ Shader "Custom/Outline Fill"
         _OutlineWidth("Outline Width", Range(0, 10)) = 2
         _OutlineWaveTex("Outline Wave Tex", 2D) = "white" {}
         _WaveScroll("Wave Scroll", Vector) = (0.1, 0.0, 0, 0)
+        _Enable("Enalble", float) = 1
     }
 
     SubShader 
@@ -30,7 +31,8 @@ Shader "Custom/Outline Fill"
 
         Pass 
         {
-            Name "Fill"
+            Name "OutlineFill"
+
             Cull Off
             ZTest [_ZTest]
             ZWrite Off
@@ -66,6 +68,7 @@ Shader "Custom/Outline Fill"
                 half4 _OutlineColor;
                 float _OutlineWidth;
                 float4 _WaveScroll;
+                float _Enable;
             CBUFFER_END
 
             TEXTURE2D(_OutlineWaveTex);
@@ -125,6 +128,8 @@ Shader "Custom/Outline Fill"
 
             half4 frag(v2f i) : SV_Target
             {
+                if (_Enable < 0.5)
+                    discard;
                 return i.color;
             }
             ENDHLSL

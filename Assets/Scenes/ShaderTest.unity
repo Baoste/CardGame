@@ -911,8 +911,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   outlineMode: 0
-  outlineColor: {r: 1, g: 1, b: 1, a: 1}
+  defaultColor: {r: 1, g: 1, b: 1, a: 1}
+  outAreaColor: {r: 1, g: 1, b: 1, a: 1}
   outlineWidth: 2
+  meshRenderer: {fileID: 0}
   precomputeOutline: 0
   bakeKeys: []
   bakeValues: []

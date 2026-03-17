@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 3376486714009073085}
   - component: {fileID: 1898981318327804687}
   - component: {fileID: 2593245010354786636}
+  - component: {fileID: 4593778783486630254}
   m_Layer: 9
   m_Name: SkillCard
   m_TagString: Untagged
@@ -124,6 +125,26 @@ MonoBehaviour:
   smoothSpeed: 10
   useUnscaledDelta: 1
   meshTransform: {fileID: 317130330711080027}
+--- !u!114 &4593778783486630254
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 699601284007552369}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5fea29bb7c508c244a1f805a5fd3fc4d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  outlineMode: 0
+  defaultColor: {r: 1, g: 1, b: 1, a: 1}
+  outAreaColor: {r: 0.17801048, g: 0.3246073, b: 1.6963351, a: 1}
+  outlineWidth: 2
+  meshRenderer: {fileID: 5301152879564225575}
+  precomputeOutline: 0
+  bakeKeys: []
+  bakeValues: []
 --- !u!1 &1082038410426401966
 GameObject:
   m_ObjectHideFlags: 0
@@ -223,7 +244,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Description
+  m_text: 1
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: c585b5e9dc58c004595764340d0497c8, type: 2}
   m_sharedMaterial: {fileID: -2785170674431494038, guid: c585b5e9dc58c004595764340d0497c8,
@@ -602,7 +623,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Name
+  m_text: 1
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: c585b5e9dc58c004595764340d0497c8, type: 2}
   m_sharedMaterial: {fileID: -2785170674431494038, guid: c585b5e9dc58c004595764340d0497c8,
@@ -771,11 +792,7 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: a1ddcdd6fb435ac4688ac60c13b0c1bc,
-        type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 8816177379384803093}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a1ddcdd6fb435ac4688ac60c13b0c1bc, type: 3}
 --- !u!23 &5301152879564225575 stripped
 MeshRenderer:
@@ -783,30 +800,6 @@ MeshRenderer:
     type: 3}
   m_PrefabInstance: {fileID: 6888645164467205962}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &6005562843847100955 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: a1ddcdd6fb435ac4688ac60c13b0c1bc,
-    type: 3}
-  m_PrefabInstance: {fileID: 6888645164467205962}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &8816177379384803093
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6005562843847100955}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5fea29bb7c508c244a1f805a5fd3fc4d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  outlineMode: 0
-  outlineColor: {r: 0.1785078, g: 2, b: 0, a: 1}
-  outlineWidth: 2
-  precomputeOutline: 0
-  bakeKeys: []
-  bakeValues: []
 --- !u!4 &6346657346168213665 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: a1ddcdd6fb435ac4688ac60c13b0c1bc,
