@@ -74,7 +74,7 @@ public class SkillCardDraggable : MonoBehaviour
 
             if (outside)
             {
-                instance.meshRenderer.sharedMaterial = instance.outsideAreaMaterial;
+                // instance.meshRenderer.sharedMaterial = instance.outsideAreaMaterial;
                 transform.localScale = Vector3.one * instance.localScaleFactor * 1.1f;
             }
             else

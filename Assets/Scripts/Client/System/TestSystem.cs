@@ -16,7 +16,7 @@ public class TestSystem : MonoBehaviour
         if(Input.GetKeyDown(KeyCode.Space))
         {
             //ClientCommand.DrawSkillCard();
-            GameObject instance = CardViewCreator.Instance.CreateCardInstance(999, 9999, transform.position, Quaternion.identity);
+            GameObject instance = CardViewCreator.Instance.CreateCardInstance(6219298, 9999, transform.position, Quaternion.identity);
             StartCoroutine(handView.AddCard(instance));
         }
 
