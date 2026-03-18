@@ -73,6 +73,18 @@ namespace Game.Domain
             return sum;
         }
 
+        public int SumPointOnCardsToResolve()
+        {
+            int sum = 0;
+            IReadOnlyList<int> pointCardIds = cardsToResolve.instanceIds;
+            foreach (int instanceId in pointCardIds)
+            {
+                if (instancePointMap.ContainsKey(instanceId))
+                    sum += instancePointMap[instanceId];
+            }
+            return sum;
+        }
+
         public void AddCardsToDeck(List<int> instaceIds, CardType type)
         {
             foreach (int instanceId in instaceIds)

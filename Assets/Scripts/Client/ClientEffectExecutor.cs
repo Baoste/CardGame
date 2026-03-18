@@ -37,11 +37,14 @@ namespace Game.Domain
                 if (!ClientEffectContext.IsCommandValid)
                 {
                     Debug.Log($"[Client] Cannot play card instance {cardIstanceId} because of effect {op.type} validation failure");
+                    ClearCardsToResolveCommand cmd2 = new ClearCardsToResolveCommand { playerId = ClientGameState.playerSlot };
+                    gateway.SendCommandServerRpc("ClearCardsToResolve", JsonConvert.SerializeObject(cmd2), ClientGameState.playerSlot);
                     break;
                 }
                 else
                 {
                     ClientEffectContext.IsCommandValid = true;  // IsCommandValid 会默认被重置为 false，所以这里先重置回 true，避免后续的效果执行流程受到影响
+                    ClientEffectContext.IsValidateDone = true;
                 }
 
                 selectedSourceIds[i] = ClientEffectContext.Instance.selectedSourceIds;
@@ -54,8 +57,7 @@ namespace Game.Domain
                 else if (ClientEffectContext.JudgeResult) i= op.trueNode;
                 else i = op.falseNode;
             }
-            
-            ClientEffectContext.IsValidateDone = true;
+
         }
 
         public static IEnumerator ExecuteCard(Card card, MatchGateway gateway, int playerSlot, int cardInstanceId, Dictionary<int, List<int>> selectedSourceIds, Dictionary<int, List<int>> selectedTargetIds, Dictionary<int, bool> judgeList)
@@ -82,6 +84,8 @@ namespace Game.Domain
                 else if (judgeList[i]) i = op.trueNode;
                 else i = op.falseNode;
             }
+            ClearCardsToResolveCommand cmd2 = new ClearCardsToResolveCommand { playerId = ClientGameState.playerSlot };
+            gateway.SendCommandServerRpc("ClearCardsToResolve", JsonConvert.SerializeObject(cmd2), ClientGameState.playerSlot);
         }
 
         private static void ExecuteOp(EffectOp op, MatchGateway gateway, GameState gameState, EffectContext ctx, List<int> selectedSourceIds, List<int> selectedTargetIds) 

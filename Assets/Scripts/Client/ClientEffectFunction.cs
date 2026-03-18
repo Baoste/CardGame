@@ -146,11 +146,11 @@ namespace Game.Domain
                 }));
             }
 
-            if (op.source.participantType == ParticipantType.CardsToResolve)
-            {
-                ClearCardsToResolveCommand cmd2 = new ClearCardsToResolveCommand { playerId = ctx.caster };
-                gateway.SendCommandServerRpc("ClearCardsToResolve", JsonConvert.SerializeObject(cmd2), ClientGameState.playerSlot);
-            }
+            //if (op.source.participantType == ParticipantType.CardsToResolve)
+            //{
+            //    ClearCardsToResolveCommand cmd2 = new ClearCardsToResolveCommand { playerId = ctx.caster };
+            //    gateway.SendCommandServerRpc("ClearCardsToResolve", JsonConvert.SerializeObject(cmd2), ClientGameState.playerSlot);
+            //}
 
             ClientEffectContext.IsExecuteDone = true;
         }

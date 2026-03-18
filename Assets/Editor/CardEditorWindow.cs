@@ -135,8 +135,8 @@ public class CardEditorWindow : EditorWindow
                     current.effects.Add(new EffectOp
                     {
                         type = EffectType.DrawPoint,
-                        source = new ParticipantSpec { filter = new NoneCondition() },
-                        target = new ParticipantSpec { filter = new NoneCondition() },
+                        source = new ParticipantSpec { filter = new NoneCondition(), participantSelectionMode = new SelectionModeNone() },
+                        target = new ParticipantSpec { filter = new NoneCondition(), participantSelectionMode = new SelectionModeNone() },
                         value = new NoneValue()
                     });
                     effectFoldouts.Add(true);

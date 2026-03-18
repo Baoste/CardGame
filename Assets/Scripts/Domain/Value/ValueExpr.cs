@@ -38,6 +38,7 @@ namespace Game.Domain
 
                 case ValueSource.SourceSpecSelectedPointsSum:
                 {
+                    // TODO: 这里要把instanceId转为cardId
                     int sum = 0;
                     foreach (int id in ctx.selectedSourceIds)
                         sum += CardDatabase.Get(id).point;
@@ -50,6 +51,11 @@ namespace Game.Domain
                     foreach (int id in ctx.selectedTargetIds)
                         sum += CardDatabase.Get(id).point;
                     return sum;
+                }
+
+                case ValueSource.ResolvedCardsPointsSum:
+                {
+                    return state.SumPointOnCardsToResolve();
                 }
             }
             return 0;

@@ -147,10 +147,9 @@ public class SkillCardDraggable : MonoBehaviour
         Dictionary<int, bool> judgeList = new Dictionary<int, bool>();
 
         Card card = CardDatabase.Get(cardId);
-        StartCoroutine(ClientEffectExecutor.ValidateCard(card, ClientGameState.gateway, ClientGameState.playerSlot, instanceId, selectedSourceIds, selectedTargetIds, judgeList));
-        yield return new WaitUntil(() => ClientEffectContext.IsValidateDone);
+        yield return StartCoroutine(ClientEffectExecutor.ValidateCard(card, ClientGameState.gateway, ClientGameState.playerSlot, instanceId, selectedSourceIds, selectedTargetIds, judgeList));
 
-        if (!ClientEffectContext.IsCommandValid)
+        if (!ClientEffectContext.IsValidateDone)
         {
             // 执行技能失败
             Debug.Log("你不能打出这张牌");
@@ -163,6 +162,11 @@ public class SkillCardDraggable : MonoBehaviour
         }
         else
         {
+            // 如果执行了一个op之后才失败了
+            if (!ClientEffectContext.IsCommandValid)
+            {
+                transform.localScale = Vector3.zero;
+            }
             // 执行
             // TODO: 需要广播动画
             animCmd = new PlayAnimationCommand { playerId = ClientGameState.playerSlot, animType = AnimationType.MoveToExecutePosition, instanceId = instanceId };
