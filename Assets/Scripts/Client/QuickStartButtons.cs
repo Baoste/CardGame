@@ -44,7 +44,6 @@ public class QuickStartButtons : MonoBehaviour
         if (GUI.Button(new Rect(1700, 210, w, h), "Start Game"))
         {
             ClientCommand.StartGame();
-            ClientCommand.StartTurn(ClientGameState.playerSlot);
         }
 
         if (ClientGameState.playerSlot == ClientGameState.Instance.CurrentPlayerId)

@@ -12,6 +12,7 @@ public class EventProcessFunction : MonoBehaviour
     void Start()
     {
         ProcessDispatcher.Register("StartGameTest", StartGameTest);
+        ProcessDispatcher.Register("AssignRolesTest", AssignRolesTest);
         ProcessDispatcher.Register("PlayAnimation", PlayAnimation);
         ProcessDispatcher.Register("DrawCardTest", DrawCard);
         ProcessDispatcher.Register("DrawSkillCardTest", DrawSkillCard);
@@ -25,6 +26,15 @@ public class EventProcessFunction : MonoBehaviour
     {
         CinemachineVirtualCamera vcam = GameObject.Find("VCamera_Playing").GetComponent<CinemachineVirtualCamera>();
         vcam.Priority = 20;
+    }
+
+    public void AssignRolesTest(object[] parameters)
+    {
+        int dealerId = (int)parameters[0];
+        int punterId = (int)parameters[1];
+
+        SceneViewManager.roleView.ShowRole(dealerId);
+        ClientCommand.StartTurn(dealerId);
     }
 
     // parameters[0]: int playerId

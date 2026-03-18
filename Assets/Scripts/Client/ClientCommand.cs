@@ -29,6 +29,8 @@ public static class ClientCommand
     {
         StartGameCommand cmd = new StartGameCommand { playerId = ClientGameState.playerSlot };
         ClientGameState.gateway.SendCommandServerRpc("StartGame", JsonConvert.SerializeObject(cmd));
+        AssignRolesCommand cmd2 = new AssignRolesCommand { playerId = ClientGameState.playerSlot };
+        ClientGameState.gateway.SendCommandServerRpc("AssignRoles", JsonConvert.SerializeObject(cmd2));
     }
 
     public static void StartTurn(int turnPlayerId)

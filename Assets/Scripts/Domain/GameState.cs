@@ -20,6 +20,9 @@ namespace Game.Domain
         public int CurrentPlayerId = -1;
         public int RandomSeed = 12345;
 
+        public int dealerId;
+        public int punkerId;
+
         public Random rng;
         public bool isStart = false;
 

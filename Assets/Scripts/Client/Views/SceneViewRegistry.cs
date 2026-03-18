@@ -12,6 +12,8 @@ public class SceneViewRegistry : MonoBehaviour
     public ExecuteCardView myExecuteCardView;
     public ExecuteCardView opponentExecuteCardView;
 
+    public RoleView roleView;
+
     private void Awake()
     {
         SceneViewManager.boardView = boardView;
@@ -20,5 +22,6 @@ public class SceneViewRegistry : MonoBehaviour
         SceneViewManager.opponentHandView = opponentHandView;
         SceneViewManager.myExecuteCardView = myExecuteCardView;
         SceneViewManager.opponentExecuteCardView = opponentExecuteCardView;
+        SceneViewManager.roleView = roleView;
     }
 }

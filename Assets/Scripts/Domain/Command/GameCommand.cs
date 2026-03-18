@@ -34,6 +34,11 @@ namespace Game.Domain
         public int playerId;
     }
 
+    public class AssignRolesCommand : ICommand
+    {
+        public int playerId;
+    }
+
     /// <summary>
     /// 开始回合命令
     /// </summary>

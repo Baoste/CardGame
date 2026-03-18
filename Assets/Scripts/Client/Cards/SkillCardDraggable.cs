@@ -165,7 +165,13 @@ public class SkillCardDraggable : MonoBehaviour
             // 如果执行了一个op之后才失败了
             if (!ClientEffectContext.IsCommandValid)
             {
+                // TODO: 暂时的，以后要改成消失动画
                 transform.localScale = Vector3.zero;
+                transform.position = new Vector3(0, 0, 100);
+                ClientEffectContext.isExecutingSkillCard = false;
+                StartCoroutine(SceneViewManager.myHandView.RemoveCard(gameObject));
+                StartCoroutine(SceneViewManager.opponentHandView.RemoveCard(gameObject));
+                yield break;
             }
             // 执行
             // TODO: 需要广播动画

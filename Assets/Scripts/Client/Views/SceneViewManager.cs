@@ -7,4 +7,5 @@ public static class SceneViewManager
     public static HandView opponentHandView;
     public static ExecuteCardView myExecuteCardView;
     public static ExecuteCardView opponentExecuteCardView;
+    public static RoleView roleView;
 }

@@ -39,6 +39,21 @@ namespace Game.Domain
     }
 
     /// <summary>
+    /// 决定庄闲
+    /// </summary>
+    public class AssignRolesEvent : PlayerEvent
+    {
+        public int dealerId;
+        public int punterId;
+        public AssignRolesEvent(int playerId, bool success, int dealerId, int punterId)
+            : base(playerId, success)
+        {
+            this.dealerId = dealerId;
+            this.punterId = punterId;
+        }
+    }
+
+    /// <summary>
     /// 开始回合事件
     /// </summary>
     public class StartTurnEvent : PlayerEvent

@@ -6,6 +6,7 @@ public static class DispatcherBootstrap
     {
         EventDispatcher.Register("JoinOrCreateGame", new JoinOrCreateGameEventHandler());
         EventDispatcher.Register("StartGame", new StartGameEventHandler());
+        EventDispatcher.Register("AssignRoles", new AssignRolesEventHandler());
         EventDispatcher.Register("StartTurn", new StartTurnEventHandler());
         EventDispatcher.Register("GetGameState", new GetGameStateEventHandler());
         EventDispatcher.Register("GetCtx", new GetCtxEventHandler());
@@ -28,6 +29,7 @@ public static class DispatcherBootstrap
         CommandDispatcher.Register("LeaveGame", new LeaveGameCmdHandler());
         CommandDispatcher.Register("JoinOrCreateGame", new JoinOrCreateGameCmdHandler());
         CommandDispatcher.Register("StartGame", new StartGameCmdHandler());
+        CommandDispatcher.Register("AssignRoles", new AssignRolesCmdHandler());
         CommandDispatcher.Register("StartTurn", new StartTurnCmdHandler());
         CommandDispatcher.Register("GetGameState", new GetGameStateCmdHandler());
         CommandDispatcher.Register("GetCtx", new GetCtxCmdHandler());
