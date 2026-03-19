@@ -12,6 +12,7 @@ public class HandView : MonoBehaviour
     [Header("Resolve Zone Size")]
     [SerializeField] private float zoneWidth = 6f;
     [SerializeField] private float zoneHeight = 2.5f;
+    [SerializeField] private Transform cameraTransform;
 
     [Header("Card Layout")]
     [SerializeField] private float cardSpacing = 1.8f;
@@ -30,10 +31,10 @@ public class HandView : MonoBehaviour
 
     public List<GameObject> skillCardInstances = new();
 
-    private void Update()
+    private void Start()
     {
         if (!isOpponent)
-            transform.up = -Camera.main.transform.forward;
+            transform.up = -cameraTransform.forward;
     }
 
     public IEnumerator AddCard(GameObject instance)

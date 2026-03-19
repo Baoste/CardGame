@@ -156,7 +156,7 @@ MonoBehaviour:
   - m_Script
   m_LockStageInInspector: 
   m_StreamingVersion: 20170927
-  m_Priority: -1
+  m_Priority: 20
   m_StandbyUpdate: 2
   m_LookAt: {fileID: 0}
   m_Follow: {fileID: 0}
@@ -372,7 +372,7 @@ Camera:
     height: 1
   near clip plane: 0.3
   far clip plane: 1000
-  field of view: 34.69
+  field of view: 26.84
   orthographic: 0
   orthographic size: 5
   m_Depth: -1
@@ -398,8 +398,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 330585543}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.052423142, y: 0, z: 0, w: 0.998625}
-  m_LocalPosition: {x: 0, y: 2.3, z: -4.7}
+  m_LocalRotation: {x: 0.35967106, y: 0, z: 0, w: 0.9330792}
+  m_LocalPosition: {x: 0, y: 5.16, z: -4.7}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1217,6 +1217,7 @@ MonoBehaviour:
   isOpponent: 0
   zoneWidth: 2.42
   zoneHeight: 0.96
+  cameraTransform: {fileID: 47329602}
   cardSpacing: 0.18
   depthOffsetPerCard: 0.02
   animationDuration: 0.2
@@ -2552,6 +2553,7 @@ MonoBehaviour:
   isOpponent: 1
   zoneWidth: 2.42
   zoneHeight: 0.96
+  cameraTransform: {fileID: 0}
   cardSpacing: 0.18
   depthOffsetPerCard: 0.02
   animationDuration: 0.2
