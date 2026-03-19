@@ -156,7 +156,7 @@ MonoBehaviour:
   - m_Script
   m_LockStageInInspector: 
   m_StreamingVersion: 20170927
-  m_Priority: 99
+  m_Priority: -1
   m_StandbyUpdate: 2
   m_LookAt: {fileID: 0}
   m_Follow: {fileID: 0}
@@ -372,7 +372,7 @@ Camera:
     height: 1
   near clip plane: 0.3
   far clip plane: 1000
-  field of view: 26.84
+  field of view: 34.69
   orthographic: 0
   orthographic size: 5
   m_Depth: -1
@@ -398,8 +398,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 330585543}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.35967106, y: 0, z: 0, w: 0.9330792}
-  m_LocalPosition: {x: 0, y: 5.16, z: -4.7}
+  m_LocalRotation: {x: 0.052423142, y: 0, z: 0, w: 0.998625}
+  m_LocalPosition: {x: 0, y: 2.3, z: -4.7}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1137,6 +1137,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -7511558181221131132, guid: c3fc161e5d7ed834d893f606352f0d8f,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 62f639216c930b246aee08c5a3a16fe9, type: 2}
     - target: {fileID: 919132149155446097, guid: c3fc161e5d7ed834d893f606352f0d8f,
         type: 3}
       propertyPath: m_Name
@@ -2725,6 +2730,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -7511558181221131132, guid: fcd63cdea4c9d164c8b130d3924018cd,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: ac01d2511648062439d8b67828dc32e5, type: 2}
     - target: {fileID: 919132149155446097, guid: fcd63cdea4c9d164c8b130d3924018cd,
         type: 3}
       propertyPath: m_Name
@@ -3506,6 +3516,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -7511558181221131132, guid: 4bb69574027ff0b48b9121ce7d423300,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: e021d46f8e828f94396e992df465e0ea, type: 2}
     - target: {fileID: 919132149155446097, guid: 4bb69574027ff0b48b9121ce7d423300,
         type: 3}
       propertyPath: m_Name
@@ -4092,7 +4107,7 @@ Light:
   m_Type: 2
   m_Shape: 0
   m_Color: {r: 0.78930813, g: 0.88535887, b: 1, a: 1}
-  m_Intensity: 48
+  m_Intensity: 24
   m_Range: 16
   m_SpotAngle: 45
   m_InnerSpotAngle: 21.80208

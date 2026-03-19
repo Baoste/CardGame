@@ -20,7 +20,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Mat_TVsss
+  m_Name: Mat_Wire
   m_Shader: {fileID: -6465566751694194690, guid: d337228ad09ad8341ac9e7538e1c7306,
     type: 3}
   m_Parent: {fileID: 0}
@@ -42,23 +42,23 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _BaseMap:
-        m_Texture: {fileID: 2800000, guid: 4901cf4191f487a4d94aa3b4b213a1f2, type: 3}
+        m_Texture: {fileID: 2800000, guid: abd4641fb9b4ce049b35ff29974cdc97, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _EmissionMap:
-        m_Texture: {fileID: 2800000, guid: 662b532db6632294f990d11d7d87ccc9, type: 3}
+        m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MetallicMap:
-        m_Texture: {fileID: 2800000, guid: 28c82b405c09bb7478feec1da2cc6ae0, type: 3}
+        m_Texture: {fileID: 2800000, guid: 30ed2c6fbc42ec649863834957e33e52, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _NormalMap:
-        m_Texture: {fileID: 2800000, guid: e5ecc52f2babfb04697d34083869a8d2, type: 3}
+        m_Texture: {fileID: 2800000, guid: 4a47d8a3fc0d28c49b66556cc24ad1ac, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _RoughnessMap:
-        m_Texture: {fileID: 2800000, guid: 2e75b5d5c6443b24592c23b8799bcedd, type: 3}
+        m_Texture: {fileID: 2800000, guid: f00308291c87c2348a4a8382bf9dd5f7, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _SmoothMap:

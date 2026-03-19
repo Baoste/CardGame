@@ -92,6 +92,7 @@ Shader "Custom/Outline Fill"
                 //float2 uvScrolled = uv + _Time.y * _WaveScroll.xy;
                 // 用XZ平面（常见）
                 float2 uv = v.positionOS.xy;
+                //float2 uv = v.uv;
                 float2 uvScrolled = uv + _Time.y * _WaveScroll.xy;
 
                 // 采样

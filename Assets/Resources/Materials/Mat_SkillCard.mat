@@ -20,7 +20,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Mat_TVsss
+  m_Name: Mat_SkillCard
   m_Shader: {fileID: -6465566751694194690, guid: d337228ad09ad8341ac9e7538e1c7306,
     type: 3}
   m_Parent: {fileID: 0}
@@ -38,31 +38,31 @@ Material:
     serializedVersion: 3
     m_TexEnvs:
     - _AOMap:
-        m_Texture: {fileID: 0}
+        m_Texture: {fileID: 2800000, guid: 66d59889e991c5846b67b04eae5b676e, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _BaseMap:
-        m_Texture: {fileID: 2800000, guid: 4901cf4191f487a4d94aa3b4b213a1f2, type: 3}
+        m_Texture: {fileID: 2800000, guid: 8d27df0cdc90b454c8680723c0fd575a, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _EmissionMap:
-        m_Texture: {fileID: 2800000, guid: 662b532db6632294f990d11d7d87ccc9, type: 3}
+        m_Texture: {fileID: 2800000, guid: 05a94bd247b9f174ab9262496ce22235, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MetallicMap:
-        m_Texture: {fileID: 2800000, guid: 28c82b405c09bb7478feec1da2cc6ae0, type: 3}
+        m_Texture: {fileID: 2800000, guid: c23fab881d0146f4cb66b62a78538ff9, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _NormalMap:
-        m_Texture: {fileID: 2800000, guid: e5ecc52f2babfb04697d34083869a8d2, type: 3}
+        m_Texture: {fileID: 2800000, guid: 9944e120865650b40b8e2a9dd9b42c03, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _RoughnessMap:
-        m_Texture: {fileID: 2800000, guid: 2e75b5d5c6443b24592c23b8799bcedd, type: 3}
+        m_Texture: {fileID: 2800000, guid: 9f97c513c18de734488e8d912ffbb3d2, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _SmoothMap:
-        m_Texture: {fileID: 2800000, guid: f00308291c87c2348a4a8382bf9dd5f7, type: 3}
+        m_Texture: {fileID: 2800000, guid: 9f97c513c18de734488e8d912ffbb3d2, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - unity_Lightmaps:

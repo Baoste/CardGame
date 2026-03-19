@@ -8,7 +8,7 @@ ModelImporter:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
       name: Wires_01.001_Baked.002
-    second: {fileID: 2100000, guid: affcf31ac9ef03b4fa3218d20e21bdb6, type: 2}
+    second: {fileID: 2100000, guid: e021d46f8e828f94396e992df465e0ea, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0
