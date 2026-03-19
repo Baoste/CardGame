@@ -20,7 +20,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Mat_Table
+  m_Name: Mat_DrawMachine
   m_Shader: {fileID: -6465566751694194690, guid: d337228ad09ad8341ac9e7538e1c7306,
     type: 3}
   m_Parent: {fileID: 0}
@@ -38,27 +38,27 @@ Material:
     serializedVersion: 3
     m_TexEnvs:
     - _AOMap:
-        m_Texture: {fileID: 0}
+        m_Texture: {fileID: 2800000, guid: eca722ddd9c5af543be61524029d9e3e, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _BaseMap:
-        m_Texture: {fileID: 2800000, guid: 79d92706bcb1b7940af2cc78f8ed5440, type: 3}
+        m_Texture: {fileID: 2800000, guid: 1737a709ecc9c5e4280535b404286584, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _EmissionMap:
-        m_Texture: {fileID: 2800000, guid: a7c1c8229aa90384b8f64e40550eca36, type: 3}
+        m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MetallicMap:
-        m_Texture: {fileID: 2800000, guid: d84e6aa622879d644a323b9aa2f13038, type: 3}
+        m_Texture: {fileID: 2800000, guid: c1a06c2ed91e48343bf27dece5501193, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _NormalMap:
-        m_Texture: {fileID: 0}
+        m_Texture: {fileID: 2800000, guid: 10b715e17ec6a7a44b38935d4fffda0c, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _RoughnessMap:
-        m_Texture: {fileID: 0}
+        m_Texture: {fileID: 2800000, guid: 5f172ee2b6b909a408a70559d7a64877, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _SmoothMap:
