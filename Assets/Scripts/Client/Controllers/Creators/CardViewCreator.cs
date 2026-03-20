@@ -9,8 +9,6 @@ public class CardViewCreator : Singleton<CardViewCreator>
     [SerializeField] private GameObject skillCardInstancePrefab;
     [SerializeField] private GameObject pointCardInstancePrefab;
 
-    public float scaleFactor = 0.4f;
-
     public GameObject CreateCardInstance(int cardId, int instanceId, Vector3 position, Quaternion rotation)
     {
         CardType cardType = CardDatabase.Get(cardId).type;

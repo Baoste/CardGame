@@ -9,6 +9,7 @@ using FishNet.Demo.AdditiveScenes;
 public class HandView : MonoBehaviour
 {
     [SerializeField] private bool isOpponent = false;
+
     [Header("Resolve Zone Size")]
     [SerializeField] private float zoneWidth = 6f;
     [SerializeField] private float zoneHeight = 2.5f;
@@ -21,15 +22,18 @@ public class HandView : MonoBehaviour
 
     [Header("Card Rotation")]
     [SerializeField] private Vector3 cardEuler = new Vector3(90f, 0f, 0f);
-
-
     [SerializeField] private SplineContainer splineContainer;
 
     [Header("Drag Settings")]
     [SerializeField] private BoxCollider dragValidArea; // 手牌安全区域，松手时如果不在这里就销毁
     [SerializeField] private float dragFollowDepth = 8f; // 鼠标拖拽时离摄像机多远
 
-    public List<GameObject> skillCardInstances = new();
+    [Header("Draw Anim Settings")]
+    [SerializeField] private Transform skillCardsDeck;
+    [SerializeField] private Vector3 instantiatePosition;
+    [SerializeField] private float dropDistance;
+
+    [HideInInspector] public List<GameObject> skillCardInstances = new();
 
     private void Start()
     {
@@ -41,7 +45,9 @@ public class HandView : MonoBehaviour
     {
         skillCardInstances.Add(instance);
         BindDragComponent(instance);
-        yield return UpdateCardPositions(0.15f);
+        yield return DrawSkillCardAnimation(instance);
+        // yield return new WaitForSeconds(0.5f);
+        yield return UpdateCardPositions(0.5f);
     }
 
     public IEnumerator RemoveCard(GameObject instance)
@@ -61,6 +67,21 @@ public class HandView : MonoBehaviour
         int cardId = instance.GetComponent<SkillCardInstance>().cardId;
         int instanceId = instance.GetComponent<SkillCardInstance>().instanceId;
         dragCard.Init(cardId, instanceId);
+    }
+
+    private IEnumerator DrawSkillCardAnimation(GameObject instance)
+    {
+        // init
+        skillCardsDeck.transform.localPosition = Vector3.down * dropDistance;
+        instance.transform.position = instantiatePosition;
+        instance.transform.rotation = Quaternion.Euler(-90, 0, 90);
+
+        Sequence seq = DOTween.Sequence();
+        seq.Append(instance.transform.DOMove(instantiatePosition + Vector3.forward * 0.05f, 0.15f));
+        seq.Append(instance.transform.DOMove(instantiatePosition - Vector3.forward * 1f, 0.5f).SetEase(Ease.OutBack));
+        seq.Join(skillCardsDeck.transform.DOLocalMove(Vector3.zero, 0.3f).SetEase(Ease.OutBack));
+
+        yield return seq.WaitForCompletion();
     }
 
      public IEnumerator UpdateCardPositions(float duration)
@@ -107,10 +128,26 @@ public class HandView : MonoBehaviour
         }
     }
 
+    public bool IsOutsideValidArea(Vector3 worldPos)
+    {
+        if (dragValidArea == null)
+            return false;
+
+        Vector3 local = dragValidArea.transform.InverseTransformPoint(worldPos);
+        Vector3 half = dragValidArea.size * 0.5f;
+
+        return Mathf.Abs(local.x) > half.x ||
+               Mathf.Abs(local.y) > half.y ||
+               Mathf.Abs(local.z) > half.z;
+    }
+
     private void OnDrawGizmosSelected()
     {
         Gizmos.color = Color.cyan;
         DrawRect(transform.position, transform.rotation, zoneWidth, zoneHeight);
+        Gizmos.color = Color.gray;
+        Gizmos.DrawSphere(instantiatePosition, 0.02f);
+        Gizmos.DrawLine(instantiatePosition, instantiatePosition + Vector3.down * dropDistance);
     }
 
     private void DrawRect(Vector3 center, Quaternion rotation, float width, float height)
@@ -125,18 +162,4 @@ public class HandView : MonoBehaviour
         Gizmos.DrawLine(c, d);
         Gizmos.DrawLine(d, a);
     }
-
-    public bool IsOutsideValidArea(Vector3 worldPos)
-    {
-        if (dragValidArea == null)
-            return false;
-
-        Vector3 local = dragValidArea.transform.InverseTransformPoint(worldPos);
-        Vector3 half = dragValidArea.size * 0.5f;
-
-        return Mathf.Abs(local.x) > half.x ||
-               Mathf.Abs(local.y) > half.y ||
-               Mathf.Abs(local.z) > half.z;
-    }
-
 }

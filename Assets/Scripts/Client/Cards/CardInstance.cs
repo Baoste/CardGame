@@ -14,7 +14,7 @@ public class CardInstance : MonoBehaviour
     {
         instanceId = _instanceId;
         point = CardDatabase.Get(cardId).point;
-        localScaleFactor = 0.4f;
+        localScaleFactor = 0.52f;
     }
 
 }
