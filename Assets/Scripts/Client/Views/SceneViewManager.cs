@@ -8,4 +8,6 @@ public static class SceneViewManager
     public static ExecuteCardView myExecuteCardView;
     public static ExecuteCardView opponentExecuteCardView;
     public static RoleView roleView;
+    public static RevealButtonView myRevealButtonView;
+    public static RevealButtonView opponentRevealButtonView;
 }

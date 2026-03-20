@@ -25,7 +25,8 @@ public class StartTurnCmdHandler : CommandHandler, ICommandHandler
             (
                 payload.playerId,
                 true,
-                opponentId
+                opponentId,
+                session.gameState.Turn
             )
         ));
 

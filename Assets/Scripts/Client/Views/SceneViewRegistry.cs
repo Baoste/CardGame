@@ -4,15 +4,17 @@ using UnityEngine;
 
 public class SceneViewRegistry : MonoBehaviour
 {
-    public BoardView boardView;
-    public ResolveZoneView resolveZoneView;
+    [SerializeField] private BoardView boardView;
+    [SerializeField] private ResolveZoneView resolveZoneView;
 
-    public HandView myHandView;
-    public HandView opponentHandView;
-    public ExecuteCardView myExecuteCardView;
-    public ExecuteCardView opponentExecuteCardView;
+    [SerializeField] private HandView myHandView;
+    [SerializeField] private HandView opponentHandView;
+    [SerializeField] private ExecuteCardView myExecuteCardView;
+    [SerializeField] private ExecuteCardView opponentExecuteCardView;
 
-    public RoleView roleView;
+    [SerializeField] private RoleView roleView;
+    [SerializeField] private RevealButtonView myRevealButtonView;
+    [SerializeField] private RevealButtonView opponentRevealButtonView;
 
     private void Awake()
     {
@@ -23,5 +25,7 @@ public class SceneViewRegistry : MonoBehaviour
         SceneViewManager.myExecuteCardView = myExecuteCardView;
         SceneViewManager.opponentExecuteCardView = opponentExecuteCardView;
         SceneViewManager.roleView = roleView;
+        SceneViewManager.myRevealButtonView = myRevealButtonView;
+        SceneViewManager.opponentRevealButtonView = opponentRevealButtonView;
     }
 }

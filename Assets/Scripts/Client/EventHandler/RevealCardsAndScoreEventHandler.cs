@@ -10,7 +10,7 @@ public class RevealCardsAndScoreEventHandler : IEventProcess, IEventHandler
     {
         var payload = JsonConvert.DeserializeObject<RevealCardsAndScoreEvent>(ev.jsonData); // need change
         // need change, 需要把参数在这里传进去
-        ProcessQueueManager.Instance.Enqueue(Process, new object[] { });
+        ProcessQueueManager.Instance.Enqueue(Process, new object[] { payload.winnerId });
 
         // TODO
         // START
@@ -22,6 +22,6 @@ public class RevealCardsAndScoreEventHandler : IEventProcess, IEventHandler
     }
     public void Process(object[] objects)
     {
-        // TODO:
+        ProcessDispatcher.Process("RevealTest", objects);
     }
 }

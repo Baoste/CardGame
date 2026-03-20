@@ -37,6 +37,9 @@ public class TestSystem : MonoBehaviour
             GameObject instance = CardViewCreator.Instance.CreateCardInstance(2, 99, transform.position, Quaternion.identity);
             StartCoroutine(boardView.AddCard(instance, 99));
         }
-
+        if (Input.GetKeyDown(KeyCode.R))
+        {
+            SceneViewManager.myRevealButtonView.ShowButton();
+        }
     }
 }

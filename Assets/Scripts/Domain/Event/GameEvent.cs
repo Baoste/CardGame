@@ -59,10 +59,12 @@ namespace Game.Domain
     public class StartTurnEvent : PlayerEvent
     {
         public int opponentId;
-        public StartTurnEvent(int playerId, bool success, int opponentId)
+        public int turn;
+        public StartTurnEvent(int playerId, bool success, int opponentId, int turn)
             : base(playerId, success)
         {
             this.opponentId = opponentId;
+            this.turn = turn;
         }
     }
 

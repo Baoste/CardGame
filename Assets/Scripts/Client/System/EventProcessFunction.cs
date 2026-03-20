@@ -12,6 +12,7 @@ public class EventProcessFunction : MonoBehaviour
     void Start()
     {
         ProcessDispatcher.Register("StartGameTest", StartGameTest);
+        ProcessDispatcher.Register("StartTurnTest", StartTurnTest);
         ProcessDispatcher.Register("AssignRolesTest", AssignRolesTest);
         ProcessDispatcher.Register("PlayAnimation", PlayAnimation);
         ProcessDispatcher.Register("DrawCardTest", DrawCard);
@@ -19,7 +20,9 @@ public class EventProcessFunction : MonoBehaviour
         ProcessDispatcher.Register("DiscardCardTest", DiscardCard);
         ProcessDispatcher.Register("ModifyPointTest", ModifyPoint);
         ProcessDispatcher.Register("MoveCardTest", MoveCard);
+        ProcessDispatcher.Register("EndTurnTest", EndTurnTest);
         ProcessDispatcher.Register("ClearCardsToResolveTest", ClearResolve);
+        ProcessDispatcher.Register("RevealTest", RevealTest);
     }
 
     public void StartGameTest(object[] parameters)
@@ -28,6 +31,30 @@ public class EventProcessFunction : MonoBehaviour
         vcam.Priority = 20;
     }
 
+    // parameters[0]: int turn
+    public void StartTurnTest(object[] parameters)
+    {
+        int turn = (int)parameters[0];
+
+        int endTurnCount = 8;
+        if (turn == endTurnCount)
+        {
+            if (ClientGameState.Instance.punkerId == ClientGameState.playerSlot)
+                SceneViewManager.myRevealButtonView.ShowButton();
+            else
+                SceneViewManager.opponentRevealButtonView.ShowButton();
+        }
+        if (turn == endTurnCount + 1)
+        {
+            if (ClientGameState.Instance.dealerId == ClientGameState.playerSlot)
+                SceneViewManager.myRevealButtonView.ShowRandom();
+            else
+                SceneViewManager.opponentRevealButtonView.ShowRandom();
+        }
+    }
+
+    // parameters[0]: int dealerId
+    // parameters[1]: int punterId
     public void AssignRolesTest(object[] parameters)
     {
         int dealerId = (int)parameters[0];
@@ -194,5 +221,21 @@ public class EventProcessFunction : MonoBehaviour
     public void ClearResolve(object[] parameters)
     {
         StartCoroutine(SceneViewManager.resolveZoneView.ClearCards());
+    }
+
+    // parameters[0]: bool reveal
+    public void EndTurnTest(object[] parameters)
+    {
+        bool reveal = (bool)parameters[0];
+
+        StartCoroutine(SceneViewManager.myRevealButtonView.RandomAnimation(reveal));
+    }
+
+    // parameters[0]: int winnerId
+    public void RevealTest(object[] parameters)
+    {
+        int winnerId = (int)parameters[0];
+
+        SceneViewManager.roleView.ShowWin(winnerId);
     }
 }

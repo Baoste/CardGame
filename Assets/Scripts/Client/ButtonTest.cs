@@ -23,8 +23,13 @@ public class ButtonTest : MonoBehaviour
 
     private void Start()
     {
-        originalPosition = transform.position;  // 获取按钮的初始位置
+        // originalPosition = transform.position;  // 获取按钮的初始位置
         originalRotation = transform.rotation;  // 保存按钮的初始旋转
+    }
+
+    public void SetOriginalPosition(Vector3 pos)
+    {
+        originalPosition = pos;
     }
 
     // 鼠标进入时，按钮轻微晃动并开启按钮灯光
@@ -56,6 +61,8 @@ public class ButtonTest : MonoBehaviour
             .OnComplete(() =>
             {
                 transform.DOMove(originalPosition - Vector3.up * pressAmount * 0.7f, pressDuration);
+                // TODO: send reveal cmd
+                ClientCommand.RevealCardsAndScore();
             });
     }
 

@@ -22,7 +22,6 @@ public class AssignRolesEventHandler : IEventProcess, IEventHandler
     }
     public void Process(object[] objects)
     {
-        // TODO:
         ProcessDispatcher.Process("AssignRolesTest", objects);
     }
 }
