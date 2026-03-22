@@ -111,7 +111,7 @@ public class BoardView : MonoBehaviour
         float minZ, maxZ, centerZ;
         float startX, moveDir;
 
-        float spacingFactor = cards.Count < 4 ? 3 : 1;
+        float spacingFactor = cards.Count < 4 ? 2.5f : 1;
         float cardSpacing = boardWidth / (cards.Count + spacingFactor);
         float totalWidth = (cards.Count - 1) * cardSpacing;
 
@@ -134,6 +134,8 @@ public class BoardView : MonoBehaviour
             moveDir = 1;
         }
 
+        float shootDuring = 0.6f;
+
         // 只有一张
         if (cards.Count == 1)
         {
@@ -143,7 +145,7 @@ public class BoardView : MonoBehaviour
                 boardCenter.y,
                 centerZ
             );
-            card.transform.DOMove(targetPos, 0.3f).SetEase(Ease.OutQuad);
+            card.transform.DOMove(targetPos, shootDuring).SetEase(Ease.OutQuad);
             yield break;
         }
 
@@ -153,7 +155,7 @@ public class BoardView : MonoBehaviour
             boardCenter.y,
             centerZ
         );
-        cards[cards.Count - 1].transform.DOMove(fakeTarget, 0.3f);
+        cards[cards.Count - 1].transform.DOMove(fakeTarget, shootDuring);
 
         for (int i = cards.Count - 1; i >= 0; i--)
         {
@@ -170,7 +172,7 @@ public class BoardView : MonoBehaviour
             );
             card.transform.DOKill();
             float during = Mathf.Abs(card.transform.position.x - targetPos.x);
-            during = Mathf.Max(0.25f, during * 2f);
+            during = Mathf.Max(0.25f, during * 1.7f);
             card.transform.DOMove(targetPos, during).SetEase(Ease.OutCubic);
         }
     }

@@ -30,6 +30,7 @@ public class PointCardInstance : CardInstance
     {
         base.InitCardInstance(cardId, instanceId);
 
+        localScaleFactor = 0.45f;
         pointText.text = point.ToString();
     }
 

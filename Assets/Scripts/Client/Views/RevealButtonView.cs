@@ -7,23 +7,28 @@ using UnityEngine;
 public class RevealButtonView : MonoBehaviour
 {
     [SerializeField] private GameObject revealButton;
-    [SerializeField] private Vector3 hidePosition;
-    [SerializeField] public Vector3 showPosition;
+    private Vector3 hidePosition;
+    private Vector3 showPosition;
     
     public bool isEnabled = false;
 
     public void Start()
     {
-        revealButton.transform.position = hidePosition;
+        showPosition = revealButton.transform.localPosition;
+        hidePosition = showPosition + Vector3.down * 0.1f;
+
+        revealButton.transform.localPosition = hidePosition;
         revealButton.GetComponent<ButtonTest>().SetOriginalPosition(showPosition);
         revealButton.GetComponent<ButtonTest>().enabled = false;
+        revealButton.GetComponent<Collider>().enabled = false;
     }
 
     public void ShowButton()
     {
         isEnabled = true;
-        revealButton.transform.DOMove(showPosition, 0.5f);
+        revealButton.transform.DOLocalMove(showPosition, 0.5f);
         revealButton.GetComponent<ButtonTest>().enabled = true;
+        revealButton.GetComponent<Collider>().enabled = true;
     }
 
     public void ShowRandom()
@@ -49,8 +54,5 @@ public class RevealButtonView : MonoBehaviour
 
     private void OnDrawGizmos()
     {
-        Gizmos.color = Color.yellow;
-        Gizmos.DrawSphere(hidePosition, 0.02f);
-        Gizmos.DrawSphere(showPosition, 0.02f);
     }
 }

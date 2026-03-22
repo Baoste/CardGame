@@ -104,7 +104,8 @@ Shader "Custom/Outline Fill"
                 ).r;
                 wave = wave * 2.0 - 1.0;   // [-1,1]
                 wave = smoothstep(-1.0, 1.0, wave);
-                float width = _OutlineWidth + wave * 10;
+                //float width = _OutlineWidth + wave * 10;
+                float width = _OutlineWidth;
                 width = max(0.0, width);
 
                 positionVS += normalVS * (-positionVS.z) * (width / 1000.0);

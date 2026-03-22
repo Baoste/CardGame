@@ -21,6 +21,8 @@ public class ButtonTest : MonoBehaviour
 
     private bool isMouseOver = false; // 标记鼠标是否悬停在按钮上
 
+    [SerializeField] private Transform pivot;
+
     private void Start()
     {
         // originalPosition = transform.position;  // 获取按钮的初始位置
@@ -46,7 +48,7 @@ public class ButtonTest : MonoBehaviour
     {
         isMouseOver = false;  // 标记鼠标离开
         transform.DOKill();  // 停止所有动画
-        transform.DOMove(originalPosition, shakeDuration);  // 回到原始位置
+        transform.DOLocalMove(originalPosition, shakeDuration);  // 回到原始位置
         ResetTilt();  // 恢复按钮的倾斜
         buttonLight.SetActive(false);  // 关闭按钮灯光
     }
@@ -56,11 +58,11 @@ public class ButtonTest : MonoBehaviour
     {
         Vector3 mouseWorldPos = GetMouseWorldPosition();
         TiltButton(mouseWorldPos);  // 根据鼠标位置进行倾斜
-        transform.DOMove(originalPosition - Vector3.up * pressAmount, pressDuration)
+        transform.DOLocalMove(originalPosition - Vector3.up * pressAmount, pressDuration)
             .SetEase(Ease.InQuad)  // 设置加速下沉
             .OnComplete(() =>
             {
-                transform.DOMove(originalPosition - Vector3.up * pressAmount * 0.7f, pressDuration);
+                transform.DOLocalMove(originalPosition - Vector3.up * pressAmount * 0.7f, pressDuration);
                 // TODO: send reveal cmd
                 ClientCommand.RevealCardsAndScore();
             });
@@ -81,21 +83,21 @@ public class ButtonTest : MonoBehaviour
     // 根据鼠标位置倾斜按钮
     void TiltButton(Vector3 mouseWorldPos)
     {
-        Vector3 direction = (mouseWorldPos - originalPosition).normalized;  // 获取按钮与鼠标位置之间的方向
+        Vector3 direction = (mouseWorldPos - pivot.position).normalized;  // 获取按钮与鼠标位置之间的方向
 
         // 计算X轴和Z轴的角度，限制最大倾斜角度
         float tiltX = Mathf.Clamp(direction.x * maxTiltAngle, -maxTiltAngle, maxTiltAngle);  // 控制X轴的倾斜
         float tiltZ = Mathf.Clamp(direction.z * maxTiltAngle, -maxTiltAngle, maxTiltAngle);  // 控制Z轴的倾斜
 
         // 应用倾斜，按钮的旋转角度应该根据鼠标方向偏转最大 `maxTiltAngle`
-        transform.DORotate(originalRotation.eulerAngles + new Vector3(tiltZ, 0, -tiltX), tiltSpeed, RotateMode.Fast);
+        pivot.DOLocalRotate(originalRotation.eulerAngles + new Vector3(tiltZ, 0, -tiltX), tiltSpeed, RotateMode.Fast);
     }
 
     // 恢复按钮的倾斜（使其恢复到原始旋转）
     void ResetTilt()
     {
         // 恢复到原来的旋转角度
-        transform.DORotate(originalRotation.eulerAngles, shakeDuration, RotateMode.Fast);
+        pivot.DOLocalRotate(originalRotation.eulerAngles, shakeDuration, RotateMode.Fast);
     }
 
     // 更新时检查鼠标是否持续悬停在按钮上
