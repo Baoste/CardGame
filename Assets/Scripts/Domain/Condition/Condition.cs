@@ -4,12 +4,12 @@ namespace Game.Domain
 {
     public class ConditionExpr
     {
-        public virtual bool Evaluate(GameState state, EffectContext ctx) { return false; }
+        public virtual bool Evaluate(GameState state, EffectContext ctx, int point) { return false; }
     }
 
     public class NoneCondition : ConditionExpr
     {
-        public override bool Evaluate(GameState state, EffectContext ctx)
+        public override bool Evaluate(GameState state, EffectContext ctx, int point)
         {
             return false;
         }
@@ -17,7 +17,7 @@ namespace Game.Domain
 
     public class AllCondition : ConditionExpr
     {
-        public override bool Evaluate(GameState state, EffectContext ctx)
+        public override bool Evaluate(GameState state, EffectContext ctx, int point)
         {
             return true;
         }
@@ -30,10 +30,15 @@ namespace Game.Domain
         public ValueExpr right;
         public CompareOp op;
 
-        public override bool Evaluate(GameState state, EffectContext ctx)
+        public override bool Evaluate(GameState state, EffectContext ctx, int point)
         {
             int l = left.Evaluate(state, ctx);
             int r = right.Evaluate(state, ctx);
+
+            if (l == -1)
+                l = point;
+            if (r == -1)
+                r = point;
 
             return op switch
             {
@@ -51,7 +56,7 @@ namespace Game.Domain
     public class AndCondition : ConditionExpr
     {
         public ConditionExpr a, b;
-        public override bool Evaluate(GameState state, EffectContext ctx)
-            => a.Evaluate(state, ctx) && b.Evaluate(state, ctx);
+        public override bool Evaluate(GameState state, EffectContext ctx, int point)
+            => a.Evaluate(state, ctx, point) && b.Evaluate(state, ctx, point);
     }
 }

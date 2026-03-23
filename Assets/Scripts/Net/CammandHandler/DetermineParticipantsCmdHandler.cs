@@ -72,11 +72,13 @@ public sealed class DetermineParticipantsCmdHandler : CommandHandler, ICommandHa
             }
         }
 
-        // 如果是抽点数牌到待处理区，需要先把牌抽出来
+        // 如果是判断界定啊，则根据source的filter判断
         bool judgeResult = true;
         if (payload.effect.type == EffectType.Judge)
         {
-            judgeResult = payload.effect.source.filter.Evaluate(session.gameState, session.ctx);
+            // judgeResult = payload.effect.source.filter.Evaluate(session.gameState, session.ctx, );
+            List<int> judgePool = ParticipantResolver.DetermineCandidates(payload.effect.source, session.gameState, session.ctx, out bool _);
+            judgeResult = judgePool.Count > 0;
         }
 
         results.events.Enqueue(MakeEvent(

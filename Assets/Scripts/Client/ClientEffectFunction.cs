@@ -45,7 +45,6 @@ namespace Game.Domain
 
         public IEnumerator DrawPointCards(EffectOp op, MatchGateway gateway, GameState gameState, EffectContext ctx)
         {
-            // TODO: 目前只能自己抽点数牌，后续需要根据op参数区分抽不同类型的牌
             int drawNum = op.value.Evaluate(gameState, ctx);
 
             int casterId = ctx.caster;

@@ -30,6 +30,9 @@ namespace Game.Domain
         {
             switch (source)
             {
+                case ValueSource.CardPointInPool:
+                    return -1;
+
                 case ValueSource.CasterSkillCardsCount:
                     return state.players[state.CurrentPlayerId].skillCardsInHand.GetCount();
 
@@ -38,10 +41,12 @@ namespace Game.Domain
 
                 case ValueSource.SourceSpecSelectedPointsSum:
                 {
-                    // TODO: 这里要把instanceId转为cardId
                     int sum = 0;
                     foreach (int id in ctx.selectedSourceIds)
-                        sum += CardDatabase.Get(id).point;
+                    {
+                        if (state.instancePointMap.ContainsKey(id))
+                            sum += state.instancePointMap[id];
+                    }
                     return sum;
                 }
 
@@ -49,7 +54,10 @@ namespace Game.Domain
                 {
                     int sum = 0;
                     foreach (int id in ctx.selectedTargetIds)
-                        sum += CardDatabase.Get(id).point;
+                    {
+                        if (state.instancePointMap.ContainsKey(id))
+                            sum += state.instancePointMap[id];
+                    }
                     return sum;
                 }
 

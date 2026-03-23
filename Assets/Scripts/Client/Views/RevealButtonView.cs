@@ -7,39 +7,49 @@ using UnityEngine;
 public class RevealButtonView : MonoBehaviour
 {
     [SerializeField] private GameObject revealButton;
-    private Vector3 hidePosition;
-    private Vector3 showPosition;
+    [SerializeField] private GameObject revealRandom;
+
+    private Vector3 BtnHidePosition;
+    private Vector3 BtnShowPosition;
+    private Vector3 RdmHidePosition;
+    private Vector3 RdmShowPosition;
     
-    public bool isEnabled = false;
+    private bool isRandomEnabled = false;
 
     public void Start()
     {
-        showPosition = revealButton.transform.localPosition;
-        hidePosition = showPosition + Vector3.down * 0.1f;
+        RdmShowPosition = revealRandom.transform.localPosition;
+        RdmHidePosition = RdmShowPosition + Vector3.down * 0.1f;
+        revealRandom.transform.localPosition = RdmHidePosition;
 
-        revealButton.transform.localPosition = hidePosition;
-        revealButton.GetComponent<ButtonTest>().SetOriginalPosition(showPosition);
+        BtnShowPosition = revealButton.transform.localPosition;
+        BtnHidePosition = BtnShowPosition + Vector3.down * 0.1f;
+        revealButton.transform.localPosition = BtnHidePosition;
+        revealButton.GetComponent<ButtonTest>().SetOriginalPosition(BtnShowPosition);
         revealButton.GetComponent<ButtonTest>().enabled = false;
         revealButton.GetComponent<Collider>().enabled = false;
     }
 
-    public void ShowButton()
+    public void ShowButton(bool canClick)
     {
-        isEnabled = true;
-        revealButton.transform.DOLocalMove(showPosition, 0.5f);
-        revealButton.GetComponent<ButtonTest>().enabled = true;
-        revealButton.GetComponent<Collider>().enabled = true;
+        revealButton.transform.DOLocalMove(BtnShowPosition, 0.5f);
+        if (canClick)
+        {
+            revealButton.GetComponent<ButtonTest>().enabled = true;
+            revealButton.GetComponent<Collider>().enabled = true;
+        }
     }
 
     public void ShowRandom()
     {
+        isRandomEnabled = true;
         // TODO: 随机引爆装置
-        isEnabled = true;
+        revealRandom.transform.DOLocalMove(RdmShowPosition, 0.5f);
     }
 
     public IEnumerator RandomAnimation(bool reveal)
     {
-        if (!isEnabled) yield break;
+        if (!isRandomEnabled) yield break;
 
         // TODO: 播放随机选择的dongh
         Sequence seq = DOTween.Sequence();

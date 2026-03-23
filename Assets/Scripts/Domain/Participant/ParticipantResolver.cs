@@ -27,6 +27,10 @@ namespace Game.Domain
             if ((spec.participantType & ParticipantType.CardsToResolve) != 0)
                 pool.AddRange(new List<int>(state.cardsToResolve.instanceIds));
 
+            // filter 过滤
+            pool = pool.FindAll(c => spec.filter.Evaluate(state, ctx, state.instancePointMap[c]));
+
+            // 如果是Zone区域类别
             if ((spec.participantType & ParticipantType.MyBoardZone) != 0)
             {
                 pool.Add((int)ParticipantType.MyBoardZone);
@@ -37,9 +41,6 @@ namespace Game.Domain
                 pool.Add((int)ParticipantType.OppentBoardZone);
                 isParticipantZone = true;
             }
-
-            // filter 过滤
-            pool = pool.FindAll(c => spec.filter.Evaluate(state, ctx));
 
             return pool;
         }

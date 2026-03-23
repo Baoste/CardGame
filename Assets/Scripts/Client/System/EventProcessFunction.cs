@@ -40,9 +40,9 @@ public class EventProcessFunction : MonoBehaviour
         if (turn == endTurnCount)
         {
             if (ClientGameState.Instance.punkerId == ClientGameState.playerSlot)
-                SceneViewManager.myRevealButtonView.ShowButton();
+                SceneViewManager.myRevealButtonView.ShowButton(true);
             else
-                SceneViewManager.opponentRevealButtonView.ShowButton();
+                SceneViewManager.opponentRevealButtonView.ShowButton(false);
         }
         if (turn == endTurnCount + 1)
         {

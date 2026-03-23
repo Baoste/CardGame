@@ -49,7 +49,8 @@ public class TestSystem : MonoBehaviour
         }
         if (Input.GetKeyDown(KeyCode.A))
         {
-            SceneViewManager.myRevealButtonView.ShowButton();
+            SceneViewManager.myRevealButtonView.ShowButton(true);
+            SceneViewManager.opponentRevealButtonView.ShowRandom();
         }
     }
 }
