@@ -64,7 +64,11 @@ public class BoardView : MonoBehaviour
         }
 
         if (isHoleCard && isOpponent)
+        {
             instance.GetComponent<PointCardInstance>().pointText.text = "";
+            targetRotation = instance.transform.rotation * Quaternion.Euler(180, 0, 0);
+            instance.transform.rotation = targetRotation;
+        }
 
         if (isHoleCard)
             yield return HoleCardReady(isOpponent, instance);
@@ -102,6 +106,8 @@ public class BoardView : MonoBehaviour
         instance.transform.DOMove(fakeTarget, 0.5f);
         yield return new WaitForSeconds(0.5f);
 
+        Quaternion targetRotation = instance.transform.rotation * Quaternion.Euler(0, 0.5f, 0);
+        instance.transform.DORotateQuaternion(targetRotation, 0.2f);
         yield return UpdateCardPositionsBounce(isOpponent);
     }
 
@@ -204,7 +210,7 @@ public class BoardView : MonoBehaviour
             PointCardInstance ins = card.GetComponent<PointCardInstance>();
             yield return new WaitUntil(() => ins.touchAnotherCard);
             Vector3 targetPos = new Vector3(
-                startX + (i-1) * moveDir * cardSpacing,
+                startX + (i - 1) * moveDir * cardSpacing,
                 boardCenter.y,
                 centerZ
             );
