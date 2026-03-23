@@ -58,7 +58,7 @@ namespace Game.Domain
                     return state.SumPointOnCardsToResolve();
                 }
             }
-            return 0;
+            return -1;
         }
     }
 

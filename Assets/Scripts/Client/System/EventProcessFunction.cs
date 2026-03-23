@@ -15,7 +15,7 @@ public class EventProcessFunction : MonoBehaviour
         ProcessDispatcher.Register("StartTurnTest", StartTurnTest);
         ProcessDispatcher.Register("AssignRolesTest", AssignRolesTest);
         ProcessDispatcher.Register("PlayAnimation", PlayAnimation);
-        ProcessDispatcher.Register("DrawCardTest", DrawCard);
+        ProcessDispatcher.Register("DrawPointCard", DrawPointCard);
         ProcessDispatcher.Register("DrawSkillCardTest", DrawSkillCard);
         ProcessDispatcher.Register("DiscardCardTest", DiscardCard);
         ProcessDispatcher.Register("ModifyPointTest", ModifyPoint);
@@ -140,21 +140,18 @@ public class EventProcessFunction : MonoBehaviour
     // parameters[1]: int instanceId
     // parameters[2]: int playerId
     // parameters[3]: bool isHoleCard
-    public void DrawCard(object[] parameters)
+    public void DrawPointCard(object[] parameters)
     {
         int cardId = (int)parameters[0];
         int instanceId = (int)parameters[1];
         int playerId = (int)parameters[2];
-        bool isHoreCard = (bool)parameters[3];
+        bool isHoleCard = (bool)parameters[3];
 
         bool isOpponent = playerId != ClientGameState.playerSlot;
-
         GameObject instance = CardViewCreator.Instance.CreateCardInstance(cardId, instanceId, transform.position, Quaternion.identity);
-        if (isHoreCard && isOpponent)
-            instance.GetComponent<PointCardInstance>().pointText.text = "";
-
         instanceMap[instanceId] = instance;
-        StartCoroutine(SceneViewManager.boardView.AddCard(instance, playerId));
+
+        StartCoroutine(SceneViewManager.boardView.AddCard(instance, playerId, isHoleCard));
     }
 
     // parameters[0]: int cardId
@@ -204,14 +201,14 @@ public class EventProcessFunction : MonoBehaviour
             case ParticipantType.MyBoardZone:
             {
                 GameObject instance = CardViewCreator.Instance.CreateCardInstance(cardId, instanceId, transform.position, Quaternion.identity);
-                StartCoroutine(SceneViewManager.boardView.AddCard(instance, playerId));
+                StartCoroutine(SceneViewManager.boardView.AddCard(instance, playerId, false));
                 instanceMap[instanceId] = instance;
                 break;
             }
             case ParticipantType.OppentBoardZone:
             {
                 GameObject instance = CardViewCreator.Instance.CreateCardInstance(cardId, instanceId, transform.position, Quaternion.identity);
-                StartCoroutine(SceneViewManager.boardView.AddCard(instance, 1 - playerId));
+                StartCoroutine(SceneViewManager.boardView.AddCard(instance, 1 - playerId, false));
                 instanceMap[instanceId] = instance;
                 break;
             }

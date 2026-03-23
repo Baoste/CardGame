@@ -24,6 +24,6 @@ public sealed class DrawPointCardEventHandler : IEventProcess, IEventHandler
 
     public void Process(object[] objects)
     {
-        ProcessDispatcher.Process("DrawCardTest", objects);
+        ProcessDispatcher.Process("DrawPointCard", objects);
     }
 }

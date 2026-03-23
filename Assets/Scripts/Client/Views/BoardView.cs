@@ -3,7 +3,8 @@ using DG.Tweening;
 using Game.Domain;
 using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
+using System.ComponentModel;
+using TMPro;
 using UnityEngine;
 
 public class BoardView : MonoBehaviour
@@ -27,6 +28,12 @@ public class BoardView : MonoBehaviour
     [Header("Spawn Position")]
     [SerializeField] private Vector3 selfSpawnPosition;
     [SerializeField] private Vector3 opponentSpawnPosition;
+    
+    [Header("Hole Position")]
+    [SerializeField] private Vector3 selfHoleTargetPosition;
+    [SerializeField] private Vector3 opponentHoleTargetPosition;
+    [SerializeField] private float spawnDistance;
+    [SerializeField] private float fallDistance;
 
     private readonly List<GameObject> selfCards = new();
     private readonly List<GameObject> opponentCards = new();
@@ -38,7 +45,7 @@ public class BoardView : MonoBehaviour
         impulseSource = GetComponent<CinemachineImpulseSource>();
     }
 
-    public IEnumerator AddCard(GameObject instance, int playerId)
+    public IEnumerator AddCard(GameObject instance, int playerId, bool isHoleCard)
     {
         bool isOpponent = playerId != ClientGameState.playerSlot;
         
@@ -56,8 +63,29 @@ public class BoardView : MonoBehaviour
             selfCards.Add(instance);
         }
 
-        yield return CardReady(isOpponent, instance);
+        if (isHoleCard && isOpponent)
+            instance.GetComponent<PointCardInstance>().pointText.text = "";
+
+        if (isHoleCard)
+            yield return HoleCardReady(isOpponent, instance);
+        else
+            yield return CardReady(isOpponent, instance);
     }
+
+    public IEnumerator HoleCardReady(bool isOpponent, GameObject instance)
+    {
+        Vector3 targetPosition = isOpponent ? opponentHoleTargetPosition : selfHoleTargetPosition;
+        float moveDir = isOpponent ? -1f : 1f;
+        instance.transform.position = targetPosition + moveDir * Vector3.forward * spawnDistance;
+        Vector3 fallPosition = targetPosition + Vector3.down * fallDistance;
+
+        Sequence seq = DOTween.Sequence();
+        seq.Append(instance.transform.DOMove(targetPosition, 0.3f).SetEase(Ease.OutBack));
+        seq.Append(instance.transform.DOMove(fallPosition, 0.1f).SetEase(Ease.InCubic));
+        yield return seq.WaitForCompletion();
+        instance.GetComponent<PointCardShake>().CardShake();
+    }
+
 
     public IEnumerator CardReady(bool isOpponent, GameObject instance)
     {
@@ -74,7 +102,7 @@ public class BoardView : MonoBehaviour
         instance.transform.DOMove(fakeTarget, 0.5f);
         yield return new WaitForSeconds(0.5f);
 
-        yield return UpdateCardPositions(isOpponent);
+        yield return UpdateCardPositionsBounce(isOpponent);
     }
 
     public IEnumerator RemoveCard(GameObject instance)
@@ -82,16 +110,25 @@ public class BoardView : MonoBehaviour
         if (opponentCards.Remove(instance))
         {
             Destroy(instance);
-            yield return UpdateCardPositions(true);
+            yield return UpdateCardPositionsNormal(true);
         }
         if (selfCards.Remove(instance))
         {
             Destroy(instance);
-            yield return UpdateCardPositions(false);
+            yield return UpdateCardPositionsNormal(false);
         }
     }
 
-    public IEnumerator UpdateCardPositions(bool isOpponent)
+    public IEnumerator UpdateCardPositionsNormal(bool isOpponent)
+    {
+        // TODO: 改成非弹射的更新方式
+        if (isOpponent)
+            yield return LayoutOneSide(opponentCards, true);
+        else
+            yield return LayoutOneSide(selfCards, false);
+    }
+
+    public IEnumerator UpdateCardPositionsBounce(bool isOpponent)
     {
         if (isOpponent)
             yield return LayoutOneSide(opponentCards, true);
@@ -101,7 +138,8 @@ public class BoardView : MonoBehaviour
 
     private IEnumerator LayoutOneSide(List<GameObject> cards, bool isOpponent)
     {
-        if (cards.Count == 0) yield break;
+        int countOnBoard = cards.Count - 1;
+        if (countOnBoard == 0) yield break;
 
         float selfAreaHeight = boardHeight * selfAreaHeightRatio;
         float opponentAreaHeight = boardHeight - selfAreaHeightRatio * boardHeight;
@@ -111,9 +149,9 @@ public class BoardView : MonoBehaviour
         float minZ, maxZ, centerZ;
         float startX, moveDir;
 
-        float spacingFactor = cards.Count < 4 ? 2.5f : 1;
-        float cardSpacing = boardWidth / (cards.Count + spacingFactor);
-        float totalWidth = (cards.Count - 1) * cardSpacing;
+        float spacingFactor = countOnBoard < 4 ? 2.3f : 1;
+        float cardSpacing = boardWidth / (countOnBoard + spacingFactor);
+        float totalWidth = (countOnBoard - 1) * cardSpacing;
 
         if (isOpponent)
         {
@@ -137,9 +175,9 @@ public class BoardView : MonoBehaviour
         float shootDuring = 0.6f;
 
         // 只有一张
-        if (cards.Count == 1)
+        if (countOnBoard == 1)
         {
-            GameObject card = cards[0];
+            GameObject card = cards[1];
             Vector3 targetPos = new Vector3(
                 startX,
                 boardCenter.y,
@@ -157,7 +195,7 @@ public class BoardView : MonoBehaviour
         );
         cards[cards.Count - 1].transform.DOMove(fakeTarget, shootDuring);
 
-        for (int i = cards.Count - 1; i >= 0; i--)
+        for (int i = cards.Count - 1; i >= 1; i--)
         {
             GameObject card = cards[i];
             if (card == null) continue;
@@ -166,7 +204,7 @@ public class BoardView : MonoBehaviour
             PointCardInstance ins = card.GetComponent<PointCardInstance>();
             yield return new WaitUntil(() => ins.touchAnotherCard);
             Vector3 targetPos = new Vector3(
-                startX + i * moveDir * cardSpacing,
+                startX + (i-1) * moveDir * cardSpacing,
                 boardCenter.y,
                 centerZ
             );
@@ -233,10 +271,15 @@ public class BoardView : MonoBehaviour
     }
     private void OnDrawGizmos()
     {
-        Gizmos.color = Color.blue;
+        Gizmos.color = Color.green;
         Gizmos.DrawSphere(selfSpawnPosition, 0.05f);
+        Gizmos.DrawSphere(selfHoleTargetPosition, 0.05f);
+        Gizmos.DrawLine(selfHoleTargetPosition, selfHoleTargetPosition + Vector3.forward * spawnDistance);
+        Gizmos.DrawLine(selfHoleTargetPosition, selfHoleTargetPosition + Vector3.down * fallDistance);
+
         Gizmos.color = Color.red;
         Gizmos.DrawSphere(opponentSpawnPosition, 0.05f);
+        Gizmos.DrawSphere(opponentHoleTargetPosition, 0.05f);
     }
 
 }

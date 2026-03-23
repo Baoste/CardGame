@@ -1,4 +1,5 @@
 using DG.Tweening;
+using Game.Domain;
 using UnityEngine;
 
 public class ButtonTest : MonoBehaviour
@@ -64,7 +65,8 @@ public class ButtonTest : MonoBehaviour
             {
                 transform.DOLocalMove(originalPosition - Vector3.up * pressAmount * 0.7f, pressDuration);
                 // TODO: send reveal cmd
-                ClientCommand.RevealCardsAndScore();
+                if (ClientGameState.playerSlot == ClientGameState.Instance.CurrentPlayerId)
+                    ClientCommand.RevealCardsAndScore();
             });
     }
 

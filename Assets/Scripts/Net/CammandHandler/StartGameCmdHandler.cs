@@ -85,6 +85,34 @@ public class StartGameCmdHandler : CommandHandler, ICommandHandler
             )
         ));
 
+        // 抽一张明牌
+        drawCardInstanceId = pointCardsDeck.Draw();
+        session.gameState.AddCard(payload.playerId, session.instanceToCardId[drawCardInstanceId], drawCardInstanceId, CardType.Point);
+        results.events.Enqueue(MakeEvent(
+            "DrawPointCard",
+            new DrawPointCardEvent    // need change
+            (
+                payload.playerId,
+                drawCardInstanceId != -1,
+                session.instanceToCardId.GetValueOrDefault(drawCardInstanceId, -1),
+                drawCardInstanceId,
+                false
+            )
+        ));
+        drawCardInstanceId = pointCardsDeck.Draw();
+        session.gameState.AddCard(1 - payload.playerId, session.instanceToCardId[drawCardInstanceId], drawCardInstanceId, CardType.Point);
+        results.events.Enqueue(MakeEvent(
+            "DrawPointCard",
+            new DrawPointCardEvent    // need change
+            (
+                1 - payload.playerId,
+                drawCardInstanceId != -1,
+                session.instanceToCardId.GetValueOrDefault(drawCardInstanceId, -1),
+                drawCardInstanceId,
+                false
+            )
+        ));
+
         // 抽技能牌
         for ( int i = 0; i < 4; i++ )
         {

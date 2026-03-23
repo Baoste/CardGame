@@ -30,14 +30,24 @@ public class TestSystem : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.W))
         {
             GameObject instance = CardViewCreator.Instance.CreateCardInstance(2, 98, transform.position, Quaternion.identity);
-            StartCoroutine(boardView.AddCard(instance, ClientGameState.playerSlot));
+            StartCoroutine(boardView.AddCard(instance, ClientGameState.playerSlot, false));
         }
         if (Input.GetKeyDown(KeyCode.E))
         {
             GameObject instance = CardViewCreator.Instance.CreateCardInstance(2, 99, transform.position, Quaternion.identity);
-            StartCoroutine(boardView.AddCard(instance, 99));
+            StartCoroutine(boardView.AddCard(instance, 99, false));
         }
         if (Input.GetKeyDown(KeyCode.R))
+        {
+            GameObject instance = CardViewCreator.Instance.CreateCardInstance(2, 99, transform.position, Quaternion.identity);
+            StartCoroutine(SceneViewManager.boardView.AddCard(instance, ClientGameState.playerSlot, true));
+        }
+        if (Input.GetKeyDown(KeyCode.T))
+        {
+            GameObject instance = CardViewCreator.Instance.CreateCardInstance(2, 99, transform.position, Quaternion.identity);
+            StartCoroutine(SceneViewManager.boardView.AddCard(instance, 99, true));
+        }
+        if (Input.GetKeyDown(KeyCode.A))
         {
             SceneViewManager.myRevealButtonView.ShowButton();
         }

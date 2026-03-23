@@ -20,14 +20,14 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Mat_CardTable
+  m_Name: Mat_BetIndicatorLight
   m_Shader: {fileID: -6465566751694194690, guid: d337228ad09ad8341ac9e7538e1c7306,
     type: 3}
-  m_Parent: {fileID: 2100000, guid: ffbc07e8893233740a584b8c08b6b298, type: 2}
+  m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords: []
   m_InvalidKeywords: []
-  m_LightmapFlags: 4
+  m_LightmapFlags: 2
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
   m_CustomRenderQueue: -1
@@ -38,34 +38,48 @@ Material:
     serializedVersion: 3
     m_TexEnvs:
     - _AOMap:
-        m_Texture: {fileID: 2800000, guid: 2884d82eeaa52d947baaebe46be9eef0, type: 3}
+        m_Texture: {fileID: 2800000, guid: 2f1bee1f2fb209d45ade4bc794c59dbe, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _BaseMap:
-        m_Texture: {fileID: 2800000, guid: 2b87a40fd44406749920dc3139173b42, type: 3}
+        m_Texture: {fileID: 2800000, guid: ae325ac6494a09c4c9fa6b4bd967fb98, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _EmissionMap:
-        m_Texture: {fileID: 2800000, guid: dcb70d206a0fef547a1a55180326dae5, type: 3}
+        m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MetallicMap:
-        m_Texture: {fileID: 2800000, guid: ef7d165a6dc782f4a96db349ff9992ef, type: 3}
+        m_Texture: {fileID: 2800000, guid: 7c48f9767449cce45aeedbdd96f25b1e, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _NormalMap:
-        m_Texture: {fileID: 2800000, guid: 910ae08f7b9d20e43a06982ba10f19d9, type: 3}
+        m_Texture: {fileID: 2800000, guid: 4e8892dd300b30e4f9dacf9b65992bd9, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _RoughnessMap:
-        m_Texture: {fileID: 2800000, guid: 5bfe3af84a6ed33468548aa5a409de86, type: 3}
+        m_Texture: {fileID: 2800000, guid: 574ad62c58805f54c948ed9b8e34033c, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _SmoothMap:
-        m_Texture: {fileID: 2800000, guid: 72f11465d0d7945478321193068c3d4b, type: 3}
+        m_Texture: {fileID: 2800000, guid: 9f97c513c18de734488e8d912ffbb3d2, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - unity_Lightmaps:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - unity_LightmapsInd:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - unity_ShadowMasks:
+        m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     m_Ints: []
-    m_Floats: []
+    m_Floats:
+    - _QueueControl: 0
+    - _QueueOffset: 0
     m_Colors: []
   m_BuildTextureStacks: []
