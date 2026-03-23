@@ -14,7 +14,7 @@ namespace Game.Domain
             switch (op.type)
             {
                 case EffectType.DrawPoint:
-                    StartCoroutine(DrawPointCards(op, gateway, gameState, ctx));
+                    StartCoroutine(DrawPointCards(op, gateway, gameState, ctx, selectedTargetIds));
                     break;
 
                 case EffectType.DrawSkill:
@@ -43,20 +43,28 @@ namespace Game.Domain
             }
         }
 
-        public IEnumerator DrawPointCards(EffectOp op, MatchGateway gateway, GameState gameState, EffectContext ctx)
+        public IEnumerator DrawPointCards(EffectOp op, MatchGateway gateway, GameState gameState, EffectContext ctx, List<int> selectedTargetIds)
         {
             int drawNum = op.value.Evaluate(gameState, ctx);
 
             int casterId = ctx.caster;
             int opponentId = ctx.opponent;
-            ParticipantType participantType = op.target.participantType;
+            ParticipantType participantType;
+            if (selectedTargetIds.Count == 0)
+            {
+                participantType = op.target.participantType;
+            }
+            else
+            {
+                participantType = (ParticipantType)selectedTargetIds[0];
+            }
 
             for (int i = 0; i < drawNum; i++)
             {
                 yield return StartCoroutine(ValidateCommand(op, gateway, gameState, ctx, new List<int>(), new List<int>(), () =>
                 {
                     int playerId = casterId;
-                    if (participantType == ParticipantType.OpponentPointCardsOnBoard)
+                    if (participantType == ParticipantType.OpponentPointCardsOnBoard || participantType == ParticipantType.OppentBoardZone)
                         playerId = opponentId;
                     DrawPointCardCommand cmd = new DrawPointCardCommand { playerId = playerId };
                     gateway.SendCommandServerRpc("DrawPointCard", JsonConvert.SerializeObject(cmd));
