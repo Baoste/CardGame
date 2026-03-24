@@ -3,6 +3,7 @@ Shader "Custom/DiskShader"
     Properties
     {
         _Mask("Mask", 2D) = "white" {}
+        _Mask2("Mask2", 2D) = "white" {}
 
         _BaseColor ("Base Color", Color) = (0.8, 0.8, 0.8, 1)
 
@@ -20,14 +21,11 @@ Shader "Custom/DiskShader"
         Tags
         {
             "RenderPipeline"="UniversalPipeline"
-            "RenderType"="Opaque"
-            "Queue"="Geometry"
         }
 
         Pass
         {
-            Name "Forward"
-            Tags { "LightMode"="UniversalForward" }
+            Blend OneMinusSrcAlpha SrcAlpha
 
             HLSLPROGRAM
             #pragma vertex vert
@@ -65,6 +63,8 @@ Shader "Custom/DiskShader"
 
             TEXTURE2D(_Mask);
             SAMPLER(sampler_Mask);
+            TEXTURE2D(_Mask2);
+            SAMPLER(sampler_Mask2);
 
             v2f vert(a2v v)
             {
@@ -110,6 +110,8 @@ Shader "Custom/DiskShader"
                 float3 V = normalize(_WorldSpaceCameraPos - i.positionWS);
 
                 Light mainLight = GetMainLight();
+                mainLight.direction.y = -mainLight.direction.y;
+                // Light mainLight = GetAdditionalLight(0, i.positionWS);
                 float3 L = normalize(mainLight.direction);
                 float3 H = normalize(V + L);
 
@@ -169,7 +171,13 @@ Shader "Custom/DiskShader"
 
             half4 frag(v2f i) : SV_Target
             {
-                half4 mask = _Mask.Sample(sampler_Mask, i.uv);
+                float mask1 = 1 - _Mask.Sample(sampler_Mask, i.uv).r;
+                float mask2 = 1 - _Mask2.Sample(sampler_Mask2, i.uv).r;
+                float mask = mask1 * mask2;
+                if (mask > 0.5)
+                {
+                    return half4(1, 1, 1, mask);
+                }
                 float3 Nr = normalize(i.normalWS);
                 float3 Ng = normalize(i.normalWS);
                 float3 Nb = normalize(i.normalWS);
@@ -180,10 +188,10 @@ Shader "Custom/DiskShader"
                 float3 colorr= test(Nr, i);
                 float3 colorg= test(Ng, i);
                 float3 colorb= test(Nb, i);
-                float3 color = float3(colorr.r, colorg.g, colorb.b) * (1-mask.r);
+                float3 color = float3(colorr.r, colorg.g, colorb.b);
                 float3 albedo = _BaseColor.rgb;
                 color += albedo * 0.03;
-                return half4(color, 1);
+                return half4(color, mask);
             }
 
             ENDHLSL

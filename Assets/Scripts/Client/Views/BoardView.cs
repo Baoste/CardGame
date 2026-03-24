@@ -72,12 +72,12 @@ public class BoardView : MonoBehaviour
 
         // ÅÆ¶Ñ¶¯»­
         cardDeck.ChangeRotateState(false);
-        yield return new WaitForSeconds(0.3f);
+        yield return new WaitForSeconds(0.5f);
         Sequence seq = DOTween.Sequence();
         seq.Append(cardDeck.transform.DOMove(cardDeck.transform.position + Vector3.down * dropDistance, 0.2f));
         seq.Append(cardDeck.transform.DORotate(new Vector3(0, rotationAmount, 0), 0.4f, RotateMode.LocalAxisAdd).SetEase(Ease.OutBack));
         yield return seq.WaitForCompletion();
-        yield return new WaitForSeconds(0.7f);
+        yield return new WaitForSeconds(0.5f);
         cardDeck.ChangeRotateState(true);
 
         // ·¢ÅÆ

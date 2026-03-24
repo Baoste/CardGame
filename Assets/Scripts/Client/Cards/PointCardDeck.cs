@@ -16,13 +16,26 @@ public class PointCardDeck : MonoBehaviour
     {
         if (isStart)
         {
-            rotateTween = transform.DORotate(
-                new Vector3(0, 360, 0),
-                8f,
-                RotateMode.LocalAxisAdd
-            )
-            .SetEase(Ease.Linear)
-            .SetLoops(-1, LoopType.Restart);
+            Sequence seq = DOTween.Sequence();
+            // 加速阶段
+            seq.Append(
+                transform.DORotate(
+                    new Vector3(0, 120, 0),
+                    2f,
+                    RotateMode.LocalAxisAdd
+                ).SetEase(Ease.InSine)
+            );
+            // 加速结束后，开启匀速循环
+            seq.AppendCallback(() =>
+            {
+                rotateTween = transform.DORotate(
+                    new Vector3(0, 360, 0),
+                    5f,
+                    RotateMode.LocalAxisAdd
+                )
+                .SetEase(Ease.Linear)
+                .SetLoops(-1, LoopType.Restart);
+            });
         }
         else
         {
