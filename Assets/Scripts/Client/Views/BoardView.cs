@@ -3,8 +3,6 @@ using DG.Tweening;
 using Game.Domain;
 using System.Collections;
 using System.Collections.Generic;
-using System.ComponentModel;
-using TMPro;
 using UnityEngine;
 
 public class BoardView : MonoBehaviour
@@ -18,8 +16,10 @@ public class BoardView : MonoBehaviour
     [SerializeField, Range(0.1f, 0.9f)] private float selfAreaHeightRatio = 0.5f;
     // 剩余部分自动给 opponent
 
-    [Header("Card Layout")]
-    [SerializeField] private float depthOffsetPerCard = 0.01f;
+    [Header("Card Deck")]
+    [SerializeField] private PointCardDeck cardDeck;
+    [SerializeField] private float dropDistance;
+    [SerializeField] private float rotationAmount;
 
     [Header("Card Rotation")]
     [SerializeField] private Vector3 selfEuler = new Vector3(90f, 0f, 0f);
@@ -70,6 +70,17 @@ public class BoardView : MonoBehaviour
             instance.transform.rotation = targetRotation;
         }
 
+        // 牌堆动画
+        cardDeck.ChangeRotateState(false);
+        yield return new WaitForSeconds(0.3f);
+        Sequence seq = DOTween.Sequence();
+        seq.Append(cardDeck.transform.DOMove(cardDeck.transform.position + Vector3.down * dropDistance, 0.2f));
+        seq.Append(cardDeck.transform.DORotate(new Vector3(0, rotationAmount, 0), 0.4f, RotateMode.LocalAxisAdd).SetEase(Ease.OutBack));
+        yield return seq.WaitForCompletion();
+        yield return new WaitForSeconds(0.7f);
+        cardDeck.ChangeRotateState(true);
+
+        // 发牌
         if (isHoleCard)
             yield return HoleCardReady(isOpponent, instance);
         else
