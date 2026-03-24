@@ -52,6 +52,23 @@ Shader "Custom/DiskShader"
                 float2 uv         : TEXCOORD3;
             };
 
+            struct DiskPreData
+            {
+                float3 V;
+                float3 L;
+                float3 H;
+                float3 lightColor;
+
+                float3 tangentWSBase;
+
+                float roughness;
+                float at;
+                float ab;
+
+                float3 albedo;
+                float3 F0;
+            };
+
             CBUFFER_START(UnityPerMaterial)
                 float4 _BaseColor;
                 float _Metallic;
@@ -77,7 +94,6 @@ Shader "Custom/DiskShader"
                 return o;
             }
 
-            //基于位置的伪随机数生成器，适合在 shader 中创建稳定的噪声模式。
             float Hash21(float2 p)
             {
                 p = frac(p * float2(123.34, 456.21));
@@ -85,7 +101,6 @@ Shader "Custom/DiskShader"
                 return frac(p.x * p.y);
             }
 
-            //菲涅尔
             float3 FresnelSchlick(float cosTheta, float3 F0)
             {
                 return F0 + (1.0 - F0) * pow(1.0 - cosTheta, 5.0);
@@ -104,85 +119,88 @@ Shader "Custom/DiskShader"
                 return 2.0 * NdotV / max(NdotV + k, 1e-5);
             }
 
-            float3 test(float3 N, v2f i)
+            DiskPreData PrepareDiskData(v2f i)
             {
-                // float3 N = normalize(i.normalWS);
-                float3 V = normalize(_WorldSpaceCameraPos - i.positionWS);
+                DiskPreData o;
+
+                o.V = normalize(_WorldSpaceCameraPos - i.positionWS);
 
                 Light mainLight = GetMainLight();
-                float3 L = normalize(mainLight.direction);
-                float3 H = normalize(V + L);
+                o.L = normalize(mainLight.direction);
+                o.H = normalize(o.V + o.L);
+                o.lightColor = mainLight.color;
 
-                // ===== 圆盘局部方向 =====
                 float2 localXZ = i.positionOS.xz - _DiskCenterOS.xz;
                 float lenXZ = length(localXZ);
-
-                // 防止中心点出 NaN
                 float2 radial2D = (lenXZ > 1e-5) ? localXZ / lenXZ : float2(1, 0);
 
-                // 圆周方向（圆盘表面假设主要在 XZ 平面）
-                float3 radialDirOS  = normalize(float3(radial2D.x, 0, radial2D.y));
-                float3 tangentDirOS = normalize(float3(-radial2D.y, 0, radial2D.x));
+                float3 tangentDirOS = float3(-radial2D.y, 0, radial2D.x);
+                o.tangentWSBase = normalize(TransformObjectToWorldDir(tangentDirOS));
 
-                float3 T = normalize(TransformObjectToWorldDir(tangentDirOS));
-                float3 B = normalize(cross(N, T));
-                T = normalize(cross(B, N));
-
-                // ===== 拉丝扰动 =====
                 float ringNoise = Hash21(floor(radial2D * _RadialNoiseScale + lenXZ * _RadialNoiseScale));
                 float roughnessJitter = lerp(1.0 - _RadialNoiseStrength, 1.0 + _RadialNoiseStrength, ringNoise);
 
-                float roughness = saturate(_Roughness * roughnessJitter);
-                roughness = max(roughness, 0.02);
+                o.roughness = max(saturate(_Roughness * roughnessJitter), 0.02);
 
-                // ===== 各向异性粗糙度 =====
-                // 沿 T 方向更光滑，高光会沿 T 拉长
-                float at = max(0.02, roughness * (1.0 - _Anisotropy));
-                float ab = max(0.02, roughness * (1.0 + _Anisotropy));
+                o.at = max(0.02, o.roughness * (1.0 - _Anisotropy));
+                o.ab = max(0.02, o.roughness * (1.0 + _Anisotropy));
 
-                float NdotL = saturate(dot(N, L));
-                float NdotV = saturate(dot(N, V));
-                float NdotH = saturate(dot(N, H));
-                float VdotH = saturate(dot(V, H));
-                float TdotH = dot(T, H);
-                float BdotH = dot(B, H);
+                o.albedo = _BaseColor.rgb;
+                o.F0 = lerp(float3(0.04, 0.04, 0.04), o.albedo, _Metallic);
 
-                float3 albedo = _BaseColor.rgb;
+                return o;
+            }
 
-                // 金属盘通常就是金属
-                float3 F0 = lerp(float3(0.04, 0.04, 0.04), albedo, _Metallic);
+            float3 EvalDiskLighting(float3 N, DiskPreData pre)
+            {
+                N = normalize(N);
 
-                float D = D_GGX_Aniso(NdotH, TdotH, BdotH, at, ab);
-                float Gv = G_SmithGGX(NdotV, roughness);
-                float Gl = G_SmithGGX(NdotL, roughness);
+                float3 T = pre.tangentWSBase;
+                float3 B = normalize(cross(N, T));
+                T = normalize(cross(B, N));
+
+                float NdotL = saturate(dot(N, pre.L));
+                float NdotV = saturate(dot(N, pre.V));
+                float NdotH = saturate(dot(N, pre.H));
+                float VdotH = saturate(dot(pre.V, pre.H));
+                float TdotH = dot(T, pre.H);
+                float BdotH = dot(B, pre.H);
+
+                float D = D_GGX_Aniso(NdotH, TdotH, BdotH, pre.at, pre.ab);
+                float Gv = G_SmithGGX(NdotV, pre.roughness);
+                float Gl = G_SmithGGX(NdotL, pre.roughness);
                 float G = Gv * Gl;
-                float3 F = FresnelSchlick(VdotH, F0);
+                float3 F = FresnelSchlick(VdotH, pre.F0);
 
                 float3 specular = (D * G * F) / max(4.0 * NdotV * NdotL, 1e-5);
-
                 float3 kd = (1.0 - F) * (1.0 - _Metallic);
-                float3 diffuse = kd * albedo / PI;
+                float3 diffuse = kd * pre.albedo / PI;
 
-                float3 color = (diffuse + specular) * mainLight.color * NdotL;
-                return color;
+                return (diffuse + specular) * pre.lightColor * NdotL;
             }
 
             half4 frag(v2f i) : SV_Target
             {
-                half4 mask = _Mask.Sample(sampler_Mask, i.uv);
-                float3 Nr = normalize(i.normalWS);
-                float3 Ng = normalize(i.normalWS);
-                float3 Nb = normalize(i.normalWS);
+                half mask = SAMPLE_TEXTURE2D(_Mask, sampler_Mask, i.uv).r;
+
+                float3 N0 = normalize(i.normalWS);
+                float3 Nr = N0;
+                float3 Ng = N0;
+                float3 Nb = N0;
+
                 float delta = 0.06;
                 Nr.x -= delta;
                 Nb.x += delta;
-                // 很淡的环境底色，避免纯黑
-                float3 colorr= test(Nr, i);
-                float3 colorg= test(Ng, i);
-                float3 colorb= test(Nb, i);
-                float3 color = float3(colorr.r, colorg.g, colorb.b) * (1-mask.r);
-                float3 albedo = _BaseColor.rgb;
-                color += albedo * 0.03;
+
+                DiskPreData pre = PrepareDiskData(i);
+
+                float3 colorr = EvalDiskLighting(Nr, pre);
+                float3 colorg = EvalDiskLighting(Ng, pre);
+                float3 colorb = EvalDiskLighting(Nb, pre);
+
+                float3 color = float3(colorr.r, colorg.g, colorb.b) * (1.0 - mask);
+                color += pre.albedo * 0.03;
+
                 return half4(color, 1);
             }
 
