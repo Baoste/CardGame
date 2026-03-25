@@ -4,7 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class RevealButtonView : MonoBehaviour
+public class RevealView : MonoBehaviour
 {
     [SerializeField] private GameObject revealButton;
     [SerializeField] private GameObject revealRandom;
@@ -25,8 +25,8 @@ public class RevealButtonView : MonoBehaviour
         BtnShowPosition = revealButton.transform.localPosition;
         BtnHidePosition = BtnShowPosition + Vector3.down * 0.1f;
         revealButton.transform.localPosition = BtnHidePosition;
-        revealButton.GetComponent<ButtonTest>().SetOriginalPosition(BtnShowPosition);
-        revealButton.GetComponent<ButtonTest>().enabled = false;
+        revealButton.GetComponent<RevealButton>().SetOriginalPosition(BtnShowPosition);
+        revealButton.GetComponent<RevealButton>().enabled = false;
         revealButton.GetComponent<Collider>().enabled = false;
     }
 
@@ -35,7 +35,7 @@ public class RevealButtonView : MonoBehaviour
         revealButton.transform.DOLocalMove(BtnShowPosition, 0.5f);
         if (canClick)
         {
-            revealButton.GetComponent<ButtonTest>().enabled = true;
+            revealButton.GetComponent<RevealButton>().enabled = true;
             revealButton.GetComponent<Collider>().enabled = true;
         }
     }

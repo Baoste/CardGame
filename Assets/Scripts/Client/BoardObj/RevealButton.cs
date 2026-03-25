@@ -1,8 +1,10 @@
 using DG.Tweening;
 using Game.Domain;
+using Newtonsoft.Json;
+using System.Collections;
 using UnityEngine;
 
-public class ButtonTest : MonoBehaviour
+public class RevealButton : MonoBehaviour
 {
     private Vector3 originalPosition;  // 存储原始位置
     private Quaternion originalRotation;  // 存储原始旋转角度
@@ -65,9 +67,28 @@ public class ButtonTest : MonoBehaviour
             {
                 transform.DOLocalMove(originalPosition - Vector3.up * pressAmount * 0.7f, pressDuration);
                 // TODO: send reveal cmd
-                if (ClientGameState.playerSlot == ClientGameState.Instance.CurrentPlayerId)
-                    ClientCommand.RevealCardsAndScore();
+                StartCoroutine(Reveal());
             });
+    }
+
+    private IEnumerator Reveal()
+    {
+        if (ClientGameState.playerSlot != ClientGameState.Instance.CurrentPlayerId)
+            yield break;
+        
+        yield return StartCoroutine(ClientEffectExecutor.ValidateActionPoint(ClientGameState.gateway, ClientGameState.playerSlot));
+        if (!CommandExecutionState<ValidateActionPointCommand>.Success)
+        {
+            Debug.Log("没有足够的行动点");
+            yield break;
+        }
+
+        SpendActionPointCommand apCmd = new SpendActionPointCommand { playerId = ClientGameState.playerSlot };
+        ClientGameState.gateway.SendCommandServerRpc("SpendActionPoint", JsonConvert.SerializeObject(apCmd), ClientGameState.playerSlot);
+        yield return new WaitUntil(() => CommandExecutionState<SpendActionPointCommand>.IsDone);
+
+        ClientCommand.RevealCardsAndScore();
+        yield break;
     }
 
     // 获取鼠标在世界空间的位置

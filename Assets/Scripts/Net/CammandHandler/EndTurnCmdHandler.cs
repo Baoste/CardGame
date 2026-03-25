@@ -33,6 +33,7 @@ public class EndTurnCmdHandler : CommandHandler, ICommandHandler
                 payload.playerId,
                 true,
                 1 - payload.playerId,
+                session.gameState.Turn,
                 reveal
             )
         ));

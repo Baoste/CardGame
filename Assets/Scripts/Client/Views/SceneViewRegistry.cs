@@ -13,8 +13,11 @@ public class SceneViewRegistry : MonoBehaviour
     [SerializeField] private ExecuteCardView opponentExecuteCardView;
 
     [SerializeField] private RoleView roleView;
-    [SerializeField] private RevealButtonView myRevealButtonView;
-    [SerializeField] private RevealButtonView opponentRevealButtonView;
+    [SerializeField] private RevealView myRevealButtonView;
+    [SerializeField] private RevealView opponentRevealButtonView;
+
+    [SerializeField] private TurnLightView myTurnLightView;
+    [SerializeField] private TurnLightView opponentTurnLightView;
 
     private void Awake()
     {
@@ -27,5 +30,7 @@ public class SceneViewRegistry : MonoBehaviour
         SceneViewManager.roleView = roleView;
         SceneViewManager.myRevealButtonView = myRevealButtonView;
         SceneViewManager.opponentRevealButtonView = opponentRevealButtonView;
+        SceneViewManager.myTurnLightView = myTurnLightView;
+        SceneViewManager.opponentTurnLightView = opponentTurnLightView;
     }
 }

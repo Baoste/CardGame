@@ -307,11 +307,13 @@ namespace Game.Domain
     public class EndTurnEvent : PlayerEvent
     {
         public int opponentId;
+        public int turn;
         public bool reveal;  // ½áÊøÓÎÏ·
-        public EndTurnEvent(int playerId, bool success, int opponentId, bool reveal)
+        public EndTurnEvent(int playerId, bool success, int opponentId, int turn, bool reveal)
             : base(playerId, success)
         {
             this.opponentId = opponentId;
+            this.turn = turn;
             this.reveal = reveal;
         }
     }

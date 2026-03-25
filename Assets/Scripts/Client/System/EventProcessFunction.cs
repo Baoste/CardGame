@@ -35,6 +35,13 @@ public class EventProcessFunction : MonoBehaviour
     public void StartTurnTest(object[] parameters)
     {
         int turn = (int)parameters[0];
+        if (turn == 1)
+        {
+            if (ClientGameState.Instance.dealerId == ClientGameState.playerSlot)
+                SceneViewManager.opponentTurnLightView.SetLight(1);
+            else
+                SceneViewManager.myTurnLightView.SetLight(1);
+        }
 
         int endTurnCount = 8;
         if (turn == endTurnCount)
@@ -61,7 +68,8 @@ public class EventProcessFunction : MonoBehaviour
         int punterId = (int)parameters[1];
 
         SceneViewManager.roleView.ShowRole(dealerId);
-        ClientCommand.StartTurn(dealerId);
+        if (ClientGameState.Instance.dealerId == ClientGameState.playerSlot)
+            ClientCommand.StartTurn(dealerId);
     }
 
     // parameters[0]: int playerId
@@ -220,10 +228,28 @@ public class EventProcessFunction : MonoBehaviour
         StartCoroutine(SceneViewManager.resolveZoneView.ClearCards());
     }
 
-    // parameters[0]: bool reveal
+    // parameters[0]: int turn
+    // parameters[1]: bool reveal
     public void EndTurnTest(object[] parameters)
     {
-        bool reveal = (bool)parameters[0];
+        int turn = (int)parameters[0];
+        bool reveal = (bool)parameters[1];
+
+        // ¡¡µ∆
+        if (ClientGameState.Instance.dealerId == ClientGameState.playerSlot)
+        {
+            int myTurn = (turn + 1) / 2;
+            int opTurn = turn / 2 + 1;
+            SceneViewManager.myTurnLightView.SetLight(myTurn);
+            SceneViewManager.opponentTurnLightView.SetLight(opTurn);
+        }
+        else
+        {
+            int myTurn = turn / 2 + 1;
+            int opTurn = (turn + 1) / 2;
+            SceneViewManager.myTurnLightView.SetLight(myTurn);
+            SceneViewManager.opponentTurnLightView.SetLight(opTurn);
+        }
 
         StartCoroutine(SceneViewManager.myRevealButtonView.RandomAnimation(reveal));
     }
