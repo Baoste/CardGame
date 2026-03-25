@@ -4,7 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SkillCardHover : MonoBehaviour
+public class SkillCardHover : MonoBehaviour, IMouseEnter, IMouseExit
 {
     private SkillCardInstance instance;
     private SkillCardDraggable draggable;
@@ -19,7 +19,7 @@ public class SkillCardHover : MonoBehaviour
         hoveredMoveDirY = 0.4f;
     }
 
-    void OnMouseEnter()
+    public void MouseEnter()
     {
         if (draggable.executed) return;
         if (draggable.IsDragging || ClientEffectContext.isExecutingSkillCard) return;
@@ -33,7 +33,7 @@ public class SkillCardHover : MonoBehaviour
         transform.DOMoveY(newPos.y + 0.1f, 0.5f).SetEase(Ease.OutCubic);
     }
 
-    void OnMouseExit()
+    public void MouseExit()
     {
         if (draggable.executed) return;
         if (draggable.IsDragging || ClientEffectContext.isExecutingSkillCard) return;

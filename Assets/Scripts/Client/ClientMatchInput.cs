@@ -1,8 +1,11 @@
+using DG.Tweening;
 using Game.Domain;
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
+using UnityEngine.Rendering;
+using UnityEngine.Rendering.Universal;
+using static UnityEngine.Rendering.DebugUI;
 
 
 public class ClientMatchInput : MonoBehaviour
@@ -10,6 +13,10 @@ public class ClientMatchInput : MonoBehaviour
     [Header("Persisted (copy from log for quick test)")]
     public string matchId;
     public string token;
+    [Header("Volume Control")]
+    public Volume volume;
+
+    private ColorAdjustments colorAdjust;
 
     void OnEnable()
     {
@@ -39,6 +46,11 @@ public class ClientMatchInput : MonoBehaviour
     private void Awake()
     {
         ProcessDispatcher.Register("DetermineParticipantsTest", DetermineParticipantsTest);
+    }
+
+    private void Start()
+    {
+        volume.profile.TryGet(out colorAdjust);
     }
 
 
@@ -101,6 +113,7 @@ public class ClientMatchInput : MonoBehaviour
         if (sourceClick)
         {
             Debug.Log($"[Client] Wating for select source {candidateSouceIds}");
+            HighLight(candidateSouceIds);
             int count0 = 0;
             while (count0 < SourceSelectCount)
             {
@@ -147,11 +160,13 @@ public class ClientMatchInput : MonoBehaviour
                 }
             }
             ClientEffectContext.Instance.selectedSourceIds = selectedSourceIds;
+            CancelHighLight(candidateSouceIds);
         }
 
         if (targetClick)
         {
             Debug.Log("[Client] Wating for select target");
+            HighLight(candidateTargetIds);
             int count1 = 0;
             while (count1 < targetSelectCount)
             {
@@ -198,8 +213,50 @@ public class ClientMatchInput : MonoBehaviour
                 }
             }
             ClientEffectContext.Instance.selectedTargetIds = selectedTargetIds;
+            CancelHighLight(candidateTargetIds);
         }
         ClientEffectContext.ChooseDone = true;
+    }
+
+    private void HighLight(List<int> candidateIds)
+    {
+        DOTween.To(
+            () => colorAdjust.saturation.value,
+            x => colorAdjust.saturation.value = x,
+            -100,
+            0.5f
+        );
+
+        int layer = LayerMask.NameToLayer("HighlightOnly");
+        foreach (int id in candidateIds)
+        {
+            SetLayerRecursively(EventProcessFunction.instanceMap[id], layer);
+        }
+    }
+
+    private void CancelHighLight(List<int> candidateIds)
+    {
+        DOTween.To(
+            () => colorAdjust.saturation.value,
+            x => colorAdjust.saturation.value = x,
+            0,
+            0.5f
+        );
+
+        int layer = LayerMask.NameToLayer("Default");
+        foreach (int id in candidateIds)
+        {
+            SetLayerRecursively(EventProcessFunction.instanceMap[id], layer);
+        }
+    }
+
+    private void SetLayerRecursively(GameObject obj, int layer)
+    {
+        foreach (Transform child in obj.transform)
+        {
+            child.gameObject.layer = layer;
+            SetLayerRecursively(child.gameObject, layer);
+        }
     }
 
     // 你在真实项目里会这样更新 lastEventIndex：

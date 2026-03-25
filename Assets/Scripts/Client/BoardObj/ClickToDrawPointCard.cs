@@ -5,9 +5,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ClickToDrawPointCard : MonoBehaviour
+public class ClickToDrawPointCard : MonoBehaviour, IMouseClick
 {
-    void OnMouseUpAsButton()
+    public void MouseClick()
     {
         if (ClientEffectContext.isExecutingSkillCard) return;
         if (ClientGameState.playerSlot != ClientGameState.Instance.CurrentPlayerId)

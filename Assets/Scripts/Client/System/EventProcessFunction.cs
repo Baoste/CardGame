@@ -7,7 +7,7 @@ using UnityEngine;
 
 public class EventProcessFunction : MonoBehaviour
 {
-    private static Dictionary<int, GameObject> instanceMap = new();
+    public static Dictionary<int, GameObject> instanceMap = new();
 
     void Start()
     {

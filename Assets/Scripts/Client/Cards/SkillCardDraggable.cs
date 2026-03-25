@@ -6,7 +6,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SkillCardDraggable : MonoBehaviour
+public class SkillCardDraggable : MonoBehaviour, IMouseDown, IMouseDrag, IMouseUp
 {
     private Camera cam;
     private bool isDragging;
@@ -32,7 +32,7 @@ public class SkillCardDraggable : MonoBehaviour
         outlineControl = GetComponent<Outline>();
     }
 
-    private void OnMouseDown()
+    public void MouseDown()
     {
         if (executed) return;
         if (ClientEffectContext.isExecutingSkillCard) return;
@@ -54,7 +54,7 @@ public class SkillCardDraggable : MonoBehaviour
         }
     }
 
-    private void OnMouseDrag()
+    public void MouseDrag()
     {
         if (executed) return;
         if (ClientEffectContext.isExecutingSkillCard) return;
@@ -88,7 +88,7 @@ public class SkillCardDraggable : MonoBehaviour
         }
     }
 
-    private void OnMouseUp()
+    public void MouseUp()
     {
         if (executed) return;
         if (ClientEffectContext.isExecutingSkillCard) return;

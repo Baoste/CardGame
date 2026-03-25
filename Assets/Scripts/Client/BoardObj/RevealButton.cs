@@ -4,7 +4,7 @@ using Newtonsoft.Json;
 using System.Collections;
 using UnityEngine;
 
-public class RevealButton : MonoBehaviour
+public class RevealButton : MonoBehaviour, IMouseEnter, IMouseExit, IMouseClick
 {
     private Vector3 originalPosition;  // 存储原始位置
     private Quaternion originalRotation;  // 存储原始旋转角度
@@ -38,7 +38,7 @@ public class RevealButton : MonoBehaviour
     }
 
     // 鼠标进入时，按钮轻微晃动并开启按钮灯光
-    void OnMouseEnter()
+    public void MouseEnter()
     {
         isMouseOver = true;  // 标记鼠标进入
         Vector3 mouseWorldPos = GetMouseWorldPosition();
@@ -47,7 +47,7 @@ public class RevealButton : MonoBehaviour
     }
 
     // 鼠标退出时，按钮回到原位置并恢复原始旋转
-    void OnMouseExit()
+    public void MouseExit()
     {
         isMouseOver = false;  // 标记鼠标离开
         transform.DOKill();  // 停止所有动画
@@ -57,7 +57,7 @@ public class RevealButton : MonoBehaviour
     }
 
     // 鼠标按下时，按钮下沉并倾斜
-    void OnMouseDown()
+    public void MouseClick()
     {
         Vector3 mouseWorldPos = GetMouseWorldPosition();
         TiltButton(mouseWorldPos);  // 根据鼠标位置进行倾斜

@@ -2,7 +2,7 @@ using System.Collections;
 using UnityEngine;
 using TMPro;
 
-public class PointCardHover : MonoBehaviour
+public class PointCardHover : MonoBehaviour, IMouseEnter, IMouseExit
 {
     [Header("References")]
     public GameObject pointsRoot;          // 整个投影对象
@@ -28,6 +28,17 @@ public class PointCardHover : MonoBehaviour
         if (pointsRoot != null)
             pointsRoot.SetActive(false);
     }
+
+    public void MouseEnter()
+    {
+        ShowPoints();
+    }
+
+    public void MouseExit()
+    {
+        HidePoints();
+    }
+
     public void ShowPoints()
     {
         if (pointsText == null || pointsRoot == null) return;
