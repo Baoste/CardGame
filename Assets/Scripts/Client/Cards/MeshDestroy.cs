@@ -3,32 +3,29 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MeshDestroyTest : MonoBehaviour
+public class MeshDestroy : MonoBehaviour
 {
     private bool edgeSet = false;
     private Vector3 edgeVertex = Vector3.zero;
     private Vector2 edgeUV = Vector2.zero;
     private Plane edgePlane = new Plane();
 
-    public int CutCascades = 1;
-    public float ExplodeForce = 0;
+    private int CutCascades = 4;
+    private float ExplodeForce = 15f;
 
     [Header("Disc Fracture")]
-    public Vector3 fractureCenter = Vector3.zero;
     public Vector3 LocalUpAxis = Vector3.up;     // 光盘法线
     public float AngleJitter = 12f;              // 每刀角度扰动
     public float PlaneOffset = 0.05f;            // 平面相对中心的小偏移
     public float TiltJitter = 6f;                // 平面轻微倾斜，别太大
 
-    void Update()
-    {
-        if (Input.GetMouseButtonDown(0))
-        {
-            DestroyMesh();
-        }
-    }
+    //private void Update()
+    //{
+    //    if (Input.GetMouseButtonDown(0))
+    //        DestroyMesh();
+    //}
 
-    private void DestroyMesh()
+    public List<PartMesh> DestroyMesh()
     {
         var originalMesh = GetComponent<MeshFilter>().mesh;
         originalMesh.RecalculateBounds();
@@ -71,16 +68,19 @@ public class MeshDestroyTest : MonoBehaviour
         for (var i = 0; i < parts.Count; i++)
         {
             parts[i].MakeGameobject(this);
-            parts[i].GameObject.transform.position += parts[i].Bounds.center * ExplodeForce;
-            // parts[i].GameObject.GetComponent<Rigidbody>().AddForceAtPosition(parts[i].Bounds.center * ExplodeForce, transform.position);
+            //Vector3 moveDir = parts[i].Bounds.center - transform.position;
+            //moveDir.y = 0f;
+            //parts[i].GameObject.transform.position += moveDir * ExplodeForce;
+            parts[i].GameObject.GetComponent<Rigidbody>().AddForceAtPosition(parts[i].Bounds.center * ExplodeForce, transform.position, ForceMode.Impulse);
         }
 
         Destroy(gameObject);
+        return parts;
     }
 
     private Plane BuildDiscLikePlane(Bounds bounds, int cascadeIndex, int partIndex)
     {
-        Vector3 center = transform.InverseTransformPoint(fractureCenter);
+        Vector3 center = transform.localPosition;
         Vector3 up = LocalUpAxis.normalized;
 
         // 先在光盘平面里建立两个基向量
@@ -313,12 +313,12 @@ public class MeshDestroyTest : MonoBehaviour
                 Triangles[i] = _Triangles[i].ToArray();
         }
 
-        public void MakeGameobject(MeshDestroyTest original)
+        public void MakeGameobject(MeshDestroy original)
         {
             GameObject = new GameObject(original.name);
             GameObject.transform.position = original.transform.position;
             GameObject.transform.rotation = original.transform.rotation;
-            GameObject.transform.localScale = original.transform.localScale;
+            GameObject.transform.localScale = original.transform.lossyScale;
 
             var mesh = new Mesh();
             mesh.name = original.GetComponent<MeshFilter>().mesh.name;
@@ -336,14 +336,14 @@ public class MeshDestroyTest : MonoBehaviour
             var filter = GameObject.AddComponent<MeshFilter>();
             filter.mesh = mesh;
 
-            //var collider = GameObject.AddComponent<MeshCollider>();
-            //collider.convex = true;
+            var collider = GameObject.AddComponent<MeshCollider>();
+            collider.convex = true;
 
-            //var rigidbody = GameObject.AddComponent<Rigidbody>();
-            //rigidbody.useGravity = false;
-            var meshDestroy = GameObject.AddComponent<MeshDestroyTest>();
-            meshDestroy.CutCascades = original.CutCascades;
-            meshDestroy.ExplodeForce = original.ExplodeForce;
+            var rigidbody = GameObject.AddComponent<Rigidbody>();
+
+            //var meshDestroy = GameObject.AddComponent<MeshDestroy>();
+            //meshDestroy.CutCascades = original.CutCascades;
+            //meshDestroy.ExplodeForce = original.ExplodeForce;
 
         }
     }

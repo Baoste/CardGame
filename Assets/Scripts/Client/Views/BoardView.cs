@@ -4,6 +4,7 @@ using Game.Domain;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static MeshDestroy;
 
 public class BoardView : MonoBehaviour
 {
@@ -126,34 +127,86 @@ public class BoardView : MonoBehaviour
     {
         if (opponentCards.Remove(instance))
         {
-            Destroy(instance);
+            yield return DestroyCard(instance);
             yield return UpdateCardPositionsNormal(true);
         }
         if (selfCards.Remove(instance))
         {
-            Destroy(instance);
+            yield return DestroyCard(instance);
             yield return UpdateCardPositionsNormal(false);
         }
     }
 
     public IEnumerator UpdateCardPositionsNormal(bool isOpponent)
     {
-        // TODO: 改成非弹射的更新方式
         if (isOpponent)
-            yield return LayoutOneSide(opponentCards, true);
+            yield return LayoutOneSideNormal(opponentCards, true);
         else
-            yield return LayoutOneSide(selfCards, false);
+            yield return LayoutOneSideNormal(selfCards, false);
     }
 
     public IEnumerator UpdateCardPositionsBounce(bool isOpponent)
     {
         if (isOpponent)
-            yield return LayoutOneSide(opponentCards, true);
+            yield return LayoutOneSideBounce(opponentCards, true);
         else
-            yield return LayoutOneSide(selfCards, false);
+            yield return LayoutOneSideBounce(selfCards, false);
     }
 
-    private IEnumerator LayoutOneSide(List<GameObject> cards, bool isOpponent)
+    private IEnumerator LayoutOneSideNormal(List<GameObject> cards, bool isOpponent)
+    {
+        int countOnBoard = cards.Count - 1;
+        if (countOnBoard == 0) yield break;
+
+        float selfAreaHeight = boardHeight * selfAreaHeightRatio;
+        float opponentAreaHeight = boardHeight - selfAreaHeightRatio * boardHeight;
+
+        // 假设这个平面在 XZ 平面上：
+        // X 控制左右，Z 控制上下（近/远）
+        float minZ, maxZ, centerZ;
+        float startX, moveDir;
+
+        float spacingFactor = countOnBoard < 4 ? 2.3f : 1;
+        float cardSpacing = boardWidth / (countOnBoard + spacingFactor);
+        float totalWidth = (countOnBoard - 1) * cardSpacing;
+
+        if (isOpponent)
+        {
+            // 上半区
+            minZ = boardCenter.z;
+            maxZ = boardCenter.z + opponentAreaHeight;
+            centerZ = (minZ + maxZ) * 0.5f;
+            startX = boardCenter.x + totalWidth * 0.5f;
+            moveDir = -1;
+        }
+        else
+        {
+            // 下半区
+            minZ = boardCenter.z - selfAreaHeight;
+            maxZ = boardCenter.z;
+            centerZ = (minZ + maxZ) * 0.5f;
+            startX = boardCenter.x - totalWidth * 0.5f;
+            moveDir = 1;
+        }
+
+        for (int i = cards.Count - 1; i >= 1; i--)
+        {
+            GameObject card = cards[i];
+            if (card == null) continue;
+
+            Vector3 targetPos = new Vector3(
+                startX + (i - 1) * moveDir * cardSpacing,
+                boardCenter.y,
+                centerZ
+            );
+            card.transform.DOKill();
+            float during = Mathf.Abs(card.transform.position.x - targetPos.x);
+            during = Mathf.Max(0.25f, during * 1.7f);
+            card.transform.DOMove(targetPos, during).SetEase(Ease.OutCubic);
+        }
+    }
+
+    private IEnumerator LayoutOneSideBounce(List<GameObject> cards, bool isOpponent)
     {
         int countOnBoard = cards.Count - 1;
         if (countOnBoard == 0) yield break;
@@ -230,6 +283,37 @@ public class BoardView : MonoBehaviour
             during = Mathf.Max(0.25f, during * 1.7f);
             card.transform.DOMove(targetPos, during).SetEase(Ease.OutCubic);
         }
+    }
+
+    private IEnumerator DestroyCard(GameObject instance)
+    {
+        MeshDestroy mesh = instance.GetComponentInChildren<MeshDestroy>();
+        GameObject tmp = mesh.transform.parent.gameObject;
+        mesh.transform.parent.parent = transform.parent.parent;
+        List<PartMesh> submeshes = mesh.DestroyMesh();
+        Destroy(tmp);
+        Destroy(instance);
+
+        Time.timeScale = 0.01f;
+        Time.fixedDeltaTime = 0.02f * Time.timeScale;
+        yield return new WaitForSeconds(0.01f);
+        Time.timeScale = 1f;
+        Time.fixedDeltaTime = 0.02f;
+
+        yield return new WaitForSeconds(1f);
+        Sequence seq = DOTween.Sequence();
+        // TODO: 这里要加消失动画
+        //foreach (PartMesh part in submeshes)
+        //{
+        //    Transform partTrans = part.GameObject.transform;
+        //    seq.Join(partTrans.DOMove(partTrans.position + Vector3.down * 0.2f, 1f));
+        //}
+        seq.OnComplete(() =>
+        {
+            foreach (PartMesh part in submeshes)
+                Destroy(part.GameObject);
+        });
+        yield return seq.WaitForCompletion();
     }
 
     public IEnumerator ShakeCards()

@@ -230,7 +230,8 @@ public class ClientMatchInput : MonoBehaviour
         int layer = LayerMask.NameToLayer("HighlightOnly");
         foreach (int id in candidateIds)
         {
-            SetLayerRecursively(EventProcessFunction.instanceMap[id], layer);
+            if (EventProcessFunction.instanceMap.TryGetValue(id, out GameObject instance))
+                SetLayerRecursively(instance, layer);
         }
     }
 
@@ -246,7 +247,8 @@ public class ClientMatchInput : MonoBehaviour
         int layer = LayerMask.NameToLayer("Default");
         foreach (int id in candidateIds)
         {
-            SetLayerRecursively(EventProcessFunction.instanceMap[id], layer);
+            if (EventProcessFunction.instanceMap.TryGetValue(id, out GameObject instance))
+                SetLayerRecursively(instance, layer);
         }
     }
 

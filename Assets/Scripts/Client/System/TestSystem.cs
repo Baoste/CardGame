@@ -10,6 +10,7 @@ public class TestSystem : MonoBehaviour
     [SerializeField] private HandView handView;
     [SerializeField] private BoardView boardView;
     [SerializeField] private ResolveZoneView ResolveZoneView;
+    private GameObject obj;
 
     private void Update()
     {
@@ -31,11 +32,11 @@ public class TestSystem : MonoBehaviour
         {
             GameObject instance = CardViewCreator.Instance.CreateCardInstance(2, 98, transform.position, Quaternion.identity);
             StartCoroutine(boardView.AddCard(instance, ClientGameState.playerSlot, false));
+            obj = instance;
         }
         if (Input.GetKeyDown(KeyCode.E))
         {
-            GameObject instance = CardViewCreator.Instance.CreateCardInstance(2, 99, transform.position, Quaternion.identity);
-            StartCoroutine(boardView.AddCard(instance, 99, false));
+            StartCoroutine(SceneViewManager.boardView.RemoveCard(obj));
         }
         if (Input.GetKeyDown(KeyCode.R))
         {

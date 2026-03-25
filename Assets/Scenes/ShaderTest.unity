@@ -545,7 +545,7 @@ PrefabInstance:
     - target: {fileID: -8679921383154817045, guid: e53b5d4993189fb4f9a0a7b0118ab47c,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: 0.173
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: e53b5d4993189fb4f9a0a7b0118ab47c,
         type: 3}
@@ -629,7 +629,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2c94edf3dcd2ae04481bf694b5ef806c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  CutCascades: 6
+  CutCascades: 4
   ExplodeForce: 0.2
   fractureCenter: {x: 0, y: 0, z: 0}
   LocalUpAxis: {x: 0, y: 1, z: 0}

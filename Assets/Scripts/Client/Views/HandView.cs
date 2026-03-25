@@ -76,9 +76,11 @@ public class HandView : MonoBehaviour
         instance.transform.position = instantiatePosition;
         instance.transform.rotation = Quaternion.Euler(-90, 0, 90);
 
+        float moveDir = isOpponent ? -1 : 1;
+
         Sequence seq = DOTween.Sequence();
-        seq.Append(instance.transform.DOMove(instantiatePosition + Vector3.forward * 0.05f, 0.15f));
-        seq.Append(instance.transform.DOMove(instantiatePosition - Vector3.forward * 1f, 0.5f).SetEase(Ease.OutBack));
+        seq.Append(instance.transform.DOMove(instantiatePosition + moveDir * Vector3.forward * 0.05f, 0.15f));
+        seq.Append(instance.transform.DOMove(instantiatePosition - moveDir * Vector3.forward * 1f, 0.5f).SetEase(Ease.OutBack));
         seq.Join(skillCardsDeck.transform.DOLocalMove(Vector3.zero, 0.3f).SetEase(Ease.OutBack));
 
         yield return seq.WaitForCompletion();

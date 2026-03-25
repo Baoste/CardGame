@@ -20,17 +20,17 @@ public class PointCardDeck : MonoBehaviour
             // 加速阶段
             seq.Append(
                 transform.DORotate(
-                    new Vector3(0, 120, 0),
-                    2f,
+                    new Vector3(0, 20, 0),
+                    1f,
                     RotateMode.LocalAxisAdd
-                ).SetEase(Ease.InSine)
+                ).SetEase(Ease.InQuad)
             );
             // 加速结束后，开启匀速循环
             seq.AppendCallback(() =>
             {
                 rotateTween = transform.DORotate(
                     new Vector3(0, 360, 0),
-                    5f,
+                    6f,
                     RotateMode.LocalAxisAdd
                 )
                 .SetEase(Ease.Linear)
