@@ -41,6 +41,7 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
+    - _AlbedoFactor: 0.497
     - _AnisColorOffset: 0
     - _AnisoStrength: 0
     - _Anisotropy: 0.92

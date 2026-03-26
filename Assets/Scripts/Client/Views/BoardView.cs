@@ -313,7 +313,7 @@ public class BoardView : MonoBehaviour
         seq.OnComplete(() =>
         {
             foreach (PartMesh part in submeshes)
-                Destroy(part.GameObject);
+                part.GameObject.GetComponent<DissolutionController>().DestroySelf();
         });
         yield return seq.WaitForCompletion();
     }

@@ -7,6 +7,7 @@ Shader "Custom/DiskShader"
         _Noise("Noise", 2D) = "white" {}
 
         _BaseColor ("Base Color", Color) = (0.8, 0.8, 0.8, 1)
+        _AlbedoFactor ("Albedo Factor", Range(0,1)) = 0.03
 
         _Metallic ("Metallic", Range(0,1)) = 1
         _Roughness ("Roughness", Range(0.01,1)) = 0.25
@@ -75,6 +76,7 @@ Shader "Custom/DiskShader"
 
             CBUFFER_START(UnityPerMaterial)
                 float4 _BaseColor;
+                float _AlbedoFactor;
                 float _Metallic;
                 float _Roughness;
                 float _Anisotropy;
@@ -219,7 +221,7 @@ Shader "Custom/DiskShader"
                 float3 colorb = EvalDiskLighting(Nb, pre);
 
                 float3 color = float3(colorr.r, colorg.g, colorb.b);
-                color += pre.albedo * 0.03;
+                color += pre.albedo * _AlbedoFactor;
 
                 return half4(color, 1 - mask);
             }
