@@ -4,6 +4,7 @@ Shader "Custom/DiskShader"
     {
         _Mask("Mask", 2D) = "white" {}
         _Mask2("Mask2", 2D) = "white" {}
+        _Noise("Noise", 2D) = "white" {}
 
         _BaseColor ("Base Color", Color) = (0.8, 0.8, 0.8, 1)
 
@@ -14,6 +15,9 @@ Shader "Custom/DiskShader"
         _DiskCenterOS ("Disk Center OS", Vector) = (0,0,0,1)
         _RadialNoiseScale ("Radial Noise Scale", Float) = 80
         _RadialNoiseStrength ("Radial Noise Strength", Range(0,1)) = 0.08
+
+        _DissolutionStrength("Dissolution Strength", Range(0,1)) = 0.5
+        [HDR]_EmissionColor("Emission Color", Color) = (2.9, 2.5, 0.01, 0)
     }
 
     SubShader
@@ -21,11 +25,13 @@ Shader "Custom/DiskShader"
         Tags
         {
             "RenderPipeline"="UniversalPipeline"
+            "RenderType"="Transparent"
+            "Queue"="Transparent"
         }
 
         Pass
         {
-            Blend OneMinusSrcAlpha SrcAlpha
+            Blend SrcAlpha OneMinusSrcAlpha   
 
             HLSLPROGRAM
             #pragma vertex vert
@@ -76,12 +82,15 @@ Shader "Custom/DiskShader"
                 float4 _DiskCenterOS;
                 float _RadialNoiseScale;
                 float _RadialNoiseStrength;
+                float _DissolutionStrength;
             CBUFFER_END
 
             TEXTURE2D(_Mask);
             SAMPLER(sampler_Mask);
             TEXTURE2D(_Mask2);
             SAMPLER(sampler_Mask2);
+            TEXTURE2D(_Noise);
+            SAMPLER(sampler_Noise);
 
             v2f vert(a2v v)
             {
@@ -182,9 +191,17 @@ Shader "Custom/DiskShader"
 
             half4 frag(v2f i) : SV_Target
             {
+                half noise = SAMPLE_TEXTURE2D(_Noise, sampler_Noise, i.uv * 3).r;
                 half mask1 = 1 - SAMPLE_TEXTURE2D(_Mask, sampler_Mask, i.uv).r;
                 half mask2 = 1 - SAMPLE_TEXTURE2D(_Mask2, sampler_Mask2, i.uv).r;
-                half mask = mask1 * mask2;
+
+                float step1 = step(_DissolutionStrength, noise);
+                float step2 = step(_DissolutionStrength - 0.1, noise);
+                step2 = clamp(step2, 0, 1);
+                half mask = mask1 * mask2 + 1 - step2;
+
+                if (1 - mask < 0.01)
+                    discard;
 
                 float3 N0 = normalize(i.normalWS);
                 float3 Nr = N0;
@@ -204,7 +221,7 @@ Shader "Custom/DiskShader"
                 float3 color = float3(colorr.r, colorg.g, colorb.b);
                 color += pre.albedo * 0.03;
 
-                return half4(color, mask);
+                return half4(color, 1 - mask);
             }
 
             ENDHLSL
