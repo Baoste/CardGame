@@ -1,9 +1,11 @@
 using Cinemachine;
 using Game.Domain;
+using Newtonsoft.Json;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using static UnityEngine.Rendering.DebugUI;
 
 public class EventProcessFunction : MonoBehaviour
 {
@@ -20,6 +22,8 @@ public class EventProcessFunction : MonoBehaviour
         ProcessDispatcher.Register("DiscardCardTest", DiscardCard);
         ProcessDispatcher.Register("ModifyPointTest", ModifyPoint);
         ProcessDispatcher.Register("MoveCardTest", MoveCard);
+        ProcessDispatcher.Register("ToResolveTest", ToResolveTest);
+        ProcessDispatcher.Register("PlayResolveAnimTest", PlayResolveAnimTest);
         ProcessDispatcher.Register("EndTurnTest", EndTurnTest);
         ProcessDispatcher.Register("ClearCardsToResolveTest", ClearResolve);
         ProcessDispatcher.Register("RevealTest", RevealTest);
@@ -189,6 +193,34 @@ public class EventProcessFunction : MonoBehaviour
 
     // parameters[0]: int cardId
     // parameters[1]: int instanceId
+    // parameters[2]: int playerId
+    public void ToResolveTest(object[] parameters)
+    {
+        int cardId = (int)parameters[0];
+        int instanceId = (int)parameters[1];
+        int playerId = (int)parameters[2];
+
+        PlayResolveAnimCommand cmd = new PlayResolveAnimCommand { playerId = playerId, cardId = cardId, instanceId = instanceId, isShown = true };
+        ClientGameState.gateway.SendCommandServerRpc("PlayResolveAnim", JsonConvert.SerializeObject(cmd));
+    }
+
+    // parameters[0]: int playerId
+    // parameters[1]: bool isShown
+    // parameters[2]: int cardId
+    // parameters[3]: int instanceId
+    public void PlayResolveAnimTest(object[] parameters)
+    {
+        int playerId = (int)parameters[0];
+        bool isShown = (bool)parameters[1];
+        int cardId = (int)parameters[2];
+        int instanceId = (int)parameters[3];
+
+        GameObject instance = CardViewCreator.Instance.CreateCardResolved(cardId, instanceId, transform.position, Quaternion.identity);
+        StartCoroutine(SceneViewManager.resolveZoneView.AddCard(instance, playerId, isShown));
+    }
+
+    // parameters[0]: int cardId
+    // parameters[1]: int instanceId
     // parameters[2]: ParticipantType toZone
     // parameters[3]: int playerId
     public void MoveCard(object[] parameters)
@@ -200,12 +232,6 @@ public class EventProcessFunction : MonoBehaviour
 
         switch (toZone)
         {
-            case ParticipantType.CardsToResolve:
-            {
-                GameObject instance = CardViewCreator.Instance.CreateCardInstance(cardId, instanceId, transform.position, Quaternion.identity);
-                StartCoroutine(SceneViewManager.resolveZoneView.AddCard(instance, playerId));    
-                break;
-            }
             case ParticipantType.MyBoardZone:
             {
                 GameObject instance = CardViewCreator.Instance.CreateCardInstance(cardId, instanceId, transform.position, Quaternion.identity);

@@ -208,12 +208,12 @@
           "trueNode": 2,
           "falseNode": 3,
           "source": {
-            "participantType": 0,
+            "participantType": 64,
             "filter": {
               "$type": "Game.Domain.CompareCondition, Assembly-CSharp",
               "left": {
                 "$type": "Game.Domain.VariableValue, Assembly-CSharp",
-                "source": 4
+                "source": 0
               },
               "right": {
                 "$type": "Game.Domain.ConstValue, Assembly-CSharp",

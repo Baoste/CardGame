@@ -6,7 +6,7 @@ namespace Game.Domain
     public enum CardType
     {
         Point,
-        Skill
+        Skill,
     }
 
     public class Card

@@ -11,6 +11,7 @@ public class TestSystem : MonoBehaviour
     [SerializeField] private BoardView boardView;
     [SerializeField] private ResolveZoneView ResolveZoneView;
     private GameObject obj;
+    private int turn = 0;
 
     private void Update()
     {
@@ -25,7 +26,7 @@ public class TestSystem : MonoBehaviour
         {
 
             GameObject instance = CardViewCreator.Instance.CreateCardInstance(2, 99999, transform.position, Quaternion.identity);
-            StartCoroutine(ResolveZoneView.AddCard(instance, -1));
+            StartCoroutine(ResolveZoneView.AddCard(instance, -1, true));
         }
 
         if (Input.GetKeyDown(KeyCode.W))
@@ -52,6 +53,10 @@ public class TestSystem : MonoBehaviour
         {
             SceneViewManager.myRevealButtonView.ShowButton(true);
             SceneViewManager.opponentRevealButtonView.ShowRandom();
+        }
+        if (Input.GetKeyDown(KeyCode.S))
+        {
+            SceneViewManager.myTurnLightView.SetLight(++turn);
         }
     }
 }

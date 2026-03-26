@@ -87,8 +87,21 @@ public class CardEditorWindow : EditorWindow
 
             if (GUILayout.Button("Import JSON -> Current", GUILayout.Width(170)))
             {
-                ImportJsonToCurrent(jsonText);
-                ValidateCurrent();
+                var path = EditorUtility.OpenFilePanel(
+                    "Select card json",
+                    Application.dataPath,
+                    "json"
+                );
+
+                if (!string.IsNullOrEmpty(path))
+                {
+                    string json = System.IO.File.ReadAllText(path);
+
+                    ImportJsonToCurrent(json);
+                    ValidateCurrent();
+
+                    ShowNotification(new GUIContent("Imported file"));
+                }
             }
 
             GUILayout.FlexibleSpace();

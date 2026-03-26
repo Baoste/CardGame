@@ -128,11 +128,13 @@ public class BoardView : MonoBehaviour
         if (opponentCards.Remove(instance))
         {
             yield return DestroyCard(instance);
+            yield return new WaitForSeconds(3f);
             yield return UpdateCardPositionsNormal(true);
         }
         if (selfCards.Remove(instance))
         {
             yield return DestroyCard(instance);
+            yield return new WaitForSeconds(3f);
             yield return UpdateCardPositionsNormal(false);
         }
     }

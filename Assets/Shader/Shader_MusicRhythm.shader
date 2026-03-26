@@ -19,6 +19,8 @@ Shader "Unlit/Shader_MusicRhythm"
         Tags
         {
             "RenderPipeline"="UniversalPipeline"
+            "Queue"="Transparent"
+            "RenderType"="Transparent"
         }
         LOD 100
 

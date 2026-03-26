@@ -38,7 +38,7 @@ namespace Game.Domain
                 {
                     Debug.Log($"[Client] Cannot play card instance {cardIstanceId} because of effect {op.type} validation failure");
                     ClearCardsToResolveCommand cmd2 = new ClearCardsToResolveCommand { playerId = ClientGameState.playerSlot };
-                    gateway.SendCommandServerRpc("ClearCardsToResolve", JsonConvert.SerializeObject(cmd2), ClientGameState.playerSlot);
+                    gateway.SendCommandServerRpc("ClearCardsToResolve", JsonConvert.SerializeObject(cmd2));
                     break;
                 }
                 else
@@ -85,7 +85,7 @@ namespace Game.Domain
                 else i = op.falseNode;
             }
             ClearCardsToResolveCommand cmd2 = new ClearCardsToResolveCommand { playerId = ClientGameState.playerSlot };
-            gateway.SendCommandServerRpc("ClearCardsToResolve", JsonConvert.SerializeObject(cmd2), ClientGameState.playerSlot);
+            gateway.SendCommandServerRpc("ClearCardsToResolve", JsonConvert.SerializeObject(cmd2));
         }
 
         private static void ExecuteOp(EffectOp op, MatchGateway gateway, GameState gameState, EffectContext ctx, List<int> selectedSourceIds, List<int> selectedTargetIds) 

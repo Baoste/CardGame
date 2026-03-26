@@ -102,6 +102,14 @@ namespace Game.Domain
         public int playerId;
     }
 
+    public class PlayResolveAnimCommand : ICommand
+    {
+        public int playerId;
+        public int cardId;
+        public int instanceId;
+        public bool isShown;
+    }
+
     public class DiscardCardCommand : ICommand
     {
         public int playerId;

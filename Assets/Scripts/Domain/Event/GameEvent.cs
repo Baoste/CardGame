@@ -199,6 +199,20 @@ namespace Game.Domain
         }
     }
 
+    public class PlayResolveAnimEvent : PlayerEvent
+    {
+        public int cardId;
+        public int instanceId;
+        public bool isShown;
+        public PlayResolveAnimEvent(int playerId, bool success, int cardId, int instanceId, bool isShown)
+            : base(playerId, success)
+        {
+            this.cardId = cardId;
+            this.instanceId = instanceId;
+            this.isShown = isShown;
+        }
+    }
+
     /// <summary>
     /// 弃牌事件，成功时 playerId 是玩家ID，instanceId 是牌的实例ID；失败时 playerId 是玩家ID，instanceId 是 -1
     /// </summary>

@@ -15,6 +15,7 @@ public class ClientMatchInput : MonoBehaviour
     public string token;
     [Header("Volume Control")]
     public Volume volume;
+    public GameObject zoneClickSuggest;
 
     private ColorAdjustments colorAdjust;
 
@@ -232,6 +233,11 @@ public class ClientMatchInput : MonoBehaviour
         {
             if (EventProcessFunction.instanceMap.TryGetValue(id, out GameObject instance))
                 SetLayerRecursively(instance, layer);
+            // Èç¹ûÊÇZone
+            else
+            {
+                zoneClickSuggest.SetActive(true);
+            }
         }
     }
 
@@ -249,6 +255,10 @@ public class ClientMatchInput : MonoBehaviour
         {
             if (EventProcessFunction.instanceMap.TryGetValue(id, out GameObject instance))
                 SetLayerRecursively(instance, layer);
+            else
+            {
+                zoneClickSuggest.SetActive(false);
+            }
         }
     }
 

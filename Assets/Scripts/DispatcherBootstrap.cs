@@ -18,6 +18,7 @@ public static class DispatcherBootstrap
         EventDispatcher.Register("DrawSkillCard", new DrawSkillCardEventHandler());
         EventDispatcher.Register("DrawPointCardToResolve", new DrawPointCardToResolveEventHandler());
         EventDispatcher.Register("ClearCardsToResolve", new ClearCardsToResolveEventHandler());
+        EventDispatcher.Register("PlayResolveAnim", new PlayResolveAnimEventHandler());
         EventDispatcher.Register("DiscardCard", new DiscardCardEventHandler());
         EventDispatcher.Register("ModifyPoint", new ModifyPointEventHandler());
         EventDispatcher.Register("MoveCard", new MoveCardEventHandler());
@@ -40,6 +41,7 @@ public static class DispatcherBootstrap
         CommandDispatcher.Register("DrawPointCard", new DrawPointCardCmdHandler());
         CommandDispatcher.Register("DrawSkillCard", new DrawSkillCardCmdHandler());
         CommandDispatcher.Register("ClearCardsToResolve", new ClearCardsToResolveCmdHandler());
+        CommandDispatcher.Register("PlayResolveAnim", new PlayResolveAnimCmdHandler());
         CommandDispatcher.Register("DiscardCard", new DiscardCardCmdHandler());
         CommandDispatcher.Register("ModifyPoint", new ModifyPointCmdHandler());
         CommandDispatcher.Register("MoveCard", new MoveCardCmdHandler());

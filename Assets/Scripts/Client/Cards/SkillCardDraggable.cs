@@ -210,6 +210,7 @@ public class SkillCardDraggable : MonoBehaviour, IMouseDown, IMouseDrag, IMouseU
         ClientEffectContext.isExecutingSkillCard = false;
         mouseTilt.ResetBaseRotation();
         instance.meshRenderer.sharedMaterial = instance.defaultMaterial;
+        outlineControl.OutlineColor = outlineControl.defaultColor;
         transform.localScale = Vector3.one * instance.localScaleFactor;
         yield return SceneViewManager.myHandView.UpdateCardPositions(0.15f);
         yield return SceneViewManager.opponentHandView.UpdateCardPositions(0.15f);

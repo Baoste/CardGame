@@ -28,11 +28,11 @@ public class ResolveZoneView : MonoBehaviour
 
     public IReadOnlyList<GameObject> ResolveCards => resolveCards;
 
-    public IEnumerator AddCard(GameObject instance, int playerId)
+    public IEnumerator AddCard(GameObject instance, int playerId, bool isShown)
     {
         resolveCards.Add(instance);
 
-        yield return UpdateCardPositions(animationDuration, playerId);
+        yield return UpdateCardPositions(animationDuration, playerId, isShown);
     }
 
     public IEnumerator ClearCards()
@@ -48,13 +48,13 @@ public class ResolveZoneView : MonoBehaviour
         yield return null;
     }
 
-    public IEnumerator UpdateCardPositions(float duration, int playerId)
+    public IEnumerator UpdateCardPositions(float duration, int playerId, bool isShown)
     {
-        LayoutCards(duration, playerId);
+        LayoutCards(duration, playerId, isShown);
         yield return new WaitForSeconds(duration);
     }
 
-    private void LayoutCards(float duration, int playerId)
+    private void LayoutCards(float duration, int playerId, bool isShown)
     {
         if (resolveCards.Count == 0) return;
 
@@ -66,7 +66,7 @@ public class ResolveZoneView : MonoBehaviour
         }
 
         float totalWidth = (resolveCards.Count - 1) * spacing;
-        bool isOpponent = playerId != ClientGameState.playerSlot;
+        bool isOpponent = playerId != ClientGameState.playerSlot && !isShown;
 
         for (int i = 0; i < resolveCards.Count; i++)
         {
