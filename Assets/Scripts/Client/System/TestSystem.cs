@@ -1,8 +1,6 @@
-using FishNet.Demo.AdditiveScenes;
 using Game.Domain;
 using System.Collections;
 using System.Collections.Generic;
-using System.ComponentModel;
 using UnityEngine;
 
 public class TestSystem : MonoBehaviour
@@ -10,7 +8,7 @@ public class TestSystem : MonoBehaviour
     [SerializeField] private HandView handView;
     [SerializeField] private BoardView boardView;
     [SerializeField] private ResolveZoneView ResolveZoneView;
-    private GameObject obj;
+    private Stack<GameObject> objs = new Stack<GameObject>();
     private int turn = 0;
     private int card = 1;
 
@@ -32,22 +30,30 @@ public class TestSystem : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.W))
         {
-            GameObject instance = null;
             if (card <= 5)
             {
-                instance = CardViewCreator.Instance.CreateCardInstance(card++, 98, transform.position, Quaternion.identity);
+                GameObject instance = CardViewCreator.Instance.CreateCardInstance(card++, 98, transform.position, Quaternion.identity);
                 StartCoroutine(boardView.AddCard(instance, ClientGameState.playerSlot, false));
+                objs.Push(instance);
             }
             else if (card <= 10)
             {
-                instance = CardViewCreator.Instance.CreateCardInstance(card++, 98, transform.position, Quaternion.identity);
+                GameObject instance = CardViewCreator.Instance.CreateCardInstance(card++, 98, transform.position, Quaternion.identity);
                 StartCoroutine(boardView.AddCard(instance, 99, false));
+                objs.Push(instance);
             }
-            obj = instance;
         }
         if (Input.GetKeyDown(KeyCode.E))
         {
-            StartCoroutine(SceneViewManager.boardView.RemoveCard(obj));
+            if (objs.Count > 0)
+            {
+                StartCoroutine(SceneViewManager.boardView.RemoveCard(objs.Pop()));
+            }
+        }
+        if (Input.GetKeyDown(KeyCode.T))
+        {
+            StartCoroutine(SceneViewManager.boardView.RemoveAllCards());
+            objs.Clear();
         }
         if (Input.GetKeyDown(KeyCode.R))
         {

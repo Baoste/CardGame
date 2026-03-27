@@ -139,6 +139,24 @@ public class BoardView : MonoBehaviour
         }
     }
 
+    public IEnumerator RemoveAllCards()
+    {
+        for (int i = opponentCards.Count - 1; i >= 0; i--)
+        {
+            GameObject obj = opponentCards[i];
+            opponentCards.RemoveAt(i);
+            StartCoroutine(DestroyCard(obj));
+            yield return new WaitForSecondsRealtime(0.1f);
+        }
+        for (int i = selfCards.Count - 1; i >= 0; i--)
+        {
+            GameObject obj = selfCards[i];
+            selfCards.RemoveAt(i);
+            StartCoroutine(DestroyCard(obj));
+            yield return new WaitForSecondsRealtime(0.1f);
+        }
+    }
+
     public IEnumerator UpdateCardPositionsNormal(bool isOpponent)
     {
         if (isOpponent)
@@ -298,18 +316,12 @@ public class BoardView : MonoBehaviour
 
         Time.timeScale = 0.01f;
         Time.fixedDeltaTime = 0.02f * Time.timeScale;
-        yield return new WaitForSeconds(0.01f);
+        yield return new WaitForSecondsRealtime(1f);
         Time.timeScale = 1f;
         Time.fixedDeltaTime = 0.02f;
 
         yield return new WaitForSeconds(1f);
         Sequence seq = DOTween.Sequence();
-        // TODO: 这里要加消失动画
-        //foreach (PartMesh part in submeshes)
-        //{
-        //    Transform partTrans = part.GameObject.transform;
-        //    seq.Join(partTrans.DOMove(partTrans.position + Vector3.down * 0.2f, 1f));
-        //}
         seq.OnComplete(() =>
         {
             foreach (PartMesh part in submeshes)
