@@ -12,6 +12,7 @@ public class TestSystem : MonoBehaviour
     [SerializeField] private ResolveZoneView ResolveZoneView;
     private GameObject obj;
     private int turn = 0;
+    private int card = 1;
 
     private void Update()
     {
@@ -31,8 +32,17 @@ public class TestSystem : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.W))
         {
-            GameObject instance = CardViewCreator.Instance.CreateCardInstance(2, 98, transform.position, Quaternion.identity);
-            StartCoroutine(boardView.AddCard(instance, ClientGameState.playerSlot, false));
+            GameObject instance = null;
+            if (card <= 5)
+            {
+                instance = CardViewCreator.Instance.CreateCardInstance(card++, 98, transform.position, Quaternion.identity);
+                StartCoroutine(boardView.AddCard(instance, ClientGameState.playerSlot, false));
+            }
+            else if (card <= 10)
+            {
+                instance = CardViewCreator.Instance.CreateCardInstance(card++, 98, transform.position, Quaternion.identity);
+                StartCoroutine(boardView.AddCard(instance, 99, false));
+            }
             obj = instance;
         }
         if (Input.GetKeyDown(KeyCode.E))
@@ -43,10 +53,7 @@ public class TestSystem : MonoBehaviour
         {
             GameObject instance = CardViewCreator.Instance.CreateCardInstance(2, 99, transform.position, Quaternion.identity);
             StartCoroutine(SceneViewManager.boardView.AddCard(instance, ClientGameState.playerSlot, true));
-        }
-        if (Input.GetKeyDown(KeyCode.T))
-        {
-            GameObject instance = CardViewCreator.Instance.CreateCardInstance(2, 99, transform.position, Quaternion.identity);
+            instance = CardViewCreator.Instance.CreateCardInstance(2, 99, transform.position, Quaternion.identity);
             StartCoroutine(SceneViewManager.boardView.AddCard(instance, 99, true));
         }
         if (Input.GetKeyDown(KeyCode.A))

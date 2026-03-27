@@ -7,7 +7,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Mat_DiskShader
+  m_Name: Mat_DiskSingle
   m_Shader: {fileID: 4800000, guid: b9d41540ffc0d464796930ef72abdc78, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
@@ -24,7 +24,11 @@ Material:
     serializedVersion: 3
     m_TexEnvs:
     - _BaseMap:
-        m_Texture: {fileID: 2800000, guid: dffef66376be4fa480fb02b19edbe903, type: 3}
+        m_Texture: {fileID: 2800000, guid: fc3502f2069c71f4093f514468e5a41c, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _MainMap:
+        m_Texture: {fileID: 2800000, guid: cc3d34e18d1fc2843b658e2ef0abae2b, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _Mask:
@@ -41,7 +45,7 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
-    - _AlbedoFactor: 0.497
+    - _AlbedoFactor: 0.35
     - _AnisColorOffset: 0
     - _AnisoStrength: 0
     - _Anisotropy: 0.92
@@ -58,6 +62,6 @@ Material:
     m_Colors:
     - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
     - _DiskCenterOS: {r: 0, g: 0, b: 0, a: 1}
-    - _EmissionColor: {r: 2.9, g: 2.5, b: 0.01, a: 0}
+    - _EmissionColor: {r: 0, g: 2.9000003, b: 2.565969, a: 1}
     - _RadialCenter: {r: 0.5, g: 0.5, b: 0, a: 0}
   m_BuildTextureStacks: []

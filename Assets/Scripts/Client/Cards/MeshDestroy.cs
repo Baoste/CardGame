@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Drawing;
 using UnityEngine;
 
 public class MeshDestroy : MonoBehaviour
@@ -330,8 +331,14 @@ public class MeshDestroy : MonoBehaviour
                 mesh.SetTriangles(Triangles[i], i, true);
             Bounds = mesh.bounds;
 
+            // set mat
             var renderer = GameObject.AddComponent<MeshRenderer>();
-            renderer.materials = original.GetComponent<MeshRenderer>().materials;
+            var originalRenderer = original.GetComponent<MeshRenderer>();
+            renderer.materials = originalRenderer.materials;
+            // set point tex
+            MaterialPropertyBlock mpb = new MaterialPropertyBlock();
+            originalRenderer.GetPropertyBlock(mpb);
+            renderer.SetPropertyBlock(mpb);
 
             var filter = GameObject.AddComponent<MeshFilter>();
             filter.mesh = mesh;

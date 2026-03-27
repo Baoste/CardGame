@@ -2,6 +2,7 @@ Shader "Custom/DiskShader"
 {
     Properties
     {
+        _MainMap("Main Map", 2D) = "white" {}
         _Mask("Mask", 2D) = "white" {}
         _Mask2("Mask2", 2D) = "white" {}
         _Noise("Noise", 2D) = "white" {}
@@ -85,8 +86,11 @@ Shader "Custom/DiskShader"
                 float _RadialNoiseScale;
                 float _RadialNoiseStrength;
                 float _DissolutionStrength;
+                float4 _EmissionColor;
             CBUFFER_END
 
+            TEXTURE2D(_MainMap);
+            SAMPLER(sampler_MainMap);
             TEXTURE2D(_Mask);
             SAMPLER(sampler_Mask);
             TEXTURE2D(_Mask2);
@@ -157,7 +161,8 @@ Shader "Custom/DiskShader"
                 o.at = max(0.02, o.roughness * (1.0 - _Anisotropy));
                 o.ab = max(0.02, o.roughness * (1.0 + _Anisotropy));
 
-                o.albedo = _BaseColor.rgb;
+                half3 base = SAMPLE_TEXTURE2D(_MainMap, sampler_MainMap, i.uv).rgb;
+                o.albedo = base * _BaseColor.rgb;
                 o.F0 = lerp(float3(0.04, 0.04, 0.04), o.albedo, _Metallic);
 
                 return o;
@@ -199,10 +204,11 @@ Shader "Custom/DiskShader"
 
                 float step1 = step(_DissolutionStrength, noise);
                 float step2 = step(_DissolutionStrength - 0.1, noise);
+                float subNoise = abs(step1 - step2);
                 step2 = clamp(step2, 0, 1);
                 half mask = mask1 * mask2 + 1 - step2;
 
-                if (1 - mask < 0.01)
+                if (1 - mask < 0.5)
                     discard;
 
                 float3 N0 = normalize(i.normalWS);
@@ -220,8 +226,8 @@ Shader "Custom/DiskShader"
                 float3 colorg = EvalDiskLighting(Ng, pre);
                 float3 colorb = EvalDiskLighting(Nb, pre);
 
-                float3 color = float3(colorr.r, colorg.g, colorb.b);
-                color += pre.albedo * _AlbedoFactor;
+                half3 color = half3(colorr.r, colorg.g, colorb.b);
+                color += pre.albedo * _AlbedoFactor + subNoise * _EmissionColor;
 
                 return half4(color, 1 - mask);
             }

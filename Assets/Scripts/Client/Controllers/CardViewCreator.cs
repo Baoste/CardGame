@@ -10,6 +10,9 @@ public class CardViewCreator : Singleton<CardViewCreator>
     [SerializeField] private GameObject pointCardInstancePrefab;
     [SerializeField] private GameObject resolveCardInstancePrefab;
 
+    [Header("Point Card Tex")]
+    public Texture2D[] pointCardTexs;
+
     public GameObject CreateCardInstance(int cardId, int instanceId, Vector3 position, Quaternion rotation)
     {
         CardType cardType = CardDatabase.Get(cardId).type;

@@ -23,7 +23,7 @@ public class BoardView : MonoBehaviour
     [SerializeField] private float rotationAmount;
 
     [Header("Card Rotation")]
-    [SerializeField] private Vector3 selfEuler = new Vector3(90f, 0f, 0f);
+    [SerializeField] private Vector3 selfEuler = new Vector3(-90f, 0f, 0f);
     [SerializeField] private Vector3 opponentEuler = new Vector3(90f, 0f, 0f);
 
     [Header("Spawn Position")]
@@ -50,7 +50,7 @@ public class BoardView : MonoBehaviour
     {
         bool isOpponent = playerId != ClientGameState.playerSlot;
         
-        Quaternion targetRotation = Quaternion.Euler(isOpponent ? opponentEuler : selfEuler);
+        Quaternion targetRotation = Quaternion.Euler(isHoleCard && isOpponent ? opponentEuler : selfEuler);
         instance.transform.rotation = targetRotation;
 
         if (isOpponent)
@@ -67,8 +67,8 @@ public class BoardView : MonoBehaviour
         if (isHoleCard && isOpponent)
         {
             instance.GetComponent<PointCardInstance>().pointText.text = "";
-            targetRotation = instance.transform.rotation * Quaternion.Euler(180, 0, 0);
-            instance.transform.rotation = targetRotation;
+            //targetRotation = instance.transform.rotation * Quaternion.Euler(180, 0, 0);
+            //instance.transform.rotation = targetRotation;
         }
 
         // ÅÆ¶Ñ¶¯»­
