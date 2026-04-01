@@ -47,8 +47,11 @@ namespace Game.Domain
             }
         }
 
-        public void Init()
+        public void Init(int seed)
         {
+            RandomSeed = seed;
+            rng = new Random(seed);
+            
             Turn = 0;
             CurrentPlayerId = -1;
 

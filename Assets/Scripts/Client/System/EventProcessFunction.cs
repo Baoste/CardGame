@@ -73,7 +73,7 @@ public class EventProcessFunction : MonoBehaviour
 
         SceneViewManager.roleView.ShowRole(dealerId);
         if (ClientGameState.Instance.dealerId == ClientGameState.playerSlot)
-            ClientCommand.StartTurn(dealerId);
+            ClientCommand.StartTurn(punterId);
     }
 
     // parameters[0]: int playerId

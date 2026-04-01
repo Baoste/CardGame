@@ -1,5 +1,6 @@
 using Cinemachine;
 using DG.Tweening;
+using FishNet.Demo.AdditiveScenes;
 using Game.Domain;
 using System.Collections;
 using System.Collections.Generic;
@@ -136,6 +137,31 @@ public class BoardView : MonoBehaviour
             yield return DestroyCard(instance);
             yield return new WaitForSeconds(3f);
             yield return UpdateCardPositionsNormal(false);
+        }
+    }
+
+    public IEnumerator RemoveOneSideCards(int loserId)
+    {
+        bool isOpponent = loserId != ClientGameState.playerSlot;
+        if (isOpponent)
+        {
+            for (int i = opponentCards.Count - 1; i >= 0; i--)
+            {
+                GameObject obj = opponentCards[i];
+                opponentCards.RemoveAt(i);
+                StartCoroutine(DestroyCard(obj));
+                yield return new WaitForSecondsRealtime(0.1f);
+            }
+        }
+        else
+        {
+            for (int i = selfCards.Count - 1; i >= 0; i--)
+            {
+                GameObject obj = selfCards[i];
+                selfCards.RemoveAt(i);
+                StartCoroutine(DestroyCard(obj));
+                yield return new WaitForSecondsRealtime(0.1f);
+            }
         }
     }
 

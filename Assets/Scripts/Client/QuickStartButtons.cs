@@ -6,6 +6,7 @@ public class QuickStartButtons : MonoBehaviour
 {
     public NetworkManager nm;
     private string matchId = "123";
+    private string matchSeed = "12345";
 
     private void OnGUI()
     {
@@ -27,15 +28,16 @@ public class QuickStartButtons : MonoBehaviour
         }
 
         matchId = GUI.TextField(new Rect(10, 160, w, h), matchId);
+        matchSeed = GUI.TextField(new Rect(10, 210, w, h), matchSeed);
 
         // These buttons are for testing the ClientCommand methods. They will not work without a server and client connection.
-        if (GUI.Button(new Rect(1700, 10, w, h), "Create Match"))
+        if (GUI.Button(new Rect(1700, 10, w, h), "Create / Join Match"))
             ClientCommand.CreateMatch(matchId);
 
-        if (GUI.Button(new Rect(1700, 60, w, h), "Join Match"))
-            ClientCommand.JoinMatch(matchId);
+        //if (GUI.Button(new Rect(1700, 60, w, h), "Join Match"))
+        //    ClientCommand.JoinMatch(matchId);
 
-        if (GUI.Button(new Rect(1700, 110, w, h), "Leave Match"))
+        if (GUI.Button(new Rect(1700, 60, w, h), "Leave Match"))
             ClientCommand.LeaveMatch();
 
         if (GUI.Button(new Rect(1700, 160, w, h), "Chat"))
@@ -43,7 +45,8 @@ public class QuickStartButtons : MonoBehaviour
 
         if (GUI.Button(new Rect(1700, 210, w, h), "Start Game"))
         {
-            ClientCommand.StartGame();
+            int seed = int.Parse(matchSeed);
+            ClientCommand.StartGame(seed);
         }
 
         if (ClientGameState.playerSlot == ClientGameState.Instance.CurrentPlayerId)

@@ -32,6 +32,7 @@ namespace Game.Domain
     public class StartGameCommand : ICommand
     {
         public int playerId;
+        public int seed;
     }
 
     public class AssignRolesCommand : ICommand

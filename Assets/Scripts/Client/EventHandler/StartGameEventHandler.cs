@@ -10,7 +10,7 @@ public class StartGameEventHandler : IEventProcess, IEventHandler
         var payload = JsonConvert.DeserializeObject<StartGameEvent>(ev.jsonData); // need change
         // need change, 需要把参数在这里传进去
         ProcessQueueManager.Instance.Enqueue(Process, new object[] { });
-        ClientGameState.Instance.Init();
+        ClientGameState.Instance.Init(payload.seed);
 
         // TODO
         // START

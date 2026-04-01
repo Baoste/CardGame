@@ -30,5 +30,6 @@ public class RoleView : MonoBehaviour
         {
             roleTMP.text = "LOSE!!!";
         }
+        StartCoroutine(SceneViewManager.boardView.RemoveOneSideCards(1 - winnerId));
     }
 }

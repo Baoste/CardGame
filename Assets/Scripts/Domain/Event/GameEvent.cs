@@ -32,9 +32,11 @@ namespace Game.Domain
     /// </summary>
     public class StartGameEvent : PlayerEvent
     {
-        public StartGameEvent(int playerId, bool success) 
+        public int seed;
+        public StartGameEvent(int playerId, bool success, int seed) 
             : base(playerId, success)
         {
+            this.seed = seed;
         }
     }
 

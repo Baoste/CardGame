@@ -25,9 +25,9 @@ public static class ClientCommand
         ClientGameState.gateway.SendCommandServerRpc("LeaveGame", JsonConvert.SerializeObject(cmd));
     }
 
-    public static void StartGame()
+    public static void StartGame(int seed)
     {
-        StartGameCommand cmd = new StartGameCommand { playerId = ClientGameState.playerSlot };
+        StartGameCommand cmd = new StartGameCommand { playerId = ClientGameState.playerSlot, seed = seed };
         ClientGameState.gateway.SendCommandServerRpc("StartGame", JsonConvert.SerializeObject(cmd));
         AssignRolesCommand cmd2 = new AssignRolesCommand { playerId = ClientGameState.playerSlot };
         ClientGameState.gateway.SendCommandServerRpc("AssignRoles", JsonConvert.SerializeObject(cmd2));
