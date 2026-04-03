@@ -56,6 +56,30 @@ namespace Game.Domain
     }
 
     /// <summary>
+    /// 下一注
+    /// </summary>
+    public class Place1BetEvent : PlayerEvent
+    {
+        public Place1BetEvent(int playerId, bool success)
+            : base(playerId, success)
+        {
+        }
+    }
+
+    /// <summary>
+    /// 确定下注
+    /// </summary>
+    public class ConfirmBetEvent : PlayerEvent
+    {
+        public int betCount;
+        public ConfirmBetEvent(int playerId, bool success, int betCount)
+            : base(playerId, success)
+        {
+            this.betCount = betCount;
+        }
+    }
+
+    /// <summary>
     /// 开始回合事件
     /// </summary>
     public class StartTurnEvent : PlayerEvent

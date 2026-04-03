@@ -7,6 +7,8 @@ public static class DispatcherBootstrap
         EventDispatcher.Register("JoinOrCreateGame", new JoinOrCreateGameEventHandler());
         EventDispatcher.Register("StartGame", new StartGameEventHandler());
         EventDispatcher.Register("AssignRoles", new AssignRolesEventHandler());
+        EventDispatcher.Register("Place1Bet", new Place1BetEventHandler());
+        EventDispatcher.Register("ConfirmBet", new ConfirmBetEventHandler());
         EventDispatcher.Register("StartTurn", new StartTurnEventHandler());
         EventDispatcher.Register("GetGameState", new GetGameStateEventHandler());
         EventDispatcher.Register("GetCtx", new GetCtxEventHandler());
@@ -31,6 +33,8 @@ public static class DispatcherBootstrap
         CommandDispatcher.Register("JoinOrCreateGame", new JoinOrCreateGameCmdHandler());
         CommandDispatcher.Register("StartGame", new StartGameCmdHandler());
         CommandDispatcher.Register("AssignRoles", new AssignRolesCmdHandler());
+        CommandDispatcher.Register("Place1Bet", new Place1BetCmdHandler());
+        CommandDispatcher.Register("ConfirmBet", new ConfirmBetCmdHandler());
         CommandDispatcher.Register("StartTurn", new StartTurnCmdHandler());
         CommandDispatcher.Register("GetGameState", new GetGameStateCmdHandler());
         CommandDispatcher.Register("GetCtx", new GetCtxCmdHandler());

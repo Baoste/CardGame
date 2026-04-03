@@ -12,4 +12,7 @@ public static class SceneViewManager
     public static RevealView opponentRevealButtonView;
     public static TurnLightView myTurnLightView;
     public static TurnLightView opponentTurnLightView;
+    public static ChipView myChipView;
+    public static ChipView opponentChipView;
+    public static ViewAnimController viewAnimController;
 }

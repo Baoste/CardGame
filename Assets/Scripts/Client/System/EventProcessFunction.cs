@@ -5,7 +5,6 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
-using static UnityEngine.Rendering.DebugUI;
 
 public class EventProcessFunction : MonoBehaviour
 {
@@ -16,6 +15,7 @@ public class EventProcessFunction : MonoBehaviour
         ProcessDispatcher.Register("StartGameTest", StartGameTest);
         ProcessDispatcher.Register("StartTurnTest", StartTurnTest);
         ProcessDispatcher.Register("AssignRolesTest", AssignRolesTest);
+        ProcessDispatcher.Register("Place1BetTest", Place1BetTest);
         ProcessDispatcher.Register("PlayAnimation", PlayAnimation);
         ProcessDispatcher.Register("DrawPointCard", DrawPointCard);
         ProcessDispatcher.Register("DrawSkillCardTest", DrawSkillCard);
@@ -33,6 +33,7 @@ public class EventProcessFunction : MonoBehaviour
     {
         CinemachineVirtualCamera vcam = GameObject.Find("VCamera_Playing").GetComponent<CinemachineVirtualCamera>();
         vcam.Priority = 20;
+        SceneViewManager.viewAnimController.PlayStartGameAnim();
     }
 
     // parameters[0]: int turn
@@ -74,6 +75,29 @@ public class EventProcessFunction : MonoBehaviour
         SceneViewManager.roleView.ShowRole(dealerId);
         if (ClientGameState.Instance.dealerId == ClientGameState.playerSlot)
             ClientCommand.StartTurn(punterId);
+    }
+
+    // parameters[0]: int playerId
+    public void Place1BetTest(object[] parameters)
+    {
+        int playerId = (int)parameters[0];
+
+        bool isOpponent = playerId != ClientGameState.playerSlot;
+        if (isOpponent)
+        {
+            // TODO: 加上对手
+        }
+        else
+        {
+            foreach (var obj in SceneViewManager.myChipView.chipsPlaced)
+            {
+                ChipDraggable script = obj.GetComponent<ChipDraggable>();
+                if (script != null)
+                {
+                    Destroy(script);
+                }
+            }
+        }
     }
 
     // parameters[0]: int playerId

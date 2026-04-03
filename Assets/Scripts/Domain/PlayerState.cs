@@ -1,6 +1,3 @@
-using System;
-using System.Collections.Generic;
-using Unity.VisualScripting;
 
 namespace Game.Domain
 {
@@ -17,6 +14,7 @@ namespace Game.Domain
         public int playerId;
         public int actionPoint = 0;
         public int _holeCard = -1;
+        public int chipCount = 6;
         public SkillCardsInHand skillCardsInHand = new SkillCardsInHand();
         public PointCardsOnBoard pointCardsOnBoard = new PointCardsOnBoard();
     }

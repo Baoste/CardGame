@@ -19,6 +19,11 @@ public class SceneViewRegistry : MonoBehaviour
     [SerializeField] private TurnLightView myTurnLightView;
     [SerializeField] private TurnLightView opponentTurnLightView;
 
+    [SerializeField] private ChipView myChipView;
+    [SerializeField] private ChipView opponentChipView;
+
+    [SerializeField] private ViewAnimController viewAnimController;
+
     private void Awake()
     {
         SceneViewManager.boardView = boardView;
@@ -32,5 +37,8 @@ public class SceneViewRegistry : MonoBehaviour
         SceneViewManager.opponentRevealButtonView = opponentRevealButtonView;
         SceneViewManager.myTurnLightView = myTurnLightView;
         SceneViewManager.opponentTurnLightView = opponentTurnLightView;
+        SceneViewManager.myChipView = myChipView;
+        SceneViewManager.opponentChipView = opponentChipView;
+        SceneViewManager.viewAnimController = viewAnimController;
     }
 }

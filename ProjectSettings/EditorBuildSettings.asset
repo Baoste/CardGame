@@ -9,6 +9,6 @@ EditorBuildSettings:
     path: Assets/Scenes/ServerScene.unity
     guid: 99c9720ab356a0642a771bea13969a05
   - enabled: 1
-    path: Assets/Scenes/ClientTest_Yifan.unity
-    guid: ae15fc893f193db4482736732da2d5db
+    path: Assets/Scenes/ClientTest_Yifan_v2.unity
+    guid: b9566a41f81a2e44cad5cf5e0642bed6
   m_configObjects: {}

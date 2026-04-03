@@ -221,6 +221,9 @@
         },
         {
             "m_Id": "0e5a32673461427ba6f2ff80535ba880"
+        },
+        {
+            "m_Id": "7ceca9db625b4372b18d86797873237b"
         }
     ],
     "m_GroupDatas": [],
@@ -560,6 +563,104 @@
                     "m_Id": "eae96f59ebff44d1b736c6d8fed70346"
                 },
                 "m_SlotId": 0
+            }
+        },
+        {
+            "m_OutputSlot": {
+                "m_Node": {
+                    "m_Id": "7ceca9db625b4372b18d86797873237b"
+                },
+                "m_SlotId": 0
+            },
+            "m_InputSlot": {
+                "m_Node": {
+                    "m_Id": "145adbfa95424cfbbb8f96556b6f99ef"
+                },
+                "m_SlotId": 3
+            }
+        },
+        {
+            "m_OutputSlot": {
+                "m_Node": {
+                    "m_Id": "7ceca9db625b4372b18d86797873237b"
+                },
+                "m_SlotId": 0
+            },
+            "m_InputSlot": {
+                "m_Node": {
+                    "m_Id": "31b5063e02bd4b96bf42c843d85c9762"
+                },
+                "m_SlotId": 3
+            }
+        },
+        {
+            "m_OutputSlot": {
+                "m_Node": {
+                    "m_Id": "7ceca9db625b4372b18d86797873237b"
+                },
+                "m_SlotId": 0
+            },
+            "m_InputSlot": {
+                "m_Node": {
+                    "m_Id": "8547445603164acf96a5c84f9fd958a8"
+                },
+                "m_SlotId": 3
+            }
+        },
+        {
+            "m_OutputSlot": {
+                "m_Node": {
+                    "m_Id": "7ceca9db625b4372b18d86797873237b"
+                },
+                "m_SlotId": 0
+            },
+            "m_InputSlot": {
+                "m_Node": {
+                    "m_Id": "863e552eb0284b429158915c58ad4f4f"
+                },
+                "m_SlotId": 3
+            }
+        },
+        {
+            "m_OutputSlot": {
+                "m_Node": {
+                    "m_Id": "7ceca9db625b4372b18d86797873237b"
+                },
+                "m_SlotId": 0
+            },
+            "m_InputSlot": {
+                "m_Node": {
+                    "m_Id": "c27661614a4847b9b26fccf61a8f3355"
+                },
+                "m_SlotId": 3
+            }
+        },
+        {
+            "m_OutputSlot": {
+                "m_Node": {
+                    "m_Id": "7ceca9db625b4372b18d86797873237b"
+                },
+                "m_SlotId": 0
+            },
+            "m_InputSlot": {
+                "m_Node": {
+                    "m_Id": "dbc76ea58f13499897f5f15e7a2c2bcc"
+                },
+                "m_SlotId": 3
+            }
+        },
+        {
+            "m_OutputSlot": {
+                "m_Node": {
+                    "m_Id": "7ceca9db625b4372b18d86797873237b"
+                },
+                "m_SlotId": 0
+            },
+            "m_InputSlot": {
+                "m_Node": {
+                    "m_Id": "f275ec5c91154a278548752f8816b895"
+                },
+                "m_SlotId": 3
             }
         },
         {
@@ -1031,10 +1132,10 @@
         "m_Expanded": true,
         "m_Position": {
             "serializedVersion": "2",
-            "x": -1240.6666259765625,
-            "y": 893.3333740234375,
-            "width": 128.6666259765625,
-            "height": 35.99993896484375
+            "x": -1229.9998779296875,
+            "y": 1036.666748046875,
+            "width": 128.666748046875,
+            "height": 35.9998779296875
         }
     },
     "m_Slots": [
@@ -1739,6 +1840,19 @@
 
 {
     "m_SGVersion": 0,
+    "m_Type": "UnityEditor.ShaderGraph.SamplerStateMaterialSlot",
+    "m_ObjectId": "0f7952ed71b74541a7970c6a7965f196",
+    "m_Id": 0,
+    "m_DisplayName": "Out",
+    "m_SlotType": 1,
+    "m_Hidden": false,
+    "m_ShaderOutputName": "Out",
+    "m_StageCapability": 3,
+    "m_BareResource": false
+}
+
+{
+    "m_SGVersion": 0,
     "m_Type": "UnityEditor.ShaderGraph.DynamicVectorMaterialSlot",
     "m_ObjectId": "10799a565217420cb234e75a1828a405",
     "m_Id": 2,
@@ -1852,13 +1966,13 @@
     },
     "m_Name": "Sample Texture 2D",
     "m_DrawState": {
-        "m_Expanded": false,
+        "m_Expanded": true,
         "m_Position": {
             "serializedVersion": "2",
             "x": -1030.0,
-            "y": 192.6666259765625,
-            "width": 182.00006103515626,
-            "height": 158.66665649414063
+            "y": 127.99999237060547,
+            "width": 182.0,
+            "height": 157.33331298828126
         }
     },
     "m_Slots": [
@@ -1958,10 +2072,10 @@
         "m_Expanded": true,
         "m_Position": {
             "serializedVersion": "2",
-            "x": -1240.6666259765625,
-            "y": 852.0,
+            "x": -1230.0,
+            "y": 818.0,
             "width": 158.6666259765625,
-            "height": 36.0
+            "height": 35.99993896484375
         }
     },
     "m_Slots": [
@@ -2523,13 +2637,13 @@
     },
     "m_Name": "Sample Texture 2D",
     "m_DrawState": {
-        "m_Expanded": false,
+        "m_Expanded": true,
         "m_Position": {
             "serializedVersion": "2",
             "x": -1030.0,
-            "y": 912.6666870117188,
+            "y": 1094.0,
             "width": 157.33331298828126,
-            "height": 157.33331298828126
+            "height": 157.333251953125
         }
     },
     "m_Slots": [
@@ -3259,10 +3373,10 @@
         "m_Expanded": true,
         "m_Position": {
             "serializedVersion": "2",
-            "x": -2613.999755859375,
-            "y": -770.6665649414063,
+            "x": -2628.000244140625,
+            "y": -850.0001220703125,
             "width": 146.0,
-            "height": 35.99993896484375
+            "height": 36.00006103515625
         }
     },
     "m_Slots": [
@@ -4080,6 +4194,42 @@
 
 {
     "m_SGVersion": 0,
+    "m_Type": "UnityEditor.ShaderGraph.SamplerStateNode",
+    "m_ObjectId": "7ceca9db625b4372b18d86797873237b",
+    "m_Group": {
+        "m_Id": ""
+    },
+    "m_Name": "Sampler State",
+    "m_DrawState": {
+        "m_Expanded": true,
+        "m_Position": {
+            "serializedVersion": "2",
+            "x": -2702.0,
+            "y": -70.66670227050781,
+            "width": 147.33349609375,
+            "height": 141.3333740234375
+        }
+    },
+    "m_Slots": [
+        {
+            "m_Id": "0f7952ed71b74541a7970c6a7965f196"
+        }
+    ],
+    "synonyms": [],
+    "m_Precision": 0,
+    "m_PreviewExpanded": true,
+    "m_DismissedVersion": 0,
+    "m_PreviewMode": 0,
+    "m_CustomColors": {
+        "m_SerializableColors": []
+    },
+    "m_filter": 0,
+    "m_wrap": 0,
+    "m_aniso": 0
+}
+
+{
+    "m_SGVersion": 0,
     "m_Type": "UnityEditor.ShaderGraph.FractionNode",
     "m_ObjectId": "7d84e24ca2e547d09046873c0b8aa23a",
     "m_Group": {
@@ -4384,7 +4534,7 @@
     },
     "m_Name": "Sample Texture 2D",
     "m_DrawState": {
-        "m_Expanded": false,
+        "m_Expanded": true,
         "m_Position": {
             "serializedVersion": "2",
             "x": -1027.3333740234375,
@@ -4457,7 +4607,7 @@
     },
     "m_Name": "Sample Texture 2D",
     "m_DrawState": {
-        "m_Expanded": false,
+        "m_Expanded": true,
         "m_Position": {
             "serializedVersion": "2",
             "x": -2431.999755859375,
@@ -6115,13 +6265,13 @@
     },
     "m_Name": "Sample Texture 2D",
     "m_DrawState": {
-        "m_Expanded": false,
+        "m_Expanded": true,
         "m_Position": {
             "serializedVersion": "2",
-            "x": -1002.666748046875,
-            "y": 729.3333129882813,
-            "width": 182.00006103515626,
-            "height": 158.66668701171876
+            "x": -1030.0,
+            "y": 818.0,
+            "width": 184.66656494140626,
+            "height": 254.6666259765625
         }
     },
     "m_Slots": [
@@ -6745,7 +6895,7 @@
     },
     "m_Name": "Sample Texture 2D",
     "m_DrawState": {
-        "m_Expanded": false,
+        "m_Expanded": true,
         "m_Position": {
             "serializedVersion": "2",
             "x": -1002.6666870117188,
@@ -7475,7 +7625,7 @@
     },
     "m_Name": "Sample Texture 2D",
     "m_DrawState": {
-        "m_Expanded": false,
+        "m_Expanded": true,
         "m_Position": {
             "serializedVersion": "2",
             "x": -2431.999755859375,

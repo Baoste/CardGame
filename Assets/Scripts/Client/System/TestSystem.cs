@@ -17,7 +17,12 @@ public class TestSystem : MonoBehaviour
 
     private void Update()
     {
-        if(Input.GetKeyDown(KeyCode.Space))
+        if (Input.GetKeyDown(KeyCode.O))
+        {
+            SceneViewManager.viewAnimController.PlayStartGameAnim();
+        }
+
+        if (Input.GetKeyDown(KeyCode.Space))
         {
             //ClientCommand.DrawSkillCard();
             instance1 = CardViewCreator.Instance.CreateCardInstance(6219298, 9999, transform.position, Quaternion.identity);

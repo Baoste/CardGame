@@ -65,7 +65,6 @@ public class ExecuteCardView : MonoBehaviour
         CommandExecutionState<PlayAnimationCommand>.IsDone = true;
     }
 
-
     private void OnDrawGizmos()
     {
         Gizmos.color = Color.gray;

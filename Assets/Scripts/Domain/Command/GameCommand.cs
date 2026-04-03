@@ -40,6 +40,16 @@ namespace Game.Domain
         public int playerId;
     }
 
+    public class Place1BetCommand : ICommand
+    {
+        public int playerId;
+    }
+
+    public class ConfirmBetCommand : ICommand
+    {
+        public int playerId;
+    }
+
     /// <summary>
     /// 开始回合命令
     /// </summary>

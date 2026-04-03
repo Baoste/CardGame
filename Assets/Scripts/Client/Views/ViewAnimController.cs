@@ -32,25 +32,17 @@ public class ViewAnimController : MonoBehaviour
         op_SkillCardsDeckCoverPivot.rotation = Quaternion.Euler(0, 0, 0);
     }
 
-    private void Update()
+    public void PlayStartGameAnim()
     {
-        if (Input.GetKeyDown(KeyCode.O))
-        {
-            StartCoroutine(ClosePointCardDeckCover());
-
-            m_SkillCardsDeck.position = m_SkillDeckOriginalPosition - m_SkillCardsDeck.up * 0.3f;
-            m_SkillCardsDeckCoverPivot.rotation = Quaternion.Euler(-66.11f, 0, 0);
-            op_SkillCardsDeck.position = op_SkillDeckOriginalPosition - op_SkillCardsDeck.up * 0.3f;
-            op_SkillCardsDeckCoverPivot.rotation = Quaternion.Euler(0, 0, 0);
-            StartCoroutine(OpenSkillCardDeckCover());
-        }
+        StartCoroutine(ClosePointCardDeckCover());
+        StartCoroutine(OpenSkillCardDeckCover());
     }
 
     public IEnumerator ClosePointCardDeckCover()
     {
         Sequence seq = DOTween.Sequence();
         seq.Append(pointCardsDeck.DOMoveY(2.02f, 0.5f).SetEase(Ease.OutCubic));
-        seq.Append(pointCardsDeckCoverPivot.DORotate(Vector3.zero, 0.25f).SetEase(Ease.InCirc));
+        seq.Append(pointCardsDeckCoverPivot.DORotate(Vector3.zero, 0.25f).SetEase(Ease.InCubic));
 
         yield return seq.WaitForCompletion();
     }

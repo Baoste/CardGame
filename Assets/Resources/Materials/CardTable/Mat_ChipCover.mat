@@ -78,6 +78,6 @@ Material:
     - _Alpha: 0.59
     - _QueueControl: 0
     - _QueueOffset: 0
-    - _R0: 0.9
+    - _R0: 0.95
     m_Colors: []
   m_BuildTextureStacks: []

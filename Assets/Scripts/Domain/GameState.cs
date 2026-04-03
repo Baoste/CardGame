@@ -32,6 +32,9 @@ namespace Game.Domain
         public DiscardPile discardPile = new DiscardPile();
         public CardsToResolve cardsToResolve = new CardsToResolve();
 
+        // 赌注相关
+        public int currentBet = 0;
+
         // CardInstanceID -> CardZone 的映射，方便快速查询某张牌当前在哪个牌堆/玩家的哪个区域
         private Dictionary<int, CardZone> cardLocationMap = new Dictionary<int, CardZone>();
         // CardInstanceID -> PointCard的点数 的映射，方便快速查询某张点数牌实例的点数
@@ -54,6 +57,8 @@ namespace Game.Domain
             
             Turn = 0;
             CurrentPlayerId = -1;
+
+            currentBet = 0;
 
             skillCardsDeck._Clear();
             pointCardsDeck._Clear();
