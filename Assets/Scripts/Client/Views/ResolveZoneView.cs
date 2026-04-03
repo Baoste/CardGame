@@ -12,17 +12,11 @@ public class ResolveZoneView : MonoBehaviour
 
     [Header("Card Layout")]
     [SerializeField] private float cardSpacing = 1.8f;
-    [SerializeField] private float depthOffsetPerCard = 0.02f;
+    // [SerializeField] private float depthOffsetPerCard = 0.02f;
     [SerializeField] private float animationDuration = 0.2f;
 
     [Header("Card Rotation")]
     [SerializeField] private Vector3 cardEuler = new Vector3(90f, 0f, 0f);
-
-    [Header("Discover Style")]
-    [SerializeField] private bool centerCardSlightlyForward = true;
-    [SerializeField] private float centerForwardOffset = 0.15f;
-    [SerializeField] private bool useFanRotation = true;
-    [SerializeField] private float maxFanAngle = 12f;
 
     private readonly List<GameObject> resolveCards = new();
 

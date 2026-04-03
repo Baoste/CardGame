@@ -11,7 +11,7 @@ public class MeshDestroy : MonoBehaviour
     private Vector2 edgeUV = Vector2.zero;
     private Plane edgePlane = new Plane();
 
-    private int CutCascades = 4;
+    // private int CutCascades = 4;
     private float ExplodeForce = 15f;
 
     [Header("Disc Fracture")]
@@ -26,7 +26,7 @@ public class MeshDestroy : MonoBehaviour
     //        DestroyMesh();
     //}
 
-    public List<PartMesh> DestroyMesh()
+    public List<PartMesh> DestroyMesh(int CutCascades)
     {
         var originalMesh = GetComponent<MeshFilter>().mesh;
         originalMesh.RecalculateBounds();

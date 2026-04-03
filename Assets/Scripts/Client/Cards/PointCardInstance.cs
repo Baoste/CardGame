@@ -6,6 +6,7 @@ public class PointCardInstance : CardInstance
 {
     [Header("Component")]
     public TMP_Text pointText;
+    public bool isHole;
 
     private Renderer matRenderer;
     private MaterialPropertyBlock mpb;

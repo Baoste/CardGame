@@ -32,7 +32,8 @@ public class ExecuteCardView : MonoBehaviour
 
     public IEnumerator MoveToExecutePosition(GameObject card)
     {
-        card.GetComponent<SkillCardDraggable>().executed = true;
+        SkillCardDraggable drag = card.GetComponent<SkillCardDraggable>();
+        if (drag != null) drag.executed = true;
 
         StartCoroutine(SceneViewManager.myHandView.RemoveCard(card));
         StartCoroutine(SceneViewManager.opponentHandView.RemoveCard(card));

@@ -6,19 +6,35 @@ using UnityEngine;
 public class TestSystem : MonoBehaviour
 {
     [SerializeField] private HandView handView;
+    [SerializeField] private HandView ophandView;
     [SerializeField] private BoardView boardView;
     [SerializeField] private ResolveZoneView ResolveZoneView;
     private Stack<GameObject> objs = new Stack<GameObject>();
     private int turn = 0;
     private int card = 1;
+    private GameObject instance1;
+    private GameObject instance2;
 
     private void Update()
     {
         if(Input.GetKeyDown(KeyCode.Space))
         {
             //ClientCommand.DrawSkillCard();
-            GameObject instance = CardViewCreator.Instance.CreateCardInstance(6219298, 9999, transform.position, Quaternion.identity);
-            StartCoroutine(handView.AddCard(instance));
+            instance1 = CardViewCreator.Instance.CreateCardInstance(6219298, 9999, transform.position, Quaternion.identity);
+            StartCoroutine(handView.AddCard(instance1));
+            instance2 = CardViewCreator.Instance.CreateCardInstance(6219298, 9999, transform.position, Quaternion.identity);
+            StartCoroutine(ophandView.AddCard(instance2));
+        }
+
+        if (Input.GetKeyDown(KeyCode.N))
+        {
+            StartCoroutine(SceneViewManager.myExecuteCardView.MoveToFallPosition(instance1));
+            StartCoroutine(SceneViewManager.opponentExecuteCardView.MoveToFallPosition(instance2));
+        }
+        if (Input.GetKeyDown(KeyCode.M))
+        {
+            StartCoroutine(SceneViewManager.myExecuteCardView.MoveToExecutePosition(instance1));
+            StartCoroutine(SceneViewManager.opponentExecuteCardView.MoveToExecutePosition(instance2));
         }
 
         if (Input.GetKeyDown(KeyCode.Q))
@@ -54,6 +70,7 @@ public class TestSystem : MonoBehaviour
         {
             StartCoroutine(SceneViewManager.boardView.RemoveAllCards());
             objs.Clear();
+            card = 1;
         }
         if (Input.GetKeyDown(KeyCode.R))
         {

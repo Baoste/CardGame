@@ -9,7 +9,7 @@ public class RevealView : MonoBehaviour
     [SerializeField] private GameObject revealButton;
     [SerializeField] private GameObject revealRandom;
 
-    private Vector3 BtnHidePosition;
+    // private Vector3 BtnHidePosition;
     private Vector3 BtnShowPosition;
     private Vector3 RdmHidePosition;
     private Vector3 RdmShowPosition;
@@ -23,8 +23,8 @@ public class RevealView : MonoBehaviour
         revealRandom.transform.localPosition = RdmHidePosition;
 
         BtnShowPosition = revealButton.transform.localPosition;
-        BtnHidePosition = BtnShowPosition + Vector3.down * 0.1f;
-        revealButton.transform.localPosition = BtnHidePosition;
+        // BtnHidePosition = BtnShowPosition + Vector3.down * 0.1f;
+        // revealButton.transform.localPosition = BtnHidePosition;
         revealButton.GetComponent<RevealButton>().SetOriginalPosition(BtnShowPosition);
         revealButton.GetComponent<RevealButton>().enabled = false;
         revealButton.GetComponent<Collider>().enabled = false;

@@ -17,7 +17,6 @@ public class SkillCardInstance : CardInstance
     public TMP_Text descriptionText;
     public TMP_Text pointText; 
     public MeshRenderer meshRenderer;
-    public Material outsideAreaMaterial;
     public Material defaultMaterial { get; private set; }
 
     public Vector3 originalPos;

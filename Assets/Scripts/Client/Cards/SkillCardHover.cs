@@ -11,7 +11,7 @@ public class SkillCardHover : MonoBehaviour, IMouseEnter, IMouseExit
     private float hoveredMoveDirY;
     private Outline outlineControl;
 
-    private void Start()
+    public void Init()
     {
         instance = GetComponent<SkillCardInstance>();
         draggable = GetComponent<SkillCardDraggable>();

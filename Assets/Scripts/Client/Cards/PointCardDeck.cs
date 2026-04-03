@@ -1,45 +1,35 @@
 using DG.Tweening;
+using Game.Domain;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class PointCardDeck : MonoBehaviour
 {
-    private Tween rotateTween;
+    [SerializeField] private Vector3 instantiatePosition;
 
-    void Start()
+    public IEnumerator EjectDisk(Transform disk, float rotation)
     {
-        ChangeRotateState(true);
+        Vector3 targetPos = Quaternion.AngleAxis(rotation, Vector3.up) * instantiatePosition;
+        Sequence seq = DOTween.Sequence();
+        seq.Append(disk.DOMove(targetPos, 0.5f));
+        yield return seq.WaitForCompletion();
     }
 
-    public void ChangeRotateState(bool isStart)
+    public IEnumerator EjectDisk(Transform disk, Vector3 position)
     {
-        if (isStart)
-        {
-            Sequence seq = DOTween.Sequence();
-            // 加速阶段
-            seq.Append(
-                transform.DORotate(
-                    new Vector3(0, 20, 0),
-                    1f,
-                    RotateMode.LocalAxisAdd
-                ).SetEase(Ease.InQuad)
-            );
-            // 加速结束后，开启匀速循环
-            seq.AppendCallback(() =>
-            {
-                rotateTween = transform.DORotate(
-                    new Vector3(0, 360, 0),
-                    6f,
-                    RotateMode.LocalAxisAdd
-                )
-                .SetEase(Ease.Linear)
-                .SetLoops(-1, LoopType.Restart);
-            });
-        }
-        else
-        {
-            rotateTween.Kill();
-        }
+        Vector2 a = new Vector2(instantiatePosition.x, instantiatePosition.z);
+        Vector2 b = new Vector2(position.x, position.z);
+        float angle = Vector2.SignedAngle(b, a);
+        Vector3 targetPos = Quaternion.AngleAxis(angle, Vector3.up) * instantiatePosition;
+        Sequence seq = DOTween.Sequence();
+        seq.Append(disk.DOMove(targetPos, 0.5f));
+        yield return seq.WaitForCompletion();
+    }
+
+    private void OnDrawGizmosSelected()
+    {
+        Gizmos.color = Color.cyan;
+        Gizmos.DrawSphere(instantiatePosition, 0.01f);
     }
 }

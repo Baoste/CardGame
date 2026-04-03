@@ -107,7 +107,7 @@ public class SkillCardDraggable : MonoBehaviour, IMouseDown, IMouseDrag, IMouseU
         }
     }
 
-    IEnumerator ExecuteCard()
+    private IEnumerator ExecuteCard()
     {
         if (ClientGameState.playerSlot != ClientGameState.Instance.CurrentPlayerId)
         {

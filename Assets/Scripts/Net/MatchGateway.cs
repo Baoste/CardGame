@@ -255,7 +255,7 @@ public class MatchGateway : NetworkBehaviour
     // =======================
     private void Update()
     {
-        if (!IsServer) return;
+        if (!IsServerInitialized) return;
 
         _gcTimer += Time.deltaTime;
         if (_gcTimer < 5f) return;

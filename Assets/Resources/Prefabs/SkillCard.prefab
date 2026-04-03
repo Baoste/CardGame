@@ -10,8 +10,6 @@ GameObject:
   m_Component:
   - component: {fileID: 6648781163875854784}
   - component: {fileID: 8635554806184183513}
-  - component: {fileID: 9187186278582596517}
-  - component: {fileID: 3376486714009073085}
   - component: {fileID: 1898981318327804687}
   - component: {fileID: 2593245010354786636}
   - component: {fileID: 4593778783486630254}
@@ -60,33 +58,7 @@ MonoBehaviour:
   descriptionText: {fileID: 4704261164515877341}
   pointText: {fileID: 2850062255717980671}
   meshRenderer: {fileID: 5301152879564225575}
-  outsideAreaMaterial: {fileID: 2100000, guid: 0376dde3cffb3c442a565b20e04882f9, type: 2}
   originalPos: {x: 0, y: 0, z: 0}
---- !u!114 &9187186278582596517
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 699601284007552369}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c9c0a6ab54a366c46809ead6964850f2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  executed: 0
---- !u!114 &3376486714009073085
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 699601284007552369}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6aa1ae9fdd2568647bf018681945c91a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!65 &1898981318327804687
 BoxCollider:
   m_ObjectHideFlags: 0

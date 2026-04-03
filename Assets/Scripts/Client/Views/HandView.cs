@@ -3,8 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Splines;
 using DG.Tweening;
-using Game.Domain;
-using FishNet.Demo.AdditiveScenes;
 
 public class HandView : MonoBehaviour
 {
@@ -17,8 +15,7 @@ public class HandView : MonoBehaviour
 
     [Header("Card Layout")]
     [SerializeField] private float cardSpacing = 1.8f;
-    [SerializeField] private float depthOffsetPerCard = 0.02f;
-    [SerializeField] private float animationDuration = 0.2f;
+    // [SerializeField] private float depthOffsetPerCard = 0.02f;
 
     [Header("Card Rotation")]
     [SerializeField] private Vector3 cardEuler = new Vector3(90f, 0f, 0f);
@@ -26,19 +23,23 @@ public class HandView : MonoBehaviour
 
     [Header("Drag Settings")]
     [SerializeField] private BoxCollider dragValidArea; // 手牌安全区域，松手时如果不在这里就销毁
-    [SerializeField] private float dragFollowDepth = 8f; // 鼠标拖拽时离摄像机多远
 
     [Header("Draw Anim Settings")]
     [SerializeField] private Transform skillCardsDeck;
     [SerializeField] private Vector3 instantiatePosition;
     [SerializeField] private float dropDistance;
+    private Vector3 dropRotation;
+    private Vector3 deckOriginalPosition;
 
     [HideInInspector] public List<GameObject> skillCardInstances = new();
 
-    private void Start()
+    private void Awake()
     {
         if (!isOpponent)
             transform.up = -cameraTransform.forward;
+
+        dropRotation = -skillCardsDeck.up;
+        deckOriginalPosition = skillCardsDeck.transform.position;
     }
 
     public IEnumerator AddCard(GameObject instance)
@@ -60,28 +61,32 @@ public class HandView : MonoBehaviour
 
     private void BindDragComponent(GameObject instance)
     {
-        SkillCardDraggable dragCard = instance.GetComponent<SkillCardDraggable>();
-        if (dragCard == null)
-            dragCard = instance.AddComponent<SkillCardDraggable>();
+        if (isOpponent)
+            return;
+
+        SkillCardDraggable dragCard = instance.AddComponent<SkillCardDraggable>();
+        SkillCardHover hoverCard = instance.AddComponent<SkillCardHover>();
 
         int cardId = instance.GetComponent<SkillCardInstance>().cardId;
         int instanceId = instance.GetComponent<SkillCardInstance>().instanceId;
         dragCard.Init(cardId, instanceId);
+        hoverCard.Init();
     }
 
     private IEnumerator DrawSkillCardAnimation(GameObject instance)
     {
         // init
-        skillCardsDeck.transform.localPosition = Vector3.down * dropDistance;
+        skillCardsDeck.transform.position = deckOriginalPosition + dropRotation * dropDistance;
         instance.transform.position = instantiatePosition;
-        instance.transform.rotation = Quaternion.Euler(-90, 0, 90);
+        instance.transform.rotation = isOpponent ? Quaternion.Euler(-47.6f, -175.862f, 86.442f) : Quaternion.Euler(-52, 0, 90);
+        // yield return new WaitForSeconds(100f);
 
-        float moveDir = isOpponent ? -1 : 1;
+        float moveDir = isOpponent ? -1 : -1;
 
         Sequence seq = DOTween.Sequence();
-        seq.Append(instance.transform.DOMove(instantiatePosition + moveDir * Vector3.forward * 0.05f, 0.15f));
-        seq.Append(instance.transform.DOMove(instantiatePosition - moveDir * Vector3.forward * 1f, 0.5f).SetEase(Ease.OutBack));
-        seq.Join(skillCardsDeck.transform.DOLocalMove(Vector3.zero, 0.3f).SetEase(Ease.OutBack));
+        seq.Append(instance.transform.DOMove(instantiatePosition + moveDir * instance.transform.right * 0.05f, 0.15f));
+        seq.Append(instance.transform.DOMove(instantiatePosition - moveDir * instance.transform.right * 1f, 0.5f).SetEase(Ease.OutBack));
+        seq.Join(skillCardsDeck.transform.DOLocalMove(deckOriginalPosition, 0.3f).SetEase(Ease.OutBack));
 
         yield return seq.WaitForCompletion();
     }
@@ -149,7 +154,7 @@ public class HandView : MonoBehaviour
         DrawRect(transform.position, transform.rotation, zoneWidth, zoneHeight);
         Gizmos.color = Color.gray;
         Gizmos.DrawSphere(instantiatePosition, 0.02f);
-        Gizmos.DrawLine(instantiatePosition, instantiatePosition + Vector3.down * dropDistance);
+        Gizmos.DrawLine(instantiatePosition, instantiatePosition + -skillCardsDeck.up.normalized * dropDistance);
     }
 
     private void DrawRect(Vector3 center, Quaternion rotation, float width, float height)
