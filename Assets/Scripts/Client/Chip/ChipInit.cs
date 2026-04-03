@@ -1,3 +1,4 @@
+using DG.Tweening;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -8,13 +9,16 @@ public class ChipInit : MonoBehaviour
     [SerializeField] private Vector3 instantiatePosition;
     [SerializeField] private float spacing;
 
-    void Start()
+    // private List<GameObject> chips = new List<GameObject>();
+
+    public void GenerateChips(int count)
     {
-        for (int i = 0; i < 10; i++)
+        for (int i = 0; i < count; i++)
         {
             GameObject chip = Instantiate(chipPrefab, transform);
             chip.transform.position = instantiatePosition + transform.right * i * spacing;
             chip.transform.rotation = Quaternion.Euler(0, 14.9f, -86f);
+            // chips.Add(chip);
         }
     }
 

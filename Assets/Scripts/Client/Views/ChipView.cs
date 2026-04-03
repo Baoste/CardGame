@@ -13,7 +13,15 @@ public class ChipView : MonoBehaviour
     [Header("Drag Settings")]
     [SerializeField] private BoxCollider dragValidArea; // 安全区域，松手时如果不在这里就回位置
 
-    public List<GameObject> chipsPlaced;
+    [Header("Init Settings")]
+    [SerializeField] private ChipInit chipInit;
+
+    [HideInInspector] public List<GameObject> chipsPlaced = new List<GameObject>();
+
+    public void GenerateChips()
+    {
+        chipInit.GenerateChips(10);
+    }
 
     public void Place1Bet(GameObject chip)
     {

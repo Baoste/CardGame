@@ -160,7 +160,7 @@ MonoBehaviour:
   maxTilt: 60
   smoothSpeed: 10
   useUnscaledDelta: 1
-  meshTransform: {fileID: 6173429869778021422}
+  meshTransform: {fileID: 2587430206831976745}
 --- !u!114 &4996614122419329140
 MonoBehaviour:
   m_ObjectHideFlags: 0

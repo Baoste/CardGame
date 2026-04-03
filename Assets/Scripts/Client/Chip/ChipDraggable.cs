@@ -93,9 +93,10 @@ public class ChipDraggable : MonoBehaviour, IMouseDown, IMouseDrag, IMouseUp
         }
         else
         {
+            rb.AddForceAtPosition(-transform.up * 0.5f, transform.position - transform.right * 0.1f, ForceMode.Impulse);
             SceneViewManager.myChipView.Place1Bet(gameObject);
-            Place1BetCommand cmd = new Place1BetCommand { playerId = ClientGameState.playerSlot };
-            ClientGameState.gateway.SendCommandServerRpc("Place1Bet", JsonConvert.SerializeObject(cmd));
+            //Place1BetCommand cmd = new Place1BetCommand { playerId = ClientGameState.playerSlot };
+            //ClientGameState.gateway.SendCommandServerRpc("Place1Bet", JsonConvert.SerializeObject(cmd));
         }
     }
 

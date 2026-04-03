@@ -20,6 +20,7 @@ public class TestSystem : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.O))
         {
             SceneViewManager.viewAnimController.PlayStartGameAnim();
+            SceneViewManager.myChipView.GenerateChips();
         }
 
         if (Input.GetKeyDown(KeyCode.Space))

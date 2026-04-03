@@ -1,4 +1,6 @@
 using DG.Tweening;
+using Game.Domain;
+using Newtonsoft.Json;
 using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -19,6 +21,9 @@ public class ViewAnimController : MonoBehaviour
     [SerializeField] private Transform op_SkillCardsDeckCoverPivot;
     [SerializeField] private Transform op_SkillCardsDeck;
     private Vector3 op_SkillDeckOriginalPosition;
+
+    [Header("Mine Chip Cover Anim Settings")]
+    [SerializeField] private Transform m_ChipCoverPivot;
 
 
     private void Start()
@@ -56,5 +61,18 @@ public class ViewAnimController : MonoBehaviour
         seq.Join(op_SkillCardsDeck.DOMove(op_SkillDeckOriginalPosition, 0.5f).SetEase(Ease.OutBack));
 
         yield return seq.WaitForCompletion();
+    }
+
+    public IEnumerator CloseChipCover()
+    {
+        if (SceneViewManager.myChipView.chipsPlaced.Count < 1)
+            yield break;
+
+        Sequence seq = DOTween.Sequence();
+        seq.Append(m_ChipCoverPivot.DORotate(new Vector3(-49.6f, 0, 0), 0.35f).SetEase(Ease.InCubic));
+
+        yield return seq.WaitForCompletion();
+        ConfirmBetCommand cmd = new ConfirmBetCommand { playerId = ClientGameState.playerSlot };
+        ClientGameState.gateway.SendCommandServerRpc("ConfirmBet", JsonConvert.SerializeObject(cmd));
     }
 }

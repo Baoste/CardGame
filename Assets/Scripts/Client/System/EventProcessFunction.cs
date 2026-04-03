@@ -34,6 +34,7 @@ public class EventProcessFunction : MonoBehaviour
         CinemachineVirtualCamera vcam = GameObject.Find("VCamera_Playing").GetComponent<CinemachineVirtualCamera>();
         vcam.Priority = 20;
         SceneViewManager.viewAnimController.PlayStartGameAnim();
+        SceneViewManager.myChipView.GenerateChips();
     }
 
     // parameters[0]: int turn
