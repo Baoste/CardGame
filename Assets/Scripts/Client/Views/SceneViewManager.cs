@@ -26,6 +26,8 @@ public static class SceneViewManager
             resolveZoneView,
             myHandView,
             opponentHandView,
+            myRevealButtonView,
+            opponentRevealButtonView,
             myTurnLightView,
             opponentTurnLightView,
     };
