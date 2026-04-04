@@ -131,9 +131,6 @@ namespace Game.Domain
 
         public IEnumerator MoveCards(EffectOp op, MatchGateway gateway, GameState gameState, EffectContext ctx, List<int> selectedSourceIds, List<int> selectedTargetIds)
         {
-            int count = selectedSourceIds.Count;
-            List<int> _selectedSourceIds = selectedSourceIds;
-
             ParticipantType selectZone;
             if (selectedTargetIds.Count == 0)
             {
@@ -143,15 +140,17 @@ namespace Game.Domain
             {
                 selectZone = (ParticipantType)selectedTargetIds[0];
             }
-            for (int i = 0; i < count; i++)
+
+            yield return StartCoroutine(ValidateCommand(op, gateway, gameState, ctx, selectedSourceIds, selectedTargetIds, () =>
             {
-                int idx = i;    // ·ÀÖ¹±Õ°ü²¶»ñ
-                yield return StartCoroutine(ValidateCommand(op, gateway, gameState, ctx, selectedSourceIds, selectedTargetIds, () =>
+                List<int> ids = ClientEffectContext.Instance.selectedSourceIds;
+                for (int i = 0; i < ids.Count; i++)
                 {
-                    MoveCardCommand cmd = new MoveCardCommand { playerId = ctx.caster, instanceId = _selectedSourceIds[idx], toZone=selectZone };
+                    int idx = i;    // ·ÀÖ¹±Õ°ü²¶»ñ
+                    MoveCardCommand cmd = new MoveCardCommand { playerId = ctx.caster, instanceId = ids[idx], toZone = selectZone };
                     gateway.SendCommandServerRpc("MoveCard", JsonConvert.SerializeObject(cmd));
-                }));
-            }
+                }
+            }));
 
             //if (op.source.participantType == ParticipantType.CardsToResolve)
             //{
