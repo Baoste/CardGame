@@ -56,8 +56,8 @@ public class ValidateParticipantsCmdHandler : CommandHandler, ICommandHandler
             (
                 payload.playerId,
                 success,
-                payload.selectedSourceIds,
-                payload.selectedTargetIds
+                selectedSourceIds,
+                selectedTargetIds
             )
         ));
 
