@@ -1,12 +1,10 @@
 using Cinemachine;
-using FishNet.Demo.AdditiveScenes;
 using Game.Domain;
 using Newtonsoft.Json;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
-using UnityEngine.UIElements;
 
 public class EventProcessFunction : MonoBehaviour
 {
@@ -44,6 +42,8 @@ public class EventProcessFunction : MonoBehaviour
     public void StartGameTest(object[] parameters)
     {
         StartCoroutine(SceneViewManager.viewAnimController.PlayStartGameAnim());
+
+        instanceMap.Clear();
 
         Transform root = CardViewCreator.Instance.transform;
         foreach (Transform child in root)
@@ -306,6 +306,8 @@ public class EventProcessFunction : MonoBehaviour
         ParticipantType toZone = (ParticipantType)parameters[2];
         int playerId = (int)parameters[3];
 
+        bool isOpponent = playerId != ClientGameState.playerSlot;
+
         switch (toZone)
         {
             case ParticipantType.MyBoardZone:
@@ -324,15 +326,22 @@ public class EventProcessFunction : MonoBehaviour
             }
             case ParticipantType.MySkillCardsInHand:
             {
+                Destroy(instanceMap[instanceId]);
                 GameObject instance = CardViewCreator.Instance.CreateCardInstance(cardId, instanceId);
-                StartCoroutine(SceneViewManager.myHandView.AddCard(instance));
+                if (isOpponent)
+                    StartCoroutine(SceneViewManager.opponentHandView.AddCard(instance));
+                else
+                    StartCoroutine(SceneViewManager.myHandView.AddCard(instance));
                 instanceMap[instanceId] = instance;
                 break;
             }
             case ParticipantType.OpponentSkillCardsInHand:
             {
                 GameObject instance = CardViewCreator.Instance.CreateCardInstance(cardId, instanceId);
-                StartCoroutine(SceneViewManager.myHandView.AddCard(instance));
+                if (isOpponent)
+                    StartCoroutine(SceneViewManager.myHandView.AddCard(instance));
+                else
+                    StartCoroutine(SceneViewManager.opponentHandView.AddCard(instance));
                 instanceMap[instanceId] = instance;
                 break;
             }
