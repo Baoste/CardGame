@@ -17,9 +17,7 @@
             "filter": {
               "$type": "Game.Domain.NoneCondition, Assembly-CSharp"
             },
-            "participantSelectionMode": {
-              "$type": "SelectionModeNone, Assembly-CSharp"
-            },
+            "participantSelectionMode": null,
             "maxSelectCount": {
               "$type": "Game.Domain.NoneValue, Assembly-CSharp"
             }
@@ -243,7 +241,7 @@
           "source": {
             "participantType": 4,
             "filter": {
-              "$type": "Game.Domain.NoneCondition, Assembly-CSharp"
+              "$type": "Game.Domain.AllCondition, Assembly-CSharp"
             },
             "participantSelectionMode": {
               "$type": "SelectionModeChoose, Assembly-CSharp"
@@ -276,7 +274,7 @@
           "source": {
             "participantType": 8,
             "filter": {
-              "$type": "Game.Domain.NoneCondition, Assembly-CSharp"
+              "$type": "Game.Domain.AllCondition, Assembly-CSharp"
             },
             "participantSelectionMode": {
               "$type": "SelectionModeChoose, Assembly-CSharp"
@@ -309,7 +307,7 @@
           "source": {
             "participantType": 64,
             "filter": {
-              "$type": "Game.Domain.NoneCondition, Assembly-CSharp"
+              "$type": "Game.Domain.AllCondition, Assembly-CSharp"
             },
             "participantSelectionMode": {
               "$type": "SelectionModeLast, Assembly-CSharp"
@@ -341,7 +339,7 @@
           "source": {
             "participantType": 64,
             "filter": {
-              "$type": "Game.Domain.NoneCondition, Assembly-CSharp"
+              "$type": "Game.Domain.AllCondition, Assembly-CSharp"
             },
             "participantSelectionMode": {
               "$type": "SelectionModeLast, Assembly-CSharp"
@@ -582,7 +580,8 @@
               "$type": "SelectionModeNone, Assembly-CSharp"
             },
             "maxSelectCount": {
-              "$type": "Game.Domain.NoneValue, Assembly-CSharp"
+              "$type": "Game.Domain.ConstValue, Assembly-CSharp",
+              "value": 1
             }
           },
           "target": {
@@ -825,7 +824,7 @@
           "source": {
             "participantType": 2,
             "filter": {
-              "$type": "Game.Domain.NoneCondition, Assembly-CSharp"
+              "$type": "Game.Domain.AllCondition, Assembly-CSharp"
             },
             "participantSelectionMode": {
               "$type": "SelectionModeRandom, Assembly-CSharp"

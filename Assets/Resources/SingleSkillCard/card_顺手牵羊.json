@@ -14,7 +14,7 @@
         "source": {
           "participantType": 2,
           "filter": {
-            "$type": "Game.Domain.NoneCondition, Assembly-CSharp"
+            "$type": "Game.Domain.AllCondition, Assembly-CSharp"
           },
           "participantSelectionMode": {
             "$type": "SelectionModeRandom, Assembly-CSharp"

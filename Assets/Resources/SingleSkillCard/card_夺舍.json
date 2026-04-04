@@ -14,7 +14,7 @@
         "source": {
           "participantType": 4,
           "filter": {
-            "$type": "Game.Domain.NoneCondition, Assembly-CSharp"
+            "$type": "Game.Domain.AllCondition, Assembly-CSharp"
           },
           "participantSelectionMode": {
             "$type": "SelectionModeChoose, Assembly-CSharp"
@@ -47,7 +47,7 @@
         "source": {
           "participantType": 8,
           "filter": {
-            "$type": "Game.Domain.NoneCondition, Assembly-CSharp"
+            "$type": "Game.Domain.AllCondition, Assembly-CSharp"
           },
           "participantSelectionMode": {
             "$type": "SelectionModeChoose, Assembly-CSharp"
@@ -80,7 +80,7 @@
         "source": {
           "participantType": 64,
           "filter": {
-            "$type": "Game.Domain.NoneCondition, Assembly-CSharp"
+            "$type": "Game.Domain.AllCondition, Assembly-CSharp"
           },
           "participantSelectionMode": {
             "$type": "SelectionModeLast, Assembly-CSharp"
@@ -112,7 +112,7 @@
         "source": {
           "participantType": 64,
           "filter": {
-            "$type": "Game.Domain.NoneCondition, Assembly-CSharp"
+            "$type": "Game.Domain.AllCondition, Assembly-CSharp"
           },
           "participantSelectionMode": {
             "$type": "SelectionModeLast, Assembly-CSharp"
