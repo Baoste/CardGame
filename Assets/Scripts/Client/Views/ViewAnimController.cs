@@ -83,18 +83,11 @@ public class ViewAnimController : MonoBehaviour
 
     public IEnumerator CloseChipCover()
     {
-        if (ClientGameState.playerSlot != ClientGameState.Instance.punterId)
-            yield break;
-        if (SceneViewManager.myChipView.chipsPlaced.Count < 1)
-            yield break;
-
         Sequence seq = DOTween.Sequence();
         seq.Append(m_ChipCoverPivot.DORotate(new Vector3(-49.6f, 0, 0), 0.35f).SetEase(Ease.InCubic));
         seq.Join(op_ChipCoverPivot.DORotate(Vector3.zero, 0.35f).SetEase(Ease.InCubic));
 
         yield return seq.WaitForCompletion();
-        ConfirmBetCommand cmd = new ConfirmBetCommand { playerId = ClientGameState.playerSlot };
-        ClientGameState.gateway.SendCommandServerRpc("ConfirmBet", JsonConvert.SerializeObject(cmd));
     }
 
     public IEnumerator OpenChipCover()

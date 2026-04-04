@@ -138,7 +138,6 @@ public class EventProcessFunction : MonoBehaviour
         int playerId = (int)parameters[0];
         int betCount = (int)parameters[1];
 
-        Debug.Log(betCount);
         foreach (var obj in SceneViewManager.myChipView.chipsInTray)
         {
             ChipDraggable script = obj.GetComponentInChildren<ChipDraggable>();
@@ -148,6 +147,7 @@ public class EventProcessFunction : MonoBehaviour
             }
         }
 
+        StartCoroutine(SceneViewManager.viewAnimController.CloseChipCover());
         if (ClientGameState.Instance.punterId == ClientGameState.playerSlot)
             ClientCommand.StartTurn(ClientGameState.Instance.punterId);
     }
