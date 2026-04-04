@@ -16,7 +16,9 @@
           "filter": {
             "$type": "Game.Domain.NoneCondition, Assembly-CSharp"
           },
-          "participantSelectionMode": null,
+          "participantSelectionMode": {
+            "$type": "SelectionModeNone, Assembly-CSharp"
+          },
           "maxSelectCount": {
             "$type": "Game.Domain.NoneValue, Assembly-CSharp"
           }
