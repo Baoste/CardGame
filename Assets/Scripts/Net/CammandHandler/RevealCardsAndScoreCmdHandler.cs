@@ -40,6 +40,7 @@ public class RevealCardsAndScoreCmdHandler : CommandHandler, ICommandHandler
             winnerId = playerPoints > opponentPoints ? payload.playerId : 1 - payload.playerId;
         }
 
+        int currentBet = session.gameState.currentBet;
         session.gameState.Dispose();
         session.gameState.players[winnerId].chipCount += session.gameState.currentBet;
         session.gameState.players[1 - winnerId].chipCount -= session.gameState.currentBet;
@@ -52,7 +53,8 @@ public class RevealCardsAndScoreCmdHandler : CommandHandler, ICommandHandler
             (
                 payload.playerId,
                 true,
-                winnerId
+                winnerId,
+                currentBet
             )
         ));
         return results;

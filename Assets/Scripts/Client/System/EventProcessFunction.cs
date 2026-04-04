@@ -357,9 +357,11 @@ public class EventProcessFunction : MonoBehaviour
     }
 
     // parameters[0]: int winnerId
+    // parameters[1]: int currentBet
     public void RevealTest(object[] parameters)
     {
         int winnerId = (int)parameters[0];
+        int currentBet = (int)parameters[1];
 
         SceneViewManager.roleView.ShowWin(winnerId);
         SceneViewManager.endTurnView.btnLight.intensity = 0;
@@ -368,17 +370,17 @@ public class EventProcessFunction : MonoBehaviour
         if (isOpponent)
         {
             // 多余的筹码退回筹码盘
-            int returnCount = SceneViewManager.myChipView.chipsPlaced.Count - ClientGameState.Instance.currentBet;
+            int returnCount = SceneViewManager.myChipView.chipsPlaced.Count - currentBet;
             SceneViewManager.myChipView.GenerateChips(returnCount);
             // 对方获得筹码
-            SceneViewManager.opponentChipView.GenerateChips(ClientGameState.Instance.currentBet);
+            SceneViewManager.opponentChipView.GenerateChips(currentBet);
         }
         else
         {
             // 筹码退回筹码盘
             SceneViewManager.myChipView.GenerateChips(SceneViewManager.myChipView.chipsPlaced.Count);
             // 获得筹码
-            SceneViewManager.myChipView.GenerateChips(ClientGameState.Instance.currentBet);
+            SceneViewManager.myChipView.GenerateChips(currentBet);
         }
 
         // 销毁筹码

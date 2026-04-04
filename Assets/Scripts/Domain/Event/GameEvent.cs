@@ -298,10 +298,12 @@ namespace Game.Domain
     public class RevealCardsAndScoreEvent : PlayerEvent
     {
         public int winnerId;
-        public RevealCardsAndScoreEvent(int playerId, bool success, int winnerId)
+        public int currentBet;
+        public RevealCardsAndScoreEvent(int playerId, bool success, int winnerId, int currentBet)
             : base(playerId, success)
         {
             this.winnerId = winnerId;
+            this.currentBet = currentBet;
         }
     }
 

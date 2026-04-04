@@ -43,8 +43,8 @@ public class ChipView : MonoBehaviour
         if (chipsInTray.Count < 1) yield break;
 
         GameObject chip = chipsInTray[chipsInTray.Count - 1];
-        chipsInTray.Remove(chip);
         chipsPlaced.Add(chip);
+        chipsInTray.Remove(chip);
 
         Rigidbody rb = chip.GetComponentInChildren<Rigidbody>();
         Collider col = chip.transform.Find("Model/Chip/default").GetComponent<Collider>();
