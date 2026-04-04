@@ -44,4 +44,11 @@ public class SkillCardInstance : CardInstance
 
         defaultMaterial = meshRenderer.sharedMaterial;
     }
+
+    public IEnumerator ReturnToHand()
+    {
+        ClientEffectContext.isExecutingSkillCard = false;
+        yield return SceneViewManager.myHandView.UpdateCardPositions(0.15f);
+        yield return SceneViewManager.opponentHandView.UpdateCardPositions(0.15f);
+    }
 }

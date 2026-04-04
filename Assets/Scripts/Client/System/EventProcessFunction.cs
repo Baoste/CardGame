@@ -174,7 +174,7 @@ public class EventProcessFunction : MonoBehaviour
                 break;
             case AnimationType.ReturnToHand:
                 if (isOpponent)
-                    StartCoroutine(obj.GetComponent<SkillCardDraggable>().ReturnToHand());
+                    StartCoroutine(obj.GetComponent<SkillCardInstance>().ReturnToHand());
                 else
                     StartCoroutine(obj.GetComponent<SkillCardDraggable>().ReturnToHand());
                 break;
