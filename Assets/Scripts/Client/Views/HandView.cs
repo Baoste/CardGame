@@ -64,6 +64,15 @@ public class HandView : MonoBehaviour, IViewClear
         }
     }
 
+    public IEnumerator RemoveCardInstant(GameObject instance)
+    {
+        if (skillCardInstances.Remove(instance))
+        {
+            Destroy(instance);
+            yield return UpdateCardPositions(0.15f);
+        }
+    }
+
     private void BindDragComponent(GameObject instance)
     {
         if (isOpponent)

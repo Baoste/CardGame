@@ -312,6 +312,7 @@ public class EventProcessFunction : MonoBehaviour
         {
             case ParticipantType.MyBoardZone:
             {
+                StartCoroutine(SceneViewManager.boardView.RemoveCardInstant(instanceMap[instanceId]));
                 GameObject instance = CardViewCreator.Instance.CreateCardInstance(cardId, instanceId);
                 StartCoroutine(SceneViewManager.boardView.AddCard(instance, playerId, false));
                 instanceMap[instanceId] = instance;
@@ -319,6 +320,7 @@ public class EventProcessFunction : MonoBehaviour
             }
             case ParticipantType.OppentBoardZone:
             {
+                StartCoroutine(SceneViewManager.boardView.RemoveCardInstant(instanceMap[instanceId]));
                 GameObject instance = CardViewCreator.Instance.CreateCardInstance(cardId, instanceId);
                 StartCoroutine(SceneViewManager.boardView.AddCard(instance, 1 - playerId, false));
                 instanceMap[instanceId] = instance;
@@ -326,12 +328,17 @@ public class EventProcessFunction : MonoBehaviour
             }
             case ParticipantType.MySkillCardsInHand:
             {
-                Destroy(instanceMap[instanceId]);
                 GameObject instance = CardViewCreator.Instance.CreateCardInstance(cardId, instanceId);
                 if (isOpponent)
+                {
+                    StartCoroutine(SceneViewManager.myHandView.RemoveCardInstant(instanceMap[instanceId]));
                     StartCoroutine(SceneViewManager.opponentHandView.AddCard(instance));
+                }
                 else
+                {
+                    StartCoroutine(SceneViewManager.opponentHandView.RemoveCardInstant(instanceMap[instanceId]));
                     StartCoroutine(SceneViewManager.myHandView.AddCard(instance));
+                }
                 instanceMap[instanceId] = instance;
                 break;
             }
@@ -339,9 +346,15 @@ public class EventProcessFunction : MonoBehaviour
             {
                 GameObject instance = CardViewCreator.Instance.CreateCardInstance(cardId, instanceId);
                 if (isOpponent)
+                { 
+                    StartCoroutine(SceneViewManager.opponentHandView.RemoveCardInstant(instanceMap[instanceId]));
                     StartCoroutine(SceneViewManager.myHandView.AddCard(instance));
+                }
                 else
+                {
                     StartCoroutine(SceneViewManager.opponentHandView.AddCard(instance));
+                    StartCoroutine(SceneViewManager.myHandView.RemoveCardInstant(instanceMap[instanceId]));
+                }
                 instanceMap[instanceId] = instance;
                 break;
             }

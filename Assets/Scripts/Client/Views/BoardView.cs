@@ -179,6 +179,20 @@ public class BoardView : MonoBehaviour, IViewClear
         }
     }
 
+    public IEnumerator RemoveCardInstant(GameObject instance)
+    {
+        if (opponentCards.Remove(instance))
+        {
+            Destroy(instance);
+            yield return UpdateCardPositionsNormal(true, false);
+        }
+        if (selfCards.Remove(instance))
+        {
+            Destroy(instance);
+            yield return UpdateCardPositionsNormal(false, false);
+        }
+    }
+
     public IEnumerator RemoveOneSideCards(int loserId)
     {
         bool isOpponent = loserId != ClientGameState.playerSlot;
