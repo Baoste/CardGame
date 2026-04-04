@@ -20,7 +20,7 @@ public class TestSystem : MonoBehaviour
         // 模拟开始游戏，生成筹码
         if (Input.GetKeyDown(KeyCode.O))
         {
-            SceneViewManager.viewAnimController.PlayStartGameAnim();
+            StartCoroutine(SceneViewManager.viewAnimController.PlayStartGameAnim());
             SceneViewManager.myChipView.GenerateChips(6);
             SceneViewManager.opponentChipView.GenerateChips(6);
             foreach (var obj in SceneViewManager.myChipView.chipsInTray)
@@ -34,9 +34,9 @@ public class TestSystem : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Space))
         {
             //ClientCommand.DrawSkillCard();
-            instance1 = CardViewCreator.Instance.CreateCardInstance(6219298, 9999, transform.position, Quaternion.identity);
+            instance1 = CardViewCreator.Instance.CreateCardInstance(6219298, 9999);
             StartCoroutine(handView.AddCard(instance1));
-            instance2 = CardViewCreator.Instance.CreateCardInstance(6219298, 9999, transform.position, Quaternion.identity);
+            instance2 = CardViewCreator.Instance.CreateCardInstance(6219298, 9999);
             StartCoroutine(ophandView.AddCard(instance2));
         }
 
@@ -56,7 +56,7 @@ public class TestSystem : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Q))
         {
 
-            GameObject instance = CardViewCreator.Instance.CreateCardInstance(2, 99999, transform.position, Quaternion.identity);
+            GameObject instance = CardViewCreator.Instance.CreateCardInstance(2, 99999);
             StartCoroutine(ResolveZoneView.AddCard(instance, -1, true));
         }
 
@@ -65,13 +65,13 @@ public class TestSystem : MonoBehaviour
         {
             if (card <= 5)
             {
-                GameObject instance = CardViewCreator.Instance.CreateCardInstance(card++, 98, transform.position, Quaternion.identity);
+                GameObject instance = CardViewCreator.Instance.CreateCardInstance(card++, 98);
                 StartCoroutine(boardView.AddCard(instance, ClientGameState.playerSlot, false));
                 objs.Push(instance);
             }
             else if (card <= 10)
             {
-                GameObject instance = CardViewCreator.Instance.CreateCardInstance(card++, 98, transform.position, Quaternion.identity);
+                GameObject instance = CardViewCreator.Instance.CreateCardInstance(card++, 98);
                 StartCoroutine(boardView.AddCard(instance, 99, false));
                 objs.Push(instance);
             }
@@ -97,9 +97,9 @@ public class TestSystem : MonoBehaviour
         // 发底牌
         if (Input.GetKeyDown(KeyCode.R))
         {
-            GameObject instance = CardViewCreator.Instance.CreateCardInstance(2, 99, transform.position, Quaternion.identity);
+            GameObject instance = CardViewCreator.Instance.CreateCardInstance(2, 99);
             StartCoroutine(SceneViewManager.boardView.AddCard(instance, ClientGameState.playerSlot, true));
-            instance = CardViewCreator.Instance.CreateCardInstance(2, 99, transform.position, Quaternion.identity);
+            instance = CardViewCreator.Instance.CreateCardInstance(2, 99);
             StartCoroutine(SceneViewManager.boardView.AddCard(instance, 99, true));
         }
 

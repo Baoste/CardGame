@@ -13,7 +13,7 @@ public class CardViewCreator : Singleton<CardViewCreator>
     [Header("Point Card Tex")]
     public Texture2D[] pointCardTexs;
 
-    public GameObject CreateCardInstance(int cardId, int instanceId, Vector3 position, Quaternion rotation)
+    public GameObject CreateCardInstance(int cardId, int instanceId)
     {
         CardType cardType = CardDatabase.Get(cardId).type;
 
@@ -36,7 +36,7 @@ public class CardViewCreator : Singleton<CardViewCreator>
         return cardObj;
     }
 
-    public GameObject CreateCardResolved(int cardId, int instanceId, Vector3 position, Quaternion rotation)
+    public GameObject CreateCardResolved(int cardId, int instanceId)
     {
         GameObject cardObj = null;
         CardInstance cardResolve = null;
