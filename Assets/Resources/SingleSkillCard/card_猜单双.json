@@ -2,7 +2,7 @@
   "card": {
     "id": 1004,
     "name": "猜单双",
-    "description": null,
+    "description": "抽一张牌 ,如果是单数，可以抽一张技能牌和补充行动点  如果是双数，可以抽两张点数牌",
     "point": 0,
     "type": 1,
     "count": 5,

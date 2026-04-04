@@ -4,7 +4,7 @@
     "name": "顺手牵羊",
     "description": "抽取对方的一张技能牌",
     "point": 0,
-    "type": 0,
+    "type": 1,
     "count": 4,
     "effects": [
       {

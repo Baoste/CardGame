@@ -17,7 +17,9 @@
             "filter": {
               "$type": "Game.Domain.NoneCondition, Assembly-CSharp"
             },
-            "participantSelectionMode": null,
+            "participantSelectionMode": {
+              "$type": "SelectionModeNone, Assembly-CSharp"
+            },
             "maxSelectCount": {
               "$type": "Game.Domain.NoneValue, Assembly-CSharp"
             }
@@ -231,7 +233,7 @@
       "name": "夺舍",
       "description": "与对手互换一张点数牌",
       "point": 0,
-      "type": 0,
+      "type": 1,
       "count": 4,
       "effects": [
         {
@@ -562,7 +564,7 @@
     {
       "id": 1004,
       "name": "猜单双",
-      "description": null,
+      "description": "抽一张牌 ,如果是单数，可以抽一张技能牌和补充行动点  如果是双数，可以抽两张点数牌",
       "point": 0,
       "type": 1,
       "count": 5,
@@ -736,9 +738,9 @@
     {
       "id": 1201,
       "name": "超级加倍",
-      "description": null,
+      "description": "抽取一张技能牌，并补充一个行动点",
       "point": 0,
-      "type": 0,
+      "type": 1,
       "count": 3,
       "effects": [
         {
@@ -813,7 +815,7 @@
       "name": "顺手牵羊",
       "description": "抽取对方的一张技能牌",
       "point": 0,
-      "type": 0,
+      "type": 1,
       "count": 4,
       "effects": [
         {

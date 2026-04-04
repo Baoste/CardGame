@@ -2,9 +2,9 @@
   "card": {
     "id": 1201,
     "name": "超级加倍",
-    "description": null,
+    "description": "抽取一张技能牌，并补充一个行动点",
     "point": 0,
-    "type": 0,
+    "type": 1,
     "count": 3,
     "effects": [
       {
