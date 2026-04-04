@@ -21,7 +21,7 @@ public sealed class DetermineParticipantsEventHandler : IEventProcess, IEventHan
             payload.candidateTargetIds,
             payload.sourceSelectCount,
             payload.targetSelectCount,
-        });
+        }, 0);
 
         // TODO
         // START

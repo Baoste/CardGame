@@ -168,13 +168,13 @@ public class BoardView : MonoBehaviour, IViewClear
         if (opponentCards.Remove(instance))
         {
             yield return DestroyCard(instance);
-            yield return new WaitForSeconds(0.5f);
+            yield return new WaitForSeconds(0.2f);
             yield return UpdateCardPositionsNormal(true, false);
         }
         if (selfCards.Remove(instance))
         {
             yield return DestroyCard(instance);
-            yield return new WaitForSeconds(0.5f);
+            yield return new WaitForSeconds(0.2f);
             yield return UpdateCardPositionsNormal(false, false);
         }
     }

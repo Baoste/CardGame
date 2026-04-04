@@ -10,7 +10,7 @@ public class ClearCardsToResolveEventHandler : IEventProcess, IEventHandler
     {
         var payload = JsonConvert.DeserializeObject<ClearCardsToResolveEvent>(ev.jsonData);
         // need change, 需要把参数在这里传进去
-        ProcessQueueManager.Instance.Enqueue(Process, new object[] { });
+        ProcessQueueManager.Instance.Enqueue(Process, new object[] { }, 0);
 
         Debug.Log($"[Client] Event#{ev.Index} type={ev.type} slot={payload.playerId} payload={payload.success.ToString()}");
 

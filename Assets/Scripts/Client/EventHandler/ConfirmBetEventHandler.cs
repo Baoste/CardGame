@@ -10,7 +10,7 @@ public class ConfirmBetEventHandler : IEventProcess, IEventHandler
     {
         var payload = JsonConvert.DeserializeObject<ConfirmBetEvent>(ev.jsonData);
         // need change, 需要把参数在这里传进去
-        ProcessQueueManager.Instance.Enqueue(Process, new object[] { payload.playerId, payload.betCount });
+        ProcessQueueManager.Instance.Enqueue(Process, new object[] { payload.playerId, payload.betCount }, 0.5f);
 
         ClientGameState.Instance.currentBet = payload.betCount;
 

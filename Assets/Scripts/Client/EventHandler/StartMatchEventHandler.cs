@@ -10,7 +10,7 @@ public class StartMatchEventHandler : IEventProcess, IEventHandler
     {
         var payload = JsonConvert.DeserializeObject<StartMatchEvent>(ev.jsonData); // need change
         // need change, 需要把参数在这里传进去
-        ProcessQueueManager.Instance.Enqueue(Process, new object[] { });
+        ProcessQueueManager.Instance.Enqueue(Process, new object[] { }, 0);
         ClientGameState.Instance.Init(payload.seed);
 
         // TODO

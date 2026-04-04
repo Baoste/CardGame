@@ -12,7 +12,7 @@ public class PlayResolveAnimEventHandler : IEventProcess, IEventHandler
         var payload = JsonConvert.DeserializeObject<PlayResolveAnimEvent>(ev.jsonData);
 
         // need change, 需要把参数在这里传进去
-        ProcessQueueManager.Instance.Enqueue(Process, new object[] { payload.playerId, payload.isShown, payload.cardId, payload.instanceId });
+        ProcessQueueManager.Instance.Enqueue(Process, new object[] { payload.playerId, payload.isShown, payload.cardId, payload.instanceId }, 0.5f);
 
         // TODO
         // START
