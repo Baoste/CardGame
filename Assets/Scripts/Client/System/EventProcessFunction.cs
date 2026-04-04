@@ -1,10 +1,12 @@
 using Cinemachine;
+using FishNet.Demo.AdditiveScenes;
 using Game.Domain;
 using Newtonsoft.Json;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public class EventProcessFunction : MonoBehaviour
 {
@@ -12,10 +14,12 @@ public class EventProcessFunction : MonoBehaviour
 
     void Start()
     {
+        ProcessDispatcher.Register("StartMatchTest", StartMatchTest);
         ProcessDispatcher.Register("StartGameTest", StartGameTest);
         ProcessDispatcher.Register("StartTurnTest", StartTurnTest);
         ProcessDispatcher.Register("AssignRolesTest", AssignRolesTest);
         ProcessDispatcher.Register("Place1BetTest", Place1BetTest);
+        ProcessDispatcher.Register("ConfirmBetTest", ConfirmBetTest);
         ProcessDispatcher.Register("PlayAnimation", PlayAnimation);
         ProcessDispatcher.Register("DrawPointCard", DrawPointCard);
         ProcessDispatcher.Register("DrawSkillCardTest", DrawSkillCard);
@@ -29,18 +33,36 @@ public class EventProcessFunction : MonoBehaviour
         ProcessDispatcher.Register("RevealTest", RevealTest);
     }
 
-    public void StartGameTest(object[] parameters)
+    public void StartMatchTest(object[] parameters)
     {
         CinemachineVirtualCamera vcam = GameObject.Find("VCamera_Playing").GetComponent<CinemachineVirtualCamera>();
         vcam.Priority = 20;
-        SceneViewManager.viewAnimController.PlayStartGameAnim();
-        SceneViewManager.myChipView.GenerateChips();
+        SceneViewManager.myChipView.GenerateChips(6);
+        SceneViewManager.opponentChipView.GenerateChips(6);
     }
 
-    // parameters[0]: int turn
+    public void StartGameTest(object[] parameters)
+    {
+        SceneViewManager.viewAnimController.PlayStartGameAnim();
+
+        Transform root = CardViewCreator.Instance.transform;
+        foreach (Transform child in root)
+        {
+            Destroy(child.gameObject);
+        }
+        SceneViewManager.ClearViews();
+    }
+
+    // parameters[0]: int playerId
+    // parameters[1]: int turn
     public void StartTurnTest(object[] parameters)
     {
-        int turn = (int)parameters[0];
+        int playerId = (int)parameters[0];
+        int turn = (int)parameters[1];
+
+        if (ClientGameState.playerSlot == playerId)
+            SceneViewManager.endTurnView.btnLight.intensity = 1;
+
         if (turn == 1)
         {
             if (ClientGameState.Instance.dealerId == ClientGameState.playerSlot)
@@ -52,7 +74,7 @@ public class EventProcessFunction : MonoBehaviour
         int endTurnCount = 8;
         if (turn == endTurnCount)
         {
-            if (ClientGameState.Instance.punkerId == ClientGameState.playerSlot)
+            if (ClientGameState.Instance.punterId == ClientGameState.playerSlot)
                 SceneViewManager.myRevealButtonView.ShowButton(true);
             else
                 SceneViewManager.opponentRevealButtonView.ShowButton(false);
@@ -74,8 +96,15 @@ public class EventProcessFunction : MonoBehaviour
         int punterId = (int)parameters[1];
 
         SceneViewManager.roleView.ShowRole(dealerId);
-        if (ClientGameState.Instance.dealerId == ClientGameState.playerSlot)
-            ClientCommand.StartTurn(punterId);
+
+        if (punterId == ClientGameState.playerSlot)
+        {
+            foreach (var obj in SceneViewManager.myChipView.chipsInTray)
+            {
+                ChipDraggable drag = obj.transform.GetChild(0).gameObject.AddComponent<ChipDraggable>();
+                drag.Init();
+            }
+        }
     }
 
     // parameters[0]: int playerId
@@ -86,19 +115,41 @@ public class EventProcessFunction : MonoBehaviour
         bool isOpponent = playerId != ClientGameState.playerSlot;
         if (isOpponent)
         {
-            // TODO: 加上对手
+            StartCoroutine(SceneViewManager.myChipView.Place1BetAuto(false));
+            StartCoroutine(SceneViewManager.opponentChipView.Place1BetAuto(true));
         }
         else
         {
             foreach (var obj in SceneViewManager.myChipView.chipsPlaced)
             {
-                ChipDraggable script = obj.GetComponent<ChipDraggable>();
+                ChipDraggable script = obj.GetComponentInChildren<ChipDraggable>();
                 if (script != null)
                 {
                     Destroy(script);
                 }
             }
         }
+    }
+
+    // parameters[0]: int playerId
+    // parameters[1]: int betCount
+    public void ConfirmBetTest(object[] parameters)
+    {
+        int playerId = (int)parameters[0];
+        int betCount = (int)parameters[1];
+
+        Debug.Log(betCount);
+        foreach (var obj in SceneViewManager.myChipView.chipsInTray)
+        {
+            ChipDraggable script = obj.GetComponentInChildren<ChipDraggable>();
+            if (script != null)
+            {
+                Destroy(script);
+            }
+        }
+
+        if (ClientGameState.Instance.punterId == ClientGameState.playerSlot)
+            ClientCommand.StartTurn(ClientGameState.Instance.punterId);
     }
 
     // parameters[0]: int playerId
@@ -311,5 +362,30 @@ public class EventProcessFunction : MonoBehaviour
         int winnerId = (int)parameters[0];
 
         SceneViewManager.roleView.ShowWin(winnerId);
+        SceneViewManager.endTurnView.btnLight.intensity = 0;
+
+        bool isOpponent = winnerId != ClientGameState.playerSlot;
+        if (isOpponent)
+        {
+            // 多余的筹码退回筹码盘
+            int returnCount = SceneViewManager.myChipView.chipsPlaced.Count - ClientGameState.Instance.currentBet;
+            SceneViewManager.myChipView.GenerateChips(returnCount);
+            // 对方获得筹码
+            SceneViewManager.opponentChipView.GenerateChips(ClientGameState.Instance.currentBet);
+        }
+        else
+        {
+            // 筹码退回筹码盘
+            SceneViewManager.myChipView.GenerateChips(SceneViewManager.myChipView.chipsPlaced.Count);
+            // 获得筹码
+            SceneViewManager.myChipView.GenerateChips(ClientGameState.Instance.currentBet);
+        }
+
+        // 销毁筹码
+        SceneViewManager.myChipView.DestroyChipsPlaced();
+        SceneViewManager.opponentChipView.DestroyChipsPlaced();
+
+        StartCoroutine(SceneViewManager.viewAnimController.OpenChipCover());
+        StartCoroutine(SceneViewManager.viewAnimController.OpenPointCardDeckCover());
     }
 }

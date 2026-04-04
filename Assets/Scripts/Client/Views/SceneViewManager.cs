@@ -1,4 +1,6 @@
 
+using System.Collections.Generic;
+
 public static class SceneViewManager
 {
     public static BoardView boardView;
@@ -15,4 +17,24 @@ public static class SceneViewManager
     public static ChipView myChipView;
     public static ChipView opponentChipView;
     public static ViewAnimController viewAnimController;
+    public static EndTurnView endTurnView;
+
+
+    private static IEnumerable<IViewClear> views => new IViewClear[]
+    {
+            boardView,
+            resolveZoneView,
+            myHandView,
+            opponentHandView,
+            myTurnLightView,
+            opponentTurnLightView,
+    };
+
+    public static void ClearViews()
+    {
+        foreach(IViewClear view in views)
+        {
+            view.ClearView();
+        }
+    }
 }

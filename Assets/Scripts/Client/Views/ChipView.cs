@@ -1,3 +1,4 @@
+using DG.Tweening;
 using Game.Domain;
 using System.Collections;
 using System.Collections.Generic;
@@ -16,16 +17,50 @@ public class ChipView : MonoBehaviour
     [Header("Init Settings")]
     [SerializeField] private ChipInit chipInit;
 
+    [HideInInspector] public List<GameObject> chipsInTray = new List<GameObject>();
     [HideInInspector] public List<GameObject> chipsPlaced = new List<GameObject>();
 
-    public void GenerateChips()
+    public void GenerateChips(int count)
     {
-        chipInit.GenerateChips(10);
+        chipsInTray.AddRange(chipInit.GenerateChips(count, chipsInTray.Count));
+    }
+
+    public void DestroyChipsPlaced()
+    {
+        foreach (GameObject obj in chipsPlaced)
+            Destroy(obj);
+        chipsPlaced.Clear();
     }
 
     public void Place1Bet(GameObject chip)
     {
         chipsPlaced.Add(chip);
+        chipsInTray.Remove(chip);
+    }
+
+    public IEnumerator Place1BetAuto(bool isOpponent)
+    {
+        if (chipsInTray.Count < 1) yield break;
+
+        GameObject chip = chipsInTray[chipsInTray.Count - 1];
+        chipsInTray.Remove(chip);
+        chipsPlaced.Add(chip);
+
+        Rigidbody rb = chip.GetComponentInChildren<Rigidbody>();
+        Collider col = chip.transform.Find("Model/Chip/default").GetComponent<Collider>();
+        rb.useGravity = false;
+        col.isTrigger = true;
+
+        Vector3 targetPos = isOpponent ? new Vector3(-1.369f, 1.93f, -1.185f) : new Vector3(-1.369f, 2.73f, -1.185f);
+
+        Sequence seq = DOTween.Sequence();
+        seq.Append(chip.transform.DOMove(chip.transform.position + Vector3.up * 0.2f, 0.5f).SetEase(Ease.OutBack));
+        seq.AppendInterval(0.3f);
+        seq.Append(chip.transform.DOLocalMove(targetPos, 0.5f));
+        yield return seq.WaitForCompletion();
+
+        rb.useGravity = true;
+        col.isTrigger = false;
     }
 
     public bool IsOutsideValidArea(Vector3 worldPos)
@@ -45,8 +80,7 @@ public class ChipView : MonoBehaviour
     {
         Gizmos.color = Color.cyan;
         DrawRect(transform.position, transform.rotation, zoneWidth, zoneHeight);
-        //Gizmos.color = Color.gray;
-        //Gizmos.DrawSphere(instantiatePosition, 0.02f);
+        Gizmos.color = Color.gray;
         //Gizmos.DrawLine(instantiatePosition, instantiatePosition + -skillCardsDeck.up.normalized * dropDistance);
     }
 

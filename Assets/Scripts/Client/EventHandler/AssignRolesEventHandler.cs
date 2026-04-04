@@ -13,7 +13,7 @@ public class AssignRolesEventHandler : IEventProcess, IEventHandler
         ProcessQueueManager.Instance.Enqueue(Process, new object[] { payload.dealerId, payload.punterId });
 
         ClientGameState.Instance.dealerId = payload.dealerId;
-        ClientGameState.Instance.punkerId = payload.punterId;
+        ClientGameState.Instance.punterId = payload.punterId;
 
         string context = payload.dealerId.ToString();
         Debug.Log($"[Client] Event#{ev.Index} type={ev.type} slot={payload.playerId} payload={context}");

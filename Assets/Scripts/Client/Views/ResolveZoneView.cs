@@ -4,7 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ResolveZoneView : MonoBehaviour
+public class ResolveZoneView : MonoBehaviour, IViewClear
 {
     [Header("Resolve Zone Size")]
     [SerializeField] private float zoneWidth = 6f;
@@ -21,6 +21,11 @@ public class ResolveZoneView : MonoBehaviour
     private readonly List<GameObject> resolveCards = new();
 
     public IReadOnlyList<GameObject> ResolveCards => resolveCards;
+
+    public void ClearView()
+    {
+        resolveCards.Clear();
+    }
 
     public IEnumerator AddCard(GameObject instance, int playerId, bool isShown)
     {

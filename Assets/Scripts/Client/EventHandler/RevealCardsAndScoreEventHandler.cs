@@ -14,7 +14,7 @@ public class RevealCardsAndScoreEventHandler : IEventProcess, IEventHandler
 
         // TODO
         // START
-        // TODO: Client start game function
+        ClientGameState.Instance.Dispose();
         Debug.Log($"[Client] Event#{ev.Index} type={ev.type} slot={payload.playerId} payload=winner:{payload.winnerId.ToString()}");
         // END
 

@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.Splines;
 using DG.Tweening;
 
-public class HandView : MonoBehaviour
+public class HandView : MonoBehaviour, IViewClear
 {
     [SerializeField] private bool isOpponent = false;
 
@@ -40,6 +40,11 @@ public class HandView : MonoBehaviour
 
         dropRotation = -skillCardsDeck.up;
         deckOriginalPosition = skillCardsDeck.transform.position;
+    }
+
+    public void ClearView()
+    {
+        skillCardInstances.Clear();
     }
 
     public IEnumerator AddCard(GameObject instance)

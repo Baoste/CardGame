@@ -12,9 +12,10 @@ public class RevealCardsAndScoreCmdHandler : CommandHandler, ICommandHandler
         var payload = JsonConvert.DeserializeObject<RevealCardsAndScoreCommand>(cmd.jsonData);
 
         // TODO: 服务器端需要做什么
+        int winnerId;
+
         int playerPoints = session.gameState.SumPoint(payload.playerId);
         int opponentPoints = session.gameState.SumPoint(1 - payload.playerId);
-        int winnerId;
         bool playerBust = playerPoints > 21;
         bool opponentBust = opponentPoints > 21;
 
@@ -38,6 +39,10 @@ public class RevealCardsAndScoreCmdHandler : CommandHandler, ICommandHandler
             // 都没爆，比大小
             winnerId = playerPoints > opponentPoints ? payload.playerId : 1 - payload.playerId;
         }
+
+        session.gameState.Dispose();
+        session.gameState.players[winnerId].chipCount += session.gameState.currentBet;
+        session.gameState.players[1 - winnerId].chipCount -= session.gameState.currentBet;
 
         // return
         CommandResult results = new CommandResult();

@@ -6,7 +6,7 @@ public class QuickStartButtons : MonoBehaviour
 {
     public NetworkManager nm;
     private string matchId = "123";
-    private string matchSeed = "12345";
+    [HideInInspector] public string matchSeed = "12345";
 
     private void OnGUI()
     {
@@ -43,25 +43,25 @@ public class QuickStartButtons : MonoBehaviour
         if (GUI.Button(new Rect(1700, 160, w, h), "Chat"))
             ClientCommand.Chat("Hello");
 
-        if (GUI.Button(new Rect(1700, 210, w, h), "Start Game"))
+        if (GUI.Button(new Rect(1700, 210, w, h), "Start Match"))
         {
             int seed = int.Parse(matchSeed);
-            ClientCommand.StartGame(seed);
+            ClientCommand.StartMatch(seed);
         }
 
-        if (ClientGameState.playerSlot == ClientGameState.Instance.CurrentPlayerId)
-        {
-            if (GUI.Button(new Rect(1700, 610, w, h), "End Turn"))
-            {
-                ClientCommand.EndTurn();
-                ClientCommand.StartTurn(1 - ClientGameState.playerSlot);
-            }
+        //if (ClientGameState.playerSlot == ClientGameState.Instance.CurrentPlayerId)
+        //{
+        //    if (GUI.Button(new Rect(1700, 610, w, h), "End Turn"))
+        //    {
+        //        ClientCommand.EndTurn();
+        //        ClientCommand.StartTurn(1 - ClientGameState.playerSlot);
+        //    }
 
-            //if (GUI.Button(new Rect(1700, 660, w, h), "Reveal Cards"))
-            //{
-            //    ClientCommand.RevealCardsAndScore();
-            //}
-        }
+        //if (GUI.Button(new Rect(1700, 660, w, h), "Reveal Cards"))
+        //{
+        //    ClientCommand.RevealCardsAndScore();
+        //}
+        //}
 
         //if (GUI.Button(new Rect(1700, 360, w, h), "S: Opponent draw"))
         //{

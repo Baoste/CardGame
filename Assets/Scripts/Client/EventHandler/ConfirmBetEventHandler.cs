@@ -10,7 +10,9 @@ public class ConfirmBetEventHandler : IEventProcess, IEventHandler
     {
         var payload = JsonConvert.DeserializeObject<ConfirmBetEvent>(ev.jsonData);
         // need change, 需要把参数在这里传进去
-        ProcessQueueManager.Instance.Enqueue(Process, new object[] { });
+        ProcessQueueManager.Instance.Enqueue(Process, new object[] { payload.playerId, payload.betCount });
+
+        ClientGameState.Instance.currentBet = payload.betCount;
 
         string context = payload.betCount.ToString();
         Debug.Log($"[Client] Event#{ev.Index} type={ev.type} slot={payload.playerId} payload={context}");
@@ -19,6 +21,6 @@ public class ConfirmBetEventHandler : IEventProcess, IEventHandler
     }
     public void Process(object[] objects)
     {
-        // TODO:
+        ProcessDispatcher.Process("ConfirmBetTest", objects);
     }
 }

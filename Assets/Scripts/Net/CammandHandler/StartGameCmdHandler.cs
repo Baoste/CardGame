@@ -10,7 +10,7 @@ public class StartGameCmdHandler : CommandHandler, ICommandHandler
         var payload = JsonConvert.DeserializeObject<StartGameCommand>(cmd.jsonData);  // need change
 
         // TODO: 服务器端需要做什么
-        session.gameState.Init(payload.seed);
+        session.gameState.Start();
 
         // 初始化牌堆
         List<int> pointCardInstanceIds = new List<int>();
@@ -52,8 +52,7 @@ public class StartGameCmdHandler : CommandHandler, ICommandHandler
             new StartGameEvent    // need change
             (
                 payload.playerId,
-                true,
-                payload.seed
+                true
             )
         ));
 

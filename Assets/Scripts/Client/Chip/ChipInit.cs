@@ -9,17 +9,17 @@ public class ChipInit : MonoBehaviour
     [SerializeField] private Vector3 instantiatePosition;
     [SerializeField] private float spacing;
 
-    // private List<GameObject> chips = new List<GameObject>();
-
-    public void GenerateChips(int count)
+    public List<GameObject> GenerateChips(int count, int start)
     {
-        for (int i = 0; i < count; i++)
+        List<GameObject> chips = new List<GameObject>();
+        for (int i = start; i < start + count; i++)
         {
             GameObject chip = Instantiate(chipPrefab, transform);
             chip.transform.position = instantiatePosition + transform.right * i * spacing;
             chip.transform.rotation = Quaternion.Euler(0, 14.9f, -86f);
-            // chips.Add(chip);
+            chips.Add(chip);
         }
+        return chips;
     }
 
     private void OnDrawGizmos()

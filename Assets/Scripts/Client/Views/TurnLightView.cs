@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class TurnLightView : MonoBehaviour
+public class TurnLightView : MonoBehaviour, IViewClear
 {
     private Renderer matRenderer;
     private MaterialPropertyBlock mpb;
@@ -12,6 +12,11 @@ public class TurnLightView : MonoBehaviour
     {
         matRenderer = GetComponentInChildren<Renderer>();
         mpb = new MaterialPropertyBlock();
+    }
+
+    public void ClearView()
+    {
+        SetLight(0);
     }
 
     public void SetLight(int turn)

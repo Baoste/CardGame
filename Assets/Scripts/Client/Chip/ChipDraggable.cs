@@ -16,20 +16,20 @@ public class ChipDraggable : MonoBehaviour, IMouseDown, IMouseDrag, IMouseUp
 
     private ChipMouseTilt mouseTilt;
     private Outline outlineControl;
-    private Rigidbody rb;
-    [SerializeField] private Collider col;
 
-    private void Start()
-    {
-        Init();
-    }
+    private Rigidbody rb;
+    private Collider col;
+
+    private Vector3 originalPosition;
+    private Quaternion originalRoation;
 
     public void Init()
     {
         cam = Camera.main;
         mouseTilt = GetComponent<ChipMouseTilt>();
         outlineControl = GetComponent<Outline>();
-        rb = GetComponentInChildren<Rigidbody>();
+        rb = GetComponent<Rigidbody>();
+        col = transform.Find("Chip/default").GetComponent<Collider>();
     }
 
     public void MouseDown()
@@ -38,6 +38,9 @@ public class ChipDraggable : MonoBehaviour, IMouseDown, IMouseDrag, IMouseUp
         transform.DOKill();
         rb.useGravity = false;
         col.isTrigger = true;
+
+        originalPosition = transform.position;
+        originalRoation = transform.rotation;
 
         Vector3 planeNormal = SceneViewManager.myChipView.transform.rotation * Vector3.up;
         dragPlane = new Plane(planeNormal, SceneViewManager.myChipView.transform.position);
@@ -71,7 +74,6 @@ public class ChipDraggable : MonoBehaviour, IMouseDown, IMouseDrag, IMouseUp
             }
             else
             {
-                // instance.meshRenderer.sharedMaterial = instance.defaultMaterial;
                 outlineControl.OutlineColor = outlineControl.defaultColor;
             }
         }
@@ -89,15 +91,23 @@ public class ChipDraggable : MonoBehaviour, IMouseDown, IMouseDrag, IMouseUp
 
         if (outside)
         {
-            // StartCoroutine(ReturnToHand());
+            StartCoroutine(ReturnToChipTray());
         }
         else
         {
             rb.AddForceAtPosition(-transform.up * 0.5f, transform.position - transform.right * 0.1f, ForceMode.Impulse);
             SceneViewManager.myChipView.Place1Bet(gameObject);
-            //Place1BetCommand cmd = new Place1BetCommand { playerId = ClientGameState.playerSlot };
-            //ClientGameState.gateway.SendCommandServerRpc("Place1Bet", JsonConvert.SerializeObject(cmd));
+            Place1BetCommand cmd = new Place1BetCommand { playerId = ClientGameState.playerSlot };
+            ClientGameState.gateway.SendCommandServerRpc("Place1Bet", JsonConvert.SerializeObject(cmd));
+            StartCoroutine(SceneViewManager.opponentChipView.Place1BetAuto(true));
         }
+    }
+
+    private IEnumerator ReturnToChipTray()
+    {
+        transform.position = originalPosition;
+        transform.rotation = originalRoation;
+        yield break;
     }
 
     private bool TryGetMouseWorldPosition(out Vector3 worldPos)

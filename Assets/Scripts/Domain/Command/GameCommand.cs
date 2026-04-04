@@ -18,21 +18,26 @@ namespace Game.Domain
     {
     }
 
-    public class JoinOrCreateGameCommand : ICommand
+    public class JoinOrCreateMatchCommand : ICommand
     {
         public int playerId;
         public string matchIdOrEmpty;
     }
 
-    public class LeaveGameCommand : ICommand
+    public class LeaveMatchCommand : ICommand
     {
         public int playerId;
+    }
+
+    public class StartMatchCommand : ICommand
+    {
+        public int playerId;
+        public int seed;
     }
 
     public class StartGameCommand : ICommand
     {
         public int playerId;
-        public int seed;
     }
 
     public class AssignRolesCommand : ICommand

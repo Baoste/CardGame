@@ -22,11 +22,11 @@ public class CardViewCreator : Singleton<CardViewCreator>
         switch (cardType)
         {
             case CardType.Point:
-                cardObj = Instantiate(pointCardInstancePrefab, position, rotation);
+                cardObj = Instantiate(pointCardInstancePrefab, transform);
                 cardInstance = cardObj.GetComponent<PointCardInstance>();
                 break;
             case CardType.Skill:
-                cardObj = Instantiate(skillCardInstancePrefab, position, rotation);
+                cardObj = Instantiate(skillCardInstancePrefab, transform);
                 cardInstance = cardObj.GetComponent<SkillCardInstance>();
                 break;
         }
@@ -41,7 +41,7 @@ public class CardViewCreator : Singleton<CardViewCreator>
         GameObject cardObj = null;
         CardInstance cardResolve = null;
         
-        cardObj = Instantiate(resolveCardInstancePrefab, position, rotation);
+        cardObj = Instantiate(resolveCardInstancePrefab, transform);
         cardResolve = cardObj.GetComponent<PointCardResolve>();
 
         cardResolve.InitCardInstance(cardId, instanceId);

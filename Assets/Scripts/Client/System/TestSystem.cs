@@ -20,7 +20,13 @@ public class TestSystem : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.O))
         {
             SceneViewManager.viewAnimController.PlayStartGameAnim();
-            SceneViewManager.myChipView.GenerateChips();
+            SceneViewManager.myChipView.GenerateChips(6);
+            SceneViewManager.opponentChipView.GenerateChips(6);
+            foreach (var obj in SceneViewManager.myChipView.chipsInTray)
+            {
+                ChipDraggable drag = obj.transform.GetChild(0).gameObject.AddComponent<ChipDraggable>();
+                drag.Init();
+            }
         }
 
         if (Input.GetKeyDown(KeyCode.Space))

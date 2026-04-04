@@ -10,8 +10,11 @@ public class Place1BetCmdHandler : CommandHandler, ICommandHandler
 
         // TODO
         // START
-        session.gameState.currentBet++;
-        session.gameState.players[payload.playerId].chipCount--;
+        if (session.gameState.players[1 - payload.playerId].Place1Bet() &&
+            session.gameState.players[payload.playerId].Place1Bet())
+        {
+            session.gameState.currentBet++;
+        }
         // END
 
         // need change

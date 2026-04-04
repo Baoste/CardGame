@@ -17,5 +17,21 @@ namespace Game.Domain
         public int chipCount = 6;
         public SkillCardsInHand skillCardsInHand = new SkillCardsInHand();
         public PointCardsOnBoard pointCardsOnBoard = new PointCardsOnBoard();
+
+        public void Init()
+        {
+            actionPoint = 0;
+            _holeCard = -1;
+            skillCardsInHand._Clear();
+            pointCardsOnBoard._Clear();
+        }
+
+        public bool Place1Bet()
+        {
+            if (chipCount <= 0)
+                return false;
+            chipCount -= 1;
+            return true;
+        }
     }
 }

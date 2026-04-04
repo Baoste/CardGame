@@ -65,7 +65,7 @@ public class ProcessQueueManager : MonoBehaviour
             Action<object[]> current = processQueue.Dequeue();
             current(paramsQueue.Dequeue());
 
-            yield return null;
+            yield return new WaitForSecondsRealtime(0.5f);
         }
 
         isProcessing = false;

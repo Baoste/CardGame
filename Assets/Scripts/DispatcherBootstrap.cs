@@ -4,7 +4,8 @@ public static class DispatcherBootstrap
 {
     public static void Init()
     {
-        EventDispatcher.Register("JoinOrCreateGame", new JoinOrCreateGameEventHandler());
+        EventDispatcher.Register("JoinOrCreateMatch", new JoinOrCreateMatchEventHandler());
+        EventDispatcher.Register("StartMatch", new StartMatchEventHandler());
         EventDispatcher.Register("StartGame", new StartGameEventHandler());
         EventDispatcher.Register("AssignRoles", new AssignRolesEventHandler());
         EventDispatcher.Register("Place1Bet", new Place1BetEventHandler());
@@ -29,8 +30,9 @@ public static class DispatcherBootstrap
         EventDispatcher.Register("ValidateParticipants", new ValidateParticipantsEventHandler());
         EventDispatcher.Register("EndTurn", new EndTurnEventHandler());
 
-        CommandDispatcher.Register("LeaveGame", new LeaveGameCmdHandler());
-        CommandDispatcher.Register("JoinOrCreateGame", new JoinOrCreateGameCmdHandler());
+        CommandDispatcher.Register("LeaveMatch", new LeaveMatchCmdHandler());
+        CommandDispatcher.Register("JoinOrCreateMatch", new JoinOrCreateMatchCmdHandler());
+        CommandDispatcher.Register("StartMatch", new StartMatchCmdHandler());
         CommandDispatcher.Register("StartGame", new StartGameCmdHandler());
         CommandDispatcher.Register("AssignRoles", new AssignRolesCmdHandler());
         CommandDispatcher.Register("Place1Bet", new Place1BetCmdHandler());

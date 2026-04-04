@@ -17,13 +17,26 @@ namespace Game.Domain
     /// <summary>
     /// 加入或创建房间事件，成功时 playerId 是玩家ID，matchIdOrEmpty 是房间ID；失败时 playerId 是玩家ID，matchIdOrEmpty 是空字符串
     /// </summary>
-    public class JoinOrCreateGameEvent : PlayerEvent
+    public class JoinOrCreateMatchEvent : PlayerEvent
     {
         public string matchIdOrEmpty;
-        public JoinOrCreateGameEvent(int playerId, bool success, string matchIdOrEmpty)
+        public JoinOrCreateMatchEvent(int playerId, bool success, string matchIdOrEmpty)
             : base(playerId, success)
         {
             this.matchIdOrEmpty = matchIdOrEmpty;
+        }
+    }
+
+    /// <summary>
+    /// 开始比赛事件，成功时 playerId 是玩家ID；失败时 playerId 是玩家ID
+    /// </summary>
+    public class StartMatchEvent : PlayerEvent
+    {
+        public int seed;
+        public StartMatchEvent(int playerId, bool success, int seed)
+            : base(playerId, success)
+        {
+            this.seed = seed;
         }
     }
 
@@ -32,11 +45,9 @@ namespace Game.Domain
     /// </summary>
     public class StartGameEvent : PlayerEvent
     {
-        public int seed;
-        public StartGameEvent(int playerId, bool success, int seed) 
+        public StartGameEvent(int playerId, bool success) 
             : base(playerId, success)
         {
-            this.seed = seed;
         }
     }
 

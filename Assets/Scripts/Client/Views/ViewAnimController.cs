@@ -24,6 +24,7 @@ public class ViewAnimController : MonoBehaviour
 
     [Header("Mine Chip Cover Anim Settings")]
     [SerializeField] private Transform m_ChipCoverPivot;
+    [SerializeField] private Transform op_ChipCoverPivot;
 
 
     private void Start()
@@ -52,6 +53,15 @@ public class ViewAnimController : MonoBehaviour
         yield return seq.WaitForCompletion();
     }
 
+    public IEnumerator OpenPointCardDeckCover()
+    {
+        Sequence seq = DOTween.Sequence();
+        seq.Append(pointCardsDeckCoverPivot.DORotate(new Vector3(108.62f, 0, 0), 0.25f).SetEase(Ease.InCubic));
+        seq.Append(pointCardsDeck.DOMoveY(2.195f, 0.5f).SetEase(Ease.OutCubic));
+
+        yield return seq.WaitForCompletion();
+    }
+
     public IEnumerator OpenSkillCardDeckCover()
     {
         Sequence seq = DOTween.Sequence();
@@ -65,14 +75,26 @@ public class ViewAnimController : MonoBehaviour
 
     public IEnumerator CloseChipCover()
     {
+        if (ClientGameState.playerSlot != ClientGameState.Instance.punterId)
+            yield break;
         if (SceneViewManager.myChipView.chipsPlaced.Count < 1)
             yield break;
 
         Sequence seq = DOTween.Sequence();
         seq.Append(m_ChipCoverPivot.DORotate(new Vector3(-49.6f, 0, 0), 0.35f).SetEase(Ease.InCubic));
+        seq.Join(op_ChipCoverPivot.DORotate(Vector3.zero, 0.35f).SetEase(Ease.InCubic));
 
         yield return seq.WaitForCompletion();
         ConfirmBetCommand cmd = new ConfirmBetCommand { playerId = ClientGameState.playerSlot };
         ClientGameState.gateway.SendCommandServerRpc("ConfirmBet", JsonConvert.SerializeObject(cmd));
+    }
+
+    public IEnumerator OpenChipCover()
+    {
+        Sequence seq = DOTween.Sequence();
+        seq.Append(m_ChipCoverPivot.DORotate(Vector3.zero, 0.35f).SetEase(Ease.InCubic));
+        seq.Join(op_ChipCoverPivot.DORotate(new Vector3(-49.6f, 0, 0), 0.35f).SetEase(Ease.InCubic));
+
+        yield return seq.WaitForCompletion();
     }
 }

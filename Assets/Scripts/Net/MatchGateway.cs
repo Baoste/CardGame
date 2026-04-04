@@ -47,9 +47,9 @@ public class MatchGateway : NetworkBehaviour
         if (type == "GetCtx")           ClientEffectContext.GetServerCtxDone = false;
         if (type == "GetGameState")     ClientGameState.GetServerGameStateDone = false;
 
-        if (type == "JoinOrCreateGame")
+        if (type == "JoinOrCreateMatch")
         {
-            JoinOrCreateGameCommand payload = JsonConvert.DeserializeObject<JoinOrCreateGameCommand>(jsonData);
+            JoinOrCreateMatchCommand payload = JsonConvert.DeserializeObject<JoinOrCreateMatchCommand>(jsonData);
 
             // 如果这个连接已经在某局里，先踢掉旧映射（最小实现：直接覆盖）
             if (_connMap.TryGetValue(sender.ClientId, out var old))
@@ -107,7 +107,7 @@ public class MatchGateway : NetworkBehaviour
                 }
             }
         }
-        else if (type == "LeaveGame")
+        else if (type == "LeaveMatch")
         {
             if (!_connMap.TryGetValue(sender.ClientId, out var info))
             {

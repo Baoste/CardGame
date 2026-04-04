@@ -7,27 +7,33 @@ public static class ClientCommand
     // 创建新局
     public static void CreateMatch(string matchId)
     {
-        JoinOrCreateGameCommand cmd = new JoinOrCreateGameCommand { playerId = -1, matchIdOrEmpty = matchId };
-        ClientGameState.gateway.SendCommandServerRpc("JoinOrCreateGame", JsonConvert.SerializeObject(cmd));
+        JoinOrCreateMatchCommand cmd = new JoinOrCreateMatchCommand { playerId = -1, matchIdOrEmpty = matchId };
+        ClientGameState.gateway.SendCommandServerRpc("JoinOrCreateMatch", JsonConvert.SerializeObject(cmd));
         Debug.Log("[Client] Requested create match");
     }
 
     public static void JoinMatch(string matchId)
     {
-        JoinOrCreateGameCommand cmd = new JoinOrCreateGameCommand { playerId = -1, matchIdOrEmpty = matchId };
-        ClientGameState.gateway.SendCommandServerRpc("JoinOrCreateGame", JsonConvert.SerializeObject(cmd));
+        JoinOrCreateMatchCommand cmd = new JoinOrCreateMatchCommand { playerId = -1, matchIdOrEmpty = matchId };
+        ClientGameState.gateway.SendCommandServerRpc("JoinOrCreateMatch", JsonConvert.SerializeObject(cmd));
         Debug.Log($"[Client] Requested join match {matchId}");
     }
 
     public static void LeaveMatch()
     {
-        LeaveGameCommand cmd = new LeaveGameCommand { playerId = ClientGameState.playerSlot };
-        ClientGameState.gateway.SendCommandServerRpc("LeaveGame", JsonConvert.SerializeObject(cmd));
+        LeaveMatchCommand cmd = new LeaveMatchCommand { playerId = ClientGameState.playerSlot };
+        ClientGameState.gateway.SendCommandServerRpc("LeaveMatch", JsonConvert.SerializeObject(cmd));
     }
 
-    public static void StartGame(int seed)
+    public static void StartMatch(int seed)
     {
-        StartGameCommand cmd = new StartGameCommand { playerId = ClientGameState.playerSlot, seed = seed };
+        StartMatchCommand cmd = new StartMatchCommand { playerId = ClientGameState.playerSlot, seed = seed };
+        ClientGameState.gateway.SendCommandServerRpc("StartMatch", JsonConvert.SerializeObject(cmd));
+    }
+
+    public static void StartGame()
+    {
+        StartGameCommand cmd = new StartGameCommand { playerId = ClientGameState.playerSlot};
         ClientGameState.gateway.SendCommandServerRpc("StartGame", JsonConvert.SerializeObject(cmd));
         AssignRolesCommand cmd2 = new AssignRolesCommand { playerId = ClientGameState.playerSlot };
         ClientGameState.gateway.SendCommandServerRpc("AssignRoles", JsonConvert.SerializeObject(cmd2));

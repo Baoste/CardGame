@@ -7,7 +7,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using static MeshDestroy;
 
-public class BoardView : MonoBehaviour
+public class BoardView : MonoBehaviour, IViewClear
 {
     [Header("Board Plane")]
     [SerializeField] private Vector3 boardCenter = Vector3.zero;
@@ -44,6 +44,12 @@ public class BoardView : MonoBehaviour
     private void Start()
     {
         impulseSource = GetComponent<CinemachineImpulseSource>();
+    }
+
+    public void ClearView()
+    {
+        selfCards.Clear();
+        opponentCards.Clear();
     }
 
     public IEnumerator AddCard(GameObject instance, int playerId, bool isHoleCard)
@@ -162,13 +168,13 @@ public class BoardView : MonoBehaviour
         if (opponentCards.Remove(instance))
         {
             yield return DestroyCard(instance);
-            yield return new WaitForSeconds(3f);
+            yield return new WaitForSeconds(0.5f);
             yield return UpdateCardPositionsNormal(true, false);
         }
         if (selfCards.Remove(instance))
         {
             yield return DestroyCard(instance);
-            yield return new WaitForSeconds(3f);
+            yield return new WaitForSeconds(0.5f);
             yield return UpdateCardPositionsNormal(false, false);
         }
     }

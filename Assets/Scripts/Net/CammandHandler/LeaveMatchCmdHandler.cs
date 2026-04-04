@@ -5,12 +5,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class LeaveGameCmdHandler : CommandHandler, ICommandHandler
+public class LeaveMatchCmdHandler : CommandHandler, ICommandHandler
 {
     public CommandResult Handle(MatchSession session, NetCommand cmd)
     {
         // need change
-        // var payload = JsonConvert.DeserializeObject<LeaveGameCommand>(cmd.jsonData);
+        // var payload = JsonConvert.DeserializeObject<LeaveMatchCommand>(cmd.jsonData);
 
         // TODO: 服务器端需要做什么
 

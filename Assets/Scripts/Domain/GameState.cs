@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 
 namespace Game.Domain
 {
@@ -20,8 +21,8 @@ namespace Game.Domain
         public int CurrentPlayerId = -1;
         public int RandomSeed = 12345;
 
-        public int dealerId;
-        public int punkerId;
+        public int dealerId = -1;
+        public int punterId = -1;
 
         public Random rng;
         public bool isStart = false;
@@ -54,7 +55,11 @@ namespace Game.Domain
         {
             RandomSeed = seed;
             rng = new Random(seed);
-            
+        }
+
+        public void Start()
+        {
+            isStart = true;
             Turn = 0;
             CurrentPlayerId = -1;
 
@@ -63,12 +68,32 @@ namespace Game.Domain
             skillCardsDeck._Clear();
             pointCardsDeck._Clear();
             discardPile._Clear();
+            cardsToResolve._Clear();
+            cardLocationMap.Clear();
+            instancePointMap.Clear();
             foreach (PlayerState player in players)
             {
-                player.skillCardsInHand._Clear();
-                player.pointCardsOnBoard._Clear();
+                player.Init();
             }
+        }
+
+        public void Dispose()
+        {
+            isStart = false;
+            Turn = 0;
+            CurrentPlayerId = -1;
+            currentBet = 0;
+
+            skillCardsDeck._Clear();
+            pointCardsDeck._Clear();
+            discardPile._Clear();
+            cardsToResolve._Clear();
             cardLocationMap.Clear();
+            instancePointMap.Clear();
+            foreach (PlayerState player in players)
+            {
+                player.Init();
+            }
         }
 
         public int SumPoint(int playerId)

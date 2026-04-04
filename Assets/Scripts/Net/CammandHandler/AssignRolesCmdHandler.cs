@@ -14,7 +14,7 @@ public class AssignRolesCmdHandler : CommandHandler, ICommandHandler
         int dealerId = session.gameState.rng.Next(2);
         int punterId = 1 - dealerId;
         session.gameState.dealerId = dealerId;
-        session.gameState.punkerId = punterId;
+        session.gameState.punterId = punterId;
 
         // return
         CommandResult results = new CommandResult();

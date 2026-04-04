@@ -257,7 +257,7 @@ Shader "Custom/Shader_Trans"
 
                 float3 emission = SAMPLE_TEXTURE2D(_EmissionMap, sampler_EmissionMap, uvEmission).rgb * _EmissionColor.rgb;
 
-                float3 color = diffuseSum + specularSum + iblSpec * 0.05 + emission;
+                float3 color = diffuseSum + specularSum + iblSpec + emission;
 
                 // fresnel
                 float F0 = 0.95;
