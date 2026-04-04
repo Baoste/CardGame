@@ -17,6 +17,7 @@ public class TestSystem : MonoBehaviour
 
     private void Update()
     {
+        // 模拟开始游戏，生成筹码
         if (Input.GetKeyDown(KeyCode.O))
         {
             SceneViewManager.viewAnimController.PlayStartGameAnim();
@@ -29,6 +30,7 @@ public class TestSystem : MonoBehaviour
             }
         }
 
+        // 抽技能牌
         if (Input.GetKeyDown(KeyCode.Space))
         {
             //ClientCommand.DrawSkillCard();
@@ -38,6 +40,7 @@ public class TestSystem : MonoBehaviour
             StartCoroutine(ophandView.AddCard(instance2));
         }
 
+        // 技能牌落地
         if (Input.GetKeyDown(KeyCode.N))
         {
             StartCoroutine(SceneViewManager.myExecuteCardView.MoveToFallPosition(instance1));
@@ -49,6 +52,7 @@ public class TestSystem : MonoBehaviour
             StartCoroutine(SceneViewManager.opponentExecuteCardView.MoveToExecutePosition(instance2));
         }
 
+        // 测试牌局区和结算区
         if (Input.GetKeyDown(KeyCode.Q))
         {
 
@@ -56,6 +60,7 @@ public class TestSystem : MonoBehaviour
             StartCoroutine(ResolveZoneView.AddCard(instance, -1, true));
         }
 
+        // 抽点数牌
         if (Input.GetKeyDown(KeyCode.W))
         {
             if (card <= 5)
@@ -71,6 +76,8 @@ public class TestSystem : MonoBehaviour
                 objs.Push(instance);
             }
         }
+
+        // 移除牌局区最近一张牌
         if (Input.GetKeyDown(KeyCode.E))
         {
             if (objs.Count > 0)
@@ -78,12 +85,16 @@ public class TestSystem : MonoBehaviour
                 StartCoroutine(SceneViewManager.boardView.RemoveCard(objs.Pop()));
             }
         }
+
+        // 移除牌局区所有牌
         if (Input.GetKeyDown(KeyCode.T))
         {
             StartCoroutine(SceneViewManager.boardView.RemoveAllCards());
             objs.Clear();
             card = 1;
         }
+
+        // 发底牌
         if (Input.GetKeyDown(KeyCode.R))
         {
             GameObject instance = CardViewCreator.Instance.CreateCardInstance(2, 99, transform.position, Quaternion.identity);
@@ -91,11 +102,14 @@ public class TestSystem : MonoBehaviour
             instance = CardViewCreator.Instance.CreateCardInstance(2, 99, transform.position, Quaternion.identity);
             StartCoroutine(SceneViewManager.boardView.AddCard(instance, 99, true));
         }
-        if (Input.GetKeyDown(KeyCode.A))
-        {
-            SceneViewManager.myRevealButtonView.ShowButton(true);
-            SceneViewManager.opponentRevealButtonView.ShowRandom();
-        }
+
+        //if (Input.GetKeyDown(KeyCode.A))
+        //{
+        //    SceneViewManager.myRevealButtonView.ShowButton(true);
+        //    SceneViewManager.opponentRevealButtonView.ShowRandom();
+        //}
+
+        // 测试回合灯
         if (Input.GetKeyDown(KeyCode.S))
         {
             SceneViewManager.myTurnLightView.SetLight(++turn);
