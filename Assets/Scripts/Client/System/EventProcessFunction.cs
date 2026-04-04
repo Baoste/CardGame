@@ -43,7 +43,7 @@ public class EventProcessFunction : MonoBehaviour
 
     public void StartGameTest(object[] parameters)
     {
-        SceneViewManager.viewAnimController.PlayStartGameAnim();
+        StartCoroutine(SceneViewManager.viewAnimController.PlayStartGameAnim());
 
         Transform root = CardViewCreator.Instance.transform;
         foreach (Transform child in root)
@@ -236,7 +236,7 @@ public class EventProcessFunction : MonoBehaviour
         bool isHoleCard = (bool)parameters[3];
 
         bool isOpponent = playerId != ClientGameState.playerSlot;
-        GameObject instance = CardViewCreator.Instance.CreateCardInstance(cardId, instanceId, transform.position, Quaternion.identity);
+        GameObject instance = CardViewCreator.Instance.CreateCardInstance(cardId, instanceId);
         instanceMap[instanceId] = instance;
 
         StartCoroutine(SceneViewManager.boardView.AddCard(instance, playerId, isHoleCard));
@@ -253,7 +253,7 @@ public class EventProcessFunction : MonoBehaviour
 
         bool isOpponent = playerId != ClientGameState.playerSlot;
 
-        GameObject instance = CardViewCreator.Instance.CreateCardInstance(cardId, instanceId, transform.position, Quaternion.identity);
+        GameObject instance = CardViewCreator.Instance.CreateCardInstance(cardId, instanceId);
 
         instanceMap[instanceId] = instance;
 
@@ -291,7 +291,7 @@ public class EventProcessFunction : MonoBehaviour
         int cardId = (int)parameters[2];
         int instanceId = (int)parameters[3];
 
-        GameObject instance = CardViewCreator.Instance.CreateCardResolved(cardId, instanceId, transform.position, Quaternion.identity);
+        GameObject instance = CardViewCreator.Instance.CreateCardResolved(cardId, instanceId);
         StartCoroutine(SceneViewManager.resolveZoneView.AddCard(instance, playerId, isShown));
     }
 
@@ -310,15 +310,29 @@ public class EventProcessFunction : MonoBehaviour
         {
             case ParticipantType.MyBoardZone:
             {
-                GameObject instance = CardViewCreator.Instance.CreateCardInstance(cardId, instanceId, transform.position, Quaternion.identity);
+                GameObject instance = CardViewCreator.Instance.CreateCardInstance(cardId, instanceId);
                 StartCoroutine(SceneViewManager.boardView.AddCard(instance, playerId, false));
                 instanceMap[instanceId] = instance;
                 break;
             }
             case ParticipantType.OppentBoardZone:
             {
-                GameObject instance = CardViewCreator.Instance.CreateCardInstance(cardId, instanceId, transform.position, Quaternion.identity);
+                GameObject instance = CardViewCreator.Instance.CreateCardInstance(cardId, instanceId);
                 StartCoroutine(SceneViewManager.boardView.AddCard(instance, 1 - playerId, false));
+                instanceMap[instanceId] = instance;
+                break;
+            }
+            case ParticipantType.MySkillCardsInHand:
+            {
+                GameObject instance = CardViewCreator.Instance.CreateCardInstance(cardId, instanceId);
+                StartCoroutine(SceneViewManager.myHandView.AddCard(instance));
+                instanceMap[instanceId] = instance;
+                break;
+            }
+            case ParticipantType.OpponentSkillCardsInHand:
+            {
+                GameObject instance = CardViewCreator.Instance.CreateCardInstance(cardId, instanceId);
+                StartCoroutine(SceneViewManager.myHandView.AddCard(instance));
                 instanceMap[instanceId] = instance;
                 break;
             }
@@ -387,7 +401,6 @@ public class EventProcessFunction : MonoBehaviour
         SceneViewManager.myChipView.DestroyChipsPlaced();
         SceneViewManager.opponentChipView.DestroyChipsPlaced();
 
-        StartCoroutine(SceneViewManager.viewAnimController.OpenChipCover());
-        StartCoroutine(SceneViewManager.viewAnimController.OpenPointCardDeckCover());
+        StartCoroutine(SceneViewManager.viewAnimController.PlayGameEndAnim(1f));
     }
 }

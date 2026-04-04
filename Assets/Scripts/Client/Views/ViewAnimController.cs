@@ -38,10 +38,18 @@ public class ViewAnimController : MonoBehaviour
         op_SkillCardsDeckCoverPivot.rotation = Quaternion.Euler(0, 0, 0);
     }
 
-    public void PlayStartGameAnim()
+    public IEnumerator PlayStartGameAnim(float delay = 0)
     {
+        yield return new WaitForSeconds(delay);
         StartCoroutine(ClosePointCardDeckCover());
         StartCoroutine(OpenSkillCardDeckCover());
+    }
+
+    public IEnumerator PlayGameEndAnim(float delay = 0)
+    {
+        yield return new WaitForSeconds(delay);
+        StartCoroutine(OpenPointCardDeckCover());
+        StartCoroutine(OpenChipCover());
     }
 
     public IEnumerator ClosePointCardDeckCover()
