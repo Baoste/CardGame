@@ -6,7 +6,7 @@
       "description": "丢弃场上的一张点数牌",
       "point": 0,
       "type": 1,
-      "count": 1,
+      "count": 2,
       "effects": [
         {
           "type": 3,
@@ -49,7 +49,7 @@
       "description": "弃置牌面上的一张点数牌，牌堆抽一张点数牌，放置在任意一方",
       "point": 0,
       "type": 1,
-      "count": 1,
+      "count": 2,
       "effects": [
         {
           "type": 3,
@@ -158,7 +158,7 @@
       "description": "抽牌，亮牌，并放置任意一方",
       "point": 0,
       "type": 1,
-      "count": 1,
+      "count": 2,
       "effects": [
         {
           "type": 2,
@@ -234,7 +234,7 @@
       "description": "与对手互换一张点数牌",
       "point": 0,
       "type": 1,
-      "count": 1,
+      "count": 2,
       "effects": [
         {
           "type": 5,
@@ -374,7 +374,7 @@
       "description": "抽取2张技能牌",
       "point": 0,
       "type": 1,
-      "count": 1,
+      "count": 2,
       "effects": [
         {
           "type": 1,
@@ -417,7 +417,7 @@
       "description": "抽一张牌，如果大于等于5，则抽牌，否则删牌",
       "point": 0,
       "type": 1,
-      "count": 1,
+      "count": 2,
       "effects": [
         {
           "type": 2,
@@ -563,11 +563,11 @@
     },
     {
       "id": 1004,
-      "name": "猜单双",
-      "description": "抽一张牌 ,如果是单数，可以抽一张技能牌和补充行动点  如果是双数，可以抽两张点数牌",
+      "name": "比大小2",
+      "description": "抽一张牌 ,如果小于等于5，可以抽一张技能牌和补充行动点  如果是双数，可以抽两张点数牌",
       "point": 0,
       "type": 1,
-      "count": 1,
+      "count": 2,
       "effects": [
         {
           "type": 2,
@@ -612,38 +612,14 @@
             "filter": {
               "$type": "Game.Domain.CompareCondition, Assembly-CSharp",
               "left": {
-                "$type": "Game.Domain.BinaryValue, Assembly-CSharp",
-                "left": {
-                  "$type": "Game.Domain.VariableValue, Assembly-CSharp",
-                  "source": 5
-                },
-                "right": {
-                  "$type": "Game.Domain.ConstValue, Assembly-CSharp",
-                  "value": 2
-                },
-                "op": 3
+                "$type": "Game.Domain.VariableValue, Assembly-CSharp",
+                "source": 5
               },
               "right": {
-                "$type": "Game.Domain.BinaryValue, Assembly-CSharp",
-                "left": {
-                  "$type": "Game.Domain.BinaryValue, Assembly-CSharp",
-                  "left": {
-                    "$type": "Game.Domain.VariableValue, Assembly-CSharp",
-                    "source": 5
-                  },
-                  "right": {
-                    "$type": "Game.Domain.ConstValue, Assembly-CSharp",
-                    "value": 1
-                  },
-                  "op": 1
-                },
-                "right": {
-                  "$type": "Game.Domain.ConstValue, Assembly-CSharp",
-                  "value": 2
-                },
-                "op": 3
+                "$type": "Game.Domain.ConstValue, Assembly-CSharp",
+                "value": 5
               },
-              "op": 4
+              "op": 3
             },
             "participantSelectionMode": {
               "$type": "SelectionModeNone, Assembly-CSharp"
@@ -742,7 +718,7 @@
       "description": "抽取一张技能牌，并补充一个行动点",
       "point": 0,
       "type": 1,
-      "count": 1,
+      "count": 2,
       "effects": [
         {
           "type": 1,
@@ -817,7 +793,7 @@
       "description": "抽取对方的一张技能牌",
       "point": 0,
       "type": 1,
-      "count": 1,
+      "count": 2,
       "effects": [
         {
           "type": 5,
