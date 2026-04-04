@@ -2606,7 +2606,7 @@ GameObject:
   - component: {fileID: 686054414}
   - component: {fileID: 686054413}
   - component: {fileID: 686054412}
-  - component: {fileID: 686054411}
+  - component: {fileID: 686054415}
   m_Layer: 0
   m_Name: MineSkillCardsDeck
   m_TagString: Untagged
@@ -2629,18 +2629,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 743722776}
   m_LocalEulerAnglesHint: {x: 0, y: -90, z: -42}
---- !u!114 &686054411
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 686054409}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f35f3d5c106104142a39bbd4b01d8ef2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!65 &686054412
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -2712,6 +2700,18 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 686054409}
   m_Mesh: {fileID: 267261986949552917, guid: acdbda6022049dc4aa065b011088da90, type: 3}
+--- !u!114 &686054415
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 686054409}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 399f694ac583b954ebcbe1ffca9b279c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &691749205
 GameObject:
   m_ObjectHideFlags: 0
@@ -11796,7 +11796,7 @@ MonoBehaviour:
   m_AntialiasingQuality: 2
   m_StopNaN: 0
   m_Dithering: 0
-  m_ClearDepth: 0
+  m_ClearDepth: 1
   m_AllowXRRendering: 1
   m_AllowHDROutput: 1
   m_UseScreenCoordOverride: 0
@@ -11853,7 +11853,7 @@ Camera:
     height: 1
   near clip plane: 0.3
   far clip plane: 1000
-  field of view: 26.19
+  field of view: 24
   orthographic: 0
   orthographic size: 5
   m_Depth: 0
@@ -11879,13 +11879,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1598902164}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalRotation: {x: 0.36203134, y: 0, z: 0, w: 0.9321659}
+  m_LocalPosition: {x: 0, y: 4.8, z: -4.57}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 330585546}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 42.45, y: 0, z: 0}
 --- !u!1 &1599494054
 GameObject:
   m_ObjectHideFlags: 0
