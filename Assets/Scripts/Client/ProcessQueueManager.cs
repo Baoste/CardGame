@@ -9,6 +9,7 @@ public class ProcessQueueManager : MonoBehaviour
     private static ProcessQueueManager instance;
     private Queue<Action<object[]>> processQueue = new Queue<Action<object[]>>();
     private Queue<object[]> paramsQueue = new Queue<object[]>();
+    private Queue<float> delayQueue = new Queue<float>();
     private bool isProcessing = false;
 
     public static ProcessQueueManager Instance
@@ -44,10 +45,11 @@ public class ProcessQueueManager : MonoBehaviour
     }
 
     // 添加到队列
-    public void Enqueue(Action<object[]> processable, object[] paramList)
+    public void Enqueue(Action<object[]> processable, object[] paramList, float delay)
     {
         processQueue.Enqueue(processable);
         paramsQueue.Enqueue(paramList);
+        delayQueue.Enqueue(delay);
 
         if (!isProcessing)
         {
@@ -64,8 +66,9 @@ public class ProcessQueueManager : MonoBehaviour
         {
             Action<object[]> current = processQueue.Dequeue();
             current(paramsQueue.Dequeue());
+            float delay = delayQueue.Dequeue();
 
-            yield return new WaitForSecondsRealtime(0.5f);
+            yield return new WaitForSecondsRealtime(delay);
         }
 
         isProcessing = false;

@@ -14,7 +14,7 @@ public class SpendActionPointEventHandler : IEventProcess, IEventHandler
         CommandExecutionState<SpendActionPointCommand>.Success = payload.success;
 
         // need change, 需要把参数在这里传进去
-        ProcessQueueManager.Instance.Enqueue(Process, new object[] { });
+        ProcessQueueManager.Instance.Enqueue(Process, new object[] { }, 0);
 
         // TODO
         // START

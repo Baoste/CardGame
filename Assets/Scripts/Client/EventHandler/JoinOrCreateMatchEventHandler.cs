@@ -7,7 +7,7 @@ public sealed class JoinOrCreateMatchEventHandler : IEventProcess, IEventHandler
     public bool Handle(NetEvent ev)
     {
         var payload = JsonConvert.DeserializeObject<JoinOrCreateMatchEvent>(ev.jsonData); // need change
-        ProcessQueueManager.Instance.Enqueue(Process, new object[] { });
+        ProcessQueueManager.Instance.Enqueue(Process, new object[] { }, 0);
 
         // TODO
         // START
