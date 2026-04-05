@@ -43,7 +43,7 @@ public class PointCardHover : MonoBehaviour, IMouseEnter, IMouseExit
     {
         if (pointsText == null || pointsRoot == null) return;
 
-        pointsText.text = GetComponent<PointCardInstance>().pointText.text;
+        pointsText.text = GetComponent<PointCardViewController>().pointText.text;
 
         if (fadeCoroutine != null)
             StopCoroutine(fadeCoroutine);

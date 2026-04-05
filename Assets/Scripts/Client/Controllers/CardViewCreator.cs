@@ -1,7 +1,5 @@
 using DG.Tweening;
 using Game.Domain;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class CardViewCreator : Singleton<CardViewCreator>
@@ -12,6 +10,7 @@ public class CardViewCreator : Singleton<CardViewCreator>
 
     [Header("Point Card Tex")]
     public Texture2D[] pointCardTexs;
+    public MaterialMap pointCardStateMatMap;
 
     public GameObject CreateCardInstance(int cardId, int instanceId)
     {

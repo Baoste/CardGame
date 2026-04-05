@@ -4,12 +4,8 @@ using UnityEngine;
 
 public class PointCardInstance : CardInstance
 {
-    [Header("Component")]
-    public TMP_Text pointText;
-    public CardState cardState;
-
-    private Renderer matRenderer;
-    private MaterialPropertyBlock mpb;
+    public CardState cardState { get; private set; }
+    private PointCardViewController viewController;
 
     //public bool touchAnotherCard
     //{
@@ -28,8 +24,7 @@ public class PointCardInstance : CardInstance
 
     private void Awake()
     {
-        matRenderer = GetComponentInChildren<Renderer>();
-        mpb = new MaterialPropertyBlock();
+        viewController = GetComponent<PointCardViewController>();
     }
 
     public override void InitCardInstance(int cardId, int instanceId)
@@ -37,12 +32,7 @@ public class PointCardInstance : CardInstance
         base.InitCardInstance(cardId, instanceId);
 
         localScaleFactor = 0.45f;
-        pointText.text = point.ToString();
-
-        Texture2D tex = CardViewCreator.Instance.pointCardTexs[point - 1];
-        matRenderer.GetPropertyBlock(mpb);
-        mpb.SetTexture("_MainMap", tex);
-        matRenderer.SetPropertyBlock(mpb);
+        viewController.SetCardTexture_None(point);
     }
 
     public void InitCardState(CardState cardState, bool isOpponent)
@@ -55,17 +45,16 @@ public class PointCardInstance : CardInstance
                 break;
             case CardState.Hole:
                 if (isOpponent)
-                    pointText.text = "";
+                    viewController.SetCardTexture_Hole(point);
                 break;
             case CardState.Hidden:
-                pointText.text = "";
+                viewController.SetCardTexture_Hidden();
                 // TODO: change mat
                 break;
             case CardState.Locked:
                 // TODO: change mat
                 break;
         }
-        matRenderer.SetPropertyBlock(mpb);
     }
 
     public void ChangeCardState(CardState cardState, bool isOpponent)
@@ -75,17 +64,18 @@ public class PointCardInstance : CardInstance
         switch (cardState)
         {
             case CardState.None:
+                viewController.SetCardTexture_None(point);
+                break;
             case CardState.Hole:
                 break;
             case CardState.Hidden:
-                pointText.text = "";
+                viewController.SetCardTexture_Hidden();
                 // TODO: change mat
                 break;
             case CardState.Locked:
                 // TODO: change mat
                 break;
         }
-        matRenderer.SetPropertyBlock(mpb);
     }
 
     //void OnTriggerEnter(Collider other)

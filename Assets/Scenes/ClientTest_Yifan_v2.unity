@@ -581,6 +581,7 @@ GameObject:
   m_Component:
   - component: {fileID: 260272891}
   - component: {fileID: 260272892}
+  - component: {fileID: 260272893}
   m_Layer: 0
   m_Name: CardViewCreator
   m_TagString: Untagged
@@ -632,6 +633,34 @@ MonoBehaviour:
   - {fileID: 2800000, guid: 9c9da97987e39dc4eb33afa0b84bd2d2, type: 3}
   - {fileID: 2800000, guid: 8b90ccde4c1f93c41a226f67a7483414, type: 3}
   - {fileID: 2800000, guid: d988c1d5e641c874fa792e45cc9ce7de, type: 3}
+  pointCardStateMatMap: {fileID: 260272893}
+--- !u!114 &260272893
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 260272890}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 83131be3d77b52444922397d22d72863, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  materialList:
+  - state: 0
+    materials:
+    - {fileID: 2100000, guid: 414e97e2b42bdb64cb9e146d04aacb31, type: 2}
+    - {fileID: 2100000, guid: 0f17ea994ea3df84bb9d1760f956942a, type: 2}
+  - state: 1
+    materials:
+    - {fileID: 2100000, guid: 414e97e2b42bdb64cb9e146d04aacb31, type: 2}
+    - {fileID: 2100000, guid: 0f17ea994ea3df84bb9d1760f956942a, type: 2}
+  - state: 2
+    materials:
+    - {fileID: 2100000, guid: 85a5e9b28b9416d4598e736ec2d21f14, type: 2}
+  - state: 3
+    materials:
+    - {fileID: 2100000, guid: 0f17ea994ea3df84bb9d1760f956942a, type: 2}
 --- !u!1 &296390870
 GameObject:
   m_ObjectHideFlags: 0

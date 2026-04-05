@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6648781163875854784}
   - component: {fileID: 6146138188785704976}
+  - component: {fileID: 2809529558312641975}
   - component: {fileID: 3409832576264652307}
   - component: {fileID: -6919129792405217691}
   - component: {fileID: 1950106973989873887}
@@ -52,6 +53,18 @@ MonoBehaviour:
   instanceId: 0
   point: 0
   localScaleFactor: 0
+--- !u!114 &2809529558312641975
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 699601284007552369}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a5ed49a04e74974418f91ebeb95021a4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
   pointText: {fileID: 2850062255717980671}
 --- !u!65 &3409832576264652307
 BoxCollider:
@@ -345,7 +358,7 @@ GameObject:
   - component: {fileID: 2951859003028351794}
   - component: {fileID: 2850062255717980671}
   m_Layer: 0
-  m_Name: Point
+  m_Name: PointText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
