@@ -39,6 +39,7 @@ public class TurnLightView : MonoBehaviour, IViewClear
         {
             case 0:
                 mpb.SetVector("_LightColor", new Vector3(1, 1, 1));
+                mpb.SetFloat("_IsBreath", 0f);
                 mpb.SetVector("_LightControl1", Vector3.zero);
                 mpb.SetVector("_LightControl2", Vector3.zero);
                 break;
