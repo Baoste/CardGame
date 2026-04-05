@@ -105,8 +105,11 @@ public class EventProcessFunction : MonoBehaviour
         {
             foreach (var obj in SceneViewManager.myChipView.chipsInTray)
             {
-                ChipDraggable drag = obj.transform.GetChild(0).gameObject.AddComponent<ChipDraggable>();
-                drag.Init();
+                if (obj.transform.childCount > 0)
+                {
+                    ChipDraggable drag = obj.transform.GetChild(0).gameObject.AddComponent<ChipDraggable>();
+                    drag.Init();
+                }
             }
         }
     }
@@ -462,7 +465,8 @@ public class EventProcessFunction : MonoBehaviour
             SceneViewManager.opponentTurnLightView.SetLight(opTurn);
         }
 
-        StartCoroutine(SceneViewManager.myRevealButtonView.RandomAnimation(reveal));
+        if (ClientGameState.Instance.dealerId == ClientGameState.playerSlot)
+            StartCoroutine(SceneViewManager.myRevealButtonView.RandomAnimation(reveal));
     }
 
     // parameters[0]: int winnerId
