@@ -341,7 +341,10 @@ public class EventProcessFunction : MonoBehaviour
         {
             case ParticipantType.MyBoardZone:
             {
-                StartCoroutine(SceneViewManager.boardView.RemoveCardInstant(instanceMap[instanceId]));
+                if (instanceMap.TryGetValue(instanceId, out var obj))
+                {
+                    StartCoroutine(SceneViewManager.boardView.RemoveCardInstant(obj));
+                }
                 GameObject instance = CardViewCreator.Instance.CreateCardInstance(cardId, instanceId);
                 StartCoroutine(SceneViewManager.boardView.AddCard(instance, playerId, CardState.None));
                 instanceMap[instanceId] = instance;
@@ -349,7 +352,10 @@ public class EventProcessFunction : MonoBehaviour
             }
             case ParticipantType.OppentBoardZone:
             {
-                StartCoroutine(SceneViewManager.boardView.RemoveCardInstant(instanceMap[instanceId]));
+                if (instanceMap.TryGetValue(instanceId, out var obj))
+                {
+                    StartCoroutine(SceneViewManager.boardView.RemoveCardInstant(obj));
+                }
                 GameObject instance = CardViewCreator.Instance.CreateCardInstance(cardId, instanceId);
                 StartCoroutine(SceneViewManager.boardView.AddCard(instance, 1 - playerId, CardState.None));
                 instanceMap[instanceId] = instance;
