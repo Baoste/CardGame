@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using Unity.VisualScripting;
+using static System.Collections.Specialized.BitVector32;
 
 namespace Game.Domain
 {
@@ -40,6 +41,8 @@ namespace Game.Domain
         private Dictionary<int, CardZone> cardLocationMap = new Dictionary<int, CardZone>();
         // CardInstanceID -> PointCard的点数 的映射，方便快速查询某张点数牌实例的点数
         public Dictionary<int, int> instancePointMap = new Dictionary<int, int>();
+        // CardInstanceID -> CardState 的映射，方便查询某张牌的状态（是否被封印、是否被保护等）
+        public Dictionary<int, CardState> instanceStateMap = new Dictionary<int, CardState>();
 
         public GameState()
         {
@@ -71,6 +74,7 @@ namespace Game.Domain
             cardsToResolve._Clear();
             cardLocationMap.Clear();
             instancePointMap.Clear();
+            instanceStateMap.Clear();
             foreach (PlayerState player in players)
             {
                 player.Init();
@@ -90,6 +94,7 @@ namespace Game.Domain
             cardsToResolve._Clear();
             cardLocationMap.Clear();
             instancePointMap.Clear();
+            instanceStateMap.Clear();
             foreach (PlayerState player in players)
             {
                 player.Init();
@@ -121,9 +126,26 @@ namespace Game.Domain
             return sum;
         }
 
-        public void AddCardsToDeck(List<int> instaceIds, CardType type)
+        public CardState GetCardState(int instanceId)
         {
-            foreach (int instanceId in instaceIds)
+            if (instanceStateMap.ContainsKey(instanceId))
+                return instanceStateMap[instanceId];
+            return CardState.None;
+        }
+
+        public bool SetCardState(int instanceId, CardState state)
+        {
+            if (instanceStateMap.ContainsKey(instanceId))
+            {
+                instanceStateMap[instanceId] = state;
+                return true;
+            }
+            return false;
+        }
+
+        public void AddCardsToDeck(List<int> instanceIds, Dictionary<int, int> instanceToCardId, CardType type)
+        {
+            foreach (int instanceId in instanceIds)
             {
                 if (instanceId == -1) continue;
                 CardZone board = pointCardsDeck;
@@ -131,11 +153,13 @@ namespace Game.Domain
                     board = skillCardsDeck;
 
                 cardLocationMap[instanceId] = board;
+                instancePointMap[instanceId] = CardDatabase.Get(instanceToCardId[instanceId]).point;
+                instanceStateMap[instanceId] = CardState.None;
                 board._Add(instanceId);
             }
         }
 
-        public void AddCard(int playerId, int cardId, int instanceId, CardType type)
+        public void AddCard(int playerId, int cardId, int instanceId, CardType type, CardState state = CardState.None)
         {
             if (instanceId == -1)   return;
 
@@ -145,6 +169,7 @@ namespace Game.Domain
             
             cardLocationMap[instanceId] = board;
             instancePointMap[instanceId] = CardDatabase.Get(cardId).point;
+            instanceStateMap[instanceId] = state;
             board._Add(instanceId);
         }
 
@@ -154,6 +179,7 @@ namespace Game.Domain
 
             players[playerId]._holeCard = instanceId;
             instancePointMap[instanceId] = CardDatabase.Get(cardId).point;
+            instanceStateMap[instanceId] = CardState.Hole;
         }
 
         public void AddToResolve(int cardId, int instanceId)
@@ -162,6 +188,7 @@ namespace Game.Domain
 
             cardLocationMap[instanceId] = cardsToResolve;
             instancePointMap[instanceId] = CardDatabase.Get(cardId).point;
+            instanceStateMap[instanceId] = CardState.None;
             cardsToResolve._Add(instanceId);
         }
 

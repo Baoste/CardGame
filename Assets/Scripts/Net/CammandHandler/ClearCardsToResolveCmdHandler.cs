@@ -11,7 +11,8 @@ public class ClearCardsToResolveCmdHandler : CommandHandler, ICommandHandler
 
         // TODO
         // START
-        session.gameState.ClearResolve();
+        if (!payload.isPeekZone)
+            session.gameState.ClearResolve();
         //END
 
         // need change
@@ -21,7 +22,8 @@ public class ClearCardsToResolveCmdHandler : CommandHandler, ICommandHandler
             new ClearCardsToResolveEvent
             (
                 payload.playerId,
-                true
+                true,
+                payload.isPeekZone
             )
         ));
         return results;

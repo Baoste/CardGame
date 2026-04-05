@@ -37,6 +37,18 @@ namespace Game.Domain
                     StartCoroutine(MoveCards(op, gateway, gameState, ctx, selectedSourceIds, selectedTargetIds));
                     break;
 
+                case EffectType.AddActionPoint:
+                    StartCoroutine(AddActionPoint(op, gateway, gameState, ctx));
+                    break;
+
+                case EffectType.Peek:
+                    StartCoroutine(PeekTopCards(op, gateway, gameState, ctx));
+                    break;
+
+                case EffectType.ChangeCardState:
+                    StartCoroutine(ChangeCardsState(op, gateway, gameState, ctx, selectedTargetIds));
+                    break;
+
                 case EffectType.Judge:
                     ClientEffectContext.IsExecuteDone = true;  // 这个效果不需要客户端执行，直接告诉流程继续往下走就行了
                     break;
@@ -158,6 +170,47 @@ namespace Game.Domain
             //    gateway.SendCommandServerRpc("ClearCardsToResolve", JsonConvert.SerializeObject(cmd2), ClientGameState.playerSlot);
             //}
 
+            ClientEffectContext.IsExecuteDone = true;
+        }
+
+        private IEnumerator AddActionPoint(EffectOp op, MatchGateway gateway, GameState gameState, EffectContext ctx)
+        {
+            yield return StartCoroutine(ValidateCommand(op, gateway, gameState, ctx, new List<int>(), new List<int>(), () =>
+            {
+                AddActionPointCommand cmd = new AddActionPointCommand { playerId = ctx.caster };
+                gateway.SendCommandServerRpc("AddActionPoint", JsonConvert.SerializeObject(cmd));
+            }));
+
+            ClientEffectContext.IsExecuteDone = true;
+        }
+
+        private IEnumerator PeekTopCards(EffectOp op, MatchGateway gateway, GameState gameState, EffectContext ctx)
+        {
+            int count = op.value.Evaluate(gameState, ctx);
+
+            yield return StartCoroutine(ValidateCommand(op, gateway, gameState, ctx, new List<int>(), new List<int>(), () =>
+            {
+                PeekTopCardCommand cmd = new PeekTopCardCommand { playerId = ctx.caster, count = count };
+                gateway.SendCommandServerRpc("PeekTopCard", JsonConvert.SerializeObject(cmd));
+            }));
+
+            ClientEffectContext.IsExecuteDone = true;
+        }
+
+        public IEnumerator ChangeCardsState(EffectOp op, MatchGateway gateway, GameState gameState, EffectContext ctx, List<int> selectedTargetIds)
+        {
+            yield return StartCoroutine(ValidateCommand(op, gateway, gameState, ctx, new List<int>(), selectedTargetIds, () =>
+            {
+                List<int> ids = ClientEffectContext.Instance.selectedTargetIds;
+                int count = ids.Count;
+                CardState cardState = (CardState)op.value.Evaluate(gameState, ctx);
+                for (int i = 0; i < count; i++)
+                {
+                    int idx = i;    // 防止闭包捕获
+                    ChangeCardStateCommand cmd = new ChangeCardStateCommand { playerId = ctx.caster, instanceId = ids[idx], cardState = cardState };
+                    gateway.SendCommandServerRpc("ChangeCardState", JsonConvert.SerializeObject(cmd));
+                }
+            }));
             ClientEffectContext.IsExecuteDone = true;
         }
 

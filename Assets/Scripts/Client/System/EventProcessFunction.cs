@@ -16,6 +16,8 @@ public class EventProcessFunction : MonoBehaviour
         ProcessDispatcher.Register("StartGameTest", StartGameTest);
         ProcessDispatcher.Register("StartTurnTest", StartTurnTest);
         ProcessDispatcher.Register("AssignRolesTest", AssignRolesTest);
+        ProcessDispatcher.Register("AddActionPointTest", AddActionPointTest);
+        ProcessDispatcher.Register("SpendActionPointTest", SpendActionPointTest);
         ProcessDispatcher.Register("Place1BetTest", Place1BetTest);
         ProcessDispatcher.Register("ConfirmBetTest", ConfirmBetTest);
         ProcessDispatcher.Register("PlayAnimation", PlayAnimation);
@@ -24,6 +26,8 @@ public class EventProcessFunction : MonoBehaviour
         ProcessDispatcher.Register("DiscardCardTest", DiscardCard);
         ProcessDispatcher.Register("ModifyPointTest", ModifyPoint);
         ProcessDispatcher.Register("MoveCardTest", MoveCard);
+        ProcessDispatcher.Register("ChangeCardStateTest", ChangeCardStateTest);
+        ProcessDispatcher.Register("PeekTopCardEventTest", PeekTopCardEventTest);
         ProcessDispatcher.Register("ToResolveTest", ToResolveTest);
         ProcessDispatcher.Register("PlayResolveAnimTest", PlayResolveAnimTest);
         ProcessDispatcher.Register("EndTurnTest", EndTurnTest);
@@ -106,6 +110,31 @@ public class EventProcessFunction : MonoBehaviour
             }
         }
     }
+
+    // parameters[0]: int playerId
+    public void AddActionPointTest(object[] parameters)
+    {
+        int playerId = (int)parameters[0];
+
+        //bool isOpponent = playerId != ClientGameState.playerSlot;
+        //if (isOpponent)
+        //    SceneViewManager.opponentActionPointView.AddPoint();
+        //else
+        //    SceneViewManager.myActionPointView.AddPoint();
+    }
+
+    // parameters[0]: int playerId
+    public void SpendActionPointTest(object[] parameters)
+    {
+        int playerId = (int)parameters[0];
+
+        //bool isOpponent = playerId != ClientGameState.playerSlot;
+        //if (isOpponent)
+        //    SceneViewManager.opponentActionPointView.AddPoint();
+        //else
+        //    SceneViewManager.myActionPointView.AddPoint();
+    }
+
 
     // parameters[0]: int playerId
     public void Place1BetTest(object[] parameters)
@@ -227,19 +256,19 @@ public class EventProcessFunction : MonoBehaviour
     // parameters[0]: int cardId
     // parameters[1]: int instanceId
     // parameters[2]: int playerId
-    // parameters[3]: bool isHoleCard
+    // parameters[3]: CardState cardState
     public void DrawPointCard(object[] parameters)
     {
         int cardId = (int)parameters[0];
         int instanceId = (int)parameters[1];
         int playerId = (int)parameters[2];
-        bool isHoleCard = (bool)parameters[3];
+        CardState cardState = (CardState)parameters[3];
 
         bool isOpponent = playerId != ClientGameState.playerSlot;
         GameObject instance = CardViewCreator.Instance.CreateCardInstance(cardId, instanceId);
         instanceMap[instanceId] = instance;
 
-        StartCoroutine(SceneViewManager.boardView.AddCard(instance, playerId, isHoleCard));
+        StartCoroutine(SceneViewManager.boardView.AddCard(instance, playerId, cardState));
     }
 
     // parameters[0]: int cardId
@@ -314,7 +343,7 @@ public class EventProcessFunction : MonoBehaviour
             {
                 StartCoroutine(SceneViewManager.boardView.RemoveCardInstant(instanceMap[instanceId]));
                 GameObject instance = CardViewCreator.Instance.CreateCardInstance(cardId, instanceId);
-                StartCoroutine(SceneViewManager.boardView.AddCard(instance, playerId, false));
+                StartCoroutine(SceneViewManager.boardView.AddCard(instance, playerId, CardState.None));
                 instanceMap[instanceId] = instance;
                 break;
             }
@@ -322,7 +351,7 @@ public class EventProcessFunction : MonoBehaviour
             {
                 StartCoroutine(SceneViewManager.boardView.RemoveCardInstant(instanceMap[instanceId]));
                 GameObject instance = CardViewCreator.Instance.CreateCardInstance(cardId, instanceId);
-                StartCoroutine(SceneViewManager.boardView.AddCard(instance, 1 - playerId, false));
+                StartCoroutine(SceneViewManager.boardView.AddCard(instance, 1 - playerId, CardState.None));
                 instanceMap[instanceId] = instance;
                 break;
             }
@@ -361,9 +390,47 @@ public class EventProcessFunction : MonoBehaviour
         }
     }
 
+    // parameters[0]: int playerId
+    // parameters[1]: int instanceId
+    // parameters[2]: CardState cardState
+    public void ChangeCardStateTest(object[] parameters)
+    {
+        int playerId = (int)parameters[0];
+        int instanceId = (int)parameters[1];
+        CardState cardState = (CardState)parameters[2];
+
+        if (instanceMap.TryGetValue(instanceId, out GameObject obj))
+        {
+            PointCardInstance pointIns = obj.GetComponent<PointCardInstance>();
+            bool isOpponent = playerId != ClientGameState.playerSlot;
+            if (pointIns != null)
+            {
+                pointIns.ChangeCardState(cardState, isOpponent);
+            }
+        }
+    }
+
+    // parameters[0]: int playerId
+    // parameters[1]: int cardId
+    // parameters[2]: int instanceId
+    public void PeekTopCardEventTest(object[] parameters)
+    {
+        int playerId = (int)parameters[0];
+        int cardId = (int)parameters[1];
+        int instanceId = (int)parameters[2];
+        GameObject instance = CardViewCreator.Instance.CreateCardResolved(cardId, instanceId);
+        StartCoroutine(SceneViewManager.peekZoneView.AddCard(instance, playerId, false));
+    }
+
+    // parameters[0]: bool isPeekZone
     public void ClearResolve(object[] parameters)
     {
-        StartCoroutine(SceneViewManager.resolveZoneView.ClearCards());
+        bool isPeekZone = (bool)parameters[0];
+
+        if (isPeekZone)
+            StartCoroutine(SceneViewManager.peekZoneView.ClearCards());
+        else
+            StartCoroutine(SceneViewManager.resolveZoneView.ClearCards());
     }
 
     // parameters[0]: int turn

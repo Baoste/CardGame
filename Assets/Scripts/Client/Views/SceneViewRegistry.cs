@@ -6,6 +6,7 @@ public class SceneViewRegistry : MonoBehaviour
 {
     [SerializeField] private BoardView boardView;
     [SerializeField] private ResolveZoneView resolveZoneView;
+    [SerializeField] private ResolveZoneView peekZoneView;
 
     [SerializeField] private HandView myHandView;
     [SerializeField] private HandView opponentHandView;
@@ -30,6 +31,7 @@ public class SceneViewRegistry : MonoBehaviour
     {
         SceneViewManager.boardView = boardView;
         SceneViewManager.resolveZoneView = resolveZoneView;
+        SceneViewManager.peekZoneView = peekZoneView;
         SceneViewManager.myHandView = myHandView;
         SceneViewManager.opponentHandView = opponentHandView;
         SceneViewManager.myExecuteCardView = myExecuteCardView;

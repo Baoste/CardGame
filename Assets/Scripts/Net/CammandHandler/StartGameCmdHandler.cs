@@ -40,10 +40,10 @@ public class StartGameCmdHandler : CommandHandler, ICommandHandler
         StaticFunction.Shuffle(skillCardInstanceIds, session.gameState.rng);
 
         var pointCardsDeck = session.gameState.pointCardsDeck;
-        session.gameState.AddCardsToDeck(pointCardInstanceIds, CardType.Point);
+        session.gameState.AddCardsToDeck(pointCardInstanceIds, session.instanceToCardId, CardType.Point);
 
         var skillCardsDeck = session.gameState.skillCardsDeck;
-        session.gameState.AddCardsToDeck(skillCardInstanceIds, CardType.Skill);
+        session.gameState.AddCardsToDeck(skillCardInstanceIds, session.instanceToCardId, CardType.Skill);
 
         // return results
         CommandResult results = new CommandResult();
@@ -68,7 +68,7 @@ public class StartGameCmdHandler : CommandHandler, ICommandHandler
                 drawCardInstanceId != -1,
                 session.instanceToCardId.GetValueOrDefault(drawCardInstanceId, -1),
                 drawCardInstanceId,
-                true
+                CardState.Hole
             )
         ));
         drawCardInstanceId = pointCardsDeck.Draw();
@@ -81,7 +81,7 @@ public class StartGameCmdHandler : CommandHandler, ICommandHandler
                 drawCardInstanceId != -1,
                 session.instanceToCardId.GetValueOrDefault(drawCardInstanceId, -1),
                 drawCardInstanceId,
-                true
+                CardState.Hole
             )
         ));
 
@@ -96,7 +96,7 @@ public class StartGameCmdHandler : CommandHandler, ICommandHandler
                 drawCardInstanceId != -1,
                 session.instanceToCardId.GetValueOrDefault(drawCardInstanceId, -1),
                 drawCardInstanceId,
-                false
+                CardState.None
             )
         ));
         drawCardInstanceId = pointCardsDeck.Draw();
@@ -109,7 +109,7 @@ public class StartGameCmdHandler : CommandHandler, ICommandHandler
                 drawCardInstanceId != -1,
                 session.instanceToCardId.GetValueOrDefault(drawCardInstanceId, -1),
                 drawCardInstanceId,
-                false
+                CardState.None
             )
         ));
 

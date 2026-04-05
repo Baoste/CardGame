@@ -6,7 +6,7 @@
       "description": "丢弃场上的一张点数牌",
       "point": 0,
       "type": 1,
-      "count": 5,
+      "count": 1,
       "effects": [
         {
           "type": 3,
@@ -49,7 +49,7 @@
       "description": "弃置牌面上的一张点数牌，牌堆抽一张点数牌，放置在任意一方",
       "point": 0,
       "type": 1,
-      "count": 5,
+      "count": 1,
       "effects": [
         {
           "type": 3,
@@ -158,7 +158,7 @@
       "description": "抽牌，亮牌，并放置任意一方",
       "point": 0,
       "type": 1,
-      "count": 5,
+      "count": 1,
       "effects": [
         {
           "type": 2,
@@ -229,12 +229,99 @@
       ]
     },
     {
+      "id": 1102,
+      "name": "天亮了",
+      "description": "查看牌堆顶两张牌的点数",
+      "point": 0,
+      "type": 1,
+      "count": 1,
+      "effects": [
+        {
+          "type": 8,
+          "trueNode": -1,
+          "falseNode": -1,
+          "source": {
+            "participantType": 0,
+            "filter": {
+              "$type": "Game.Domain.NoneCondition, Assembly-CSharp"
+            },
+            "participantSelectionMode": {
+              "$type": "SelectionModeNone, Assembly-CSharp"
+            },
+            "maxSelectCount": {
+              "$type": "Game.Domain.NoneValue, Assembly-CSharp"
+            }
+          },
+          "target": {
+            "participantType": 0,
+            "filter": {
+              "$type": "Game.Domain.NoneCondition, Assembly-CSharp"
+            },
+            "participantSelectionMode": {
+              "$type": "SelectionModeNone, Assembly-CSharp"
+            },
+            "maxSelectCount": {
+              "$type": "Game.Domain.NoneValue, Assembly-CSharp"
+            }
+          },
+          "value": {
+            "$type": "Game.Domain.ConstValue, Assembly-CSharp",
+            "value": 2
+          }
+        }
+      ]
+    },
+    {
+      "id": 1101,
+      "name": "天黑请闭眼",
+      "description": "将牌堆顶上的三张牌倒扣。倒扣后，不可以查看点数",
+      "point": 0,
+      "type": 1,
+      "count": 10,
+      "effects": [
+        {
+          "type": 9,
+          "trueNode": -1,
+          "falseNode": -1,
+          "source": {
+            "participantType": 0,
+            "filter": {
+              "$type": "Game.Domain.NoneCondition, Assembly-CSharp"
+            },
+            "participantSelectionMode": {
+              "$type": "SelectionModeNone, Assembly-CSharp"
+            },
+            "maxSelectCount": {
+              "$type": "Game.Domain.NoneValue, Assembly-CSharp"
+            }
+          },
+          "target": {
+            "participantType": 32,
+            "filter": {
+              "$type": "Game.Domain.AllCondition, Assembly-CSharp"
+            },
+            "participantSelectionMode": {
+              "$type": "SelectionModeLast, Assembly-CSharp"
+            },
+            "maxSelectCount": {
+              "$type": "Game.Domain.ConstValue, Assembly-CSharp",
+              "value": 3
+            }
+          },
+          "value": {
+            "$type": "Game.Domain.ConstValue, Assembly-CSharp",
+            "value": 2
+          }
+        }
+      ]
+    },
+    {
       "id": 1204,
       "name": "夺舍",
       "description": "与对手互换一张点数牌",
       "point": 0,
       "type": 1,
-      "count": 4,
+      "count": 1,
       "effects": [
         {
           "type": 5,
@@ -310,7 +397,7 @@
       "description": "抽取2张技能牌",
       "point": 0,
       "type": 1,
-      "count": 3,
+      "count": 1,
       "effects": [
         {
           "type": 1,
@@ -353,7 +440,7 @@
       "description": "抽一张牌，如果大于等于5，则抽牌，否则删牌",
       "point": 0,
       "type": 1,
-      "count": 5,
+      "count": 1,
       "effects": [
         {
           "type": 2,
@@ -503,7 +590,7 @@
       "description": "抽一张牌 ,如果小于等于5，可以抽一张技能牌和补充行动点  如果是双数，可以抽两张点数牌",
       "point": 0,
       "type": 1,
-      "count": 5,
+      "count": 1,
       "effects": [
         {
           "type": 2,
@@ -541,7 +628,7 @@
         {
           "type": 6,
           "trueNode": 2,
-          "falseNode": 3,
+          "falseNode": 4,
           "source": {
             "participantType": 64,
             "filter": {
@@ -581,7 +668,7 @@
         },
         {
           "type": 1,
-          "trueNode": -1,
+          "trueNode": 3,
           "falseNode": -1,
           "source": {
             "participantType": 0,
@@ -610,6 +697,38 @@
           "value": {
             "$type": "Game.Domain.ConstValue, Assembly-CSharp",
             "value": 1
+          }
+        },
+        {
+          "type": 7,
+          "trueNode": -1,
+          "falseNode": -1,
+          "source": {
+            "participantType": 0,
+            "filter": {
+              "$type": "Game.Domain.NoneCondition, Assembly-CSharp"
+            },
+            "participantSelectionMode": {
+              "$type": "SelectionModeNone, Assembly-CSharp"
+            },
+            "maxSelectCount": {
+              "$type": "Game.Domain.NoneValue, Assembly-CSharp"
+            }
+          },
+          "target": {
+            "participantType": 0,
+            "filter": {
+              "$type": "Game.Domain.NoneCondition, Assembly-CSharp"
+            },
+            "participantSelectionMode": {
+              "$type": "SelectionModeNone, Assembly-CSharp"
+            },
+            "maxSelectCount": {
+              "$type": "Game.Domain.NoneValue, Assembly-CSharp"
+            }
+          },
+          "value": {
+            "$type": "Game.Domain.NoneValue, Assembly-CSharp"
           }
         },
         {
@@ -653,11 +772,11 @@
       "description": "抽取一张技能牌，并补充一个行动点",
       "point": 0,
       "type": 1,
-      "count": 3,
+      "count": 1,
       "effects": [
         {
           "type": 1,
-          "trueNode": -1,
+          "trueNode": 1,
           "falseNode": -1,
           "source": {
             "participantType": 0,
@@ -689,7 +808,7 @@
           }
         },
         {
-          "type": 0,
+          "type": 7,
           "trueNode": -1,
           "falseNode": -1,
           "source": {
@@ -728,7 +847,7 @@
       "description": "抽取对方的一张技能牌",
       "point": 0,
       "type": 1,
-      "count": 4,
+      "count": 1,
       "effects": [
         {
           "type": 5,

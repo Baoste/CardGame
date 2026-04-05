@@ -1,3 +1,4 @@
+using FishNet.Demo.AdditiveScenes;
 using Game.Domain;
 using System.Collections;
 using System.Collections.Generic;
@@ -52,27 +53,39 @@ public class TestSystem : MonoBehaviour
             StartCoroutine(SceneViewManager.opponentExecuteCardView.MoveToExecutePosition(instance2));
         }
 
-        // 测试牌局区和结算区
+        // 测试ResolveZoneView
         if (Input.GetKeyDown(KeyCode.Q))
         {
-
             GameObject instance = CardViewCreator.Instance.CreateCardInstance(2, 99999);
             StartCoroutine(ResolveZoneView.AddCard(instance, -1, true));
+        }
+
+        // 测试PeekZoneView
+        if (Input.GetKeyDown(KeyCode.P))
+        {
+            GameObject instance = CardViewCreator.Instance.CreateCardResolved(2, 99);
+            StartCoroutine(SceneViewManager.peekZoneView.AddCard(instance, -1, false));
         }
 
         // 抽点数牌
         if (Input.GetKeyDown(KeyCode.W))
         {
-            if (card <= 5)
+            if (card <= 1)
             {
                 GameObject instance = CardViewCreator.Instance.CreateCardInstance(card++, 98);
-                StartCoroutine(boardView.AddCard(instance, ClientGameState.playerSlot, false));
+                StartCoroutine(boardView.AddCard(instance, ClientGameState.playerSlot, CardState.Hidden));
+                objs.Push(instance);
+            }
+            else if (card <= 5)
+            {
+                GameObject instance = CardViewCreator.Instance.CreateCardInstance(card++, 98);
+                StartCoroutine(boardView.AddCard(instance, ClientGameState.playerSlot, CardState.None));
                 objs.Push(instance);
             }
             else if (card <= 10)
             {
                 GameObject instance = CardViewCreator.Instance.CreateCardInstance(card++, 98);
-                StartCoroutine(boardView.AddCard(instance, 99, false));
+                StartCoroutine(boardView.AddCard(instance, 99, CardState.None));
                 objs.Push(instance);
             }
         }
@@ -98,9 +111,9 @@ public class TestSystem : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.R))
         {
             GameObject instance = CardViewCreator.Instance.CreateCardInstance(2, 99);
-            StartCoroutine(SceneViewManager.boardView.AddCard(instance, ClientGameState.playerSlot, true));
+            StartCoroutine(SceneViewManager.boardView.AddCard(instance, ClientGameState.playerSlot, CardState.Hole));
             instance = CardViewCreator.Instance.CreateCardInstance(2, 99);
-            StartCoroutine(SceneViewManager.boardView.AddCard(instance, 99, true));
+            StartCoroutine(SceneViewManager.boardView.AddCard(instance, 99, CardState.Hole));
         }
 
         //if (Input.GetKeyDown(KeyCode.A))

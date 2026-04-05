@@ -9,7 +9,7 @@
     "effects": [
       {
         "type": 1,
-        "trueNode": -1,
+        "trueNode": 1,
         "falseNode": -1,
         "source": {
           "participantType": 0,
@@ -41,7 +41,7 @@
         }
       },
       {
-        "type": 0,
+        "type": 7,
         "trueNode": -1,
         "falseNode": -1,
         "source": {

@@ -83,6 +83,8 @@ public class ViewAnimController : MonoBehaviour
 
     public IEnumerator CloseChipCover()
     {
+        yield return new WaitForSeconds(1f);
+
         Sequence seq = DOTween.Sequence();
         seq.Append(m_ChipCoverPivot.DORotate(new Vector3(-49.6f, 0, 0), 0.35f).SetEase(Ease.InCubic));
         seq.Join(op_ChipCoverPivot.DORotate(Vector3.zero, 0.35f).SetEase(Ease.InCubic));

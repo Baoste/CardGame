@@ -43,7 +43,7 @@
       {
         "type": 6,
         "trueNode": 2,
-        "falseNode": 3,
+        "falseNode": 4,
         "source": {
           "participantType": 64,
           "filter": {
@@ -83,7 +83,7 @@
       },
       {
         "type": 1,
-        "trueNode": -1,
+        "trueNode": 3,
         "falseNode": -1,
         "source": {
           "participantType": 0,
@@ -112,6 +112,38 @@
         "value": {
           "$type": "Game.Domain.ConstValue, Assembly-CSharp",
           "value": 1
+        }
+      },
+      {
+        "type": 7,
+        "trueNode": -1,
+        "falseNode": -1,
+        "source": {
+          "participantType": 0,
+          "filter": {
+            "$type": "Game.Domain.NoneCondition, Assembly-CSharp"
+          },
+          "participantSelectionMode": {
+            "$type": "SelectionModeNone, Assembly-CSharp"
+          },
+          "maxSelectCount": {
+            "$type": "Game.Domain.NoneValue, Assembly-CSharp"
+          }
+        },
+        "target": {
+          "participantType": 0,
+          "filter": {
+            "$type": "Game.Domain.NoneCondition, Assembly-CSharp"
+          },
+          "participantSelectionMode": {
+            "$type": "SelectionModeNone, Assembly-CSharp"
+          },
+          "maxSelectCount": {
+            "$type": "Game.Domain.NoneValue, Assembly-CSharp"
+          }
+        },
+        "value": {
+          "$type": "Game.Domain.NoneValue, Assembly-CSharp"
         }
       },
       {

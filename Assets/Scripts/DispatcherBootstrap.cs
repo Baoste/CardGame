@@ -16,6 +16,7 @@ public static class DispatcherBootstrap
         EventDispatcher.Register("Chat", new ChatEventHandler());
         EventDispatcher.Register("PlayAnimation", new PlayAnimationEventHandler());
         EventDispatcher.Register("ValidateActionPoint", new ValidateActionPointEventHandler());
+        EventDispatcher.Register("AddActionPoint", new AddActionPointEventHandler());
         EventDispatcher.Register("SpendActionPoint", new SpendActionPointEventHandler());
         EventDispatcher.Register("DrawPointCard", new DrawPointCardEventHandler());
         EventDispatcher.Register("DrawSkillCard", new DrawSkillCardEventHandler());
@@ -25,6 +26,8 @@ public static class DispatcherBootstrap
         EventDispatcher.Register("DiscardCard", new DiscardCardEventHandler());
         EventDispatcher.Register("ModifyPoint", new ModifyPointEventHandler());
         EventDispatcher.Register("MoveCard", new MoveCardEventHandler());
+        EventDispatcher.Register("ChangeCardState", new ChangeCardStateEventHandler());
+        EventDispatcher.Register("PeekTopCard", new PeekTopCardEventHandler());
         EventDispatcher.Register("RevealCardsAndScore", new RevealCardsAndScoreEventHandler());
         EventDispatcher.Register("DetermineParticipants", new DetermineParticipantsEventHandler());
         EventDispatcher.Register("ValidateParticipants", new ValidateParticipantsEventHandler());
@@ -43,6 +46,7 @@ public static class DispatcherBootstrap
         CommandDispatcher.Register("Chat", new ChatCmdHandler());
         CommandDispatcher.Register("PlayAnimation", new PlayAnimationCmdHandler());
         CommandDispatcher.Register("ValidateActionPoint", new ValidateActionPointCmdHandler());
+        CommandDispatcher.Register("AddActionPoint", new AddActionPointCmdHandler());
         CommandDispatcher.Register("SpendActionPoint", new SpendActionPointCmdHandler());
         CommandDispatcher.Register("DrawPointCard", new DrawPointCardCmdHandler());
         CommandDispatcher.Register("DrawSkillCard", new DrawSkillCardCmdHandler());
@@ -51,6 +55,8 @@ public static class DispatcherBootstrap
         CommandDispatcher.Register("DiscardCard", new DiscardCardCmdHandler());
         CommandDispatcher.Register("ModifyPoint", new ModifyPointCmdHandler());
         CommandDispatcher.Register("MoveCard", new MoveCardCmdHandler());
+        CommandDispatcher.Register("ChangeCardState", new ChangeCardStateCmdHandler());
+        CommandDispatcher.Register("PeekTopCard", new PeekTopCardCmdHandler());
         CommandDispatcher.Register("RevealCardsAndScore", new RevealCardsAndScoreCmdHandler());
         CommandDispatcher.Register("DetermineParticipants", new DetermineParticipantsCmdHandler());
         CommandDispatcher.Register("ValidateParticipants", new ValidateParticipantsCmdHandler());

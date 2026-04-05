@@ -73,6 +73,16 @@ namespace Game.Domain
             _instanceIds.RemoveAt(lastIndex);
             return value;
         }
+
+        public int Peek(int i)
+        {
+            if (instanceIds.Count <= i)
+                return -1;
+
+            int lastIndex = instanceIds.Count - 1 - i;
+            int value = instanceIds[lastIndex];
+            return value;
+        }
     }
 
     public class SkillCardsInHand : CardZone

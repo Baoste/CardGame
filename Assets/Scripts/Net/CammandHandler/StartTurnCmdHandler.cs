@@ -30,6 +30,15 @@ public class StartTurnCmdHandler : CommandHandler, ICommandHandler
             )
         ));
 
+        results.events.Enqueue(MakeEvent(
+            "AddActionPoint",
+            new AddActionPointEvent    // need change
+            (
+                payload.playerId,
+                true
+            )
+        ));
+
         return results;
     }
 }

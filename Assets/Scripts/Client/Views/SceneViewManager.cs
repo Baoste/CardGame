@@ -5,6 +5,7 @@ public static class SceneViewManager
 {
     public static BoardView boardView;
     public static ResolveZoneView resolveZoneView;
+    public static ResolveZoneView peekZoneView;
     public static HandView myHandView;
     public static HandView opponentHandView;
     public static ExecuteCardView myExecuteCardView;
@@ -19,11 +20,11 @@ public static class SceneViewManager
     public static ViewAnimController viewAnimController;
     public static EndTurnView endTurnView;
 
-
     private static IEnumerable<IViewClear> views => new IViewClear[]
     {
             boardView,
             resolveZoneView,
+            peekZoneView,
             myHandView,
             opponentHandView,
             myRevealButtonView,

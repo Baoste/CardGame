@@ -171,6 +171,17 @@ namespace Game.Domain
     }
 
     /// <summary>
+    /// 添加行动点事件，成功时 playerId 是玩家ID；失败时 playerId 是玩家ID
+    /// </summary>
+    public class AddActionPointEvent : PlayerEvent
+    {
+        public AddActionPointEvent(int playerId, bool success)
+            : base(playerId, success)
+        {
+        }
+    }
+
+    /// <summary>
     /// 消耗行动点事件，成功时 playerId 是玩家ID；失败时 playerId 是玩家ID
     /// </summary>
     public class SpendActionPointEvent : PlayerEvent
@@ -203,13 +214,13 @@ namespace Game.Domain
     {
         public int cardId;
         public int instanceId;
-        public bool isHoleCard;
-        public DrawPointCardEvent(int playerId, bool success, int cardId, int instanceId, bool isHoleCard)
+        public CardState cardState;
+        public DrawPointCardEvent(int playerId, bool success, int cardId, int instanceId, CardState cardState)
             : base(playerId, success)
         {
             this.cardId = cardId;
             this.instanceId = instanceId;
-            this.isHoleCard = isHoleCard;
+            this.cardState = cardState;
         }
     }
 
@@ -230,9 +241,11 @@ namespace Game.Domain
 
     public class ClearCardsToResolveEvent : PlayerEvent
     {
-        public ClearCardsToResolveEvent(int playerId, bool success)
+        public bool isPeekZone;
+        public ClearCardsToResolveEvent(int playerId, bool success, bool isPeekZone)
             : base(playerId, success)
         {
+            this.isPeekZone = isPeekZone;
         }
     }
 
@@ -292,6 +305,33 @@ namespace Game.Domain
             this.cardId = cardId;
             this.selectedId = selectedId;
             this.toZone = toZone;
+        }
+    }
+
+    public class ChangeCardStateEvent : PlayerEvent
+    {
+        public int instanceId;
+        public CardState cardState;
+        public ChangeCardStateEvent(int playerId, bool success, int instanceId, CardState cardState)
+            : base(playerId, success)
+        {
+            this.instanceId = instanceId;
+            this.cardState = cardState;
+        }
+    }
+
+    /// <summary>
+    /// 偷看牌事件，成功时 playerId 是玩家ID，cardId 是被偷看的牌的牌ID，instanceId 是被偷看的牌的实例ID；失败时 playerId 是玩家ID，cardId 是 -1，instanceId 是 -1
+    /// </summary>
+    public class PeekTopCardEvent : PlayerEvent
+    {
+        public int cardId;
+        public int instanceId;
+        public PeekTopCardEvent(int playerId, bool success, int cardId, int instanceId)
+            : base(playerId, success)
+        {
+            this.cardId = cardId;
+            this.instanceId = instanceId;
         }
     }
 

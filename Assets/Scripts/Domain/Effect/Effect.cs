@@ -11,6 +11,9 @@ namespace Game.Domain
         ModifyPoint,        // 改变目标牌点数
         Move,               // 移动目标牌
         Judge,              // 判断
+        AddActionPoint,     // 加行动点
+        Peek,               // 偷看牌
+        ChangeCardState,    // 改变牌的状态，例如翻面等
     }
 
     /*

@@ -1,4 +1,4 @@
-using DG.Tweening;
+using Game.Domain;
 using TMPro;
 using UnityEngine;
 
@@ -6,25 +6,25 @@ public class PointCardInstance : CardInstance
 {
     [Header("Component")]
     public TMP_Text pointText;
-    public bool isHole;
+    public CardState cardState;
 
     private Renderer matRenderer;
     private MaterialPropertyBlock mpb;
 
-    public bool touchAnotherCard
-    {
-        get
-        {
-            bool value = _touchAnotherCard;
-            _touchAnotherCard = false;   // 读取后自动重置
-            return value;
-        }
-        set
-        {
-            _touchAnotherCard = value;
-        }
-    }
-    private bool _touchAnotherCard;
+    //public bool touchAnotherCard
+    //{
+    //    get
+    //    {
+    //        bool value = _touchAnotherCard;
+    //        _touchAnotherCard = false;   // 读取后自动重置
+    //        return value;
+    //    }
+    //    set
+    //    {
+    //        _touchAnotherCard = value;
+    //    }
+    //}
+    //private bool _touchAnotherCard;
 
     private void Awake()
     {
@@ -45,27 +45,70 @@ public class PointCardInstance : CardInstance
         matRenderer.SetPropertyBlock(mpb);
     }
 
-    void OnTriggerEnter(Collider other)
+    public void InitCardState(CardState cardState, bool isOpponent)
     {
-        if (other.GetComponent<PointCardInstance>() != null)
+        this.cardState = cardState;
+
+        switch (cardState)
         {
-            touchAnotherCard = true;
+            case CardState.None:
+                break;
+            case CardState.Hole:
+                if (isOpponent)
+                    pointText.text = "";
+                break;
+            case CardState.Hidden:
+                pointText.text = "";
+                // TODO: change mat
+                break;
+            case CardState.Locked:
+                // TODO: change mat
+                break;
         }
+        matRenderer.SetPropertyBlock(mpb);
     }
 
-    void OnTriggerStay(Collider other)
+    public void ChangeCardState(CardState cardState, bool isOpponent)
     {
-        if (other.GetComponent<PointCardInstance>() != null)
+        this.cardState = cardState;
+
+        switch (cardState)
         {
-            touchAnotherCard = true;
+            case CardState.None:
+            case CardState.Hole:
+                break;
+            case CardState.Hidden:
+                pointText.text = "";
+                // TODO: change mat
+                break;
+            case CardState.Locked:
+                // TODO: change mat
+                break;
         }
+        matRenderer.SetPropertyBlock(mpb);
     }
 
-    void OnTriggerExit(Collider other)
-    {
-        if (other.GetComponent<PointCardInstance>() != null)
-        {
-            touchAnotherCard = false;
-        }
-    }
+    //void OnTriggerEnter(Collider other)
+    //{
+    //    if (other.GetComponent<PointCardInstance>() != null)
+    //    {
+    //        touchAnotherCard = true;
+    //    }
+    //}
+
+    //void OnTriggerStay(Collider other)
+    //{
+    //    if (other.GetComponent<PointCardInstance>() != null)
+    //    {
+    //        touchAnotherCard = true;
+    //    }
+    //}
+
+    //void OnTriggerExit(Collider other)
+    //{
+    //    if (other.GetComponent<PointCardInstance>() != null)
+    //    {
+    //        touchAnotherCard = false;
+    //    }
+    //}
 }

@@ -1,5 +1,6 @@
 using DG.Tweening;
 using Game.Domain;
+using Newtonsoft.Json;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -14,12 +15,12 @@ public class ResolveZoneView : MonoBehaviour, IViewClear
     [SerializeField] private float cardSpacing = 1.8f;
     // [SerializeField] private float depthOffsetPerCard = 0.02f;
     [SerializeField] private float animationDuration = 0.2f;
+    [SerializeField] private GameObject confirmBtn = null;
 
     [Header("Card Rotation")]
     [SerializeField] private Vector3 cardEuler = new Vector3(90f, 0f, 0f);
 
     private readonly List<GameObject> resolveCards = new();
-
     public IReadOnlyList<GameObject> ResolveCards => resolveCards;
 
     public void ClearView()
@@ -29,13 +30,29 @@ public class ResolveZoneView : MonoBehaviour, IViewClear
 
     public IEnumerator AddCard(GameObject instance, int playerId, bool isShown)
     {
-        resolveCards.Add(instance);
+        bool isOpponent = playerId != ClientGameState.playerSlot && !isShown;
+        if (confirmBtn != null && !isOpponent)
+        {
+            confirmBtn.SetActive(true);
+        }
 
+        resolveCards.Add(instance);
         yield return UpdateCardPositions(animationDuration, playerId, isShown);
+    }
+
+    public void ClearPeek()
+    {
+        ClearCardsToResolveCommand cmd = new ClearCardsToResolveCommand { playerId = ClientGameState.playerSlot, isPeekZone = true };
+        ClientGameState.gateway.SendCommandServerRpc("ClearCardsToResolve", JsonConvert.SerializeObject(cmd));
     }
 
     public IEnumerator ClearCards()
     {
+        if (confirmBtn != null)
+        {
+            confirmBtn.SetActive(false);
+        }
+
         foreach (var card in resolveCards)
         {
             if (card != null)

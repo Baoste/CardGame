@@ -98,6 +98,11 @@ namespace Game.Domain
         public int playerId;
     }
 
+    public class AddActionPointCommand : ICommand
+    {
+        public int playerId;
+    }
+
     public class SpendActionPointCommand : ICommand
     {
         public int playerId;
@@ -116,6 +121,7 @@ namespace Game.Domain
     public class ClearCardsToResolveCommand : ICommand
     {
         public int playerId;
+        public bool isPeekZone;
     }
 
     public class PlayResolveAnimCommand : ICommand
@@ -144,6 +150,19 @@ namespace Game.Domain
         public int playerId;
         public int instanceId;
         public ParticipantType toZone;
+    }
+
+    public class ChangeCardStateCommand : ICommand
+    {
+        public int playerId;
+        public int instanceId;
+        public CardState cardState;
+    }
+
+    public class PeekTopCardCommand : ICommand
+    {
+        public int playerId;
+        public int count;
     }
 
     public class RevealCardsAndScoreCommand : ICommand

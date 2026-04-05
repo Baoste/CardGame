@@ -11,11 +11,11 @@ public sealed class DrawPointCardEventHandler : IEventProcess, IEventHandler
     {
         payload = JsonConvert.DeserializeObject<DrawPointCardEvent>(ev.jsonData);   // need change
         // need change, 需要把参数在这里传进去
-        ProcessQueueManager.Instance.Enqueue(Process, new object[] { payload.cardId, payload.instanceId, payload.playerId, payload.isHoleCard }, 1.5f);
+        ProcessQueueManager.Instance.Enqueue(Process, new object[] { payload.cardId, payload.instanceId, payload.playerId, payload.cardState }, 1.5f);
 
         // TODO
         // START
-        string context = $"instanceid:{payload.instanceId.ToString()} cardid:{payload.cardId.ToString()}";
+        string context = $"instanceid:{payload.instanceId.ToString()} cardid:{payload.cardId.ToString()} cardState:{payload.cardState}";
         Debug.Log($"[Client] Event#{ev.Index} type={ev.type} slot={payload.playerId} payload={context}");
         // END
 

@@ -57,8 +57,11 @@ public class SelectionModeFirst : ParticipantSelectionMode
     public override List<int> Execute(GameState state, List<int> pool, int count, List<int> selected)
     {
         List<int> res = new List<int>();
-        if (pool.Count > 0)
-            res.Add(pool[0]);
+        for (int i = 0; i < count; i++)
+        {
+            if (pool.Count >= count - i)
+                res.Add(pool[i]);
+        }
         return res;
     }
     public override bool ValidatePool(List<int> pool, int count) => pool.Count >= count;
@@ -73,8 +76,11 @@ public class SelectionModeLast : ParticipantSelectionMode
     public override List<int> Execute(GameState state, List<int> pool, int count, List<int> selected)
     {
         List<int> res = new List<int>();
-        if (pool.Count > 0)
-            res.Add(pool[pool.Count - 1]);
+        for (int i = 0; i < count; i++)
+        {
+            if (pool.Count >= count - i)
+                res.Add(pool[pool.Count - 1 - i]);
+        }
         return res;
     }
     public override bool ValidatePool(List<int> pool, int count) => pool.Count >= count;

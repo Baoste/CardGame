@@ -14,7 +14,8 @@ public sealed class DrawPointCardCmdHandler : CommandHandler, ICommandHandler
 
         // TODO: 服务器端需要做什么
         int drawCardInstanceId = session.gameState.pointCardsDeck.Draw();
-        session.gameState.AddCard(payload.playerId, session.instanceToCardId[drawCardInstanceId], drawCardInstanceId, CardType.Point);
+        CardState cardState = session.gameState.GetCardState(drawCardInstanceId);
+        session.gameState.AddCard(payload.playerId, session.instanceToCardId[drawCardInstanceId], drawCardInstanceId, CardType.Point, cardState);
 
         // return
         CommandResult results = new CommandResult();
@@ -26,7 +27,7 @@ public sealed class DrawPointCardCmdHandler : CommandHandler, ICommandHandler
                 drawCardInstanceId != -1,
                 session.instanceToCardId.GetValueOrDefault(drawCardInstanceId, -1),
                 drawCardInstanceId,
-                false
+                cardState
             )
         ));
         return results;

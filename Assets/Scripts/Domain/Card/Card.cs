@@ -9,6 +9,7 @@ namespace Game.Domain
         Skill,
     }
 
+
     public class Card
     {
         public int id;

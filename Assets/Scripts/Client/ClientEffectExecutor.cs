@@ -37,7 +37,7 @@ namespace Game.Domain
                 if (!ClientEffectContext.IsCommandValid)
                 {
                     Debug.Log($"[Client] Cannot play card instance {cardIstanceId} because of effect {op.type} validation failure");
-                    ClearCardsToResolveCommand cmd2 = new ClearCardsToResolveCommand { playerId = ClientGameState.playerSlot };
+                    ClearCardsToResolveCommand cmd2 = new ClearCardsToResolveCommand { playerId = ClientGameState.playerSlot, isPeekZone = false };
                     gateway.SendCommandServerRpc("ClearCardsToResolve", JsonConvert.SerializeObject(cmd2));
                     break;
                 }
@@ -84,7 +84,7 @@ namespace Game.Domain
                 else if (judgeList[i]) i = op.trueNode;
                 else i = op.falseNode;
             }
-            ClearCardsToResolveCommand cmd2 = new ClearCardsToResolveCommand { playerId = ClientGameState.playerSlot };
+            ClearCardsToResolveCommand cmd2 = new ClearCardsToResolveCommand { playerId = ClientGameState.playerSlot, isPeekZone = false };
             gateway.SendCommandServerRpc("ClearCardsToResolve", JsonConvert.SerializeObject(cmd2));
         }
 
