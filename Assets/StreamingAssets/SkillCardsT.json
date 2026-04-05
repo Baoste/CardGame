@@ -6,7 +6,7 @@
       "description": "丢弃场上的一张点数牌",
       "point": 0,
       "type": 1,
-      "count": 1,
+      "count": 5,
       "effects": [
         {
           "type": 3,
@@ -49,7 +49,7 @@
       "description": "弃置牌面上的一张点数牌，牌堆抽一张点数牌，放置在任意一方",
       "point": 0,
       "type": 1,
-      "count": 1,
+      "count": 5,
       "effects": [
         {
           "type": 3,
@@ -158,7 +158,7 @@
       "description": "抽牌，亮牌，并放置任意一方",
       "point": 0,
       "type": 1,
-      "count": 1,
+      "count": 5,
       "effects": [
         {
           "type": 2,
@@ -234,7 +234,7 @@
       "description": "查看牌堆顶两张牌的点数",
       "point": 0,
       "type": 1,
-      "count": 1,
+      "count": 5,
       "effects": [
         {
           "type": 8,
@@ -277,7 +277,7 @@
       "description": "将牌堆顶上的三张牌倒扣。倒扣后，不可以查看点数",
       "point": 0,
       "type": 1,
-      "count": 10,
+      "count": 3,
       "effects": [
         {
           "type": 9,
@@ -321,7 +321,7 @@
       "description": "与对手互换一张点数牌",
       "point": 0,
       "type": 1,
-      "count": 1,
+      "count": 4,
       "effects": [
         {
           "type": 5,
@@ -397,7 +397,7 @@
       "description": "抽取2张技能牌",
       "point": 0,
       "type": 1,
-      "count": 1,
+      "count": 3,
       "effects": [
         {
           "type": 1,
@@ -440,7 +440,7 @@
       "description": "抽一张牌，如果大于等于5，则抽牌，否则删牌",
       "point": 0,
       "type": 1,
-      "count": 1,
+      "count": 5,
       "effects": [
         {
           "type": 2,
@@ -590,7 +590,7 @@
       "description": "抽一张牌 ,如果小于等于5，可以抽一张技能牌和补充行动点  如果是双数，可以抽两张点数牌",
       "point": 0,
       "type": 1,
-      "count": 1,
+      "count": 5,
       "effects": [
         {
           "type": 2,
@@ -772,7 +772,7 @@
       "description": "抽取一张技能牌，并补充一个行动点",
       "point": 0,
       "type": 1,
-      "count": 1,
+      "count": 3,
       "effects": [
         {
           "type": 1,
@@ -847,7 +847,7 @@
       "description": "抽取对方的一张技能牌",
       "point": 0,
       "type": 1,
-      "count": 1,
+      "count": 4,
       "effects": [
         {
           "type": 5,
