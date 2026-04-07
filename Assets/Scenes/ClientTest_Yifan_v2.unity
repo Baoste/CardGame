@@ -135,6 +135,7 @@ GameObject:
   - component: {fileID: 47329602}
   - component: {fileID: 47329601}
   - component: {fileID: 47329603}
+  - component: {fileID: 47329604}
   m_Layer: 0
   m_Name: VCamera_Playing
   m_TagString: Untagged
@@ -220,6 +221,22 @@ MonoBehaviour:
     m_FrequencyGain: 1
     m_Duration: 1
     m_NoiseOffsets: {x: 0, y: 0, z: 0}
+--- !u!114 &47329604
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 47329600}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a3ed3dfbb372c9443b4ee6ea549bc938, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxYaw: 3
+  maxPitch: 2.8
+  stiffness: 5
+  damping: 4.5
 --- !u!1001 &83088016
 PrefabInstance:
   m_ObjectHideFlags: 0
