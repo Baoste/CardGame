@@ -19,6 +19,9 @@ public class StartExecuteSkillCmdHandler : CommandHandler, ICommandHandler
         }
         else
         {
+            if (!NetEffectFunction.SpendActionPoint(payload.playerId, payload.instanceId, session, results, 1))
+                return results;
+
             // execute skill card effects
             int effectOpId = 0;
             while (effectOpId != -1)
@@ -40,6 +43,15 @@ public class StartExecuteSkillCmdHandler : CommandHandler, ICommandHandler
                     out List<int> candidateSourceIds, out List<int> candidateTargetIds,
                     out bool isSourceParticipantZone, out bool isTargetParticipantZone
                 );
+                if (!success)
+                {
+                    NetEffectFunction.SendInvalidEvent(payload.playerId, payload.instanceId, results, InvalidActionType.InvalidTarget);
+                    if (effectOpId != 0 )
+                        NetEffectFunction.EndExecuteSkill(payload.playerId, payload.instanceId, session, results);
+                    return results;
+                }
+
+
                 bool sourceNeedChoose = op.source.participantSelectionMode is SelectionModeChoose;
                 bool targetNeedChoose = op.target.participantSelectionMode is SelectionModeChoose;
 
@@ -96,7 +108,7 @@ public class StartExecuteSkillCmdHandler : CommandHandler, ICommandHandler
 
         if (session.ctx.opStack.Count == 0)
         {
-            NetEffectExecutor.ClearCardsToResolve(payload.playerId, session, results);
+            NetEffectFunction.EndExecuteSkill(payload.playerId, payload.instanceId, session, results);
         }
         //END
 

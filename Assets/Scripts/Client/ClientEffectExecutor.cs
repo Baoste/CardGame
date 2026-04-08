@@ -16,19 +16,5 @@ namespace Game.Domain
                 CommandExecutionState<ValidateActionPointCommand>.IsDone
             );
         }
-
-        public static IEnumerator ExecuteCard(MatchGateway gateway, int playerSlot, int cardInstanceId)
-        {
-            SpendActionPointCommand apCmd = new SpendActionPointCommand { playerId = playerSlot };
-            gateway.SendCommandServerRpc("SpendActionPoint", JsonConvert.SerializeObject(apCmd), playerSlot);
-            yield return new WaitUntil(() => CommandExecutionState<SpendActionPointCommand>.IsDone);
-
-            StartExecuteSkillCommand cmd = new StartExecuteSkillCommand { playerId = playerSlot, instanceId = cardInstanceId };
-            gateway.SendCommandServerRpc("StartExecuteSkill", JsonConvert.SerializeObject(cmd));
-            //yield return new WaitUntil(() => CommandExecutionState<StartExecuteSkillCommand>.IsDone);
-
-            //ClearCardsToResolveCommand cmd2 = new ClearCardsToResolveCommand { playerId = ClientGameState.playerSlot, isPeekZone = false };
-            //gateway.SendCommandServerRpc("ClearCardsToResolve", JsonConvert.SerializeObject(cmd2));
-        }
     }
 }

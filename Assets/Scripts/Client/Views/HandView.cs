@@ -56,6 +56,13 @@ public class HandView : MonoBehaviour, IViewClear
         yield return UpdateCardPositions(0.5f);
     }
 
+    public void ReturnCard(GameObject instance)
+    {
+        skillCardInstances.Add(instance);
+        SkillCardDraggable drag = instance.GetComponent<SkillCardDraggable>();
+        if (drag != null)   drag.executed = false;
+    }
+
     public IEnumerator RemoveCard(GameObject instance)
     {
         if (skillCardInstances.Remove(instance))

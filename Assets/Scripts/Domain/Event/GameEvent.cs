@@ -132,6 +132,21 @@ namespace Game.Domain
     }
 
     /// <summary>
+    /// 无效行动事件，成功时 playerId 是玩家ID，invalidType 是无效类型；失败时 playerId 是玩家ID，invalidType 是默认值
+    /// </summary>
+    public class InvalidActionEvent : PlayerEvent
+    {
+        public InvalidActionType invalidType;
+        public int instanceId;
+        public InvalidActionEvent(int playerId, InvalidActionType invalidType, int instanceId)
+            : base(playerId, false)
+        {
+            this.invalidType = invalidType;
+            this.instanceId = instanceId;
+        }
+    }
+
+    /// <summary>
     /// 聊天事件，成功时 playerId 是玩家ID，text 是聊天内容；失败时 playerId 是玩家ID，text 是空字符串
     /// </summary>
     public class ChatEvent : PlayerEvent
@@ -250,20 +265,6 @@ namespace Game.Domain
         }
     }
 
-    public class PlayResolveAnimEvent : PlayerEvent
-    {
-        public int cardId;
-        public int instanceId;
-        public bool isShown;
-        public PlayResolveAnimEvent(int playerId, bool success, int cardId, int instanceId, bool isShown)
-            : base(playerId, success)
-        {
-            this.cardId = cardId;
-            this.instanceId = instanceId;
-            this.isShown = isShown;
-        }
-    }
-
     /// <summary>
     /// 弃牌事件，成功时 playerId 是玩家ID，instanceId 是牌的实例ID；失败时 playerId 是玩家ID，instanceId 是 -1
     /// </summary>
@@ -309,6 +310,9 @@ namespace Game.Domain
         }
     }
 
+    /// <summary>
+    /// 改变牌状态事件，成功时 playerId 是玩家ID，instanceId 是被改变状态的牌的实例ID，cardState 是牌的新状态；失败时 playerId 是玩家ID，instanceId 是 -1，cardState 是默认值
+    /// </summary>
     public class ChangeCardStateEvent : PlayerEvent
     {
         public int instanceId;
@@ -336,6 +340,9 @@ namespace Game.Domain
         }
     }
 
+    /// <summary>
+    /// 结算事件，成功时 playerId 是玩家ID，winnerId 是赢家玩家ID，currentBet 是当前下注；失败时 playerId 是玩家ID，winnerId 是 -1，currentBet 是 0
+    /// </summary>
     public class RevealCardsAndScoreEvent : PlayerEvent
     {
         public int winnerId;

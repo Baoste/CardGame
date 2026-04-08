@@ -22,7 +22,7 @@ public class WaitForPlayer2ChooseEventHandler : IEventProcess, IEventHandler
             payload.candidateTargetIds,
             payload.sourceSelectCount,
             payload.targetSelectCount,
-        }, 0.5f);
+        }, 0);
 
         // TODO
         // START

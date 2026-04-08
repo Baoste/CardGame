@@ -7,6 +7,7 @@ public static class DispatcherBootstrap
         EventDispatcher.Register("JoinOrCreateMatch", new JoinOrCreateMatchEventHandler());
         EventDispatcher.Register("StartMatch", new StartMatchEventHandler());
         EventDispatcher.Register("StartGame", new StartGameEventHandler());
+        EventDispatcher.Register("InvalidAction", new InvalidActionEventHandler());
         EventDispatcher.Register("AssignRoles", new AssignRolesEventHandler());
         EventDispatcher.Register("Place1Bet", new Place1BetEventHandler());
         EventDispatcher.Register("ConfirmBet", new ConfirmBetEventHandler());

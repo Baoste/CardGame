@@ -316,20 +316,5 @@ namespace Game.Domain
                 ));
             }
         }
-
-        public static void ClearCardsToResolve(int playerId, MatchSession session, CommandResult results)
-        {
-            session.gameState.ClearResolve();
-            results.events.Enqueue(CommandHandler.MakeEvent(
-                "ClearCardsToResolve",
-                new ClearCardsToResolveEvent
-                (
-                    playerId,
-                    true,
-                    false
-                ),
-                -1
-            ));
-        }
     }
 }

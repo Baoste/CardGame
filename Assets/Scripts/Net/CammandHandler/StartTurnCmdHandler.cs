@@ -16,6 +16,7 @@ public class StartTurnCmdHandler : CommandHandler, ICommandHandler
         int opponentId = 1 - payload.playerId;
         session.ctx.caster = payload.playerId;
         session.ctx.opponent = opponentId;
+        session.ctx.opStack.Clear();
 
         // return results
         CommandResult results = new CommandResult();

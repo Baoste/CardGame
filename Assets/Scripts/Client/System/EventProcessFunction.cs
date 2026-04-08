@@ -15,6 +15,7 @@ public class EventProcessFunction : MonoBehaviour
         ProcessDispatcher.Register("StartMatchTest", StartMatchTest);
         ProcessDispatcher.Register("StartGameTest", StartGameTest);
         ProcessDispatcher.Register("StartTurnTest", StartTurnTest);
+        ProcessDispatcher.Register("InvalidActionTest", InvalidActionTest);
         ProcessDispatcher.Register("AssignRolesTest", AssignRolesTest);
         ProcessDispatcher.Register("AddActionPointTest", AddActionPointTest);
         ProcessDispatcher.Register("SpendActionPointTest", SpendActionPointTest);
@@ -88,6 +89,32 @@ public class EventProcessFunction : MonoBehaviour
                 SceneViewManager.myRevealButtonView.ShowRandom();
             else
                 SceneViewManager.opponentRevealButtonView.ShowRandom();
+        }
+    }
+
+    // parameters[0]: int playerId
+    // parameters[1]: InvalidActionType invalidType
+    // parameters[2]: int instanceId
+    public void InvalidActionTest(object[] parameters)
+    {
+        int playerId = (int)parameters[0];
+        InvalidActionType invalidType = (InvalidActionType)parameters[1];
+        int instanceId = (int)parameters[2];
+
+        // TODO: 显示错误提示
+        Debug.Log($"[Client] Player {playerId} performed invalid action: {invalidType}");
+
+        switch(invalidType)
+        {
+            case InvalidActionType.InvalidTarget:
+            case InvalidActionType.NotEnoughAP:
+                ClientEffectContext.isExecutingSkillCard = false;
+                PlayAnimationCommand cmd = new PlayAnimationCommand { playerId = playerId, animType = AnimationType.ReturnToHand, instanceId = instanceId };
+                ClientGameState.gateway.SendCommandServerRpc("PlayAnimation", JsonConvert.SerializeObject(cmd));
+                break;
+            case InvalidActionType.NoCardToDraw:
+                // 显示无牌可抽提示
+                break;
         }
     }
 
@@ -205,9 +232,15 @@ public class EventProcessFunction : MonoBehaviour
                 break;
             case AnimationType.ReturnToHand:
                 if (isOpponent)
+                {
+                    SceneViewManager.opponentHandView.ReturnCard(obj);
                     StartCoroutine(obj.GetComponent<SkillCardInstance>().ReturnToHand());
+                }
                 else
+                {
+                    SceneViewManager.myHandView.ReturnCard(obj);
                     StartCoroutine(obj.GetComponent<SkillCardDraggable>().ReturnToHand());
+                }
                 break;
             case AnimationType.MoveToExecutePosition:
                 if (isOpponent)

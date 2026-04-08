@@ -117,14 +117,14 @@ public class SkillCardDraggable : MonoBehaviour, IMouseDown, IMouseDrag, IMouseU
         }
 
         // Start Executing
-        yield return StartCoroutine(ClientEffectExecutor.ValidateActionPoint(ClientGameState.gateway, ClientGameState.playerSlot));
-        if (!CommandExecutionState<ValidateActionPointCommand>.Success)
-        {
-            transform.localScale = Vector3.one * instance.localScaleFactor;
-            Debug.Log("没有足够的行动点");
-            StartCoroutine(ReturnToHand());
-            yield break;
-        }
+        //yield return StartCoroutine(ClientEffectExecutor.ValidateActionPoint(ClientGameState.gateway, ClientGameState.playerSlot));
+        //if (!CommandExecutionState<ValidateActionPointCommand>.Success)
+        //{
+        //    transform.localScale = Vector3.one * instance.localScaleFactor;
+        //    Debug.Log("没有足够的行动点");
+        //    StartCoroutine(ReturnToHand());
+        //    yield break;
+        //}
         ClientEffectContext.isExecutingSkillCard = true;
 
         // 准备执行技能
@@ -165,12 +165,14 @@ public class SkillCardDraggable : MonoBehaviour, IMouseDown, IMouseDrag, IMouseU
         CommandExecutionState<PlayAnimationCommand>.IsDone = false;
         yield return new WaitUntil(() => CommandExecutionState<PlayAnimationCommand>.IsDone);
 
-        yield return ClientEffectExecutor.ExecuteCard(ClientGameState.gateway, ClientGameState.playerSlot, instanceId);
+        StartExecuteSkillCommand cmd = new StartExecuteSkillCommand { playerId = ClientGameState.playerSlot, instanceId = instanceId };
+        ClientGameState.gateway.SendCommandServerRpc("StartExecuteSkill", JsonConvert.SerializeObject(cmd));
+
         ClientEffectContext.isExecutingSkillCard = false;
         // 这里直接丢弃
-        Debug.Log($"[Client] Discard skill card instance {instanceId}");
-        DiscardCardCommand discardCmd = new DiscardCardCommand { playerId = ClientGameState.playerSlot, instanceId = instanceId };
-        ClientGameState.gateway.SendCommandServerRpc("DiscardCard", JsonConvert.SerializeObject(discardCmd));
+        //Debug.Log($"[Client] Discard skill card instance {instanceId}");
+        //DiscardCardCommand discardCmd = new DiscardCardCommand { playerId = ClientGameState.playerSlot, instanceId = instanceId };
+        //ClientGameState.gateway.SendCommandServerRpc("DiscardCard", JsonConvert.SerializeObject(discardCmd));
         //Destroy(gameObject);
     }
 
