@@ -160,6 +160,19 @@ namespace Game.Domain
     }
 
     /// <summary>
+    /// 表情事件，成功时 playerId 是玩家ID，emojiId 是表情ID；失败时 playerId 是玩家ID，emojiId 是 -1
+    /// </summary>
+    public class EmojiEvent : PlayerEvent
+    {
+        public int emojiId;
+        public EmojiEvent(int playerId, bool success, int emojiId)
+            : base(playerId, success)
+        {
+            this.emojiId = emojiId;
+        }
+    }
+
+    /// <summary>
     /// 播放动画
     /// </summary>
     public class PlayAnimationEvent : PlayerEvent

@@ -87,6 +87,11 @@ namespace Game.Domain
         public string chatContext;
     }
 
+    public class  EmojiCommand : ICommand
+    {
+        public int playerId;
+        public int emojiId;
+    }
     public class StartExecuteSkillCommand : ICommand
     {
         public int playerId;
