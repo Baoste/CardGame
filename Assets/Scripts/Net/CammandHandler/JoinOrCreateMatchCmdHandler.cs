@@ -22,7 +22,8 @@ public sealed class JoinOrCreateMatchCmdHandler : CommandHandler, ICommandHandle
                 payload.playerId,
                 true,
                 payload.matchIdOrEmpty
-            )
+            ),
+            payload.playerId
         ));
         return results;
     }

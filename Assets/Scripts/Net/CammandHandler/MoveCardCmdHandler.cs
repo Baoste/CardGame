@@ -53,7 +53,8 @@ public class MoveCardCmdHandler : CommandHandler, ICommandHandler
                 cardId,
                 payload.instanceId,
                 payload.toZone
-            )
+            ),
+            -1
         ));
         return results;
     }

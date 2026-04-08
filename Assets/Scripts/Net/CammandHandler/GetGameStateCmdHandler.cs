@@ -18,7 +18,8 @@ public class GetGameStateCmdHandler : CommandHandler, ICommandHandler
                 payload.playerId,
                 true,
                 session.gameState
-            )
+            ),
+            -1
         ));
         return results;
     }

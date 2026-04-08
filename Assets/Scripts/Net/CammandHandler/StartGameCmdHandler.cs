@@ -53,7 +53,8 @@ public class StartGameCmdHandler : CommandHandler, ICommandHandler
             (
                 payload.playerId,
                 true
-            )
+            ),
+            -1
         ));
 
         // 抽底牌
@@ -69,7 +70,8 @@ public class StartGameCmdHandler : CommandHandler, ICommandHandler
                 session.instanceToCardId.GetValueOrDefault(drawCardInstanceId, -1),
                 drawCardInstanceId,
                 CardState.Hole
-            )
+            ),
+            -1
         ));
         drawCardInstanceId = pointCardsDeck.Draw();
         session.gameState.AddHoleCard(1 - payload.playerId, session.instanceToCardId[drawCardInstanceId], drawCardInstanceId);
@@ -82,7 +84,8 @@ public class StartGameCmdHandler : CommandHandler, ICommandHandler
                 session.instanceToCardId.GetValueOrDefault(drawCardInstanceId, -1),
                 drawCardInstanceId,
                 CardState.Hole
-            )
+            ),
+            -1
         ));
 
         // 抽一张明牌
@@ -97,7 +100,8 @@ public class StartGameCmdHandler : CommandHandler, ICommandHandler
                 session.instanceToCardId.GetValueOrDefault(drawCardInstanceId, -1),
                 drawCardInstanceId,
                 CardState.None
-            )
+            ),
+            -1
         ));
         drawCardInstanceId = pointCardsDeck.Draw();
         session.gameState.AddCard(1 - payload.playerId, session.instanceToCardId[drawCardInstanceId], drawCardInstanceId, CardType.Point);
@@ -110,7 +114,8 @@ public class StartGameCmdHandler : CommandHandler, ICommandHandler
                 session.instanceToCardId.GetValueOrDefault(drawCardInstanceId, -1),
                 drawCardInstanceId,
                 CardState.None
-            )
+            ),
+            -1
         ));
 
         // 抽技能牌
@@ -126,7 +131,8 @@ public class StartGameCmdHandler : CommandHandler, ICommandHandler
                     drawCardInstanceId != -1,
                     session.instanceToCardId.GetValueOrDefault(drawCardInstanceId, -1),
                     drawCardInstanceId
-                )
+                ),
+            -1
             ));
             drawCardInstanceId = skillCardsDeck.Draw();
             session.gameState.AddCard(1 - payload.playerId, session.instanceToCardId[drawCardInstanceId], drawCardInstanceId, CardType.Skill);
@@ -138,7 +144,8 @@ public class StartGameCmdHandler : CommandHandler, ICommandHandler
                     drawCardInstanceId != -1,
                     session.instanceToCardId.GetValueOrDefault(drawCardInstanceId, -1),
                     drawCardInstanceId
-                )
+                ),
+            -1
             ));
         }
 

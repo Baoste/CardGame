@@ -28,7 +28,8 @@ public sealed class DrawPointCardCmdHandler : CommandHandler, ICommandHandler
                 session.instanceToCardId.GetValueOrDefault(drawCardInstanceId, -1),
                 drawCardInstanceId,
                 cardState
-            )
+            ),
+            -1
         ));
         return results;
     }

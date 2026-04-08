@@ -26,7 +26,8 @@ public class AssignRolesCmdHandler : CommandHandler, ICommandHandler
                 true,
                 dealerId,
                 punterId
-            )
+            ),
+            -1
         ));
         return results;
     }

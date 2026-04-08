@@ -35,7 +35,8 @@ public class EndTurnCmdHandler : CommandHandler, ICommandHandler
                 1 - payload.playerId,
                 session.gameState.Turn,
                 reveal
-            )
+            ),
+            -1
         ));
 
         return results;

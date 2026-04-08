@@ -24,7 +24,8 @@ public class ModifyPointCmdHandler : CommandHandler, ICommandHandler
                 success,
                 payload.instanceId,
                 payload.pointChange
-            )
+            ),
+            -1
         ));
         return results;
     }

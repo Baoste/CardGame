@@ -28,7 +28,8 @@ public class ChangeCardStateCmdHandler : CommandHandler, ICommandHandler
                 success,
                 payload.instanceId,
                 payload.cardState
-            )
+            ),
+            -1
         ));
         return results;
     }

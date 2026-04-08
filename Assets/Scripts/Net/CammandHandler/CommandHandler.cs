@@ -5,12 +5,13 @@ using UnityEngine;
 
 public class CommandHandler
 {
-    public static ResolvedEvent MakeEvent<T>(string type, T payload)
+    public static ResolvedEvent MakeEvent<T>(string type, T payload, int sendId)
     {
         return new ResolvedEvent
         {
             type = type,
-            jsonData = JsonConvert.SerializeObject(payload)
+            jsonData = JsonConvert.SerializeObject(payload),
+            sendId = sendId
         };
     }
 }

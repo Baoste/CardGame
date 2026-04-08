@@ -22,7 +22,8 @@ public class StartMatchCmdHandler : CommandHandler, ICommandHandler
                 payload.playerId,
                 true,
                 payload.seed
-            )
+            ),
+            -1
         ));
         return results;
     }

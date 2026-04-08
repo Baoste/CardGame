@@ -448,6 +448,7 @@ MonoBehaviour:
   - {fileID: 2800000, guid: 9c9da97987e39dc4eb33afa0b84bd2d2, type: 3}
   - {fileID: 2800000, guid: 8b90ccde4c1f93c41a226f67a7483414, type: 3}
   - {fileID: 2800000, guid: d988c1d5e641c874fa792e45cc9ce7de, type: 3}
+  pointCardStateMatMap: {fileID: 0}
 --- !u!1 &296390870
 GameObject:
   m_ObjectHideFlags: 0
@@ -1904,6 +1905,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bf7c8c5f747147f4c865cfe4c8592702, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  instantiatePosition: {x: 0, y: 0, z: 0}
 --- !u!114 &541916246
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2277,7 +2279,7 @@ MonoBehaviour:
   _ipv6BindAddress: 
   _port: 7777
   _maximumClients: 4095
-  _clientAddress: 49.233.142.24
+  _clientAddress: localhost
 --- !u!114 &680630110
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2384,7 +2386,6 @@ MonoBehaviour:
   opponentSpawnPosition: {x: -1.23, y: 0.945, z: 0.7}
   selfHoleTargetPosition: {x: -1.45, y: 1, z: -0.85}
   opponentHoleTargetPosition: {x: 1.45, y: 1, z: 0.85}
-  spawnDistance: 0.5
   fallDistance: 0.1
 --- !u!4 &711737597
 Transform:
@@ -2768,12 +2769,9 @@ MonoBehaviour:
   zoneHeight: 0.96
   cameraTransform: {fileID: 47329602}
   cardSpacing: 0.28
-  depthOffsetPerCard: 0.02
-  animationDuration: 0.2
   cardEuler: {x: 90, y: 0, z: 0}
   splineContainer: {fileID: 1942245182}
   dragValidArea: {fileID: 743722774}
-  dragFollowDepth: 8
   skillCardsDeck: {fileID: 836140657}
   instantiatePosition: {x: 2.653, y: 1.05, z: -0.765}
   dropDistance: 0.052
@@ -2953,6 +2951,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   boardView: {fileID: 711737596}
   resolveZoneView: {fileID: 1299879608}
+  peekZoneView: {fileID: 0}
   myHandView: {fileID: 743722775}
   opponentHandView: {fileID: 1388931639}
   myExecuteCardView: {fileID: 839249827}
@@ -2962,6 +2961,10 @@ MonoBehaviour:
   opponentRevealButtonView: {fileID: 1861700641}
   myTurnLightView: {fileID: 407544422}
   opponentTurnLightView: {fileID: 1012866713}
+  myChipView: {fileID: 0}
+  opponentChipView: {fileID: 0}
+  endTurnView: {fileID: 0}
+  viewAnimController: {fileID: 0}
 --- !u!4 &765336100
 Transform:
   m_ObjectHideFlags: 0
@@ -3111,6 +3114,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   handView: {fileID: 743722775}
+  ophandView: {fileID: 0}
   boardView: {fileID: 711737596}
   ResolveZoneView: {fileID: 1299879608}
 --- !u!1 &832575517
@@ -4001,6 +4005,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   nm: {fileID: 680630107}
+  matchSeed: 12345
 --- !u!1 &1055712238
 GameObject:
   m_ObjectHideFlags: 0
@@ -4584,13 +4589,9 @@ MonoBehaviour:
   zoneWidth: 3
   zoneHeight: 1.5
   cardSpacing: 1.8
-  depthOffsetPerCard: 0.02
   animationDuration: 0.2
+  confirmBtn: {fileID: 0}
   cardEuler: {x: 90, y: 0, z: 0}
-  centerCardSlightlyForward: 1
-  centerForwardOffset: 0.15
-  useFanRotation: 1
-  maxFanAngle: 12
 --- !u!4 &1299879609
 Transform:
   m_ObjectHideFlags: 0
@@ -4798,12 +4799,9 @@ MonoBehaviour:
   zoneHeight: 0.96
   cameraTransform: {fileID: 0}
   cardSpacing: 0.28
-  depthOffsetPerCard: 0.02
-  animationDuration: 0.2
   cardEuler: {x: 90, y: 0, z: 0}
   splineContainer: {fileID: 908586683}
   dragValidArea: {fileID: 1388931640}
-  dragFollowDepth: 8
   skillCardsDeck: {fileID: 701706624}
   instantiatePosition: {x: 2.653, y: 1.05, z: -0.04}
   dropDistance: 0

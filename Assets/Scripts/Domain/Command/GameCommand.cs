@@ -7,6 +7,7 @@ namespace Game.Domain
     {
         public string type;   // e.g. "StartGame"
         public string jsonData;
+        public int sendId;  // -1 for broadcast
     }
 
     public class CommandResult
@@ -85,6 +86,21 @@ namespace Game.Domain
         public int playerId;
         public string chatContext;
     }
+
+    public class StartExecuteSkillCommand : ICommand
+    {
+        public int playerId;
+        public int instanceId;
+    }
+
+    public class CommitChosenIdsCommand : ICommand
+    {
+        public int playerId;
+        public int instanceId;
+        public List<int> selectedSourceIds;
+        public List<int> selectedTargetIds;
+    }
+
 
     public class PlayAnimationCommand : ICommand
     {
@@ -168,22 +184,6 @@ namespace Game.Domain
     public class RevealCardsAndScoreCommand : ICommand
     {
         public int playerId;
-    }
-
-    // 根据效果返回可选的操作源、目标列表
-    public class DetermineParticipantsCommand : ICommand
-    {
-        public int playerId;
-        public EffectOp effect;
-    }
-
-    // 验证玩家选择的操作源、目标是否合法
-    public class ValidateParticipantsCommand : ICommand
-    {
-        public int playerId;
-        public EffectOp effect;
-        public List<int> selectedSourceIds;
-        public List<int> selectedTargetIds;
     }
 
 }

@@ -25,7 +25,8 @@ public class Place1BetCmdHandler : CommandHandler, ICommandHandler
             (
                 payload.playerId,
                 true
-            )
+            ),
+            -1
         ));
         return results;
     }

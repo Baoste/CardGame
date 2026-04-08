@@ -22,7 +22,8 @@ public class AddActionPointCmdHandler : CommandHandler, ICommandHandler
             (
                 payload.playerId,
                 true
-            )
+            ),
+            -1
         ));
 
         return results;

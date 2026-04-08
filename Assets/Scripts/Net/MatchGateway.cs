@@ -147,14 +147,19 @@ public class MatchGateway : NetworkBehaviour
 
                 // ·µ»Øevent£¬¹ã²¥¸øclient
                 var ev = session.AddEvent(res.type, res.jsonData);
-                if (playerId == -1)
-                {
-                    BroadcastToSession(session, ev);
-                }
-                else
+                if (playerId != -1)
                 {
                     var conn = session.Slots[playerId].Conn;
                     TargetEvent(conn, ev);
+                }
+                else if (res.sendId != -1)
+                {
+                    var conn = session.Slots[res.sendId].Conn;
+                    TargetEvent(conn, ev);
+                }
+                else
+                {
+                    BroadcastToSession(session, ev);
                 }
             }
         }

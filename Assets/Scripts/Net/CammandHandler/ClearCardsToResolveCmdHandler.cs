@@ -24,7 +24,8 @@ public class ClearCardsToResolveCmdHandler : CommandHandler, ICommandHandler
                 payload.playerId,
                 true,
                 payload.isPeekZone
-            )
+            ),
+            -1
         ));
         return results;
     }

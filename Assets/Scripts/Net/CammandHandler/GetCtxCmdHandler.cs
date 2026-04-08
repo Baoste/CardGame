@@ -18,7 +18,8 @@ public class GetCtxCmdHandler : CommandHandler, ICommandHandler
                 payload.playerId,
                 true,
                 session.ctx
-            )
+            ),
+            -1
         ));
         return results;
     }

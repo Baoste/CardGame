@@ -26,7 +26,8 @@ public class DrawSkillCardCmdHandler : CommandHandler, ICommandHandler
                 drawCardInstanceId != -1,
                 session.instanceToCardId.GetValueOrDefault(drawCardInstanceId, -1),
                 drawCardInstanceId
-            )
+            ),
+            -1
         ));
         return results;
     }

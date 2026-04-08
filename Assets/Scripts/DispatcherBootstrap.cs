@@ -14,6 +14,7 @@ public static class DispatcherBootstrap
         EventDispatcher.Register("GetGameState", new GetGameStateEventHandler());
         EventDispatcher.Register("GetCtx", new GetCtxEventHandler());
         EventDispatcher.Register("Chat", new ChatEventHandler());
+        EventDispatcher.Register("WaitForPlayer2Choose", new WaitForPlayer2ChooseEventHandler());
         EventDispatcher.Register("PlayAnimation", new PlayAnimationEventHandler());
         EventDispatcher.Register("ValidateActionPoint", new ValidateActionPointEventHandler());
         EventDispatcher.Register("AddActionPoint", new AddActionPointEventHandler());
@@ -22,15 +23,12 @@ public static class DispatcherBootstrap
         EventDispatcher.Register("DrawSkillCard", new DrawSkillCardEventHandler());
         EventDispatcher.Register("DrawPointCardToResolve", new DrawPointCardToResolveEventHandler());
         EventDispatcher.Register("ClearCardsToResolve", new ClearCardsToResolveEventHandler());
-        EventDispatcher.Register("PlayResolveAnim", new PlayResolveAnimEventHandler());
         EventDispatcher.Register("DiscardCard", new DiscardCardEventHandler());
         EventDispatcher.Register("ModifyPoint", new ModifyPointEventHandler());
         EventDispatcher.Register("MoveCard", new MoveCardEventHandler());
         EventDispatcher.Register("ChangeCardState", new ChangeCardStateEventHandler());
         EventDispatcher.Register("PeekTopCard", new PeekTopCardEventHandler());
         EventDispatcher.Register("RevealCardsAndScore", new RevealCardsAndScoreEventHandler());
-        EventDispatcher.Register("DetermineParticipants", new DetermineParticipantsEventHandler());
-        EventDispatcher.Register("ValidateParticipants", new ValidateParticipantsEventHandler());
         EventDispatcher.Register("EndTurn", new EndTurnEventHandler());
 
         CommandDispatcher.Register("LeaveMatch", new LeaveMatchCmdHandler());
@@ -44,6 +42,8 @@ public static class DispatcherBootstrap
         CommandDispatcher.Register("GetGameState", new GetGameStateCmdHandler());
         CommandDispatcher.Register("GetCtx", new GetCtxCmdHandler());
         CommandDispatcher.Register("Chat", new ChatCmdHandler());
+        CommandDispatcher.Register("StartExecuteSkill", new StartExecuteSkillCmdHandler());
+        CommandDispatcher.Register("CommitChosenIds", new CommitChosenIdsCmdHandler());
         CommandDispatcher.Register("PlayAnimation", new PlayAnimationCmdHandler());
         CommandDispatcher.Register("ValidateActionPoint", new ValidateActionPointCmdHandler());
         CommandDispatcher.Register("AddActionPoint", new AddActionPointCmdHandler());
@@ -51,15 +51,12 @@ public static class DispatcherBootstrap
         CommandDispatcher.Register("DrawPointCard", new DrawPointCardCmdHandler());
         CommandDispatcher.Register("DrawSkillCard", new DrawSkillCardCmdHandler());
         CommandDispatcher.Register("ClearCardsToResolve", new ClearCardsToResolveCmdHandler());
-        CommandDispatcher.Register("PlayResolveAnim", new PlayResolveAnimCmdHandler());
         CommandDispatcher.Register("DiscardCard", new DiscardCardCmdHandler());
-        CommandDispatcher.Register("ModifyPoint", new ModifyPointCmdHandler());
-        CommandDispatcher.Register("MoveCard", new MoveCardCmdHandler());
-        CommandDispatcher.Register("ChangeCardState", new ChangeCardStateCmdHandler());
-        CommandDispatcher.Register("PeekTopCard", new PeekTopCardCmdHandler());
+        //CommandDispatcher.Register("ModifyPoint", new ModifyPointCmdHandler());
+        //CommandDispatcher.Register("MoveCard", new MoveCardCmdHandler());
+        //CommandDispatcher.Register("ChangeCardState", new ChangeCardStateCmdHandler());
+        //CommandDispatcher.Register("PeekTopCard", new PeekTopCardCmdHandler());
         CommandDispatcher.Register("RevealCardsAndScore", new RevealCardsAndScoreCmdHandler());
-        CommandDispatcher.Register("DetermineParticipants", new DetermineParticipantsCmdHandler());
-        CommandDispatcher.Register("ValidateParticipants", new ValidateParticipantsCmdHandler());
         CommandDispatcher.Register("EndTurn", new EndTurnCmdHandler());
     }
 }

@@ -55,7 +55,8 @@ public class RevealCardsAndScoreCmdHandler : CommandHandler, ICommandHandler
                 true,
                 winnerId,
                 currentBet
-            )
+            ),
+            -1
         ));
         return results;
     }

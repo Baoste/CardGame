@@ -20,7 +20,8 @@ public class ValidateActionPointCmdHandler : CommandHandler, ICommandHandler
             (
                 payload.playerId,
                 success
-            )
+            ),
+            -1
         ));
         return results;
     }

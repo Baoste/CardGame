@@ -22,7 +22,8 @@ public class ConfirmBetCmdHandler : CommandHandler, ICommandHandler
                 payload.playerId,
                 true,
                 betCount
-            )
+            ),
+            -1
         ));
         return results;
     }

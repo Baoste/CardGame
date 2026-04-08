@@ -26,7 +26,8 @@ public class PeekTopCardCmdHandler : CommandHandler, ICommandHandler
                     true,
                     drawCardId,
                     drawCardInstanceId
-                )
+                ),
+                -1
             ));
         }
 

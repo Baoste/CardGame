@@ -23,7 +23,8 @@ public sealed class ChatCmdHandler : CommandHandler, ICommandHandler
                 payload.playerId,
                 true,
                 message
-            )
+            ),
+            -1
         ));
         return results;
     }

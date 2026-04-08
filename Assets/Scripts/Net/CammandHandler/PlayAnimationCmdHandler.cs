@@ -21,7 +21,8 @@ public class PlayAnimationCmdHandler : CommandHandler, ICommandHandler
                 true,
                 payload.animType,
                 payload.instanceId
-            )
+            ),
+            -1
         ));
         return results;
     }

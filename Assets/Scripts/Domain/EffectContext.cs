@@ -14,6 +14,9 @@ namespace Game.Domain
         public int caster;      // 施法者玩家ID
         public int opponent;    // 对手玩家ID
 
+        // 用于执行效果时的操作栈，存储当前正在执行的 EffectOp
+        public Stack<EffectOpExecutionContext> opStack = new Stack<EffectOpExecutionContext>();   
+
         public void ClearContext()
         {
             selectedSourceIds.Clear();
@@ -23,6 +26,13 @@ namespace Game.Domain
             caster = -1;
             opponent = -1;
         }
+    }
+
+    public class EffectOpExecutionContext
+    {
+        public EffectOp effectOp;
+        public List<int> candidateSourceIds;
+        public List<int> candidateTargetIds;
     }
 
     public static class ClientEffectContext

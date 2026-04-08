@@ -27,7 +27,8 @@ public class SpendActionPointCmdHandler : CommandHandler, ICommandHandler
             (
                 payload.playerId,
                 success
-            )
+            ),
+            -1
         ));
         return results;
     }

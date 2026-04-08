@@ -1,5 +1,6 @@
 using DG.Tweening;
 using Game.Domain;
+using Newtonsoft.Json;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -65,14 +66,15 @@ public class ClientMatchInput : MonoBehaviour
     public void DetermineParticipantsTest(object[] parameters)
     {
         bool success = (bool)parameters[0];
-        bool sourceNeedChoose = (bool)parameters[1];
-        bool targetNeedChoose = (bool)parameters[2];
-        bool isSourceParticipantZone = (bool)parameters[3];
-        bool isTargetParticipantZone = (bool)parameters[4];
-        List<int> candidateSourceIds = (List<int>)parameters[5];
-        List<int> candidateTargetIds = (List<int>)parameters[6];
-        int sourceSelectCount = (int)parameters[7];
-        int targetSelectCount = (int)parameters[8];
+        int skillCardInstanceId = (int)parameters[1];
+        bool sourceNeedChoose = (bool)parameters[2];
+        bool targetNeedChoose = (bool)parameters[3];
+        bool isSourceParticipantZone = (bool)parameters[4];
+        bool isTargetParticipantZone = (bool)parameters[5];
+        List<int> candidateSourceIds = (List<int>)parameters[6];
+        List<int> candidateTargetIds = (List<int>)parameters[7];
+        int sourceSelectCount = (int)parameters[8];
+        int targetSelectCount = (int)parameters[9];
 
         if (!success)
         {
@@ -97,12 +99,14 @@ public class ClientMatchInput : MonoBehaviour
             targetClick = false;
         }
         StartCoroutine(ClickTest(
+            skillCardInstanceId,
             isSourceParticipantZone, candidateSourceIds, sourceSelectCount, sourceClick,
             isTargetParticipantZone, candidateTargetIds, targetSelectCount, targetClick
         ));
     }
 
-    private IEnumerator ClickTest(bool isSourceParticipantZone, List<int> candidateSouceIds, int SourceSelectCount, bool sourceClick, 
+    private IEnumerator ClickTest(int skillCardInstanceId,
+        bool isSourceParticipantZone, List<int> candidateSouceIds, int SourceSelectCount, bool sourceClick, 
         bool isTargetParticipantZone, List<int> candidateTargetIds, int targetSelectCount, bool targetClick)
     {
         List<int> selectedSourceIds = new List<int>();
@@ -216,7 +220,15 @@ public class ClientMatchInput : MonoBehaviour
             ClientEffectContext.Instance.selectedTargetIds = selectedTargetIds;
             CancelHighLight(candidateTargetIds);
         }
-        ClientEffectContext.ChooseDone = true;
+
+        // ClientEffectContext.ChooseDone = true;
+        CommitChosenIdsCommand discardCmd = new CommitChosenIdsCommand { 
+            playerId = ClientGameState.playerSlot, 
+            instanceId = skillCardInstanceId,
+            selectedSourceIds = selectedSourceIds,
+            selectedTargetIds = selectedTargetIds,
+        };
+        ClientGameState.gateway.SendCommandServerRpc("CommitChosenIds", JsonConvert.SerializeObject(discardCmd));
     }
 
     private void HighLight(List<int> candidateIds)

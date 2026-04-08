@@ -231,6 +231,7 @@ namespace Game.Domain
     {
         public int cardId;
         public int instanceId;
+
         public DrawPointCardToResolveEvent(int playerId, bool success, int cardId, int instanceId)
             : base(playerId, success)
         {
@@ -353,9 +354,9 @@ namespace Game.Domain
     /// candidateSourceIds 和 candidateTargetIds 分别是可选的来源和目标的实例ID列表，
     /// sourceSelectCount 和 targetSelectCount 分别是需要选择的来源和目标的数量；
     /// </summary>
-    public class DetermineParticipantsEvent : PlayerEvent
+    public class WaitForPlayer2ChooseEvent : PlayerEvent
     {
-        public bool judgeResult;
+        public int skillCardInstanceId;
         public bool sourceNeedChoose;
         public bool targetNeedChoose;
         public bool isSourceParticipantZone;
@@ -364,10 +365,14 @@ namespace Game.Domain
         public List<int> candidateTargetIds;
         public int sourceSelectCount;
         public int targetSelectCount;
-        public DetermineParticipantsEvent(int playerId, bool success, bool judgeResult, bool sourceNeedChoose, bool targetNeedChoose, bool isSourceParticipantZone, bool isTargetParticipantZone, List<int> candidateSourceIds, List<int> candidateTargetIds, int sourceSelectCount, int targetSelectCount)
+        public WaitForPlayer2ChooseEvent(int playerId, bool success, int skillCardInstanceId,
+            bool sourceNeedChoose, bool targetNeedChoose, 
+            bool isSourceParticipantZone, bool isTargetParticipantZone, 
+            List<int> candidateSourceIds, List<int> candidateTargetIds, 
+            int sourceSelectCount, int targetSelectCount)
             : base(playerId, success)
         {
-            this.judgeResult = judgeResult;
+            this.skillCardInstanceId = skillCardInstanceId;
             this.sourceNeedChoose = sourceNeedChoose;
             this.targetNeedChoose = targetNeedChoose;
             this.isSourceParticipantZone = isSourceParticipantZone;
@@ -376,21 +381,6 @@ namespace Game.Domain
             this.candidateTargetIds = candidateTargetIds;
             this.sourceSelectCount = sourceSelectCount;
             this.targetSelectCount = targetSelectCount;
-        }
-    }
-
-    /// <summary>
-    /// 验证参与者事件，成功时 playerId 是玩家ID；失败时 playerId 是玩家ID
-    /// </summary>
-    public class ValidateParticipantsEvent : PlayerEvent
-    {
-        public List<int> sourceIds;
-        public List<int> targetIds;
-        public ValidateParticipantsEvent(int playerId, bool success, List<int> sourceIds, List<int> targetIds)
-            : base(playerId, success)
-        {
-            this.sourceIds = sourceIds;
-            this.targetIds = targetIds;
         }
     }
 

@@ -27,7 +27,8 @@ public class StartTurnCmdHandler : CommandHandler, ICommandHandler
                 true,
                 opponentId,
                 session.gameState.Turn
-            )
+            ),
+            -1
         ));
 
         results.events.Enqueue(MakeEvent(
@@ -36,7 +37,8 @@ public class StartTurnCmdHandler : CommandHandler, ICommandHandler
             (
                 payload.playerId,
                 true
-            )
+            ),
+            -1
         ));
 
         return results;
