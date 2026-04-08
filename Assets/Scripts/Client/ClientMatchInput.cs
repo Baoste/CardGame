@@ -109,14 +109,15 @@ public class ClientMatchInput : MonoBehaviour
         bool isSourceParticipantZone, List<int> candidateSouceIds, int SourceSelectCount, bool sourceClick, 
         bool isTargetParticipantZone, List<int> candidateTargetIds, int targetSelectCount, bool targetClick)
     {
-        List<int> selectedSourceIds = new List<int>();
-        List<int> selectedTargetIds = new List<int>();
+        List<int> selectedSourceIds = candidateSouceIds;
+        List<int> selectedTargetIds = candidateTargetIds;
 
         int cardLayerMask = LayerMask.GetMask("Card");
         int zoneLayerMask = LayerMask.GetMask("Zone");
 
         if (sourceClick)
         {
+            selectedSourceIds = new List<int>();
             Debug.Log($"[Client] Wating for select source {candidateSouceIds}");
             HighLight(candidateSouceIds);
             int count0 = 0;
@@ -170,6 +171,7 @@ public class ClientMatchInput : MonoBehaviour
 
         if (targetClick)
         {
+            selectedTargetIds = new List<int>();
             Debug.Log("[Client] Wating for select target");
             HighLight(candidateTargetIds);
             int count1 = 0;
@@ -192,7 +194,7 @@ public class ClientMatchInput : MonoBehaviour
                     if (!candidateTargetIds.Contains(instanceId)) continue;
 
                     selectedTargetIds.Add(instanceId);
-                    Debug.Log($"[Client] Select Source instaceId {instanceId}");
+                    Debug.Log($"[Client] Select Target instaceId {instanceId}");
                     count1++;
                 }
                 // 如果候选没有zone
@@ -213,7 +215,7 @@ public class ClientMatchInput : MonoBehaviour
                     if (!candidateTargetIds.Contains(instanceId)) continue;
 
                     selectedTargetIds.Add(instanceId);
-                    Debug.Log($"[Client] Select Source instaceId {instanceId}");
+                    Debug.Log($"[Client] Select Target instaceId {instanceId}");
                     count1++;
                 }
             }
