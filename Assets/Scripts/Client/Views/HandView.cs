@@ -54,13 +54,15 @@ public class HandView : MonoBehaviour, IViewClear
         yield return DrawSkillCardAnimation(instance);
         // yield return new WaitForSeconds(0.5f);
         yield return UpdateCardPositions(0.5f);
+
+        SkillCard sc = instance.GetComponent<SkillCard>();
+        sc.SetIsOpponent(isOpponent);
+        sc.stateMachine.ChangeState(sc.inHandState);
     }
 
     public void ReturnCard(GameObject instance)
     {
         skillCardInstances.Add(instance);
-        SkillCardDraggable drag = instance.GetComponent<SkillCardDraggable>();
-        if (drag != null)   drag.executed = false;
     }
 
     public IEnumerator RemoveCard(GameObject instance)
@@ -85,12 +87,7 @@ public class HandView : MonoBehaviour, IViewClear
         if (isOpponent)
             return;
 
-        SkillCardDraggable dragCard = instance.AddComponent<SkillCardDraggable>();
-        SkillCardHover hoverCard = instance.AddComponent<SkillCardHover>();
-
-        int cardId = instance.GetComponent<SkillCardInstance>().cardId;
-        int instanceId = instance.GetComponent<SkillCardInstance>().instanceId;
-        dragCard.Init(cardId, instanceId);
+        SkillCardMouseEventHandler hoverCard = instance.AddComponent<SkillCardMouseEventHandler>();
         hoverCard.Init();
     }
 

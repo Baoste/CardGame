@@ -69,7 +69,7 @@ public class StartGameCmdHandler : CommandHandler, ICommandHandler
                 drawCardInstanceId != -1,
                 session.instanceToCardId.GetValueOrDefault(drawCardInstanceId, -1),
                 drawCardInstanceId,
-                CardState.Hole
+                CardVisualState.Hole
             ),
             -1
         ));
@@ -83,7 +83,7 @@ public class StartGameCmdHandler : CommandHandler, ICommandHandler
                 drawCardInstanceId != -1,
                 session.instanceToCardId.GetValueOrDefault(drawCardInstanceId, -1),
                 drawCardInstanceId,
-                CardState.Hole
+                CardVisualState.Hole
             ),
             -1
         ));
@@ -99,7 +99,7 @@ public class StartGameCmdHandler : CommandHandler, ICommandHandler
                 drawCardInstanceId != -1,
                 session.instanceToCardId.GetValueOrDefault(drawCardInstanceId, -1),
                 drawCardInstanceId,
-                CardState.None
+                CardVisualState.None
             ),
             -1
         ));
@@ -113,7 +113,7 @@ public class StartGameCmdHandler : CommandHandler, ICommandHandler
                 drawCardInstanceId != -1,
                 session.instanceToCardId.GetValueOrDefault(drawCardInstanceId, -1),
                 drawCardInstanceId,
-                CardState.None
+                CardVisualState.None
             ),
             -1
         ));

@@ -22,7 +22,7 @@ public class PointCardViewController : MonoBehaviour
     public void SetCardTexture_None(int point)
     {
         pointText.text = point.ToString();
-        matRenderer.materials = CardViewCreator.Instance.pointCardStateMatMap.Get(CardState.None);
+        matRenderer.materials = CardViewCreator.Instance.pointCardStateMatMap.Get(CardVisualState.None);
 
         Texture2D tex = CardViewCreator.Instance.pointCardTexs[point - 1];
         matRenderer.GetPropertyBlock(mpb);
@@ -33,7 +33,7 @@ public class PointCardViewController : MonoBehaviour
     public void SetCardTexture_Hole(int point)
     {
         pointText.text = "";
-        matRenderer.materials = CardViewCreator.Instance.pointCardStateMatMap.Get(CardState.Hole);
+        matRenderer.materials = CardViewCreator.Instance.pointCardStateMatMap.Get(CardVisualState.Hole);
 
         Texture2D tex = CardViewCreator.Instance.pointCardTexs[point - 1];
         matRenderer.GetPropertyBlock(mpb);
@@ -45,6 +45,6 @@ public class PointCardViewController : MonoBehaviour
     {
         pointText.text = "";
 
-        matRenderer.materials = CardViewCreator.Instance.pointCardStateMatMap.Get(CardState.Hidden);
+        matRenderer.materials = CardViewCreator.Instance.pointCardStateMatMap.Get(CardVisualState.Hidden);
     }
 }

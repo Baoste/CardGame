@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class PointCardInstance : CardInstance
 {
-    public CardState cardState { get; private set; }
+    public CardVisualState cardVisualState { get; private set; }
     private PointCardViewController viewController;
 
     //public bool touchAnotherCard
@@ -35,44 +35,44 @@ public class PointCardInstance : CardInstance
         viewController.SetCardTexture_None(point);
     }
 
-    public void InitCardState(CardState cardState, bool isOpponent)
+    public void InitCardState(CardVisualState cardVisualState, bool isOpponent)
     {
-        this.cardState = cardState;
+        this.cardVisualState = cardVisualState;
 
-        switch (cardState)
+        switch (cardVisualState)
         {
-            case CardState.None:
+            case CardVisualState.None:
                 break;
-            case CardState.Hole:
+            case CardVisualState.Hole:
                 if (isOpponent)
                     viewController.SetCardTexture_Hole(point);
                 break;
-            case CardState.Hidden:
+            case CardVisualState.Hidden:
                 viewController.SetCardTexture_Hidden();
                 // TODO: change mat
                 break;
-            case CardState.Locked:
+            case CardVisualState.Locked:
                 // TODO: change mat
                 break;
         }
     }
 
-    public void ChangeCardState(CardState cardState, bool isOpponent)
+    public void ChangeCardState(CardVisualState cardState, bool isOpponent)
     {
-        this.cardState = cardState;
+        this.cardVisualState = cardState;
 
         switch (cardState)
         {
-            case CardState.None:
+            case CardVisualState.None:
                 viewController.SetCardTexture_None(point);
                 break;
-            case CardState.Hole:
+            case CardVisualState.Hole:
                 break;
-            case CardState.Hidden:
+            case CardVisualState.Hidden:
                 viewController.SetCardTexture_Hidden();
                 // TODO: change mat
                 break;
-            case CardState.Locked:
+            case CardVisualState.Locked:
                 // TODO: change mat
                 break;
         }

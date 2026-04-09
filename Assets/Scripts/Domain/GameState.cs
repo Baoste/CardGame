@@ -41,8 +41,8 @@ namespace Game.Domain
         private Dictionary<int, CardZone> cardLocationMap = new Dictionary<int, CardZone>();
         // CardInstanceID -> PointCard的点数 的映射，方便快速查询某张点数牌实例的点数
         public Dictionary<int, int> instancePointMap = new Dictionary<int, int>();
-        // CardInstanceID -> CardState 的映射，方便查询某张牌的状态（是否被封印、是否被保护等）
-        public Dictionary<int, CardState> instanceStateMap = new Dictionary<int, CardState>();
+        // CardInstanceID -> CardVisualState 的映射，方便查询某张牌的状态（是否被封印、是否被保护等）
+        public Dictionary<int, CardVisualState> instanceStateMap = new Dictionary<int, CardVisualState>();
 
         public GameState()
         {
@@ -126,14 +126,14 @@ namespace Game.Domain
             return sum;
         }
 
-        public CardState GetCardState(int instanceId)
+        public CardVisualState GetCardState(int instanceId)
         {
             if (instanceStateMap.ContainsKey(instanceId))
                 return instanceStateMap[instanceId];
-            return CardState.None;
+            return CardVisualState.None;
         }
 
-        public bool SetCardState(int instanceId, CardState state)
+        public bool SetCardState(int instanceId, CardVisualState state)
         {
             if (instanceStateMap.ContainsKey(instanceId))
             {
@@ -154,12 +154,12 @@ namespace Game.Domain
 
                 cardLocationMap[instanceId] = board;
                 instancePointMap[instanceId] = CardDatabase.Get(instanceToCardId[instanceId]).point;
-                instanceStateMap[instanceId] = CardState.None;
+                instanceStateMap[instanceId] = CardVisualState.None;
                 board._Add(instanceId);
             }
         }
 
-        public void AddCard(int playerId, int cardId, int instanceId, CardType type, CardState state = CardState.None)
+        public void AddCard(int playerId, int cardId, int instanceId, CardType type, CardVisualState state = CardVisualState.None)
         {
             if (instanceId == -1)   return;
 
@@ -179,7 +179,7 @@ namespace Game.Domain
 
             players[playerId]._holeCard = instanceId;
             instancePointMap[instanceId] = CardDatabase.Get(cardId).point;
-            instanceStateMap[instanceId] = CardState.Hole;
+            instanceStateMap[instanceId] = CardVisualState.Hole;
         }
 
         public void AddToResolve(int cardId, int instanceId)
@@ -188,7 +188,7 @@ namespace Game.Domain
 
             cardLocationMap[instanceId] = cardsToResolve;
             instancePointMap[instanceId] = CardDatabase.Get(cardId).point;
-            instanceStateMap[instanceId] = CardState.None;
+            instanceStateMap[instanceId] = CardVisualState.None;
             cardsToResolve._Add(instanceId);
         }
 

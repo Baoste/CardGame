@@ -6,18 +6,18 @@ using UnityEngine;
 public class MaterialMap : MonoBehaviour
 {
     [SerializeField] private List<MaterialEntry> materialList;
-    private Dictionary<CardState, Material[]> materialDict;
+    private Dictionary<CardVisualState, Material[]> materialDict;
 
     private void Awake()
     {
-        materialDict = new Dictionary<CardState, Material[]>();
+        materialDict = new Dictionary<CardVisualState, Material[]>();
         foreach (var entry in materialList)
         {
             materialDict[entry.state] = entry.materials;
         }
     }
 
-    public Material[] Get(CardState state)
+    public Material[] Get(CardVisualState state)
     {
         if (materialDict.TryGetValue(state, out Material[] materials))
         {

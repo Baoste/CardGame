@@ -5,6 +5,6 @@ using UnityEngine;
 [Serializable]
 public class MaterialEntry
 {
-    public CardState state;
+    public CardVisualState state;
     public Material[] materials;
 }

@@ -2,7 +2,7 @@ using System;
 
 namespace Game.Domain
 {
-    public enum CardState
+    public enum CardVisualState
     {
         None,
         Hole,

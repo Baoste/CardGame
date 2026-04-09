@@ -10,8 +10,8 @@ GameObject:
   m_Component:
   - component: {fileID: 6648781163875854784}
   - component: {fileID: 8635554806184183513}
+  - component: {fileID: 8678497515182431490}
   - component: {fileID: 1898981318327804687}
-  - component: {fileID: 2593245010354786636}
   - component: {fileID: 4593778783486630254}
   m_Layer: 9
   m_Name: SkillCard
@@ -59,6 +59,20 @@ MonoBehaviour:
   pointText: {fileID: 2850062255717980671}
   meshRenderer: {fileID: 5301152879564225575}
   originalPos: {x: 0, y: 0, z: 0}
+--- !u!114 &8678497515182431490
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 699601284007552369}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f2e23f8469989c04d854e95ff7170395, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  outlineControl: {fileID: 0}
+  instance: {fileID: 0}
 --- !u!65 &1898981318327804687
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -80,23 +94,6 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.54, y: 0.77, z: 0.11}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &2593245010354786636
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 699601284007552369}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 110a7c4dadc035e42848ad850edb45b0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  tiltStrength: 30
-  maxTilt: 40
-  smoothSpeed: 10
-  useUnscaledDelta: 1
-  meshTransform: {fileID: 317130330711080027}
 --- !u!114 &4593778783486630254
 MonoBehaviour:
   m_ObjectHideFlags: 0

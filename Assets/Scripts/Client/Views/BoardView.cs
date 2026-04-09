@@ -52,11 +52,11 @@ public class BoardView : MonoBehaviour, IViewClear
         opponentCards.Clear();
     }
 
-    public IEnumerator AddCard(GameObject instance, int playerId, CardState cardState)
+    public IEnumerator AddCard(GameObject instance, int playerId, CardVisualState cardState)
     {
         bool isOpponent = playerId != ClientGameState.playerSlot;
         
-        Quaternion targetRotation = Quaternion.Euler(cardState == CardState.Hole && isOpponent ? opponentEuler : selfEuler);
+        Quaternion targetRotation = Quaternion.Euler(cardState == CardVisualState.Hole && isOpponent ? opponentEuler : selfEuler);
         instance.transform.rotation = targetRotation;
         PointCardInstance pointIns = instance.GetComponent<PointCardInstance>();
 
@@ -74,7 +74,7 @@ public class BoardView : MonoBehaviour, IViewClear
         pointIns.InitCardState(cardState, isOpponent);
 
         // ·¢ÅÆ
-        if (cardState == CardState.Hole)
+        if (cardState == CardVisualState.Hole)
         {
             yield return HoleCardReady(isOpponent, instance);
         }
@@ -386,7 +386,7 @@ public class BoardView : MonoBehaviour, IViewClear
         mesh.transform.parent.parent = transform.parent.parent;
 
         PointCardInstance point = instance.GetComponentInChildren<PointCardInstance>();
-        int cutCascades = point.cardState == CardState.Hole ? 4 : 1 + point.point / 3;
+        int cutCascades = point.cardVisualState == CardVisualState.Hole ? 4 : 1 + point.point / 3;
         List<PartMesh> submeshes = mesh.DestroyMesh(cutCascades);
         Destroy(tmp);
         Destroy(instance);

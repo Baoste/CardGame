@@ -73,7 +73,7 @@ namespace Game.Domain
             for (int i = 0; i < drawNum; i++)
             {
                 int drawCardInstanceId = session.gameState.pointCardsDeck.Draw();
-                CardState cardState = session.gameState.GetCardState(drawCardInstanceId);
+                CardVisualState cardState = session.gameState.GetCardState(drawCardInstanceId);
                 session.gameState.AddCard(casterId, session.instanceToCardId[drawCardInstanceId], drawCardInstanceId, CardType.Point, cardState);
 
                 // return
@@ -295,7 +295,7 @@ namespace Game.Domain
         {
             //List<int> ids = ClientEffectContext.Instance.selectedTargetIds;
             int count = selectedTargetIds.Count;
-            CardState cardState = (CardState)op.value.Evaluate(session.gameState, session.ctx);
+            CardVisualState cardState = (CardVisualState)op.value.Evaluate(session.gameState, session.ctx);
             for (int i = 0; i < count; i++)
             {
                 bool success = session.gameState.SetCardState(

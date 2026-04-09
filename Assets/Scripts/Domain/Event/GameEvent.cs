@@ -242,8 +242,8 @@ namespace Game.Domain
     {
         public int cardId;
         public int instanceId;
-        public CardState cardState;
-        public DrawPointCardEvent(int playerId, bool success, int cardId, int instanceId, CardState cardState)
+        public CardVisualState cardState;
+        public DrawPointCardEvent(int playerId, bool success, int cardId, int instanceId, CardVisualState cardState)
             : base(playerId, success)
         {
             this.cardId = cardId;
@@ -324,13 +324,13 @@ namespace Game.Domain
     }
 
     /// <summary>
-    /// 改变牌状态事件，成功时 playerId 是玩家ID，instanceId 是被改变状态的牌的实例ID，cardState 是牌的新状态；失败时 playerId 是玩家ID，instanceId 是 -1，cardState 是默认值
+    /// 改变牌状态事件，成功时 playerId 是玩家ID，instanceId 是被改变状态的牌的实例ID，cardVisualState 是牌的新状态；失败时 playerId 是玩家ID，instanceId 是 -1，cardVisualState 是默认值
     /// </summary>
     public class ChangeCardStateEvent : PlayerEvent
     {
         public int instanceId;
-        public CardState cardState;
-        public ChangeCardStateEvent(int playerId, bool success, int instanceId, CardState cardState)
+        public CardVisualState cardState;
+        public ChangeCardStateEvent(int playerId, bool success, int instanceId, CardVisualState cardState)
             : base(playerId, success)
         {
             this.instanceId = instanceId;

@@ -226,10 +226,10 @@ public class EventProcessFunction : MonoBehaviour
         switch (animType)
         {
             case AnimationType.MoveToFallPosition:
-                if (isOpponent)
-                    StartCoroutine(SceneViewManager.opponentExecuteCardView.MoveToFallPosition(obj));
-                else
-                    StartCoroutine(SceneViewManager.myExecuteCardView.MoveToFallPosition(obj));
+                { 
+                    SkillCard skillCard = obj.GetComponent<SkillCard>();
+                    skillCard.stateMachine.ChangeState(skillCard.readyFallState);
+                }
                 break;
             case AnimationType.ReturnToHand:
                 if (isOpponent)
@@ -240,14 +240,15 @@ public class EventProcessFunction : MonoBehaviour
                 else
                 {
                     SceneViewManager.myHandView.ReturnCard(obj);
-                    StartCoroutine(obj.GetComponent<SkillCardDraggable>().ReturnToHand());
+                    SkillCard skillCard = obj.GetComponent<SkillCard>();
+                    skillCard.stateMachine.ChangeState(skillCard.inHandState);
                 }
                 break;
             case AnimationType.MoveToExecutePosition:
-                if (isOpponent)
-                    StartCoroutine(SceneViewManager.opponentExecuteCardView.MoveToExecutePosition(obj));
-                else
-                    StartCoroutine(SceneViewManager.myExecuteCardView.MoveToExecutePosition(obj));
+                {
+                    SkillCard skillCard = obj.GetComponent<SkillCard>();
+                    skillCard.stateMachine.ChangeState(skillCard.executeState);
+                }
                 break;
         }
     }
@@ -292,13 +293,13 @@ public class EventProcessFunction : MonoBehaviour
     // parameters[0]: int cardId
     // parameters[1]: int instanceId
     // parameters[2]: int playerId
-    // parameters[3]: CardState cardState
+    // parameters[3]: CardVisualState cardVisualState
     public void DrawPointCard(object[] parameters)
     {
         int cardId = (int)parameters[0];
         int instanceId = (int)parameters[1];
         int playerId = (int)parameters[2];
-        CardState cardState = (CardState)parameters[3];
+        CardVisualState cardState = (CardVisualState)parameters[3];
 
         bool isOpponent = playerId != ClientGameState.playerSlot;
         GameObject instance = CardViewCreator.Instance.CreateCardInstance(cardId, instanceId);
@@ -369,7 +370,7 @@ public class EventProcessFunction : MonoBehaviour
                     StartCoroutine(SceneViewManager.boardView.RemoveCardInstant(obj));
                 }
                 GameObject instance = CardViewCreator.Instance.CreateCardInstance(cardId, instanceId);
-                StartCoroutine(SceneViewManager.boardView.AddCard(instance, playerId, CardState.None));
+                StartCoroutine(SceneViewManager.boardView.AddCard(instance, playerId, CardVisualState.None));
                 instanceMap[instanceId] = instance;
                 break;
             }
@@ -380,7 +381,7 @@ public class EventProcessFunction : MonoBehaviour
                     StartCoroutine(SceneViewManager.boardView.RemoveCardInstant(obj));
                 }
                 GameObject instance = CardViewCreator.Instance.CreateCardInstance(cardId, instanceId);
-                StartCoroutine(SceneViewManager.boardView.AddCard(instance, 1 - playerId, CardState.None));
+                StartCoroutine(SceneViewManager.boardView.AddCard(instance, 1 - playerId, CardVisualState.None));
                 instanceMap[instanceId] = instance;
                 break;
             }
@@ -421,12 +422,12 @@ public class EventProcessFunction : MonoBehaviour
 
     // parameters[0]: int playerId
     // parameters[1]: int instanceId
-    // parameters[2]: CardState cardState
+    // parameters[2]: CardVisualState cardVisualState
     public void ChangeCardStateTest(object[] parameters)
     {
         int playerId = (int)parameters[0];
         int instanceId = (int)parameters[1];
-        CardState cardState = (CardState)parameters[2];
+        CardVisualState cardState = (CardVisualState)parameters[2];
 
         if (instanceMap.TryGetValue(instanceId, out GameObject obj))
         {

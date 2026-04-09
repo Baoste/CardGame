@@ -177,7 +177,7 @@ namespace Game.Domain
     {
         public int playerId;
         public int instanceId;
-        public CardState cardState;
+        public CardVisualState cardState;
     }
 
     public class PeekTopCardCommand : ICommand

@@ -73,19 +73,19 @@ public class TestSystem : MonoBehaviour
             if (card <= 1)
             {
                 GameObject instance = CardViewCreator.Instance.CreateCardInstance(card++, 98);
-                StartCoroutine(boardView.AddCard(instance, ClientGameState.playerSlot, CardState.Hidden));
+                StartCoroutine(boardView.AddCard(instance, ClientGameState.playerSlot, CardVisualState.Hidden));
                 objs.Push(instance);
             }
             else if (card <= 5)
             {
                 GameObject instance = CardViewCreator.Instance.CreateCardInstance(card++, 98);
-                StartCoroutine(boardView.AddCard(instance, ClientGameState.playerSlot, CardState.None));
+                StartCoroutine(boardView.AddCard(instance, ClientGameState.playerSlot, CardVisualState.None));
                 objs.Push(instance);
             }
             else if (card <= 10)
             {
                 GameObject instance = CardViewCreator.Instance.CreateCardInstance(card++, 98);
-                StartCoroutine(boardView.AddCard(instance, 99, CardState.None));
+                StartCoroutine(boardView.AddCard(instance, 99, CardVisualState.None));
                 objs.Push(instance);
             }
         }
@@ -111,9 +111,9 @@ public class TestSystem : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.R))
         {
             GameObject instance = CardViewCreator.Instance.CreateCardInstance(2, 99);
-            StartCoroutine(SceneViewManager.boardView.AddCard(instance, ClientGameState.playerSlot, CardState.Hole));
+            StartCoroutine(SceneViewManager.boardView.AddCard(instance, ClientGameState.playerSlot, CardVisualState.Hole));
             instance = CardViewCreator.Instance.CreateCardInstance(2, 99);
-            StartCoroutine(SceneViewManager.boardView.AddCard(instance, 99, CardState.Hole));
+            StartCoroutine(SceneViewManager.boardView.AddCard(instance, 99, CardVisualState.Hole));
         }
 
         //if (Input.GetKeyDown(KeyCode.A))

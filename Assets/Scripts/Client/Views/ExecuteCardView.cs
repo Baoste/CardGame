@@ -19,7 +19,6 @@ public class ExecuteCardView : MonoBehaviour
     public IEnumerator MoveToFallPosition(GameObject card)
     {
         card.GetComponent<Outline>().Enable = 0f;
-        card.GetComponent<SkillCardMouseTilt>().ResetBaseRotation();
         Quaternion targetRot = Quaternion.LookRotation(transform.forward, -transform.right);
 
         Sequence seq = DOTween.Sequence();
@@ -32,13 +31,6 @@ public class ExecuteCardView : MonoBehaviour
 
     public IEnumerator MoveToExecutePosition(GameObject card)
     {
-        SkillCardDraggable drag = card.GetComponent<SkillCardDraggable>();
-        if (drag != null)
-        {
-            if (drag.executed) yield break;
-            drag.executed = true;
-        }
-
         StartCoroutine(SceneViewManager.myHandView.RemoveCard(card));
         StartCoroutine(SceneViewManager.opponentHandView.RemoveCard(card));
 
