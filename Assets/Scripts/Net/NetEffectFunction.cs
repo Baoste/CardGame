@@ -35,6 +35,19 @@ namespace Game.Domain
                     return;
                 }
 
+                // play animation event before executing the effect
+                results.events.Enqueue(CommandHandler.MakeEvent(
+                    "PlayAnimation",
+                    new PlayAnimationEvent
+                    (
+                        playerId,
+                        true,
+                        AnimationType.MoveToExecutePosition,
+                        instanceId
+                    ),
+                    -1
+                ));
+
                 bool sourceNeedChoose = op.source.participantSelectionMode is SelectionModeChoose;
                 bool targetNeedChoose = op.target.participantSelectionMode is SelectionModeChoose;
 

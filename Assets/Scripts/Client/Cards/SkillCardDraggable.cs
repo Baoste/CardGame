@@ -117,14 +117,6 @@ public class SkillCardDraggable : MonoBehaviour, IMouseDown, IMouseDrag, IMouseU
         }
 
         // Start Executing
-        //yield return StartCoroutine(ClientEffectExecutor.ValidateActionPoint(ClientGameState.gateway, ClientGameState.playerSlot));
-        //if (!CommandExecutionState<ValidateActionPointCommand>.Success)
-        //{
-        //    transform.localScale = Vector3.one * instance.localScaleFactor;
-        //    Debug.Log("没有足够的行动点");
-        //    StartCoroutine(ReturnToHand());
-        //    yield break;
-        //}
         ClientEffectContext.isExecutingSkillCard = true;
 
         // 准备执行技能
@@ -134,36 +126,12 @@ public class SkillCardDraggable : MonoBehaviour, IMouseDown, IMouseDrag, IMouseU
         CommandExecutionState<PlayAnimationCommand>.IsDone = false;
         yield return new WaitUntil(() => CommandExecutionState<PlayAnimationCommand>.IsDone);
 
-        //if (!ClientEffectContext.IsValidateDone)
-        //{
-        //    // 执行技能失败
-        //    Debug.Log("你不能打出这张牌");
-        //    transform.localScale = Vector3.one * instance.localScaleFactor;
-        //    ClientEffectContext.isExecutingSkillCard = false;
-        //    // TODO: 需要广播动画
-        //    animCmd = new PlayAnimationCommand { playerId = ClientGameState.playerSlot, animType = AnimationType.ReturnToHand, instanceId = instanceId };
-        //    ClientGameState.gateway.SendCommandServerRpc("PlayAnimation", JsonConvert.SerializeObject(animCmd));
-        //    yield return new WaitUntil(() => CommandExecutionState<PlayAnimationCommand>.IsDone);
-        //}
-
-        // 如果执行了一个op之后才失败了
-        //if (!ClientEffectContext.IsCommandValid)
-        //{
-        //    // TODO: 暂时的，以后要改成消失动画
-        //    transform.localScale = Vector3.zero;
-        //    transform.position = new Vector3(0, 0, 100);
-        //    ClientEffectContext.isExecutingSkillCard = false;
-        //    StartCoroutine(SceneViewManager.myHandView.RemoveCard(gameObject));
-        //    StartCoroutine(SceneViewManager.opponentHandView.RemoveCard(gameObject));
-        //    yield break;
-        //}
-
         // 执行
-        // TODO: 需要广播动画
-        animCmd = new PlayAnimationCommand { playerId = ClientGameState.playerSlot, animType = AnimationType.MoveToExecutePosition, instanceId = instanceId };
-        ClientGameState.gateway.SendCommandServerRpc("PlayAnimation", JsonConvert.SerializeObject(animCmd));
-        CommandExecutionState<PlayAnimationCommand>.IsDone = false;
-        yield return new WaitUntil(() => CommandExecutionState<PlayAnimationCommand>.IsDone);
+        //// TODO: 需要广播动画
+        //animCmd = new PlayAnimationCommand { playerId = ClientGameState.playerSlot, animType = AnimationType.MoveToExecutePosition, instanceId = instanceId };
+        //ClientGameState.gateway.SendCommandServerRpc("PlayAnimation", JsonConvert.SerializeObject(animCmd));
+        //CommandExecutionState<PlayAnimationCommand>.IsDone = false;
+        //yield return new WaitUntil(() => CommandExecutionState<PlayAnimationCommand>.IsDone);
 
         StartExecuteSkillCommand cmd = new StartExecuteSkillCommand { playerId = ClientGameState.playerSlot, instanceId = instanceId };
         ClientGameState.gateway.SendCommandServerRpc("StartExecuteSkill", JsonConvert.SerializeObject(cmd));
