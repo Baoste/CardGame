@@ -33,7 +33,7 @@ public class EventProcessFunction : MonoBehaviour
         ProcessDispatcher.Register("EndTurnTest", EndTurnTest);
         ProcessDispatcher.Register("ClearCardsToResolveTest", ClearResolve);
         ProcessDispatcher.Register("RevealTest", RevealTest);
-        ProcessDispatcher.Register("EmojiTest", EmojiTest);
+        // ProcessDispatcher.Register("EmojiTest", EmojiTest);
     }
 
     public void StartMatchTest(object[] parameters)
