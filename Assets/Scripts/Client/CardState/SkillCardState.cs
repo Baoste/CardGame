@@ -2,10 +2,10 @@
 public class SkillCardState
 {
     public SkillCardStateMachine stateMachine;
-    public SkillCard skillCard;
+    public SkillCardController skillCard;
     public string animatorName;
 
-    public SkillCardState(SkillCardStateMachine stateMachine, SkillCard skillCard, string animatorName)
+    public SkillCardState(SkillCardStateMachine stateMachine, SkillCardController skillCard, string animatorName)
     {
         this.stateMachine = stateMachine;
         this.skillCard = skillCard;

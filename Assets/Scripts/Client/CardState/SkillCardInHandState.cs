@@ -7,7 +7,7 @@ public class SkillCardInHandState : SkillCardState
 {
     private float hoveredMoveDirY = 0.4f;
 
-    public SkillCardInHandState(SkillCardStateMachine stateMachine, SkillCard skillCard, string animatorName) : base(stateMachine, skillCard, animatorName)
+    public SkillCardInHandState(SkillCardStateMachine stateMachine, SkillCardController skillCard, string animatorName) : base(stateMachine, skillCard, animatorName)
     {
     }
 

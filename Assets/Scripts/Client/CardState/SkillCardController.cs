@@ -5,7 +5,7 @@ using Newtonsoft.Json;
 using UnityEngine;
 using System.ComponentModel;
 
-public class SkillCard : MonoBehaviour
+public class SkillCardController : MonoBehaviour
 {
     #region State
     [HideInInspector] public SkillCardStateMachine stateMachine;
