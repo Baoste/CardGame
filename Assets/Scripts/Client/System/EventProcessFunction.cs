@@ -40,6 +40,8 @@ public class EventProcessFunction : MonoBehaviour
     {
         int playerId = (int)parameters[0];
         int emojiId = (int)parameters[1];
+
+        Debug.Log($"EmojiTest {emojiId}");
         //bool isOpponent = playerId != ClientGameState.playerSlot;
         //if (isOpponent)
         //    SceneViewManager.opponentEmojiView.ShowEmoji(emojiId);

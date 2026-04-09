@@ -19,6 +19,6 @@ public sealed class EmojiEventHandler : IEventProcess, IEventHandler
     }
     public void Process(object[] objects)
     {
-        ProcessDispatcher.Process("Emoji", objects);
+        ProcessDispatcher.Process("EmojiTest", objects);
     }
 }

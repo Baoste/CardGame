@@ -2793,7 +2793,7 @@ MonoBehaviour:
   _ipv6BindAddress: 
   _port: 7777
   _maximumClients: 4095
-  _clientAddress: 192.168.1.15
+  _clientAddress: localhost
 --- !u!114 &680630110
 MonoBehaviour:
   m_ObjectHideFlags: 0

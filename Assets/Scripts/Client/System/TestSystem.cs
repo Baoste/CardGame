@@ -1,5 +1,5 @@
-using FishNet.Demo.AdditiveScenes;
 using Game.Domain;
+using Newtonsoft.Json;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -121,6 +121,12 @@ public class TestSystem : MonoBehaviour
         //    SceneViewManager.myRevealButtonView.ShowButton(true);
         //    SceneViewManager.opponentRevealButtonView.ShowRandom();
         //}
+
+        if (Input.GetKeyDown(KeyCode.J))
+        {
+            EmojiCommand cmd = new EmojiCommand { playerId = ClientGameState.playerSlot, emojiId = 1 };
+            ClientGameState.gateway.SendCommandServerRpc("Emoji", JsonConvert.SerializeObject(cmd));
+        }
 
         // ≤‚ ‘ªÿ∫œµ∆
         if (Input.GetKeyDown(KeyCode.S))
