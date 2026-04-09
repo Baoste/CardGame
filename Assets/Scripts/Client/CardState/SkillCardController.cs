@@ -3,7 +3,6 @@ using Game.Domain;
 using System.Collections;
 using Newtonsoft.Json;
 using UnityEngine;
-using System.ComponentModel;
 
 public class SkillCardController : MonoBehaviour
 {

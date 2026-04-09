@@ -56,8 +56,11 @@ public class HandView : MonoBehaviour, IViewClear
         yield return UpdateCardPositions(0.5f);
 
         SkillCardController sc = instance.GetComponent<SkillCardController>();
-        sc.SetIsOpponent(isOpponent);
-        sc.stateMachine.ChangeState(sc.inHandState);
+        if (sc != null)
+        {
+            sc.SetIsOpponent(isOpponent);
+            sc.stateMachine.ChangeState(sc.inHandState);
+        }
     }
 
     public void ReturnCard(GameObject instance)

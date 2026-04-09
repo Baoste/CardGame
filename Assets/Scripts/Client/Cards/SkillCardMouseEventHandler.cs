@@ -1,7 +1,4 @@
-using DG.Tweening;
-using Game.Domain;
-using System.Collections;
-using System.Collections.Generic;
+
 using UnityEngine;
 
 public class SkillCardMouseEventHandler : MonoBehaviour, IMouseEnter, IMouseExit, IMouseDown, IMouseDrag, IMouseUp
