@@ -15,6 +15,7 @@ public static class DispatcherBootstrap
         EventDispatcher.Register("GetGameState", new GetGameStateEventHandler());
         EventDispatcher.Register("GetCtx", new GetCtxEventHandler());
         EventDispatcher.Register("Chat", new ChatEventHandler());
+        EventDispatcher.Register("Emoji", new EmojiEventHandler());
         EventDispatcher.Register("WaitForPlayer2Choose", new WaitForPlayer2ChooseEventHandler());
         EventDispatcher.Register("PlayAnimation", new PlayAnimationEventHandler());
         EventDispatcher.Register("ValidateActionPoint", new ValidateActionPointEventHandler());
@@ -43,6 +44,7 @@ public static class DispatcherBootstrap
         CommandDispatcher.Register("GetGameState", new GetGameStateCmdHandler());
         CommandDispatcher.Register("GetCtx", new GetCtxCmdHandler());
         CommandDispatcher.Register("Chat", new ChatCmdHandler());
+        CommandDispatcher.Register("Emoji", new EmojiCmdHandler());
         CommandDispatcher.Register("StartExecuteSkill", new StartExecuteSkillCmdHandler());
         CommandDispatcher.Register("CommitChosenIds", new CommitChosenIdsCmdHandler());
         CommandDispatcher.Register("PlayAnimation", new PlayAnimationCmdHandler());
