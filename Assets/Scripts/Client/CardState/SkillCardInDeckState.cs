@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class SkillCardInDeckState : SkillCardState
 {
-    public SkillCardInDeckState(SkillCardStateMachine stateMachine, SkillCard skillCard, string animatorName) : base(stateMachine, skillCard, animatorName)
+    public SkillCardInDeckState(SkillCardStateMachine stateMachine, SkillCardController skillCard, string animatorName) : base(stateMachine, skillCard, animatorName)
     {
     }
 }

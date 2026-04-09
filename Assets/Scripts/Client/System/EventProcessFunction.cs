@@ -238,7 +238,7 @@ public class EventProcessFunction : MonoBehaviour
         {
             case AnimationType.MoveToFallPosition:
                 { 
-                    SkillCard skillCard = obj.GetComponent<SkillCard>();
+                    SkillCardController skillCard = obj.GetComponent<SkillCardController>();
                     skillCard.stateMachine.ChangeState(skillCard.readyFallState);
                 }
                 break;
@@ -251,13 +251,13 @@ public class EventProcessFunction : MonoBehaviour
                 else
                 {
                     SceneViewManager.myHandView.ReturnCard(obj);
-                    SkillCard skillCard = obj.GetComponent<SkillCard>();
+                    SkillCardController skillCard = obj.GetComponent<SkillCardController>();
                     skillCard.stateMachine.ChangeState(skillCard.inHandState);
                 }
                 break;
             case AnimationType.MoveToExecutePosition:
                 {
-                    SkillCard skillCard = obj.GetComponent<SkillCard>();
+                    SkillCardController skillCard = obj.GetComponent<SkillCardController>();
                     skillCard.stateMachine.ChangeState(skillCard.executeState);
                 }
                 break;

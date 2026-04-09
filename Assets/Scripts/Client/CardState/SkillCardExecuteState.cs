@@ -6,7 +6,7 @@ using UnityEngine;
 
 public class SkillCardExecuteState : SkillCardState
 {
-    public SkillCardExecuteState(SkillCardStateMachine stateMachine, SkillCard skillCard, string animatorName) : base(stateMachine, skillCard, animatorName)
+    public SkillCardExecuteState(SkillCardStateMachine stateMachine, SkillCardController skillCard, string animatorName) : base(stateMachine, skillCard, animatorName)
     {
     }
 

@@ -16,7 +16,7 @@ public class SkillCardDragState : SkillCardState
     private Transform meshTransform;
     #endregion
 
-    public SkillCardDragState(SkillCardStateMachine stateMachine, SkillCard skillCard, string animatorName) : base(stateMachine, skillCard, animatorName)
+    public SkillCardDragState(SkillCardStateMachine stateMachine, SkillCardController skillCard, string animatorName) : base(stateMachine, skillCard, animatorName)
     {
         cam = Camera.main;
         meshTransform = skillCard.transform.Find("Model");

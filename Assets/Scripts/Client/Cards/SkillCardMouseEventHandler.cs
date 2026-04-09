@@ -6,11 +6,11 @@ using UnityEngine;
 
 public class SkillCardMouseEventHandler : MonoBehaviour, IMouseEnter, IMouseExit, IMouseDown, IMouseDrag, IMouseUp
 {
-    private SkillCard skillCard;
+    private SkillCardController skillCard;
 
     public void Init()
     {
-        skillCard = GetComponent<SkillCard>();
+        skillCard = GetComponent<SkillCardController>();
     }
 
     public void MouseDown()
