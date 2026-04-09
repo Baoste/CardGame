@@ -33,7 +33,18 @@ public class EventProcessFunction : MonoBehaviour
         ProcessDispatcher.Register("EndTurnTest", EndTurnTest);
         ProcessDispatcher.Register("ClearCardsToResolveTest", ClearResolve);
         ProcessDispatcher.Register("RevealTest", RevealTest);
-        // ProcessDispatcher.Register("EmojiTest", EmojiTest);
+        ProcessDispatcher.Register("EmojiTest", EmojiTest);
+    }
+
+    public void EmojiTest(object[] parameters)
+    {
+        int playerId = (int)parameters[0];
+        int emojiId = (int)parameters[1];
+        //bool isOpponent = playerId != ClientGameState.playerSlot;
+        //if (isOpponent)
+        //    SceneViewManager.opponentEmojiView.ShowEmoji(emojiId);
+        //else
+        //    SceneViewManager.myEmojiView.ShowEmoji(emojiId);
     }
 
     public void StartMatchTest(object[] parameters)
