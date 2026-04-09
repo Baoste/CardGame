@@ -1,8 +1,4 @@
 using Game.Domain;
-using Newtonsoft.Json;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
 
 public class SkillCardExecuteState : SkillCardState
 {

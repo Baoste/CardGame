@@ -1,7 +1,6 @@
 
 using DG.Tweening;
 using UnityEngine;
-using UnityEngine.XR;
 
 public class SkillCardDragState : SkillCardState
 {
