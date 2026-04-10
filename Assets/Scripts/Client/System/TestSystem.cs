@@ -56,8 +56,11 @@ public class TestSystem : MonoBehaviour
         // ≤‚ ‘ResolveZoneView
         if (Input.GetKeyDown(KeyCode.Q))
         {
-            GameObject instance = CardViewCreator.Instance.CreateCardResolved(2, 99999);
-            StartCoroutine(ResolveZoneView.AddCard(instance, -1, true));
+            if (card <= 10)
+            {
+                GameObject instance = CardViewCreator.Instance.CreateCardResolved(card++, 989);
+                StartCoroutine(ResolveZoneView.AddCard(instance, -1, true));
+            }
         }
 
         // ≤‚ ‘PeekZoneView
