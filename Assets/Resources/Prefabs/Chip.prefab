@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 488082472874103547}
   - component: {fileID: 7751934983348840951}
   - component: {fileID: 129616013461525912}
-  - component: {fileID: 4996614122419329140}
+  - component: {fileID: 3231624197578848701}
   m_Layer: 0
   m_Name: Model
   m_TagString: Untagged
@@ -59,7 +59,7 @@ Rigidbody:
     m_Bits: 0
   m_ImplicitCom: 1
   m_ImplicitTensor: 1
-  m_UseGravity: 1
+  m_UseGravity: 0
   m_IsKinematic: 0
   m_Interpolate: 0
   m_Constraints: 0
@@ -119,11 +119,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   tiltStrength: 20
-  maxTilt: 60
+  maxTilt: 40
   smoothSpeed: 10
   useUnscaledDelta: 1
   meshTransform: {fileID: 2587430206831976745}
---- !u!114 &4996614122419329140
+--- !u!114 &3231624197578848701
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -132,9 +132,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 7254515085507195032}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a2967792a5f8fc347b42d7b1aec0322b, type: 3}
+  m_Script: {fileID: 11500000, guid: 8827b2009e99677438a26347e1ac70e2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  tiltStrength: 40
+  maxTilt: 10
+  smoothSpeed: 40
+  meshTransform: {fileID: 2587430206831976745}
 --- !u!1 &8885925628758046779
 GameObject:
   m_ObjectHideFlags: 0
@@ -277,7 +281,7 @@ MeshCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 5

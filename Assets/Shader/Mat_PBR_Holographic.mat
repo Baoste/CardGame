@@ -42,7 +42,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _BaseMap:
-        m_Texture: {fileID: 2800000, guid: 8b90ccde4c1f93c41a226f67a7483414, type: 3}
+        m_Texture: {fileID: 2800000, guid: fc3502f2069c71f4093f514468e5a41c, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _EmissionMap:
@@ -62,7 +62,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _SampleTexture2D_c8101de1656948c7b78e3cadde4e51c5_Texture_1_Texture2D:
-        m_Texture: {fileID: 2800000, guid: 6b2d9ce8092bc4f48b6a0dcac74f6f46, type: 3}
+        m_Texture: {fileID: 2800000, guid: 1eb99ff4624e0424ab543ca7d176e5bd, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - unity_Lightmaps:

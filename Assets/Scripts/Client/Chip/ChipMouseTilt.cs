@@ -5,7 +5,7 @@ using UnityEngine;
 public class ChipMouseTilt : MonoBehaviour
 {
     [SerializeField] private float tiltStrength = 20f;
-    [SerializeField] private float maxTilt = 60f;
+    [SerializeField] private float maxTilt = 40f;
     [SerializeField] private float smoothSpeed = 10f;
     [SerializeField] private bool useUnscaledDelta = true;
     [SerializeField] private Transform meshTransform;
@@ -46,7 +46,7 @@ public class ChipMouseTilt : MonoBehaviour
         Quaternion targetRot = Quaternion.identity;
         if (mouseVelocity > 0.01f)
         {
-            Vector3 rotAxis = Quaternion.AngleAxis(90f, Vector3.up) * mouseDelta;    // 从 handView 的坐标系转到 model 的坐标系下
+            Vector3 rotAxis = Quaternion.AngleAxis(-90f, Vector3.up) * mouseDelta;    // 从 handView 的坐标系转到 model 的坐标系下
             targetRot = Quaternion.AngleAxis(currentTilt, rotAxis);
         }
         currentRot = Quaternion.Slerp(currentRot, targetRot, smoothSpeed * dt);

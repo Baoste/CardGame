@@ -22,9 +22,9 @@ public class TestSystem : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.O))
         {
             StartCoroutine(SceneViewManager.viewAnimController.PlayStartGameAnim());
-            SceneViewManager.myChipView.GenerateChips(6);
-            SceneViewManager.opponentChipView.GenerateChips(6);
-            foreach (var obj in SceneViewManager.myChipView.chipsInTray)
+            SceneViewManager.myChipView.StartGame();
+            SceneViewManager.opponentChipView.StartGame();
+            foreach (var obj in SceneViewManager.myChipView.chipsInTray.Keys)
             {
                 ChipDraggable drag = obj.transform.GetChild(0).gameObject.AddComponent<ChipDraggable>();
                 drag.Init();
@@ -56,8 +56,11 @@ public class TestSystem : MonoBehaviour
         // ≤‚ ‘ResolveZoneView
         if (Input.GetKeyDown(KeyCode.Q))
         {
-            GameObject instance = CardViewCreator.Instance.CreateCardInstance(2, 99999);
-            StartCoroutine(ResolveZoneView.AddCard(instance, -1, true));
+            if (card <= 10)
+            {
+                GameObject instance = CardViewCreator.Instance.CreateCardResolved(card++, 989);
+                StartCoroutine(ResolveZoneView.AddCard(instance, -1, true));
+            }
         }
 
         // ≤‚ ‘PeekZoneView

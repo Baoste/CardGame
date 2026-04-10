@@ -1,14 +1,23 @@
-using System.Collections;
-using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class MouseRaycastSystem : MonoBehaviour
 {
     private Camera rayCamera;
     private LayerMask interactMask;
+
     private GameObject currentObj; // 当前 hover
     private GameObject dragObj;    // 当前拖拽对象
+
+    // hover 缓存接口
+    private IMouseEnter currentEnter;
+    private IMouseExit currentExit;
+    private IMouseStay currentStay;
+
+    // drag 缓存接口
+    private IMouseDown dragDown;
+    private IMouseClick dragClick;
+    private IMouseDrag dragDrag;
+    private IMouseUp dragUp;
 
     private void Start()
     {
@@ -19,80 +28,109 @@ public class MouseRaycastSystem : MonoBehaviour
     private void Update()
     {
         Ray ray = rayCamera.ScreenPointToRay(Input.mousePosition);
-
         bool hasHit = Physics.Raycast(ray, out RaycastHit hit, 1000f, interactMask);
 
-        // -------------------------
-        // Hover Enter / Exit
-        // -------------------------
+        HandleHover(hasHit, hit);
+        HandleMouseDown(hasHit, hit);
+        HandleMouseDrag();
+        HandleMouseUp();
+    }
+
+    private void HandleHover(bool hasHit, RaycastHit hit)
+    {
         if (hasHit)
         {
             GameObject hitObj = hit.collider.gameObject;
 
             if (hitObj != currentObj)
             {
-                if (currentObj != null)
-                {
-                    var exit = currentObj.GetComponent<IMouseExit>();
-                    exit?.MouseExit();
-                }
+                ClearCurrentHover();
 
                 currentObj = hitObj;
+                CacheHoverInterfaces(currentObj);
 
-                var enter = currentObj.GetComponent<IMouseEnter>();
-                enter?.MouseEnter();
+                currentEnter?.MouseEnter();
+            }
+            else
+            {
+                currentStay?.MouseStay();
             }
         }
         else
         {
-            if (currentObj != null)
-            {
-                var exit = currentObj.GetComponent<IMouseExit>();
-                exit?.MouseExit();
-                currentObj = null;
-            }
+            ClearCurrentHover();
         }
+    }
 
-        // -------------------------
-        // Mouse Down
-        // -------------------------
-        if (Input.GetMouseButtonDown(0))
+    private void HandleMouseDown(bool hasHit, RaycastHit hit)
+    {
+        if (!Input.GetMouseButtonDown(0)) return;
+
+        if (hasHit)
         {
-            if (hasHit)
-            {
-                dragObj = hit.collider.gameObject;
+            dragObj = hit.collider.gameObject;
+            CacheDragInterfaces(dragObj);
 
-                var down = dragObj.GetComponent<IMouseDown>();
-                down?.MouseDown();
-
-                var click = dragObj.GetComponent<IMouseClick>();
-                click?.MouseClick();
-            }
+            dragDown?.MouseDown();
+            dragClick?.MouseClick();
         }
+    }
 
-        // -------------------------
-        // Mouse Drag
-        // -------------------------
-        if (Input.GetMouseButton(0))
+    private void HandleMouseDrag()
+    {
+        if (!Input.GetMouseButton(0)) return;
+
+        if (dragObj != null)
         {
-            if (dragObj != null)
-            {
-                var drag = dragObj.GetComponent<IMouseDrag>();
-                drag?.MouseDrag();
-            }
+            dragDrag?.MouseDrag();
+        }
+    }
+
+    private void HandleMouseUp()
+    {
+        if (!Input.GetMouseButtonUp(0)) return;
+
+        if (dragObj != null)
+        {
+            dragUp?.MouseUp();
+            ClearDrag();
+        }
+    }
+
+    private void CacheHoverInterfaces(GameObject obj)
+    {
+        currentEnter = obj.GetComponent<IMouseEnter>();
+        currentExit = obj.GetComponent<IMouseExit>();
+        currentStay = obj.GetComponent<IMouseStay>();
+    }
+
+    private void CacheDragInterfaces(GameObject obj)
+    {
+        dragDown = obj.GetComponent<IMouseDown>();
+        dragClick = obj.GetComponent<IMouseClick>();
+        dragDrag = obj.GetComponent<IMouseDrag>();
+        dragUp = obj.GetComponent<IMouseUp>();
+    }
+
+    private void ClearCurrentHover()
+    {
+        if (currentObj != null)
+        {
+            currentExit?.MouseExit();
         }
 
-        // -------------------------
-        // Mouse Up
-        // -------------------------
-        if (Input.GetMouseButtonUp(0))
-        {
-            if (dragObj != null)
-            {
-                var up = dragObj.GetComponent<IMouseUp>();
-                up?.MouseUp();
-                dragObj = null;
-            }
-        }
+        currentObj = null;
+        currentEnter = null;
+        currentExit = null;
+        currentStay = null;
+    }
+
+    private void ClearDrag()
+    {
+        dragObj = null;
+        dragDown = null;
+        dragClick = null;
+        dragDrag = null;
+        dragUp = null;
     }
 }

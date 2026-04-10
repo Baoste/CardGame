@@ -2,6 +2,7 @@ using DG.Tweening;
 using Game.Domain;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class ChipView : MonoBehaviour
@@ -16,13 +17,25 @@ public class ChipView : MonoBehaviour
 
     [Header("Init Settings")]
     [SerializeField] private ChipInit chipInit;
+    [SerializeField] private Transform chipContainer;
 
-    [HideInInspector] public List<GameObject> chipsInTray = new List<GameObject>();
+    [HideInInspector] public Dictionary<GameObject, int> chipsInTray = new Dictionary<GameObject, int>();
     [HideInInspector] public List<GameObject> chipsPlaced = new List<GameObject>();
+
+    private void Start()
+    {
+        chipContainer.Rotate(Vector3.forward, 180);
+    }
+
+    public void StartGame()
+    {
+        GenerateChips(6);
+        chipContainer.DORotate(new Vector3(0, 0, 180f), 0.5f, RotateMode.LocalAxisAdd).SetEase(Ease.OutBack);
+    }
 
     public void GenerateChips(int count)
     {
-        chipsInTray.AddRange(chipInit.GenerateChips(count, chipsInTray.Count));
+        chipInit.GenerateChips(count, ref chipsInTray);
     }
 
     public void DestroyChipsPlaced()
@@ -42,7 +55,7 @@ public class ChipView : MonoBehaviour
     {
         if (chipsInTray.Count < 1) yield break;
 
-        GameObject chip = chipsInTray[chipsInTray.Count - 1];
+        GameObject chip = chipsInTray.Keys.Last();
         chipsPlaced.Add(chip);
         chipsInTray.Remove(chip);
 
@@ -51,12 +64,10 @@ public class ChipView : MonoBehaviour
         rb.useGravity = false;
         col.isTrigger = true;
 
-        Vector3 targetPos = isOpponent ? new Vector3(-1.369f, 1.93f, -1.185f) : new Vector3(-1.369f, 2.73f, -1.185f);
-
         Sequence seq = DOTween.Sequence();
         seq.Append(chip.transform.DOMove(chip.transform.position + Vector3.up * 0.2f, 0.5f).SetEase(Ease.OutBack));
         seq.AppendInterval(0.3f);
-        seq.Append(chip.transform.DOLocalMove(targetPos, 0.5f));
+        seq.Append(chip.transform.DOMove(transform.position, 0.5f));
         yield return seq.WaitForCompletion();
 
         rb.useGravity = true;
