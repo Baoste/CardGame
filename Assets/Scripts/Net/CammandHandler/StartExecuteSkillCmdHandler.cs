@@ -19,7 +19,7 @@ public class StartExecuteSkillCmdHandler : CommandHandler, ICommandHandler
         }
         else
         {
-            if (!NetEffectFunction.SpendActionPoint(payload.playerId, payload.instanceId, session, results, skillCard.point))
+            if (!NetEffectFunction.SpendActionPoint(payload.playerId, payload.instanceId, session, results, session.gameState.instancePointMap[payload.instanceId]))
                 return results;
 
             // execute skill card effects
