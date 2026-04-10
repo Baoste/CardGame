@@ -3,6 +3,11 @@ public interface IMouseEnter
     void MouseEnter();
 }
 
+public interface IMouseStay
+{
+    void MouseStay();
+}
+
 public interface IMouseExit
 {
     void MouseExit();

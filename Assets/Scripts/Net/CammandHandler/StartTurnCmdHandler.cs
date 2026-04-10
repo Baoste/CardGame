@@ -43,6 +43,17 @@ public class StartTurnCmdHandler : CommandHandler, ICommandHandler
         //    -1
         //));
 
+        results.events.Enqueue(MakeEvent(
+            "GetGameState",
+            new GetGameStateEvent    // need change
+            (
+                payload.playerId,
+                true,
+                session.gameState
+            ),
+            -1
+        ));
+
         return results;
     }
 }

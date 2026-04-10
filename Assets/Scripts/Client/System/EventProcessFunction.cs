@@ -54,8 +54,8 @@ public class EventProcessFunction : MonoBehaviour
     {
         CinemachineVirtualCamera vcam = GameObject.Find("VCamera_Playing").GetComponent<CinemachineVirtualCamera>();
         vcam.Priority = 20;
-        SceneViewManager.myChipView.GenerateChips(6);
-        SceneViewManager.opponentChipView.GenerateChips(6);
+        SceneViewManager.myChipView.StartGame();
+        SceneViewManager.opponentChipView.StartGame();
     }
 
     public void StartGameTest(object[] parameters)
@@ -144,7 +144,7 @@ public class EventProcessFunction : MonoBehaviour
 
         if (punterId == ClientGameState.playerSlot)
         {
-            foreach (var obj in SceneViewManager.myChipView.chipsInTray)
+            foreach (var obj in SceneViewManager.myChipView.chipsInTray.Keys)
             {
                 if (obj.transform.childCount > 0)
                 {
@@ -215,7 +215,7 @@ public class EventProcessFunction : MonoBehaviour
         int playerId = (int)parameters[0];
         int betCount = (int)parameters[1];
 
-        foreach (var obj in SceneViewManager.myChipView.chipsInTray)
+        foreach (var obj in SceneViewManager.myChipView.chipsInTray.Keys)
         {
             ChipDraggable script = obj.GetComponentInChildren<ChipDraggable>();
             if (script != null)

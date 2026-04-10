@@ -9,24 +9,32 @@ public class ChipInit : MonoBehaviour
     [SerializeField] private Vector3 instantiatePosition;
     [SerializeField] private float spacing;
 
-    public List<GameObject> GenerateChips(int count, int start)
+    public void GenerateChips(int count, ref Dictionary<GameObject, int> chips)
     {
-        List<GameObject> chips = new List<GameObject>();
-        for (int i = start; i < start + count; i++)
+        Vector3 worldPos = transform.TransformPoint(transform.localPosition + instantiatePosition);
+
+        int addCount = 0, i = 0;
+        while (addCount < count)
         {
+            if (chips.ContainsValue(i))
+            {
+                i++;
+                continue;
+            }
             GameObject chip = Instantiate(chipPrefab, transform);
-            chip.transform.position = instantiatePosition + transform.right * i * spacing;
+            chip.transform.position = worldPos + transform.right * i * spacing;
             chip.transform.rotation = Quaternion.Euler(0, 14.9f, -86f);
-            chips.Add(chip);
+            chips[chip] = i++;
+            addCount++;
         }
-        return chips;
     }
 
     private void OnDrawGizmos()
     {
+        Vector3 worldPos = transform.TransformPoint(transform.localPosition + instantiatePosition);
         Gizmos.color = Color.gray;
-        Gizmos.DrawSphere(instantiatePosition, 0.02f);
+        Gizmos.DrawSphere(worldPos, 0.02f);
         Gizmos.color = Color.green;
-        Gizmos.DrawLine(instantiatePosition, instantiatePosition + transform.right * 0.5f);
+        Gizmos.DrawLine(worldPos, worldPos + transform.right * 0.5f);
     }
 }

@@ -36,8 +36,6 @@ public class ChipDraggable : MonoBehaviour, IMouseDown, IMouseDrag, IMouseUp
     {
         isDragging = true;
         transform.DOKill();
-        rb.useGravity = false;
-        col.isTrigger = true;
 
         originalPosition = transform.position;
         originalRoation = transform.rotation;
@@ -84,8 +82,6 @@ public class ChipDraggable : MonoBehaviour, IMouseDown, IMouseDrag, IMouseUp
         if (executed) return;
         if (!isDragging) return;
         isDragging = false;
-        rb.useGravity = true;
-        col.isTrigger = false;
 
         bool outside = SceneViewManager.myChipView != null && SceneViewManager.myChipView.IsOutsideValidArea(transform.position);
 
@@ -95,6 +91,8 @@ public class ChipDraggable : MonoBehaviour, IMouseDown, IMouseDrag, IMouseUp
         }
         else
         {
+            rb.useGravity = true;
+            col.isTrigger = false;
             rb.AddForceAtPosition(-transform.up * 0.5f, transform.position - transform.right * 0.1f, ForceMode.Impulse);
             SceneViewManager.myChipView.Place1Bet(gameObject);
             Place1BetCommand cmd = new Place1BetCommand { playerId = ClientGameState.playerSlot };
