@@ -314,7 +314,7 @@ public class CardEditorWindow : EditorWindow
         using (new EditorGUILayout.VerticalScope("box"))
         {
             int sel = ConditionExprTypeToIndex(cond);
-            int newSel = EditorGUILayout.Popup("Condition Type", sel, new[] { "NoneCondition", "AllCondition", "CompareCondition", "AndCondition" });
+            int newSel = EditorGUILayout.Popup("Condition Type", sel, new[] { "NoneCondition", "AllCondition", "CompareCondition", "AndCondition", "OddEvenCondition" });
             if (newSel != sel)
             {
                 cond = CreateConditionExprByIndex(newSel);
@@ -350,6 +350,12 @@ public class CardEditorWindow : EditorWindow
                     DrawConditionExprEditor(ref ac.a);
                     EditorGUILayout.LabelField("B", EditorStyles.miniBoldLabel);
                     DrawConditionExprEditor(ref ac.b);
+                    break;
+
+                case OddEvenCondition oec:
+                    if (oec.value == null) oec.value = new NoneValue();
+                    EditorGUILayout.LabelField("Value", EditorStyles.miniBoldLabel);
+                    DrawValueExprEditor(ref oec.value);
                     break;
             }
         }
@@ -444,6 +450,7 @@ public class CardEditorWindow : EditorWindow
             AllCondition _ => 1,
             CompareCondition _ => 2,
             AndCondition _ => 3,
+            OddEvenCondition _ => 4,
             _ => 0
         };
     }
@@ -456,6 +463,7 @@ public class CardEditorWindow : EditorWindow
             1 => new AllCondition(),
             2 => new CompareCondition(),
             3 => new AndCondition(),
+            4 => new OddEvenCondition(),
             _ => new NoneCondition()
         };
     }

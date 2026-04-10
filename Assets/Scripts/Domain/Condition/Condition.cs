@@ -52,6 +52,22 @@ namespace Game.Domain
         }
     }
 
+    //单双条件
+    public class OddEvenCondition : ConditionExpr
+    {
+        public ValueExpr value;
+
+        public bool isOdd;
+        public override bool Evaluate(GameState state, EffectContext ctx, int point)
+        {
+            int val = value.Evaluate(state, ctx);
+            if(val % 2 == 0)
+                return false;
+            else
+                return true;
+        }
+    }
+
     // 逻辑组合
     public class AndCondition : ConditionExpr
     {
