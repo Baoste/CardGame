@@ -1,4 +1,5 @@
 using Game.Server;
+using System;
 using System.Collections.Generic;
 
 namespace Game.Domain
@@ -254,8 +255,9 @@ namespace Game.Domain
 
         private static void AddActionPoint(int playerId, EffectOp op, MatchSession session, CommandResult results)
         {
-            if (session.gameState.players[playerId].actionPoint < 3)
-                session.gameState.players[playerId].actionPoint += 1;
+            int apCount = op.value.Evaluate(session.gameState, session.ctx);
+
+            session.gameState.players[playerId].actionPoint = Math.Max(3, session.gameState.players[playerId].actionPoint + apCount);
 
             // return results
             results.events.Enqueue(CommandHandler.MakeEvent(
@@ -263,7 +265,8 @@ namespace Game.Domain
                 new AddActionPointEvent    // need change
                 (
                     playerId,
-                    true
+                    true,
+                    apCount
                 ),
                 -1
             ));

@@ -10,9 +10,14 @@ public class AddActionPointCmdHandler : CommandHandler, ICommandHandler
     {
         var payload = JsonConvert.DeserializeObject<AddActionPointCommand>(cmd.jsonData);  // need change
 
-        // TODO: 服务器端需要做什么
-        if (session.gameState.players[payload.playerId].actionPoint < 3)
-            session.gameState.players[payload.playerId].actionPoint += 1;
+        int addCount = payload.apCount;
+        if (session.gameState.players[payload.playerId].actionPoint + addCount < 3)
+            session.gameState.players[payload.playerId].actionPoint += addCount;
+        else
+        {
+            addCount = 3 - session.gameState.players[payload.playerId].actionPoint;
+            session.gameState.players[payload.playerId].actionPoint = 3;
+        }
 
         // return results
         CommandResult results = new CommandResult();
@@ -21,7 +26,8 @@ public class AddActionPointCmdHandler : CommandHandler, ICommandHandler
             new AddActionPointEvent    // need change
             (
                 payload.playerId,
-                true
+                true,
+                addCount
             ),
             -1
         ));

@@ -10,7 +10,7 @@ public class ValidateActionPointCmdHandler : CommandHandler, ICommandHandler
         var payload = JsonConvert.DeserializeObject<ValidateActionPointCommand>(cmd.jsonData);
 
         // TODO: 服务器端需要做什么
-        bool success = session.gameState.players[payload.playerId].actionPoint > 0;
+        bool success = session.gameState.players[payload.playerId].actionPoint >= payload.apCount;
 
         // return
         CommandResult results = new CommandResult();

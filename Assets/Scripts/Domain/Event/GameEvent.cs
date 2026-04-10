@@ -203,9 +203,11 @@ namespace Game.Domain
     /// </summary>
     public class AddActionPointEvent : PlayerEvent
     {
-        public AddActionPointEvent(int playerId, bool success)
+        public int apCount;
+        public AddActionPointEvent(int playerId, bool success, int apCount)
             : base(playerId, success)
         {
+            this.apCount = apCount;
         }
     }
 
@@ -214,9 +216,11 @@ namespace Game.Domain
     /// </summary>
     public class SpendActionPointEvent : PlayerEvent
     {
-        public SpendActionPointEvent(int playerId, bool success)
+        public int apCount;
+        public SpendActionPointEvent(int playerId, bool success, int apCount)
             : base(playerId, success)
         {
+            this.apCount = apCount;
         }
     }
 

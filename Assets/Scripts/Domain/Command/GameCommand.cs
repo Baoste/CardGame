@@ -117,16 +117,19 @@ namespace Game.Domain
     public class ValidateActionPointCommand : ICommand
     {
         public int playerId;
+        public int apCount;
     }
 
     public class AddActionPointCommand : ICommand
     {
         public int playerId;
+        public int apCount;
     }
 
     public class SpendActionPointCommand : ICommand
     {
         public int playerId;
+        public int apCount;
     }
 
     public class DrawSkillCardCommand : ICommand

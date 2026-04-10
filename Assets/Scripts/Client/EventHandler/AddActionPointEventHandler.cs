@@ -10,7 +10,7 @@ public class AddActionPointEventHandler : IEventProcess, IEventHandler
     {
         var payload = JsonConvert.DeserializeObject<AddActionPointEvent>(ev.jsonData);
         // need change, 需要把参数在这里传进去
-        ProcessQueueManager.Instance.Enqueue(Process, new object[] { payload.playerId }, 0.5f);
+        ProcessQueueManager.Instance.Enqueue(Process, new object[] { payload.playerId, payload.apCount }, 0.5f);
 
         Debug.Log($"[Client] Event#{ev.Index} type={ev.type} slot={payload.playerId} payload=add_ap");
 

@@ -156,9 +156,11 @@ public class EventProcessFunction : MonoBehaviour
     }
 
     // parameters[0]: int playerId
+    // parameters[1]: int apCount
     public void AddActionPointTest(object[] parameters)
     {
         int playerId = (int)parameters[0];
+        int apCount = (int)parameters[1];
 
         //bool isOpponent = playerId != ClientGameState.playerSlot;
         //if (isOpponent)
@@ -168,9 +170,11 @@ public class EventProcessFunction : MonoBehaviour
     }
 
     // parameters[0]: int playerId
+    // parameters[1]: int apCount
     public void SpendActionPointTest(object[] parameters)
     {
         int playerId = (int)parameters[0];
+        int apCount = (int)parameters[1];
 
         //bool isOpponent = playerId != ClientGameState.playerSlot;
         //if (isOpponent)

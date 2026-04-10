@@ -166,23 +166,23 @@ namespace Game.Domain
             if (session.gameState.players[playerId].actionPoint >= apCount)
             {
                 session.gameState.players[playerId].actionPoint -= apCount;
+                results.events.Enqueue(CommandHandler.MakeEvent(
+                    "SpendActionPoint",
+                    new SpendActionPointEvent    // need change
+                    (
+                        playerId,
+                        true,
+                        apCount
+                    ),
+                    -1
+                ));
+                return true;
             }
             else
             {
                 SendInvalidEvent(playerId, instanceId, results, InvalidActionType.NotEnoughAP);
                 return false;
             }
-
-            results.events.Enqueue(CommandHandler.MakeEvent(
-                "SpendActionPoint",
-                new SpendActionPointEvent    // need change
-                (
-                    playerId,
-                    true
-                ),
-                -1
-            ));
-            return true;
         }
 
         public static void SendInvalidEvent(int playerId, int instanceId, CommandResult results, InvalidActionType type)

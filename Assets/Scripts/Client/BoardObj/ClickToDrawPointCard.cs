@@ -24,14 +24,14 @@ public class ClickToDrawPointCard : MonoBehaviour, IMouseClick
 
     private IEnumerator DrawPointCard()
     {
-        yield return StartCoroutine(ClientEffectExecutor.ValidateActionPoint(ClientGameState.gateway, ClientGameState.playerSlot));
+        yield return StartCoroutine(ClientEffectExecutor.ValidateActionPoint(ClientGameState.gateway, ClientGameState.playerSlot, 1));
         if (!CommandExecutionState<ValidateActionPointCommand>.Success)
         {
             Debug.Log("没有足够的行动点");
             yield break;
         }
 
-        SpendActionPointCommand apCmd = new SpendActionPointCommand { playerId = ClientGameState.playerSlot };
+        SpendActionPointCommand apCmd = new SpendActionPointCommand { playerId = ClientGameState.playerSlot, apCount = 1 };
         ClientGameState.gateway.SendCommandServerRpc("SpendActionPoint", JsonConvert.SerializeObject(apCmd), ClientGameState.playerSlot);
         yield return new WaitUntil(() => CommandExecutionState<SpendActionPointCommand>.IsDone);
 
