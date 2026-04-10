@@ -15,6 +15,7 @@ namespace Game.Domain
         CardsToResolve              = 1 << 6,   // 要继续解决的牌，例如某些牌需要多次选择目标或多次触发效果
         MyBoardZone                 = 1 << 7,   // 自己的点数牌区域
         OppentBoardZone             = 1 << 8,   // 对方的点数牌区域
+        UserInterfaceZone           = 1 << 9,   // UI交互区域
     }
 
     //public enum ParticipantSelectionMode

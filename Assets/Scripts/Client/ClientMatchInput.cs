@@ -136,7 +136,7 @@ public class ClientMatchInput : MonoBehaviour
                     ZoneInstance zoneInstance = hit.collider.GetComponent<ZoneInstance>();
                     if (!zoneInstance) continue;
 
-                    int instanceId = (int)zoneInstance.zoneType;
+                    int instanceId = zoneInstance.isType ? (int)zoneInstance.zoneType : zoneInstance.zoneId;
                     if (!candidateSouceIds.Contains(instanceId)) continue;
 
                     selectedSourceIds.Add(instanceId);
@@ -190,7 +190,7 @@ public class ClientMatchInput : MonoBehaviour
                     ZoneInstance zoneInstance = hit.collider.GetComponent<ZoneInstance>();
                     if (!zoneInstance) continue;
 
-                    int instanceId = (int)zoneInstance.zoneType;
+                    int instanceId = zoneInstance.isType ? (int)zoneInstance.zoneType : zoneInstance.zoneId;
                     if (!candidateTargetIds.Contains(instanceId)) continue;
 
                     selectedTargetIds.Add(instanceId);

@@ -1,8 +1,6 @@
 using Game.Domain;
 using Game.Server;
 using Newtonsoft.Json;
-using System.Collections.Generic;
-using UnityEngine;
 
 public class CommitChosenIdsCmdHandler : CommandHandler, ICommandHandler
 {
@@ -23,6 +21,9 @@ public class CommitChosenIdsCmdHandler : CommandHandler, ICommandHandler
             // 回来继续执行技能卡的效果
             EffectOpExecutionContext opExecutionContext = session.ctx.opStack.Pop();
             EffectOp op = opExecutionContext.effectOp;
+
+            session.ctx.selectedSourceIds = payload.selectedSourceIds;
+            session.ctx.selectedTargetIds = payload.selectedTargetIds;
 
             bool success0 = op.source.participantSelectionMode.ValidateSelected(opExecutionContext.candidateSourceIds, payload.selectedSourceIds);
             bool success1 = op.target.participantSelectionMode.ValidateSelected(opExecutionContext.candidateTargetIds, payload.selectedTargetIds);

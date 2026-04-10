@@ -54,6 +54,14 @@ namespace Game.Domain
                 pool.Add((int)ParticipantType.OppentBoardZone);
                 isParticipantZone = true;
             }
+            if ((spec.participantType & ParticipantType.UserInterfaceZone) != 0)
+            {
+                for (int i = 0; i <= 10; i++)
+                {
+                    pool.Add(i);
+                }
+                isParticipantZone = true;
+            }
 
             return pool;
         }

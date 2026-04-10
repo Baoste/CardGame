@@ -353,9 +353,13 @@ public class CardEditorWindow : EditorWindow
                     break;
 
                 case OddEvenCondition oec:
-                    if (oec.value == null) oec.value = new NoneValue();
-                    EditorGUILayout.LabelField("Value", EditorStyles.miniBoldLabel);
-                    DrawValueExprEditor(ref oec.value);
+                    if (oec.left == null) oec.left = new NoneValue();
+                    if (oec.right == null) oec.right = new NoneValue();
+
+                    EditorGUILayout.LabelField("Left", EditorStyles.miniBoldLabel);
+                    DrawValueExprEditor(ref oec.left);
+                    EditorGUILayout.LabelField("Right", EditorStyles.miniBoldLabel);
+                    DrawValueExprEditor(ref oec.right);
                     break;
             }
         }

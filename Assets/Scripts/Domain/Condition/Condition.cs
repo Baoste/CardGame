@@ -55,16 +55,23 @@ namespace Game.Domain
     //单双条件
     public class OddEvenCondition : ConditionExpr
     {
-        public ValueExpr value;
+        public ValueExpr left;
+        public ValueExpr right;
 
-        public bool isOdd;
         public override bool Evaluate(GameState state, EffectContext ctx, int point)
         {
-            int val = value.Evaluate(state, ctx);
-            if(val % 2 == 0)
-                return false;
-            else
+            int l = left.Evaluate(state, ctx);
+            int r = right.Evaluate(state, ctx);
+
+            if (l == -1)
+                l = point;
+            if (r == -1)
+                r = point;
+
+            if (l % 2 == r % 2)
                 return true;
+            else
+                return false;
         }
     }
 

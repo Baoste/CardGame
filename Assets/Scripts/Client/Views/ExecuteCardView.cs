@@ -59,6 +59,8 @@ public class ExecuteCardView : MonoBehaviour
 
         yield return seq.WaitForCompletion();
         CommandExecutionState<PlayAnimationCommand>.IsDone = true;
+        // TODO: Ҫɾȥ
+        ClientEffectContext.isExecutingSkillCard = false;
     }
 
     private void OnDrawGizmos()

@@ -65,6 +65,11 @@ namespace Game.Domain
                 {
                     return state.SumPointOnCardsToResolve();
                 }
+
+                case ValueSource.UserInterfaceZoneId:
+                {
+                    return ctx.selectedTargetIds[0];
+                }
             }
             return -1;
         }
