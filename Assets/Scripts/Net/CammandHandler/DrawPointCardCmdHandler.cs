@@ -31,6 +31,7 @@ public sealed class DrawPointCardCmdHandler : CommandHandler, ICommandHandler
             ),
             -1
         ));
+        NetEffectFunction.SumPoint(session, ref results);
         return results;
     }
 }

@@ -37,6 +37,7 @@ public class ClickToDrawPointCard : MonoBehaviour, IMouseClick
 
         DrawPointCardCommand cmd = new DrawPointCardCommand { playerId = ClientGameState.playerSlot };
         ClientGameState.gateway.SendCommandServerRpc("DrawPointCard", JsonConvert.SerializeObject(cmd));
+
         yield break;
     }
 }

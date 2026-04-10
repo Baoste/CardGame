@@ -404,6 +404,18 @@ namespace Game.Domain
         }
     }
 
+    public class SumPointEvent : PlayerEvent
+    {
+        public int playerPoints;
+        public int opponentPoints;
+        public SumPointEvent(int playerId, bool success, int playerPoints, int opponentPoints) 
+            : base(playerId, success)
+        {
+            this.playerPoints = playerPoints;
+            this.opponentPoints = opponentPoints;
+        }
+    }
+
     /// <summary>
     /// 结束回合事件，成功时 playerId 是玩家ID，opponentId 是对手玩家ID；失败时 playerId 是玩家ID，opponentId 是 -1
     /// </summary>

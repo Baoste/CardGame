@@ -101,7 +101,7 @@ namespace Game.Domain
             }
         }
 
-        public int SumPoint(int playerId)
+        public int SumPoint(int playerId, out int onBoardPointSum)
         {
             int sum = 0;
             IReadOnlyList<int> pointCardIds = players[playerId].pointCardsOnBoard.instanceIds;
@@ -110,6 +110,8 @@ namespace Game.Domain
                 if (instancePointMap.ContainsKey(instanceId))
                     sum += instancePointMap[instanceId];
             }
+            onBoardPointSum = sum;
+
             sum += instancePointMap[players[playerId]._holeCard];
             return sum;
         }

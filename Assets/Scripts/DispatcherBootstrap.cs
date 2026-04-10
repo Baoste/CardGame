@@ -31,6 +31,7 @@ public static class DispatcherBootstrap
         EventDispatcher.Register("ChangeCardState", new ChangeCardStateEventHandler());
         EventDispatcher.Register("PeekTopCard", new PeekTopCardEventHandler());
         EventDispatcher.Register("RevealCardsAndScore", new RevealCardsAndScoreEventHandler());
+        EventDispatcher.Register("SumPoint", new SumPointEventHandler());
         EventDispatcher.Register("EndTurn", new EndTurnEventHandler());
 
         CommandDispatcher.Register("LeaveMatch", new LeaveMatchCmdHandler());
@@ -60,6 +61,7 @@ public static class DispatcherBootstrap
         //CommandDispatcher.Register("ChangeCardState", new ChangeCardStateCmdHandler());
         //CommandDispatcher.Register("PeekTopCard", new PeekTopCardCmdHandler());
         CommandDispatcher.Register("RevealCardsAndScore", new RevealCardsAndScoreCmdHandler());
+        CommandDispatcher.Register("SumPoint", new SumPointCmdHandler());
         CommandDispatcher.Register("EndTurn", new EndTurnCmdHandler());
     }
 }

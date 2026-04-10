@@ -149,6 +149,8 @@ public class StartGameCmdHandler : CommandHandler, ICommandHandler
             ));
         }
 
+        NetEffectFunction.SumPoint(session, ref results);
+
         return results;
     }
 }

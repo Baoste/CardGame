@@ -33,6 +33,7 @@ public class EventProcessFunction : MonoBehaviour
         ProcessDispatcher.Register("EndTurnTest", EndTurnTest);
         ProcessDispatcher.Register("ClearCardsToResolveTest", ClearResolve);
         ProcessDispatcher.Register("RevealTest", RevealTest);
+        ProcessDispatcher.Register("SumPointTest", SumPointTest);
         ProcessDispatcher.Register("EmojiTest", EmojiTest);
     }
 
@@ -535,5 +536,18 @@ public class EventProcessFunction : MonoBehaviour
         SceneViewManager.opponentChipView.DestroyChipsPlaced();
 
         StartCoroutine(SceneViewManager.viewAnimController.PlayGameEndAnim(1f));
+    }
+
+    // parameters[0]: int playerId
+    // parameters[1]: int playerPoints
+    // parameters[2]: int opponentPoints
+    public void SumPointTest(object[] parameters)
+    {
+        int playerId = (int)parameters[0];
+        int playerPoints = (int)parameters[1];
+        int opponentPoints = (int)parameters[2];
+
+        SceneViewManager.mySumPointView.ChangeSum(playerPoints, false);
+        SceneViewManager.opponentSumPointView.ChangeSum(opponentPoints, true);
     }
 }

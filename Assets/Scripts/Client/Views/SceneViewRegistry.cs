@@ -23,6 +23,9 @@ public class SceneViewRegistry : MonoBehaviour
     [SerializeField] private ChipView myChipView;
     [SerializeField] private ChipView opponentChipView;
 
+    [SerializeField] private SumPointView mySumPointView;
+    [SerializeField] private SumPointView opponentSumPointView;
+
     [SerializeField] private EndTurnView endTurnView;
 
     [SerializeField] private ViewAnimController viewAnimController;
@@ -43,6 +46,8 @@ public class SceneViewRegistry : MonoBehaviour
         SceneViewManager.opponentTurnLightView = opponentTurnLightView;
         SceneViewManager.myChipView = myChipView;
         SceneViewManager.opponentChipView = opponentChipView;
+        SceneViewManager.mySumPointView = mySumPointView;
+        SceneViewManager.opponentSumPointView = opponentSumPointView;
         SceneViewManager.endTurnView = endTurnView;
         SceneViewManager.viewAnimController = viewAnimController;
     }

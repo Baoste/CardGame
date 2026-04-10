@@ -6,6 +6,36 @@ namespace Game.Domain
 {
     public static class NetEffectFunction
     {
+        public static void SumPoint(MatchSession session, ref CommandResult results)
+        {
+            int player0Points = session.gameState.SumPoint(0, out int player0OnBoardPoints);
+            int player1Points = session.gameState.SumPoint(1, out int player1OnBoardPoints);
+
+            results.events.Enqueue(CommandHandler.MakeEvent(
+                "SumPoint",
+                new SumPointEvent
+                (
+                    0,
+                    true,
+                    player0Points,
+                    player1OnBoardPoints
+                ),
+                0
+            ));
+
+            results.events.Enqueue(CommandHandler.MakeEvent(
+                "SumPoint",
+                new SumPointEvent
+                (
+                    1,
+                    true,
+                    player1Points,
+                    player0OnBoardPoints
+                ),
+                1
+            ));
+        }
+
         public static void ExecuteEffectOp(int effectOpId, Card skillCard, MatchSession session, int playerId, int instanceId, ref CommandResult results)
         {
             while (effectOpId != -1)
@@ -127,6 +157,8 @@ namespace Game.Domain
                 ),
                 -1
             ));
+
+            SumPoint(session, ref results);
         }
 
         public static bool SpendActionPoint(int playerId, int instanceId, MatchSession session, CommandResult results, int apCount)

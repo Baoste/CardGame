@@ -68,4 +68,12 @@ public static class ClientCommand
         RevealCardsAndScoreCommand cmd = new RevealCardsAndScoreCommand { playerId = ClientGameState.playerSlot };
         ClientGameState.gateway.SendCommandServerRpc("RevealCardsAndScore", JsonConvert.SerializeObject(cmd));
     }
+
+    public static void SumPoint()
+    {
+        SumPointCommand cmd = new SumPointCommand { playerId = ClientGameState.playerSlot };
+        ClientGameState.gateway.SendCommandServerRpc("SumPoint", JsonConvert.SerializeObject(cmd));
+        cmd = new SumPointCommand { playerId = 1 - ClientGameState.playerSlot };
+        ClientGameState.gateway.SendCommandServerRpc("SumPoint", JsonConvert.SerializeObject(cmd));
+    }
 }

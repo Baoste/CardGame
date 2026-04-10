@@ -17,6 +17,8 @@ public static class SceneViewManager
     public static TurnLightView opponentTurnLightView;
     public static ChipView myChipView;
     public static ChipView opponentChipView;
+    public static SumPointView mySumPointView;
+    public static SumPointView opponentSumPointView;
     public static ViewAnimController viewAnimController;
     public static EndTurnView endTurnView;
 

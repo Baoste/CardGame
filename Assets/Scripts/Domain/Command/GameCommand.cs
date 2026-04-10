@@ -186,6 +186,11 @@ namespace Game.Domain
         public int count;
     }
 
+    public class SumPointCommand : ICommand
+    {
+        public int playerId;
+    }
+
     public class RevealCardsAndScoreCommand : ICommand
     {
         public int playerId;
