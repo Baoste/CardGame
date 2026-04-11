@@ -11,7 +11,6 @@ public class StartTurnCmdHandler : CommandHandler, ICommandHandler
         // TODO: 服务器端需要做什么
         session.gameState.Turn++;
         session.gameState.CurrentPlayerId = payload.playerId;
-        session.gameState.players[payload.playerId].actionPoint = 2;
 
         int opponentId = 1 - payload.playerId;
         session.ctx.caster = payload.playerId;
@@ -32,16 +31,18 @@ public class StartTurnCmdHandler : CommandHandler, ICommandHandler
             -1
         ));
 
-        //results.events.Enqueue(MakeEvent(
-        //    "AddActionPoint",
-        //    new AddActionPointEvent    // need change
-        //    (
-        //        payload.playerId,
-        //        true,
-        //        2
-        //    ),
-        //    -1
-        //));
+        session.gameState.players[payload.playerId].actionPoint = 1;
+        results.events.Enqueue(MakeEvent(
+            "AddActionPoint",
+            new AddActionPointEvent    // need change
+            (
+                payload.playerId,
+                true,
+                1,
+                true
+            ),
+            -1
+        ));
 
         results.events.Enqueue(MakeEvent(
             "GetGameState",

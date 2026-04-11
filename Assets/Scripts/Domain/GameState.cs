@@ -101,16 +101,34 @@ namespace Game.Domain
             }
         }
 
-        public int SumPoint(int playerId, out int onBoardPointSum)
+        public int GetHoleCardPoint(int playerId)
+        {
+            int holeCardId = players[playerId]._holeCard;
+            return instancePointMap[holeCardId];
+        }
+
+        public int SumPoint(int playerId, out int onBoardPointSum, out bool hadHiddenCard)
         {
             int sum = 0;
+            onBoardPointSum = 0;
+            hadHiddenCard = false;
+
             IReadOnlyList<int> pointCardIds = players[playerId].pointCardsOnBoard.instanceIds;
             foreach (int instanceId in pointCardIds)
             {
                 if (instancePointMap.ContainsKey(instanceId))
+                {
                     sum += instancePointMap[instanceId];
+                    if (instanceStateMap[instanceId] != CardVisualState.Hidden)
+                    {
+                        onBoardPointSum += instancePointMap[instanceId];
+                    }
+                    else
+                    {
+                        hadHiddenCard = true;
+                    }
+                }
             }
-            onBoardPointSum = sum;
 
             sum += instancePointMap[players[playerId]._holeCard];
             return sum;

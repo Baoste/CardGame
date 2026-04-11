@@ -16,6 +16,8 @@ public class TestSystem : MonoBehaviour
     private GameObject instance1;
     private GameObject instance2;
 
+    [SerializeField] private EventProcessFunction eventProcessFunction;
+
     private void Update()
     {
         // 模拟开始游戏，生成筹码
@@ -35,9 +37,9 @@ public class TestSystem : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Space))
         {
             //ClientCommand.DrawSkillCard();
-            instance1 = CardViewCreator.Instance.CreateCardInstance(6219298, 9999);
+            instance1 = CardViewCreator.Instance.CreateCardInstance(1001, 9999);
             StartCoroutine(handView.AddCard(instance1));
-            instance2 = CardViewCreator.Instance.CreateCardInstance(6219298, 9999);
+            instance2 = CardViewCreator.Instance.CreateCardInstance(1001, 9999);
             StartCoroutine(ophandView.AddCard(instance2));
         }
 
@@ -115,7 +117,7 @@ public class TestSystem : MonoBehaviour
         {
             GameObject instance = CardViewCreator.Instance.CreateCardInstance(2, 99);
             StartCoroutine(SceneViewManager.boardView.AddCard(instance, ClientGameState.playerSlot, CardVisualState.Hole));
-            instance = CardViewCreator.Instance.CreateCardInstance(2, 99);
+            instance = CardViewCreator.Instance.CreateCardInstance(3, 99);
             StartCoroutine(SceneViewManager.boardView.AddCard(instance, 99, CardVisualState.Hole));
         }
 
@@ -127,8 +129,9 @@ public class TestSystem : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.J))
         {
-            EmojiCommand cmd = new EmojiCommand { playerId = ClientGameState.playerSlot, emojiId = 1 };
-            ClientGameState.gateway.SendCommandServerRpc("Emoji", JsonConvert.SerializeObject(cmd));
+            eventProcessFunction.RevealTest(new object[] { 1 - ClientGameState.playerSlot, 1, 2, 3});
+            SceneViewManager.myRevealButtonView.ShowRandom();
+            StartCoroutine(SceneViewManager.myRevealButtonView.RandomAnimation(true));
         }
 
         // 测试回合灯

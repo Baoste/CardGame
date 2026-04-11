@@ -8,8 +8,8 @@ namespace Game.Domain
     {
         public static void SumPoint(MatchSession session, ref CommandResult results)
         {
-            int player0Points = session.gameState.SumPoint(0, out int player0OnBoardPoints);
-            int player1Points = session.gameState.SumPoint(1, out int player1OnBoardPoints);
+            session.gameState.SumPoint(0, out int player0OnBoardPoints, out bool player0HasHiddenCard);
+            session.gameState.SumPoint(1, out int player1OnBoardPoints, out bool player1HasHiddenCard);
 
             results.events.Enqueue(CommandHandler.MakeEvent(
                 "SumPoint",
@@ -17,7 +17,9 @@ namespace Game.Domain
                 (
                     0,
                     true,
-                    player0Points,
+                    player0OnBoardPoints,
+                    session.gameState.GetHoleCardPoint(0),
+                    player0HasHiddenCard,
                     player1OnBoardPoints
                 ),
                 0
@@ -29,7 +31,9 @@ namespace Game.Domain
                 (
                     1,
                     true,
-                    player1Points,
+                    player1OnBoardPoints,
+                    session.gameState.GetHoleCardPoint(1),
+                    player1HasHiddenCard,
                     player0OnBoardPoints
                 ),
                 1

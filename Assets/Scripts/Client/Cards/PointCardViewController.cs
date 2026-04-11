@@ -19,6 +19,17 @@ public class PointCardViewController : MonoBehaviour
         mpb = new MaterialPropertyBlock();
     }
 
+    public void ChangeCardTexture_None(int point)
+    {
+        pointText.text = point.ToString();
+        matRenderer.materials = CardViewCreator.Instance.pointCardStateMatMap.Get(CardVisualState.None);
+
+        Texture2D tex = CardViewCreator.Instance.pointCardTexs[point - 1];
+        matRenderer.GetPropertyBlock(mpb);
+        mpb.SetTexture("_MainMap", tex);
+        matRenderer.SetPropertyBlock(mpb);
+    }
+
     public void SetCardTexture_None(int point)
     {
         pointText.text = point.ToString();

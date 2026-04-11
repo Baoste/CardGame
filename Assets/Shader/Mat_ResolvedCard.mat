@@ -20,7 +20,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Mat_PBR_Holographic
+  m_Name: Mat_ResolvedCard
   m_Shader: {fileID: -6465566751694194690, guid: b20ee83e02cc46a42a8bff8d0859a7b0,
     type: 3}
   m_Parent: {fileID: 0}

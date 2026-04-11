@@ -204,10 +204,12 @@ namespace Game.Domain
     public class AddActionPointEvent : PlayerEvent
     {
         public int apCount;
-        public AddActionPointEvent(int playerId, bool success, int apCount)
+        public bool reset;  // 是否重置行动点为 apCount，false 表示在原有基础上增加 apCount
+        public AddActionPointEvent(int playerId, bool success, int apCount, bool reset)
             : base(playerId, success)
         {
             this.apCount = apCount;
+            this.reset = reset;
         }
     }
 
@@ -364,11 +366,15 @@ namespace Game.Domain
     {
         public int winnerId;
         public int currentBet;
-        public RevealCardsAndScoreEvent(int playerId, bool success, int winnerId, int currentBet)
+        public int playerPoints;
+        public int opponentPoints;
+        public RevealCardsAndScoreEvent(int playerId, bool success, int winnerId, int currentBet, int playerPoints, int opponentPoints)
             : base(playerId, success)
         {
             this.winnerId = winnerId;
             this.currentBet = currentBet;
+            this.playerPoints = playerPoints;
+            this.opponentPoints = opponentPoints;
         }
     }
 
@@ -410,13 +416,18 @@ namespace Game.Domain
 
     public class SumPointEvent : PlayerEvent
     {
-        public int playerPoints;
-        public int opponentPoints;
-        public SumPointEvent(int playerId, bool success, int playerPoints, int opponentPoints) 
+        public int playerPointsOnBoard;
+        public int playerHoleCardPoint;
+        public bool hasHiddenCard;
+
+        public int opponentPointsOnBoard;
+        public SumPointEvent(int playerId, bool success, int playerPointsOnBoard, int playerHoleCardPoint, bool hasHiddenCard, int opponentPointsOnBoard) 
             : base(playerId, success)
         {
-            this.playerPoints = playerPoints;
-            this.opponentPoints = opponentPoints;
+            this.playerPointsOnBoard = playerPointsOnBoard;
+            this.playerHoleCardPoint = playerHoleCardPoint;
+            this.hasHiddenCard = hasHiddenCard;
+            this.opponentPointsOnBoard = opponentPointsOnBoard;
         }
     }
 

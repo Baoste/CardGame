@@ -12,8 +12,8 @@ public class SumPointCmdHandler : CommandHandler, ICommandHandler
         var payload = JsonConvert.DeserializeObject<SumPointCommand>(cmd.jsonData);
 
         // TODO: 服务器端需要做什么
-        int playerPoints = session.gameState.SumPoint(payload.playerId, out int _);
-        int opponentPoints = session.gameState.SumPoint(1 - payload.playerId, out int opponentOnBoardPoints);
+        int playerPoints = session.gameState.SumPoint(payload.playerId, out int playerOnBoardPoints, out bool hasHiddenCard);
+        int opponentPoints = session.gameState.SumPoint(1 - payload.playerId, out int opponentOnBoardPoints, out bool _);
 
         // return
         CommandResult results = new CommandResult();
@@ -23,7 +23,9 @@ public class SumPointCmdHandler : CommandHandler, ICommandHandler
             (
                 payload.playerId,
                 true,
-                playerPoints,
+                playerOnBoardPoints,
+                session.gameState.GetHoleCardPoint(payload.playerId),
+                hasHiddenCard,
                 opponentOnBoardPoints
             ),
             payload.playerId

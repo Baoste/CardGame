@@ -20,7 +20,7 @@ public class RoleView : MonoBehaviour
         }
     }
 
-    public void ShowWin(int winnerId)
+    public IEnumerator ShowWin(int winnerId)
     {
         if (winnerId == ClientGameState.playerSlot)
         {
@@ -30,6 +30,6 @@ public class RoleView : MonoBehaviour
         {
             roleTMP.text = "LOSE!!!";
         }
-        StartCoroutine(SceneViewManager.boardView.RemoveOneSideCards(1 - winnerId));
+        yield break;
     }
 }

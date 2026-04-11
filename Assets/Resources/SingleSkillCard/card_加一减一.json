@@ -3,9 +3,9 @@
     "id": 403141,
     "name": "加一减一",
     "description": "弃置牌面上的一张点数牌，牌堆抽一张点数牌，放置在任意一方",
-    "point": 0,
+    "point": 2,
     "type": 1,
-    "count": 5,
+    "count": 2,
     "effects": [
       {
         "type": 3,

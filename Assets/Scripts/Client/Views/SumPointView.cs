@@ -7,9 +7,9 @@ public class SumPointView : MonoBehaviour
 {
     public TextMeshPro sumPointTMP;
 
-    public void ChangeSum(int sum, bool isOpponent)
+    public void ChangeSum(int sum, bool isShown)
     {
-        string text = isOpponent ? sum.ToString() + " + ?" : sum.ToString();
+        string text = isShown ? sum.ToString() : sum.ToString() + " + ?";
         sumPointTMP.text = text;
     }
 }

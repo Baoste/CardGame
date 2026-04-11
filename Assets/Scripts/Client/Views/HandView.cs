@@ -62,7 +62,10 @@ public class HandView : MonoBehaviour, IViewClear
 
     public void ReturnCard(GameObject instance)
     {
-        skillCardInstances.Add(instance);
+        if (!skillCardInstances.Contains(instance))
+        {
+            skillCardInstances.Add(instance);
+        }
     }
 
     public IEnumerator RemoveCard(GameObject instance)

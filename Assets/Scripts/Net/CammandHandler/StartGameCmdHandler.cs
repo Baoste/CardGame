@@ -16,24 +16,22 @@ public class StartGameCmdHandler : CommandHandler, ICommandHandler
         List<int> pointCardInstanceIds = new List<int>();
         List<int> skillCardInstanceIds = new List<int>();
         // instance id °ó¶¨µ½ Card id
-        int instanceIdCounter = 0;
         foreach (int key in CardDatabase.GetKeys())
         {
             for (int i = 0; i < CardDatabase.Get(key).count; i++)
             {
-                session.instanceToCardId[instanceIdCounter] = key;
+                int instanceId = session.gameState.rng.Next(100000, int.MaxValue);
+                session.instanceToCardId[instanceId] = key;
                 switch (CardDatabase.Get(key).type)
                 {
                     case CardType.Point:
-                        pointCardInstanceIds.Add(instanceIdCounter);
+                        pointCardInstanceIds.Add(instanceId);
                         break;
                     case CardType.Skill:
-                        skillCardInstanceIds.Add(instanceIdCounter);
+                        skillCardInstanceIds.Add(instanceId);
                         break;
                 }
-                instanceIdCounter++;
             }
-
         }
 
         StaticFunction.Shuffle(pointCardInstanceIds, session.gameState.rng);

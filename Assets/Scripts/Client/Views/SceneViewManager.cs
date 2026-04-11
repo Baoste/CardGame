@@ -1,5 +1,6 @@
 
 using System.Collections.Generic;
+using UnityEngine;
 
 public static class SceneViewManager
 {
@@ -19,6 +20,8 @@ public static class SceneViewManager
     public static ChipView opponentChipView;
     public static SumPointView mySumPointView;
     public static SumPointView opponentSumPointView;
+    public static ActionPointView myActionPointView;
+    public static ActionPointView opponentActionPointView;
     public static ViewAnimController viewAnimController;
     public static EndTurnView endTurnView;
 

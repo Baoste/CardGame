@@ -101,6 +101,14 @@ public class BoardView : MonoBehaviour, IViewClear
         instance.GetComponent<PointCardShake>().CardShake();
     }
 
+    public IEnumerator HoleCardFlip()
+    {
+        Sequence seq = DOTween.Sequence();
+        
+        seq.Append(opponentCards[0].transform.DORotate(opponentEuler + new Vector3(180f, 0, 0), 0.5f).SetEase(Ease.OutBack));
+        yield return seq.WaitForCompletion();
+    }
+
 
     public IEnumerator CardReady(bool isOpponent, GameObject instance)
     {

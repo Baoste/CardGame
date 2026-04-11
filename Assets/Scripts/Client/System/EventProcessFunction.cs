@@ -157,16 +157,24 @@ public class EventProcessFunction : MonoBehaviour
 
     // parameters[0]: int playerId
     // parameters[1]: int apCount
+    // parameters[2]: bool reset
     public void AddActionPointTest(object[] parameters)
     {
         int playerId = (int)parameters[0];
         int apCount = (int)parameters[1];
+        bool reset = (bool)parameters[2];
 
-        //bool isOpponent = playerId != ClientGameState.playerSlot;
-        //if (isOpponent)
-        //    SceneViewManager.opponentActionPointView.AddPoint();
-        //else
-        //    SceneViewManager.myActionPointView.AddPoint();
+        bool isOpponent = playerId != ClientGameState.playerSlot;
+        if (isOpponent)
+        {
+            if (reset) SceneViewManager.opponentActionPointView.ResetPoint();
+            SceneViewManager.opponentActionPointView.AddPoint(apCount);
+        }
+        else
+        {
+            if (reset) SceneViewManager.myActionPointView.ResetPoint();
+            SceneViewManager.myActionPointView.AddPoint(apCount);
+        }
     }
 
     // parameters[0]: int playerId
@@ -176,11 +184,11 @@ public class EventProcessFunction : MonoBehaviour
         int playerId = (int)parameters[0];
         int apCount = (int)parameters[1];
 
-        //bool isOpponent = playerId != ClientGameState.playerSlot;
-        //if (isOpponent)
-        //    SceneViewManager.opponentActionPointView.AddPoint();
-        //else
-        //    SceneViewManager.myActionPointView.AddPoint();
+        bool isOpponent = playerId != ClientGameState.playerSlot;
+        if (isOpponent)
+            SceneViewManager.opponentActionPointView.SpendPoint(apCount);
+        else
+            SceneViewManager.myActionPointView.SpendPoint(apCount);
     }
 
 
@@ -272,14 +280,13 @@ public class EventProcessFunction : MonoBehaviour
     }
 
     // parameters[0]: int instanceId
-    // parameters[1]: int pointChange
+    // parameters[1]: int targeValue
     public void ModifyPoint(object[] parameters)
     {
         int instanceId = (int)parameters[0];
-        int pointChange = (int)parameters[1];
+        int targeValue = (int)parameters[1];
 
-        int point = int.Parse(instanceMap[instanceId].GetComponentInChildren<TextMeshPro>().text) + pointChange;
-        instanceMap[instanceId].GetComponentInChildren<TextMeshPro>().text = point.ToString();
+        instanceMap[instanceId].GetComponentInChildren<PointCardViewController>().ChangeCardTexture_None(targeValue);
     }
 
 
@@ -481,20 +488,25 @@ public class EventProcessFunction : MonoBehaviour
             StartCoroutine(SceneViewManager.resolveZoneView.ClearCards());
     }
 
-    // parameters[0]: int turn
-    // parameters[1]: bool reveal
+    // parameters[0]: int playerId
+    // parameters[1]: int turn
+    // parameters[2]: bool reveal
     public void EndTurnTest(object[] parameters)
     {
-        int turn = (int)parameters[0];
-        bool reveal = (bool)parameters[1];
+        int playerId = (int)parameters[0];
+        int turn = (int)parameters[1];
+        bool reveal = (bool)parameters[2];
 
         // ¡¡µ∆
-        if (ClientGameState.Instance.dealerId == ClientGameState.playerSlot)
+        if (ClientGameState.Instance.dealerId == playerId)
         {
             int myTurn = (turn + 1) / 2;
             int opTurn = turn / 2 + 1;
             SceneViewManager.myTurnLightView.SetLight(myTurn);
             SceneViewManager.opponentTurnLightView.SetLight(opTurn);
+
+            StartCoroutine(SceneViewManager.myRevealButtonView.RandomAnimation(reveal));
+            StartCoroutine(SceneViewManager.opponentRevealButtonView.RandomAnimation(reveal));
         }
         else
         {
@@ -503,22 +515,36 @@ public class EventProcessFunction : MonoBehaviour
             SceneViewManager.myTurnLightView.SetLight(myTurn);
             SceneViewManager.opponentTurnLightView.SetLight(opTurn);
         }
-
-        if (ClientGameState.Instance.dealerId == ClientGameState.playerSlot)
-            StartCoroutine(SceneViewManager.myRevealButtonView.RandomAnimation(reveal));
     }
 
     // parameters[0]: int winnerId
     // parameters[1]: int currentBet
+    // parameters[2]: int playerPointsOnBoard
+    // parameters[3]: int opponentPoints
     public void RevealTest(object[] parameters)
     {
         int winnerId = (int)parameters[0];
         int currentBet = (int)parameters[1];
+        int playerPoints = (int)parameters[2];
+        int opponentPoints = (int)parameters[3];
 
-        SceneViewManager.roleView.ShowWin(winnerId);
+        StartCoroutine(_Reveal(winnerId, currentBet, playerPoints, opponentPoints));
+    }
+
+    private IEnumerator _Reveal(int winnerId, int currentBet, int playerPoints, int opponentPoints)
+    {
+        bool isOpponent = winnerId != ClientGameState.playerSlot;
+
         SceneViewManager.endTurnView.btnLight.intensity = 0;
 
-        bool isOpponent = winnerId != ClientGameState.playerSlot;
+        yield return SceneViewManager.boardView.HoleCardFlip();
+        SceneViewManager.mySumPointView.ChangeSum(playerPoints, true);
+        SceneViewManager.opponentSumPointView.ChangeSum(opponentPoints, true);
+        yield return new WaitForSecondsRealtime(1f);
+        yield return SceneViewManager.boardView.RemoveOneSideCards(1 - winnerId);
+        yield return SceneViewManager.roleView.ShowWin(winnerId);
+
+        // chip
         if (isOpponent)
         {
             // ∂‡”‡µƒ≥Ô¬ÎÕÀªÿ≥Ô¬Î≈Ã
@@ -534,24 +560,28 @@ public class EventProcessFunction : MonoBehaviour
             // ªÒµ√≥Ô¬Î
             SceneViewManager.myChipView.GenerateChips(currentBet);
         }
-
         // œ˙ªŸ≥Ô¬Î
         SceneViewManager.myChipView.DestroyChipsPlaced();
         SceneViewManager.opponentChipView.DestroyChipsPlaced();
 
-        StartCoroutine(SceneViewManager.viewAnimController.PlayGameEndAnim(1f));
+        yield return SceneViewManager.viewAnimController.PlayGameEndAnim(1f);
+
     }
 
     // parameters[0]: int playerId
-    // parameters[1]: int playerPoints
-    // parameters[2]: int opponentPoints
+    // parameters[1]: int playerPointsOnBoard
+    // parameters[2]: int playerHoleCardPoint
+    // parameters[3]: bool hasHiddenCard
+    // parameters[4]: int opponentPointsOnBoard
     public void SumPointTest(object[] parameters)
     {
         int playerId = (int)parameters[0];
-        int playerPoints = (int)parameters[1];
-        int opponentPoints = (int)parameters[2];
+        int playerPointsOnBoard = (int)parameters[1];
+        int playerHoleCardPoint = (int)parameters[2];
+        bool hasHiddenCard = (bool)parameters[3];
+        int opponentPointsOnBoard = (int)parameters[4];
 
-        SceneViewManager.mySumPointView.ChangeSum(playerPoints, false);
-        SceneViewManager.opponentSumPointView.ChangeSum(opponentPoints, true);
+        SceneViewManager.mySumPointView.ChangeSum(playerPointsOnBoard + playerHoleCardPoint, !hasHiddenCard);
+        SceneViewManager.opponentSumPointView.ChangeSum(opponentPointsOnBoard, false);
     }
 }

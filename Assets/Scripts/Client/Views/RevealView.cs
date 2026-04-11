@@ -8,6 +8,7 @@ public class RevealView : MonoBehaviour, IViewClear
 {
     [SerializeField] private GameObject revealButton;
     [SerializeField] private GameObject revealRandom;
+    [SerializeField] private GameObject randomRoulette;
 
     // private Vector3 BtnHidePosition;
     private Vector3 BtnShowPosition;
@@ -35,6 +36,7 @@ public class RevealView : MonoBehaviour, IViewClear
         revealRandom.transform.localPosition = RdmHidePosition;
         revealButton.GetComponent<RevealButton>().enabled = false;
         revealButton.GetComponent<Collider>().enabled = false;
+        isRandomEnabled = false;
     }
 
     public void ShowButton(bool canClick)
@@ -58,10 +60,21 @@ public class RevealView : MonoBehaviour, IViewClear
     {
         if (!isRandomEnabled) yield break;
 
+        Vector3 rot = new Vector3(0, 360 * 3, 0);
+        if (!reveal) rot += new Vector3(0, 90, 0);
+
         // TODO: 播放随机选择的dongh
+        randomRoulette.SetActive(true);
+        Quaternion quaternion = randomRoulette.transform.rotation;
+
         Sequence seq = DOTween.Sequence();
-        // seq.Append();
+        seq.Append(randomRoulette.transform.DORotate(rot, 1.5f, RotateMode.LocalAxisAdd).SetEase(Ease.OutBack));
+
         yield return seq.WaitForCompletion();
+        yield return new WaitForSecondsRealtime(1.5f);
+
+        randomRoulette.transform.rotation = quaternion;
+        randomRoulette.SetActive(false);
 
         if (reveal)
         {

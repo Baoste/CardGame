@@ -1,11 +1,11 @@
 {
   "card": {
-    "id": 1102,
+    "id": 1003,
     "name": "天亮了",
     "description": "查看牌堆顶两张牌的点数",
     "point": 0,
     "type": 1,
-    "count": 5,
+    "count": 2,
     "effects": [
       {
         "type": 8,

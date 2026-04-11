@@ -14,8 +14,8 @@ public class RevealCardsAndScoreCmdHandler : CommandHandler, ICommandHandler
         // TODO: 服务器端需要做什么
         int winnerId;
 
-        int playerPoints = session.gameState.SumPoint(payload.playerId, out int _);
-        int opponentPoints = session.gameState.SumPoint(1 - payload.playerId, out int _);
+        int playerPoints = session.gameState.SumPoint(payload.playerId, out int _, out bool _);
+        int opponentPoints = session.gameState.SumPoint(1 - payload.playerId, out int _, out bool _);
         bool playerBust = playerPoints > 21;
         bool opponentBust = opponentPoints > 21;
 
@@ -54,7 +54,9 @@ public class RevealCardsAndScoreCmdHandler : CommandHandler, ICommandHandler
                 payload.playerId,
                 true,
                 winnerId,
-                currentBet
+                currentBet,
+                playerPoints,
+                opponentPoints
             ),
             -1
         ));

@@ -10,7 +10,7 @@ public class EndTurnEventHandler : IEventProcess, IEventHandler
     {
         var payload = JsonConvert.DeserializeObject<EndTurnEvent>(ev.jsonData); // need change
         // need change, 需要把参数在这里传进去
-        ProcessQueueManager.Instance.Enqueue(Process, new object[] { payload.turn, payload.reveal }, 0.5f);
+        ProcessQueueManager.Instance.Enqueue(Process, new object[] { payload.playerId, payload.turn, payload.reveal }, 0.5f);
 
         ClientEffectContext.Instance.ClearContext();
         ClientGameState.Instance.CurrentPlayerId = payload.opponentId;

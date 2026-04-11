@@ -3,9 +3,9 @@
     "id": 51653,
     "name": "比大小",
     "description": "抽一张牌，如果大于等于5，则抽牌，否则删牌",
-    "point": 0,
+    "point": 1,
     "type": 1,
-    "count": 5,
+    "count": 2,
     "effects": [
       {
         "type": 2,

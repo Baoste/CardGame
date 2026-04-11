@@ -171,11 +171,15 @@ namespace Game.Domain
         private static void ModifyPoint(int playerId, EffectOp op, MatchSession session, CommandResult results, List<int> selectedTargetIds)
         {
             int pointChange = op.value.Evaluate(session.gameState, session.ctx);
+            int targeValue = -1;
             for (int i = 0; i < selectedTargetIds.Count; i++)
             {
-                bool success = session.gameState.instancePointMap.TryGetValue(1, out int value);
+                bool success = session.gameState.instancePointMap.TryGetValue(selectedTargetIds[i], out int value);
                 if (success)
-                    session.gameState.instancePointMap[selectedTargetIds[i]] = value + pointChange;
+                {
+                    targeValue = Math.Clamp(value + pointChange, 1, 10);
+                    session.gameState.instancePointMap[selectedTargetIds[i]] = targeValue;
+                }
 
                 // return
                 results.events.Enqueue(CommandHandler.MakeEvent(
@@ -185,7 +189,7 @@ namespace Game.Domain
                         playerId,
                         success,
                         selectedTargetIds[i],
-                        pointChange
+                        targeValue
                     ),
                     -1
                 ));
@@ -266,7 +270,8 @@ namespace Game.Domain
                 (
                     playerId,
                     true,
-                    apCount
+                    apCount,
+                    false
                 ),
                 -1
             ));
