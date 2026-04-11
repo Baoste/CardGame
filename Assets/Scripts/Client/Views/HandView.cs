@@ -70,7 +70,12 @@ public class HandView : MonoBehaviour, IViewClear
 
     public IEnumerator RemoveCard(GameObject instance)
     {
-        if (skillCardInstances.Remove(instance))
+        SkillCardController sc = instance.GetComponent<SkillCardController>();
+        if (sc.stateMachine.currentState == sc.inHandState)
+        {
+            StartCoroutine(RemoveCardInstant(instance));
+        }
+        else if (skillCardInstances.Remove(instance))
         {
             yield return UpdateCardPositions(0.15f);
         }
