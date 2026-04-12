@@ -1,5 +1,21 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!114 &-5820600313286143072
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 31b780e492cc3064082aeb76c8e6f088, type: 3}
+  m_Name: SharpenPosterizeFeature
+  m_EditorClassIdentifier: 
+  m_Active: 1
+  settings:
+    material: {fileID: 2100000, guid: 9c5094c370e49ac43a66a2f5a95292f2, type: 2}
+    passEvent: 600
 --- !u!114 &-3349183582968438080
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -16,37 +32,6 @@ MonoBehaviour:
   downsampleDepthShader: {fileID: 4800000, guid: cffeaeec0396a2c4dad475266cc8dfeb,
     type: 3}
   volumetricFogShader: {fileID: 4800000, guid: 08f816187f9af0244a95556ee0cab83f, type: 3}
---- !u!114 &-2844421258491889345
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: eab25731ba89e3340a99c5edc82e476c, type: 3}
-  m_Name: PixelPostProcessFeature
-  m_EditorClassIdentifier: 
-  m_Active: 0
-  settings: {blitMaterial: {fileID: 2100000, guid: 1aee61cb7a7c93e47b94e75f86a092ec,
-      type: 2}, passEvent: 600}
---- !u!114 &-2427978327660320497
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9ed7232d196b72541996d61a93907c6e, type: 3}
-  m_Name: BrightnessPostProcessing
-  m_EditorClassIdentifier: 
-  m_Active: 0
-  settings:
-    blitMaterial: {fileID: 2100000, guid: cea7bae995270784b9007425bdacda3d, type: 2}
-    passEvent: 600
 --- !u!114 &-1878332245247344467
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -82,6 +67,22 @@ MonoBehaviour:
   - {fileID: 2800000, guid: 3302065f671a8450b82c9ddf07426f3a, type: 3}
   - {fileID: 2800000, guid: 56a77a3e8d64f47b6afe9e3c95cb57d5, type: 3}
   m_Shader: {fileID: 4800000, guid: 0849e84e3d62649e8882e9d6f056a017, type: 3}
+--- !u!114 &-533100069448373991
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ae0021bd820c363419644365a21f8206, type: 3}
+  m_Name: PixelPostProcessing
+  m_EditorClassIdentifier: 
+  m_Active: 1
+  settings:
+    blitMaterial: {fileID: 2100000, guid: 0fe674733bf41e744aa254071ff97f02, type: 2}
+    passEvent: 600
 --- !u!114 &11400000
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -100,9 +101,10 @@ MonoBehaviour:
     hdrDebugViewPS: {fileID: 4800000, guid: 573620ae32aec764abd4d728906d2587, type: 3}
   m_RendererFeatures:
   - {fileID: -1878332245247344467}
-  - {fileID: -2427978327660320497}
   - {fileID: -3349183582968438080}
-  m_RendererFeatureMap: adc0de57c6d2eee50fa9753193164edec0a298a9464f85d1
+  - {fileID: -5820600313286143072}
+  - {fileID: -533100069448373991}
+  m_RendererFeatureMap: adc0de57c6d2eee5c0a298a9464f85d1a0530d9bda1239af1929cbb24f0c9af8
   m_UseNativeRenderPass: 0
   postProcessData: {fileID: 11400000, guid: 41439944d30ece34e96484bdb6645b55, type: 2}
   xrSystemData: {fileID: 11400000, guid: 60e1133243b97e347b653163a8c01b64, type: 2}

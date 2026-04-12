@@ -10,50 +10,67 @@ public class QuickStartButtons : MonoBehaviour
     private string ClientIP = "49.232.222.222";
     [HideInInspector] public string matchSeed = "12345";
 
+    const int w = 200;
+    const int h = 40;
+
+    private Rect ScaleRect(float x, float y, float w, float h)
+    {
+        float baseW = 1980f;
+        float baseH = 1080f;
+
+        float scaleX = Screen.width / baseW;
+        float scaleY = Screen.height / baseH;
+
+        return new Rect(
+            x * scaleX,
+            y * scaleY,
+            w * scaleX,
+            h * scaleY
+        );
+    }
+
     private void OnGUI()
     {
         if (nm == null) return;
 
-        const int w = 200;
-        const int h = 40;
 
-        if (GUI.Button(new Rect(10, 10, w, h), "Start Server"))
+        if (GUI.Button(ScaleRect(100, 10, w, h), "Start Server"))
             nm.ServerManager.StartConnection();
 
-        if (GUI.Button(new Rect(10, 60, w, h), "Start Client"))
+        if (GUI.Button(ScaleRect(100, 60, w, h), "Start Client"))
         {
             nm.TransportManager.Transport.SetClientAddress(ClientIP);
             nm.ClientManager.StartConnection();
         }
 
-        if (GUI.Button(new Rect(10, 110, w, h), "Stop All"))
+        if (GUI.Button(ScaleRect(100, 110, w, h), "Stop All"))
         {
             nm.ClientManager.StopConnection();
             nm.ServerManager.StopConnection(true);
         }
 
-        matchId = GUI.TextField(new Rect(10, 160, w, h), matchId);
-        matchSeed = GUI.TextField(new Rect(10, 210, w, h), matchSeed);
-        ClientIP = GUI.TextField(new Rect(10, 260, w, h), ClientIP);
+        matchId = GUI.TextField(ScaleRect(100, 160, w, h), matchId);
+        matchSeed = GUI.TextField(ScaleRect(100, 210, w, h), matchSeed);
+        ClientIP = GUI.TextField(ScaleRect(100, 260, w, h), ClientIP);
 
         // These buttons are for testing the ClientCommand methods. They will not work without a server and client connection.
-        if (GUI.Button(new Rect(1700, 10, w, h), "Create / Join Match"))
+        if (GUI.Button(ScaleRect(1700, 10, w, h), "Create / Join Match"))
         {
             ClientCommand.CreateMatch(matchId);
             GetCardDeckCommand cmd = new GetCardDeckCommand { playerId = -1 };
             ClientGameState.gateway.SendCommandServerRpc("GetCardDeck", JsonConvert.SerializeObject(cmd));
         }
 
-        //if (GUI.Button(new Rect(1700, 60, w, h), "Join Match"))
+        //if (GUI.Button(ScaleRect(1700, 60, w, h), "Join Match"))
         //    ClientCommand.JoinMatch(matchId);
 
-        if (GUI.Button(new Rect(1700, 60, w, h), "Leave Match"))
+        if (GUI.Button(ScaleRect(1700, 60, w, h), "Leave Match"))
             ClientCommand.LeaveMatch();
 
-        if (GUI.Button(new Rect(1700, 160, w, h), "Chat"))
+        if (GUI.Button(ScaleRect(1700, 160, w, h), "Chat"))
             ClientCommand.Chat("Hello");
 
-        if (GUI.Button(new Rect(1700, 210, w, h), "Start Match"))
+        if (GUI.Button(ScaleRect(1700, 210, w, h), "Start Match"))
         {
             int seed = int.Parse(matchSeed);
             ClientCommand.StartMatch(seed);
