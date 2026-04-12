@@ -316,7 +316,7 @@ MonoBehaviour:
   maxPitch: 3
   stiffness: 17
   damping: 6
-  deadZone: 0.6
+  deadZone: 0.5
 --- !u!1 &69347331
 GameObject:
   m_ObjectHideFlags: 0
@@ -6337,6 +6337,7 @@ GameObject:
   - component: {fileID: 1027894503}
   - component: {fileID: 1027894502}
   - component: {fileID: 1027894504}
+  - component: {fileID: 1027894505}
   m_Layer: 0
   m_Name: GameBootstrap
   m_TagString: Untagged
@@ -6387,6 +6388,21 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   nm: {fileID: 680630107}
   matchSeed: 12345
+--- !u!114 &1027894505
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1027894501}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0382b8d3f2122d94996f8ec4de88ef78, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  mat: {fileID: 2100000, guid: 9c5094c370e49ac43a66a2f5a95292f2, type: 2}
+  noiseSpeed: 0.26
+  noiseRange: 2.85
 --- !u!1 &1053037298
 GameObject:
   m_ObjectHideFlags: 0
