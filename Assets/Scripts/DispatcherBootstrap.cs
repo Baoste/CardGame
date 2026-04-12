@@ -4,6 +4,7 @@ public static class DispatcherBootstrap
 {
     public static void Init()
     {
+        EventDispatcher.Register("GetCardDeck", new GetCardDeckEventHandler());
         EventDispatcher.Register("JoinOrCreateMatch", new JoinOrCreateMatchEventHandler());
         EventDispatcher.Register("StartMatch", new StartMatchEventHandler());
         EventDispatcher.Register("StartGame", new StartGameEventHandler());
@@ -34,6 +35,7 @@ public static class DispatcherBootstrap
         EventDispatcher.Register("SumPoint", new SumPointEventHandler());
         EventDispatcher.Register("EndTurn", new EndTurnEventHandler());
 
+        CommandDispatcher.Register("GetCardDeck", new GetCardDeckCmdHandler());
         CommandDispatcher.Register("LeaveMatch", new LeaveMatchCmdHandler());
         CommandDispatcher.Register("JoinOrCreateMatch", new JoinOrCreateMatchCmdHandler());
         CommandDispatcher.Register("StartMatch", new StartMatchCmdHandler());

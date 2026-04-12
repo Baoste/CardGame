@@ -77,9 +77,10 @@ public class TestSystem : MonoBehaviour
         {
             if (card <= 1)
             {
-                GameObject instance = CardViewCreator.Instance.CreateCardInstance(card++, 98);
-                StartCoroutine(boardView.AddCard(instance, ClientGameState.playerSlot, CardVisualState.Hidden));
-                objs.Push(instance);
+                //GameObject instance = CardViewCreator.Instance.CreateCardInstance(card++, 98);
+                //StartCoroutine(boardView.AddCard(instance, ClientGameState.playerSlot, CardVisualState.Hidden));
+                //objs.Push(instance);
+                card++;
             }
             else if (card <= 5)
             {

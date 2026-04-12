@@ -21,7 +21,7 @@ public static class CardJsonUtility
         Debug.Log("JSON saved to: " + filePath);
     }
 
-    public static List<T> LoadCardsFromJson<T>(string fileName)
+    public static List<T> LoadCardsFromFile<T>(string fileName)
     {
         string filePath = System.IO.Path.Combine(Application.streamingAssetsPath, fileName);
         if (System.IO.File.Exists(filePath))
@@ -35,5 +35,11 @@ public static class CardJsonUtility
             Debug.LogError("File not found: " + filePath);
             return null;
         }
+    }
+
+    public static List<T> LoadCardsFromJson<T>(string json)
+    {
+        CardListWrapper<T> wrapper = JsonConvert.DeserializeObject<CardListWrapper<T>>(json);
+        return wrapper.cards;
     }
 }

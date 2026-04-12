@@ -14,6 +14,18 @@ namespace Game.Domain
         }
     }
 
+    public class GetCardDeckEvent : PlayerEvent
+    {
+        public string pointCardDeckJson;
+        public string skillCardDeckJson;
+        public GetCardDeckEvent(int playerId, bool success, string pointCardDeckJson, string skillCardDeckJson)
+            : base(playerId, success)
+        {
+            this.pointCardDeckJson = pointCardDeckJson;
+            this.skillCardDeckJson = skillCardDeckJson;
+        }
+    }
+
     /// <summary>
     /// 加入或创建房间事件，成功时 playerId 是玩家ID，matchIdOrEmpty 是房间ID；失败时 playerId 是玩家ID，matchIdOrEmpty 是空字符串
     /// </summary>

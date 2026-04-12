@@ -1,11 +1,13 @@
 using FishNet.Managing;
 using Game.Domain;
+using Newtonsoft.Json;
 using UnityEngine;
 
 public class QuickStartButtons : MonoBehaviour
 {
     public NetworkManager nm;
     private string matchId = "123";
+    private string ClientIP = "49.232.222.222";
     [HideInInspector] public string matchSeed = "12345";
 
     private void OnGUI()
@@ -19,7 +21,10 @@ public class QuickStartButtons : MonoBehaviour
             nm.ServerManager.StartConnection();
 
         if (GUI.Button(new Rect(10, 60, w, h), "Start Client"))
+        {
+            nm.TransportManager.Transport.SetClientAddress(ClientIP);
             nm.ClientManager.StartConnection();
+        }
 
         if (GUI.Button(new Rect(10, 110, w, h), "Stop All"))
         {
@@ -29,10 +34,15 @@ public class QuickStartButtons : MonoBehaviour
 
         matchId = GUI.TextField(new Rect(10, 160, w, h), matchId);
         matchSeed = GUI.TextField(new Rect(10, 210, w, h), matchSeed);
+        ClientIP = GUI.TextField(new Rect(10, 260, w, h), ClientIP);
 
         // These buttons are for testing the ClientCommand methods. They will not work without a server and client connection.
         if (GUI.Button(new Rect(1700, 10, w, h), "Create / Join Match"))
+        {
             ClientCommand.CreateMatch(matchId);
+            GetCardDeckCommand cmd = new GetCardDeckCommand { playerId = -1 };
+            ClientGameState.gateway.SendCommandServerRpc("GetCardDeck", JsonConvert.SerializeObject(cmd));
+        }
 
         //if (GUI.Button(new Rect(1700, 60, w, h), "Join Match"))
         //    ClientCommand.JoinMatch(matchId);

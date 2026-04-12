@@ -31,14 +31,15 @@ public class StartTurnCmdHandler : CommandHandler, ICommandHandler
             -1
         ));
 
-        session.gameState.players[payload.playerId].actionPoint = 1;
+        int startAP = 2;
+        session.gameState.players[payload.playerId].actionPoint = startAP;
         results.events.Enqueue(MakeEvent(
             "AddActionPoint",
             new AddActionPointEvent    // need change
             (
                 payload.playerId,
                 true,
-                1,
+                startAP,
                 true
             ),
             -1

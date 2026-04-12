@@ -7,6 +7,7 @@ public class GameBootstrap : MonoBehaviour
 {
     private static bool _initialized = false;
     public MatchGateway gateway;
+    public bool isDebugMode = false;
 
     void Awake()
     {
@@ -15,8 +16,11 @@ public class GameBootstrap : MonoBehaviour
 
         ClientGameState.gateway = gateway;
 
-        CardDatabase.Init("PointCards.json", CardDatabaseType.PointCard);
-        CardDatabase.Init("SkillCardsT.json", CardDatabaseType.SkillCard);
+        if (isDebugMode)
+        {
+            CardDatabase.Init("PointCards.json", CardDatabaseType.PointCard);
+            CardDatabase.Init("SkillCardsT.json", CardDatabaseType.SkillCard);
+        }
 
         DispatcherBootstrap.Init();
         Debug.Log("NetEvent ×¢²áÍê³É");

@@ -6,10 +6,12 @@ using UnityEngine;
 using Game.Domain;
 using Game.Server;
 using Newtonsoft.Json;
+using Unity.VisualScripting.Antlr3.Runtime;
 
 
 public class MatchGateway : NetworkBehaviour
 {
+    public static event Action<string, string> OnClientGetDeck;
     public static event Action<string, int, string, string> OnClientJoined;
     public static event Action<NetEvent> OnClientEvent;
     public static event Action<string> OnClientSnapshot;
@@ -29,6 +31,11 @@ public class MatchGateway : NetworkBehaviour
     private static readonly TimeSpan KeepAlive = TimeSpan.FromSeconds(5);
     private float _gcTimer;
 
+    private class CardListWrapper<T>
+    {
+        public List<T> cards;
+    }
+
 
     // =======================
     // Client -> Server: Send Command
@@ -47,7 +54,19 @@ public class MatchGateway : NetworkBehaviour
         if (type == "GetCtx")           ClientEffectContext.GetServerCtxDone = false;
         if (type == "GetGameState")     ClientGameState.GetServerGameStateDone = false;
 
-        if (type == "JoinOrCreateMatch")
+        if (type == "GetCardDeck")
+        {
+            GetCardDeckCommand payload = JsonConvert.DeserializeObject<GetCardDeckCommand>(jsonData);
+
+            CardDatabase.GetValues(out List<PointCard> pointCards, out List<SkillCard> skillCards);
+            CardListWrapper<PointCard> pWrapper = new CardListWrapper<PointCard> { cards = pointCards };
+            CardListWrapper<SkillCard> sWrapper = new CardListWrapper<SkillCard> { cards = skillCards };
+            string pointCardDeckJson = JsonConvert.SerializeObject(pWrapper);
+            string skillCardDeckJson = JsonConvert.SerializeObject(sWrapper);
+
+            TargetGetDeck(sender, pointCardDeckJson, skillCardDeckJson);
+        }
+        else if (type == "JoinOrCreateMatch")
         {
             JoinOrCreateMatchCommand payload = JsonConvert.DeserializeObject<JoinOrCreateMatchCommand>(jsonData);
 
@@ -291,6 +310,13 @@ public class MatchGateway : NetworkBehaviour
     }
 
     // ===== Target RPCs (Server -> Client) =====
+    [TargetRpc]
+    private void TargetGetDeck(NetworkConnection conn, string pointCardDeckJson, string skillCardDeckJson)
+    {
+        Debug.Log($"[Client] Get Deck");
+        OnClientGetDeck?.Invoke(pointCardDeckJson, skillCardDeckJson);
+    }
+
     [TargetRpc]
     private void TargetJoined(NetworkConnection conn, string matchId, int slot, string token, string snapshotJson)
     {

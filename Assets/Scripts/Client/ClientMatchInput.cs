@@ -11,15 +11,22 @@ public class ClientMatchInput : MonoBehaviour
 
     void OnEnable()
     {
+        MatchGateway.OnClientGetDeck += OnGetDeck;
         MatchGateway.OnClientJoined += OnJoined;
         MatchGateway.OnClientEvent += OnEvent;
     }
 
     void OnDisable()
     {
+        MatchGateway.OnClientGetDeck -= OnGetDeck;
         MatchGateway.OnClientJoined -= OnJoined;
         MatchGateway.OnClientEvent -= OnEvent;
     }
+    void OnGetDeck(string pointCardDeckJson, string skillCardDeckJson)
+    {
+        CardDatabase.InitFromString(pointCardDeckJson, skillCardDeckJson);
+    }
+
 
     void OnJoined(string matchId, int slot, string token, string snapshotJson)
     {

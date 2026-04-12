@@ -19,6 +19,11 @@ namespace Game.Domain
     {
     }
 
+    public class GetCardDeckCommand : ICommand
+    {
+        public int playerId;
+    }
+
     public class JoinOrCreateMatchCommand : ICommand
     {
         public int playerId;

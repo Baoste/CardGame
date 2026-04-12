@@ -1,4 +1,5 @@
 using FishNet.Managing;
+using Game.Domain;
 using UnityEngine;
 
 public class ServerBootstrap : MonoBehaviour
@@ -15,6 +16,9 @@ public class ServerBootstrap : MonoBehaviour
         {
             Debug.Log("[Server] Auto start server...");
             networkManager.ServerManager.StartConnection();
+
+            CardDatabase.Init("PointCards.json", CardDatabaseType.PointCard);
+            CardDatabase.Init("SkillCardsT.json", CardDatabaseType.SkillCard);
         }
     }
 }
