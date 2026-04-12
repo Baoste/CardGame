@@ -15,7 +15,7 @@ public class QuickStartButtons : MonoBehaviour
 
     private Rect ScaleRect(float x, float y, float w, float h)
     {
-        float baseW = 1980f;
+        float baseW = 1920f;
         float baseH = 1080f;
 
         float scaleX = Screen.width / baseW;
