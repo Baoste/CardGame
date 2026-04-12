@@ -4,6 +4,8 @@ Shader "Custom/URP/SharpenPosterize"
     {
         _SharpenStrength("Sharpen Strength", Range(0, 0.5)) = 0.2
         _PosterizeSteps("Posterize Steps", Range(8, 64)) = 32
+        _LightWeight("Posterize Light Weight", Range(0, 1)) = 0.5
+        _ColorWeight("Posterize Color Weight", Range(0, 0.3)) = 0.2
         _EnableSharpen("Enable Sharpen", Float) = 1
         _EnablePosterize("Enable Posterize", Float) = 1
     }
@@ -30,6 +32,8 @@ Shader "Custom/URP/SharpenPosterize"
 
             float _SharpenStrength;
             float _PosterizeSteps;
+            float _LightWeight;
+            float _ColorWeight;
             float _EnableSharpen;
             float _EnablePosterize;
 
@@ -116,14 +120,21 @@ Shader "Custom/URP/SharpenPosterize"
                 // return saturate(color);
                 //============
 
-                //============
-                float3 lab = RGB2OKLAB(color);
-                lab.x = floor(lab.x * (steps - 1)) / (steps - 1);
-                return saturate(OKLAB2RGB(lab));
+                //============ OKLAB 2 RGB
+                float3 originLab = RGB2OKLAB(color);
+                float3 lab = originLab;
+                lab.x = lerp(originLab.x, floor(lab.x * (steps - 1)) / (steps - 1), _LightWeight);
+                float3 colorLAB = saturate(OKLAB2RGB(lab));
                 //============
 
-                //color = floor(color * steps) / steps;
-                //return saturate(color);
+                //============ Linear RGB
+                float3 rgb = color;
+                rgb = lerp(rgb, floor(rgb * (steps - 1)) / (steps - 1), _LightWeight);
+                float3 colorRGB = saturate(rgb);
+                //============
+
+                float3 resultColor = lerp(colorLAB, colorRGB, _ColorWeight);
+                return saturate(resultColor);
             }
 
             half4 Frag(Varyings input) : SV_Target

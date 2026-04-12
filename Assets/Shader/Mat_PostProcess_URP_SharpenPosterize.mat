@@ -25,9 +25,11 @@ Material:
     m_TexEnvs: []
     m_Ints: []
     m_Floats:
+    - _ColorWeight: 0.015
     - _EnablePosterize: 1
     - _EnableSharpen: 1
-    - _PosterizeSteps: 48
-    - _SharpenStrength: 0.227
+    - _LightWeight: 0.277
+    - _PosterizeSteps: 36
+    - _SharpenStrength: 0.035
     m_Colors: []
   m_BuildTextureStacks: []

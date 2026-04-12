@@ -135,7 +135,7 @@ Shader "Custom/Shader_CRTScreen"
 				// black corner
 				if (newUV.x < 0 || newUV.x > 1 || newUV.y < 0 || newUV.y > 1)
 					col.rgb *= 0;
-				return col * 1.5;
+				return col * 1;
 			}
 
 			ENDHLSL

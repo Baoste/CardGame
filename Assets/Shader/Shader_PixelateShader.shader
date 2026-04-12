@@ -97,10 +97,12 @@ Shader "Custom/PixelateShader"
 				// scan line
 				// col.rb *= step(0, sin(uv.y * _ScreenHeight)+1) * 0.5 + 1;
 				// col.g *= (sin(uv.y * _ScreenHeight)+1) * 0.5 + 1;
-				half3 scanCol = half3(1, 1, 1);
-				half4 pixelScanlineBrightness = half4(0.225, 0.85, 0.1, 0.95);
-				float ssScanY = step(0, sin(newUV.y * _ScreenHeight));;
-				col *= ssScanY * pixelScanlineBrightness.x + pixelScanlineBrightness.y;
+
+				//half3 scanCol = half3(1, 1, 1);
+				//half4 pixelScanlineBrightness = half4(0.225, 0.85, 0.1, 0.95);
+				//float ssScanY = step(0, sin(newUV.y / 4 * _ScreenHeight));;
+				//col *= ssScanY * pixelScanlineBrightness.x + pixelScanlineBrightness.y;
+
 				//float ssScanX = smoothstep(-1, 1, sin((newUV.y + _Time.x)* _ScreenHeight));
 				//col *= ssScanX * pixelScanlineBrightness.z + pixelScanlineBrightness.w;
 				

@@ -226,12 +226,34 @@ Shader "Custom/DiskShader"
                 float3 colorg = EvalDiskLighting(Ng, pre);
                 float3 colorb = EvalDiskLighting(Nb, pre);
 
-                half3 color = half3(colorr.r, colorg.g, colorb.b);
+                half3 color = half3(colorr.r, colorg.g, colorb.b) * half3(0.5, 0.5, 0.2);
                 color += pre.albedo * _AlbedoFactor + subNoise * _EmissionColor;
 
                 return half4(color, 1 - mask);
             }
 
+            ENDHLSL
+        }
+
+        pass
+        {
+            Name "ShadowCaster"
+            Tags { "LightMode" = "ShadowCaster" }
+
+            ZWrite On
+            ZTest LEqual
+            ColorMask 0
+            Cull[_Cull]
+
+            HLSLPROGRAM
+            #pragma vertex ShadowPassVertex
+            #pragma fragment ShadowPassFragment
+
+            #pragma multi_compile_vertex _ _CASTING_PUNCTUAL_LIGHT_SHADOW
+
+            #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Core.hlsl"
+            #include "Packages/com.unity.render-pipelines.core/ShaderLibrary/CommonMaterial.hlsl"
+            #include "Packages/com.unity.render-pipelines.universal/Shaders/ShadowCasterPass.hlsl"
             ENDHLSL
         }
     }
