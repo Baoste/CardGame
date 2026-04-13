@@ -31,7 +31,7 @@ public class StartTurnCmdHandler : CommandHandler, ICommandHandler
             -1
         ));
 
-        int startAP = 2;
+        int startAP = GameConfigLoader.Config.StartTurn.startAP;
         session.gameState.players[payload.playerId].actionPoint = startAP;
         results.events.Enqueue(MakeEvent(
             "AddActionPoint",

@@ -170,13 +170,13 @@ public class BoardView : MonoBehaviour, IViewClear
         if (opponentCards.Remove(instance))
         {
             yield return DestroyCard(instance);
-            yield return new WaitForSeconds(0.2f);
+            yield return new WaitForSecondsRealtime(0.2f);
             yield return UpdateCardPositionsNormal(true, false);
         }
         if (selfCards.Remove(instance))
         {
             yield return DestroyCard(instance);
-            yield return new WaitForSeconds(0.2f);
+            yield return new WaitForSecondsRealtime(0.2f);
             yield return UpdateCardPositionsNormal(false, false);
         }
     }
@@ -405,7 +405,7 @@ public class BoardView : MonoBehaviour, IViewClear
         Time.timeScale = 1f;
         Time.fixedDeltaTime = 0.02f;
 
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForSecondsRealtime(1f);
         Sequence seq = DOTween.Sequence();
         seq.OnComplete(() =>
         {

@@ -14,18 +14,30 @@ public class CameraMouseLook : MonoBehaviour
     [SerializeField, Range(0.3f, 0.8f)] private float deadZone = 0.5f;
 
     private Quaternion _initialRot;
-    private Vector2 _currentOffset;
+    [SerializeField] private Vector2 _currentOffset;
     private Vector2 _velocity;
+
+    public static bool Locked; 
 
     private void Start()
     {
         _initialRot = transform.localRotation;
+        Locked = false;
     }
 
     private void LateUpdate()
     {
-        float x = (Input.mousePosition.x / Screen.width - 0.5f) * 2f;
-        float y = (Input.mousePosition.y / Screen.height - 0.5f) * 2f;
+        float x, y;
+        if (Locked)
+        {
+            x = 0;
+            y = -1;
+        }
+        else
+        {
+            x = (Mathf.Clamp01(Input.mousePosition.x / Screen.width) - 0.5f) * 2f;
+            y = (Mathf.Clamp01(Input.mousePosition.y / Screen.height) - 0.5f) * 2f;
+        }
 
         Vector2 rawInput = new Vector2(x, y);
 
@@ -70,5 +82,14 @@ public class CameraMouseLook : MonoBehaviour
         t = t * t; // 你也可以改成 Mathf.SmoothStep(0,1,t)
 
         return sign * t;
+    }
+
+    public void MoveTo(Quaternion targetRot)
+    {
+        transform.rotation = Quaternion.Slerp(
+            transform.rotation,
+            targetRot,
+            Time.deltaTime * 5
+        );
     }
 }

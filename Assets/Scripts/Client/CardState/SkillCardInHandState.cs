@@ -55,6 +55,8 @@ public class SkillCardInHandState : SkillCardState
         newPos.y = skillCard.instance.originalPos.y + hoveredMoveDirY;
         skillCard.transform.position = newPos;
         skillCard.transform.DOMoveY(newPos.y + 0.1f, 0.5f).SetEase(Ease.OutCubic);
+
+        CameraMouseLook.Locked = true;
     }
 
     public override void OnMouseExit()
@@ -67,6 +69,8 @@ public class SkillCardInHandState : SkillCardState
         newPos.y = skillCard.instance.originalPos.y + 0.1f;
         skillCard.transform.position = newPos;
         skillCard.transform.DOMoveY(skillCard.instance.originalPos.y, 0.5f).SetEase(Ease.OutCubic);
+
+        CameraMouseLook.Locked = false;
     }
 
     public override void OnMouseUp()

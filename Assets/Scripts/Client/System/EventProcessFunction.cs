@@ -517,29 +517,39 @@ public class EventProcessFunction : MonoBehaviour
         }
     }
 
-    // parameters[0]: int winnerId
-    // parameters[1]: int currentBet
-    // parameters[2]: int playerPointsOnBoard
-    // parameters[3]: int opponentPoints
+    // parameters[0]: int playerId
+    // parameters[1]: int winnerId
+    // parameters[2]: int currentBet
+    // parameters[3]: int playerPointsOnBoard
+    // parameters[4]: int opponentPoints
     public void RevealTest(object[] parameters)
     {
-        int winnerId = (int)parameters[0];
-        int currentBet = (int)parameters[1];
-        int playerPoints = (int)parameters[2];
-        int opponentPoints = (int)parameters[3];
+        int playerId = (int)parameters[0];
+        int winnerId = (int)parameters[1];
+        int currentBet = (int)parameters[2];
+        int playerPoints = (int)parameters[3];
+        int opponentPoints = (int)parameters[4];
 
-        StartCoroutine(_Reveal(winnerId, currentBet, playerPoints, opponentPoints));
+        StartCoroutine(_Reveal(playerId, winnerId, currentBet, playerPoints, opponentPoints));
     }
 
-    private IEnumerator _Reveal(int winnerId, int currentBet, int playerPoints, int opponentPoints)
+    private IEnumerator _Reveal(int playerId, int winnerId, int currentBet, int playerPoints, int opponentPoints)
     {
         bool isOpponent = winnerId != ClientGameState.playerSlot;
 
         SceneViewManager.endTurnView.btnLight.intensity = 0;
 
         yield return SceneViewManager.boardView.HoleCardFlip();
-        SceneViewManager.mySumPointView.ChangeSum(playerPoints, true);
-        SceneViewManager.opponentSumPointView.ChangeSum(opponentPoints, true);
+        if (playerId == ClientGameState.playerSlot)
+        {
+            SceneViewManager.mySumPointView.ChangeSum(playerPoints, true);
+            SceneViewManager.opponentSumPointView.ChangeSum(opponentPoints, true);
+        }
+        else
+        {
+            SceneViewManager.mySumPointView.ChangeSum(opponentPoints, true);
+            SceneViewManager.opponentSumPointView.ChangeSum(playerPoints, true);
+        }
         yield return new WaitForSecondsRealtime(1f);
         yield return SceneViewManager.boardView.RemoveOneSideCards(1 - winnerId);
         yield return SceneViewManager.roleView.ShowWin(winnerId);

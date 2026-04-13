@@ -49,7 +49,10 @@ namespace Game.Domain
                 // if the effect is judge, evaluate the judge result first, and then determine which node to go next based on the judge result
                 if (op.type == EffectType.Judge)
                 {
-                    List<int> judgePool = ParticipantsResolver.DetermineCandidates(op.source, session.gameState, session.ctx, out bool _);
+                    List<int> judgePool = ParticipantsResolver.DetermineCandidates(op.source, session.gameState, session.ctx, out bool isParticipantZone);
+                    if (isParticipantZone)
+                        judgePool = judgePool.FindAll(c => op.source.filter.Evaluate(session.gameState, session.ctx, c));
+
                     bool judgeResult = judgePool.Count > 0;
                     if (judgeResult) effectOpId = op.trueNode;
                     else effectOpId = op.falseNode;

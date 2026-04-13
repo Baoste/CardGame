@@ -117,7 +117,7 @@ public class StartGameCmdHandler : CommandHandler, ICommandHandler
         ));
 
         // ³é¼¼ÄÜÅÆ
-        for ( int i = 0; i < 4; i++ )
+        for ( int i = 0; i < GameConfigLoader.Config.StartGame.startSkillCardCount; i++ )
         {
             drawCardInstanceId = skillCardsDeck.Draw();
             session.gameState.AddCard(payload.playerId, session.instanceToCardId[drawCardInstanceId], drawCardInstanceId, CardType.Skill);

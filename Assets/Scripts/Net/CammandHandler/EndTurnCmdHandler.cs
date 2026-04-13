@@ -14,10 +14,12 @@ public class EndTurnCmdHandler : CommandHandler, ICommandHandler
         session.gameState.CurrentPlayerId = 1 - payload.playerId;
 
         bool reveal = false;
-        int endTurnCount = 8;
+        int endTurnCount = GameConfigLoader.Config.EndTurn.startTurn;
         if (session.gameState.Turn > endTurnCount)
         {
-            float p = 1f - 0.5f * MathF.Exp(-(session.gameState.Turn - endTurnCount - 1) * 0.22f);
+            float p = 1f - GameConfigLoader.Config.EndTurn.initialProbability * MathF.Exp(
+                -(session.gameState.Turn - endTurnCount - 1) * GameConfigLoader.Config.EndTurn.growthRate
+            );
             p = Math.Min(p, 1f);
 
             float r = (float)session.gameState.rng.NextDouble();

@@ -10,7 +10,8 @@ namespace Game.Domain
         SourceSpecSelectedPointsSum,    // 源效果指定的牌的点数总和
         TargetSpecSelectedPointsSum,    // 目标效果指定的牌的点数总和
         ResolvedCardsPointsSum,         // 处理区的牌的点数总和
-        UserInterfaceZoneId             // UI区的选择
+        TargetSpecFirstId,              // 目标的第一个id
+        SourceSpecFirstId               // 目标的第一个id
     }
 
     public enum BinaryOp

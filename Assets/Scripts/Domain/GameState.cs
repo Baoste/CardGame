@@ -19,6 +19,7 @@ namespace Game.Domain
     public class GameState
     {
         public int Turn = 0;
+        public int GameCount = 0;
         public int CurrentPlayerId = -1;
         public int RandomSeed = 12345;
 
@@ -58,12 +59,14 @@ namespace Game.Domain
         {
             RandomSeed = seed;
             rng = new Random(seed);
+            GameCount = 0;
         }
 
         public void Start()
         {
             isStart = true;
             Turn = 0;
+            GameCount++;
             CurrentPlayerId = -1;
 
             currentBet = 0;
@@ -85,6 +88,7 @@ namespace Game.Domain
         {
             isStart = false;
             Turn = 0;
+            GameCount = 0;
             CurrentPlayerId = -1;
             currentBet = 0;
 

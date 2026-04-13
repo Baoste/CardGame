@@ -1,4 +1,5 @@
 using DG.Tweening;
+using FishNet.Demo.AdditiveScenes;
 using Game.Domain;
 using System.Collections;
 using System.Collections.Generic;
@@ -10,7 +11,7 @@ public class RevealView : MonoBehaviour, IViewClear
     [SerializeField] private GameObject revealRandom;
     [SerializeField] private GameObject randomRoulette;
 
-    // private Vector3 BtnHidePosition;
+    private Vector3 BtnHidePosition;
     private Vector3 BtnShowPosition;
     private Vector3 RdmHidePosition;
     private Vector3 RdmShowPosition;
@@ -24,8 +25,10 @@ public class RevealView : MonoBehaviour, IViewClear
         revealRandom.transform.localPosition = RdmHidePosition;
 
         BtnShowPosition = revealButton.transform.localPosition;
-        // BtnHidePosition = BtnShowPosition + Vector3.down * 0.1f;
-        // revealButton.transform.localPosition = BtnHidePosition;
+
+        BtnHidePosition = BtnShowPosition + Vector3.down * 0.1f;
+        revealButton.transform.localPosition = BtnHidePosition;
+
         revealButton.GetComponent<RevealButton>().SetOriginalPosition(BtnShowPosition);
         revealButton.GetComponent<RevealButton>().enabled = false;
         revealButton.GetComponent<Collider>().enabled = false;
@@ -76,7 +79,7 @@ public class RevealView : MonoBehaviour, IViewClear
         randomRoulette.transform.rotation = quaternion;
         randomRoulette.SetActive(false);
 
-        if (reveal)
+        if (reveal && ClientGameState.Instance.dealerId == ClientGameState.playerSlot)
         {
             ClientCommand.RevealCardsAndScore();
         }
