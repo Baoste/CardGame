@@ -54,6 +54,7 @@ namespace Game.Domain
     public class Place1BetCommand : ICommand
     {
         public int playerId;
+        public int instanceId;
     }
 
     public class ConfirmBetCommand : ICommand

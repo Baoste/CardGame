@@ -24,11 +24,11 @@ public class TestSystem : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.O))
         {
             StartCoroutine(SceneViewManager.viewAnimController.PlayStartGameAnim());
-            SceneViewManager.myChipView.StartGame();
-            SceneViewManager.opponentChipView.StartGame();
-            foreach (var obj in SceneViewManager.myChipView.chipsInTray.Keys)
+            SceneViewManager.myChipView.StartGame(false);
+            SceneViewManager.opponentChipView.StartGame(true);
+            foreach (var obj in SceneViewManager.myChipView.chipsInTray.Values)
             {
-                ChipDraggable drag = obj.transform.GetChild(0).gameObject.AddComponent<ChipDraggable>();
+                ChipMouseEventHandler drag = obj.transform.GetChild(0).gameObject.AddComponent<ChipMouseEventHandler>();
                 drag.Init();
             }
         }

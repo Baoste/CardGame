@@ -1,8 +1,10 @@
-
 using DG.Tweening;
+using Game.Domain;
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
-public class SkillCardDragState : SkillCardState
+public class ChipDragState : ChipState
 {
     private Plane dragPlane;
     private Camera cam;
@@ -15,12 +17,12 @@ public class SkillCardDragState : SkillCardState
     private Transform meshTransform;
     #endregion
 
-    public SkillCardDragState(SkillCardStateMachine stateMachine, SkillCardController skillCard, string animatorName) : base(stateMachine, skillCard, animatorName)
+    public ChipDragState(ChipStateMachine stateMachine, ChipController chip, string animatorName) : base(stateMachine, chip, animatorName)
     {
         cam = Camera.main;
-        meshTransform = skillCard.transform.Find("Model");
-        Vector3 planeNormal = SceneViewManager.myHandView.transform.rotation * Vector3.up;
-        dragPlane = new Plane(planeNormal, SceneViewManager.myHandView.transform.position);
+        meshTransform = chip.transform;
+        Vector3 planeNormal = SceneViewManager.myChipView.transform.rotation * Vector3.up;
+        dragPlane = new Plane(planeNormal, SceneViewManager.myChipView.transform.position);
     }
 
     public override void Enter()
@@ -37,21 +39,17 @@ public class SkillCardDragState : SkillCardState
         currentRot = Quaternion.identity;
     }
 
-    public override void FixedUpdate()
-    {
-        base.FixedUpdate();
-    }
-
     public override void OnMouseDown()
     {
         base.OnMouseDown();
-        skillCard.transform.DOKill();
+        chip.outlineControl.Enable = 1f;
+        chip.transform.DOKill();
 
         if (TryGetMouseWorldPosition(out Vector3 mouseWorld))
         {
-            skillCard.transform.position = mouseWorld;
+            chip.transform.position = mouseWorld;
             // Mouse Tilt
-            Vector3 mouseLocal = SceneViewManager.myHandView.transform.InverseTransformDirection(mouseWorld);
+            Vector3 mouseLocal = SceneViewManager.myChipView.transform.InverseTransformDirection(mouseWorld);
             lastMousePosition = mouseLocal;
             currentTilt = 0f;
             currentRot = Quaternion.identity;
@@ -63,9 +61,8 @@ public class SkillCardDragState : SkillCardState
         base.OnMouseDrag();
         if (TryGetMouseWorldPosition(out Vector3 mouseWorld))
         {
-            skillCard.transform.position = mouseWorld;
-            // Mouse Tilt
-            Vector3 currentMousePosition = SceneViewManager.myHandView.transform.InverseTransformDirection(mouseWorld);
+            chip.transform.position = mouseWorld;
+            Vector3 currentMousePosition = SceneViewManager.myChipView.transform.InverseTransformDirection(mouseWorld);
             Vector3 mouseDelta = currentMousePosition - lastMousePosition;
             lastMousePosition = currentMousePosition;
 
@@ -74,56 +71,46 @@ public class SkillCardDragState : SkillCardState
 
             // 鼠标速度
             float mouseVelocity = mouseDelta.magnitude / dt;
-            float targetTilt = Mathf.Clamp(mouseVelocity * 30, -40, 40);
+            float targetTilt = Mathf.Clamp(mouseVelocity * 20, -40, 40);
             currentTilt = Mathf.Lerp(currentTilt, targetTilt, 10 * dt);
 
             mouseDelta.z = -mouseDelta.z;   // 上下移动和左右移动的转向不一样
             Quaternion targetRot = Quaternion.identity;
             if (mouseVelocity > 0.01f)
             {
-                Vector3 rotAxis = Quaternion.AngleAxis(90f, Vector3.right) * Quaternion.AngleAxis(90f, Vector3.up) * mouseDelta;    // 从 handView 的坐标系转到 model 的坐标系下
+                Vector3 rotAxis = Quaternion.AngleAxis(-90f, Vector3.up) * mouseDelta;    // 从 handView 的坐标系转到 model 的坐标系下
                 targetRot = Quaternion.AngleAxis(currentTilt, rotAxis);
             }
             currentRot = Quaternion.Slerp(currentRot, targetRot, 10 * dt);
             meshTransform.localRotation = currentRot * baseRotation;
 
-
             // ===== 检测是否离开合法区域 =====
-            bool outside = SceneViewManager.myHandView != null && SceneViewManager.myHandView.IsOutsideValidArea(skillCard.transform.position);
+            bool outside = SceneViewManager.myChipView != null && SceneViewManager.myChipView.IsOutsideValidArea(chip.transform.position);
 
             if (outside)
             {
-                skillCard.outlineControl.OutlineColor = skillCard.outlineControl.outAreaColor;
+                chip.outlineControl.OutlineColor = chip.outlineControl.outAreaColor;
             }
             else
             {
-                skillCard.outlineControl.OutlineColor = skillCard.outlineControl.defaultColor;
+                chip.outlineControl.OutlineColor = chip.outlineControl.defaultColor;
             }
         }
-    }
-
-    public override void OnMouseEnter()
-    {
-        base.OnMouseEnter();
-    }
-
-    public override void OnMouseExit()
-    {
-        base.OnMouseExit();
     }
 
     public override void OnMouseUp()
     {
         base.OnMouseUp();
+        chip.outlineControl.Enable = 0f;
 
-        bool shouldRemove = SceneViewManager.myHandView != null && SceneViewManager.myHandView.IsOutsideValidArea(skillCard.transform.position);
+        bool shouldRemove = SceneViewManager.myChipView != null && SceneViewManager.myChipView.IsOutsideValidArea(chip.transform.position);
         if (shouldRemove)
         {
-            skillCard.StartExecuteCard();
+            stateMachine.ChangeState(chip.inTrayState);
         }
         else
         {
-            stateMachine.ChangeState(skillCard.inHandState);
+            chip.StartExecuteChip();
         }
     }
 

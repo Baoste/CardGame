@@ -54,8 +54,12 @@ public class EventProcessFunction : MonoBehaviour
     {
         CinemachineVirtualCamera vcam = GameObject.Find("VCamera_Playing").GetComponent<CinemachineVirtualCamera>();
         vcam.Priority = 20;
-        SceneViewManager.myChipView.StartGame();
-        SceneViewManager.opponentChipView.StartGame();
+
+        SceneViewManager.boardView.transform.GetComponentInChildren<ClickToStartGame>().isEnabled = true;
+        SceneViewManager.boardView.transform.GetComponentInChildren<ClickToStartGame>().startText.SetActive(true);
+
+        SceneViewManager.myChipView.StartGame(false);
+        SceneViewManager.opponentChipView.StartGame(true);
     }
 
     public void StartGameTest(object[] parameters)
@@ -63,6 +67,14 @@ public class EventProcessFunction : MonoBehaviour
         StartCoroutine(SceneViewManager.viewAnimController.PlayStartGameAnim());
 
         instanceMap.Clear();
+        foreach (int k in SceneViewManager.myChipView.chipsInTray.Keys)
+        {
+            instanceMap[k] = SceneViewManager.myChipView.chipsInTray[k];
+        }
+        foreach (int k in SceneViewManager.opponentChipView.chipsInTray.Keys)
+        {
+            instanceMap[k] = SceneViewManager.opponentChipView.chipsInTray[k];
+        }
 
         Transform root = CardViewCreator.Instance.transform;
         foreach (Transform child in root)
@@ -142,17 +154,20 @@ public class EventProcessFunction : MonoBehaviour
 
         SceneViewManager.roleView.ShowRole(dealerId);
 
-        if (punterId == ClientGameState.playerSlot)
+        foreach (var obj in SceneViewManager.myChipView.chipsInTray.Values)
         {
-            foreach (var obj in SceneViewManager.myChipView.chipsInTray.Keys)
+            if (obj.transform.childCount > 0)
             {
-                if (obj.transform.childCount > 0)
-                {
-                    ChipDraggable drag = obj.transform.GetChild(0).gameObject.AddComponent<ChipDraggable>();
-                    drag.Init();
-                }
+                ChipMouseEventHandler drag = obj.transform.GetChild(0).gameObject.AddComponent<ChipMouseEventHandler>();
+                drag.Init();
             }
         }
+
+        StartCoroutine(SceneViewManager.myChipView.Place1BetAuto(false));
+        StartCoroutine(SceneViewManager.opponentChipView.Place1BetAuto(true));
+
+        if (ClientGameState.Instance.punterId == ClientGameState.playerSlot)
+            ClientCommand.StartTurn(ClientGameState.Instance.punterId);
     }
 
     // parameters[0]: int playerId
@@ -193,9 +208,11 @@ public class EventProcessFunction : MonoBehaviour
 
 
     // parameters[0]: int playerId
+    // parameters[1]: int instanceId
     public void Place1BetTest(object[] parameters)
     {
         int playerId = (int)parameters[0];
+        int instanceId = (int)parameters[1];
 
         bool isOpponent = playerId != ClientGameState.playerSlot;
         if (isOpponent)
@@ -205,14 +222,14 @@ public class EventProcessFunction : MonoBehaviour
         }
         else
         {
-            foreach (var obj in SceneViewManager.myChipView.chipsPlaced)
+            GameObject obj = SceneViewManager.myChipView.chipsInTray[instanceId];
+            ChipMouseEventHandler script = obj.GetComponentInChildren<ChipMouseEventHandler>();
+            if (script != null)
             {
-                ChipDraggable script = obj.GetComponentInChildren<ChipDraggable>();
-                if (script != null)
-                {
-                    Destroy(script);
-                }
+                script.enabled = false;
             }
+            StartCoroutine(SceneViewManager.opponentChipView.Place1BetAuto(true));
+            SceneViewManager.myChipView.Place1Bet(instanceId);
         }
     }
 
@@ -223,14 +240,14 @@ public class EventProcessFunction : MonoBehaviour
         int playerId = (int)parameters[0];
         int betCount = (int)parameters[1];
 
-        foreach (var obj in SceneViewManager.myChipView.chipsInTray.Keys)
-        {
-            ChipDraggable script = obj.GetComponentInChildren<ChipDraggable>();
-            if (script != null)
-            {
-                Destroy(script);
-            }
-        }
+        //foreach (var obj in SceneViewManager.myChipView.chipsInTray.Keys)
+        //{
+        //    ChipMouseEventHandler script = obj.GetComponentInChildren<ChipMouseEventHandler>();
+        //    if (script != null)
+        //    {
+        //        Destroy(script);
+        //    }
+        //}
 
         StartCoroutine(SceneViewManager.viewAnimController.CloseChipCover());
         if (ClientGameState.Instance.punterId == ClientGameState.playerSlot)
@@ -252,30 +269,43 @@ public class EventProcessFunction : MonoBehaviour
         switch (animType)
         {
             case AnimationType.MoveToFallPosition:
-                { 
-                    SkillCardController skillCard = obj.GetComponent<SkillCardController>();
-                    skillCard.stateMachine.ChangeState(skillCard.readyFallState);
-                }
-                break;
+            { 
+                SkillCardController skillCard = obj.GetComponent<SkillCardController>();
+                skillCard.stateMachine.ChangeState(skillCard.readyFallState);
+            }
+            break;
+
             case AnimationType.ReturnToHand:
-                if (isOpponent)
+            {
+                SkillCardController skillCard = obj.GetComponent<SkillCardController>();
+                if (skillCard != null)
                 {
-                    SceneViewManager.opponentHandView.ReturnCard(obj);
-                    StartCoroutine(obj.GetComponent<SkillCardInstance>().ReturnToHand());
-                }
-                else
-                {
-                    SceneViewManager.myHandView.ReturnCard(obj);
-                    SkillCardController skillCard = obj.GetComponent<SkillCardController>();
+                    if (isOpponent)
+                        SceneViewManager.opponentHandView.ReturnCard(obj);
+                    else
+                        SceneViewManager.myHandView.ReturnCard(obj);
                     skillCard.stateMachine.ChangeState(skillCard.inHandState);
                 }
-                break;
-            case AnimationType.MoveToExecutePosition:
+
+                ChipController chipController = obj.GetComponentInChildren<ChipController>();
+                if (chipController != null)
                 {
-                    SkillCardController skillCard = obj.GetComponent<SkillCardController>();
-                    skillCard.stateMachine.ChangeState(skillCard.executeState);
+                    if (!isOpponent)
+                    {
+                        SceneViewManager.myChipView.ReturnCard(instanceId, obj);
+                        obj.GetComponentInChildren<ChipMouseEventHandler>().enabled = true;
+                        chipController.stateMachine.ChangeState(chipController.inTrayState);
+                    }
                 }
-                break;
+            }
+            break;
+
+            case AnimationType.MoveToExecutePosition:
+            {
+                SkillCardController skillCard = obj.GetComponent<SkillCardController>();
+                skillCard.stateMachine.ChangeState(skillCard.executeState);
+            }
+            break;
         }
     }
 
@@ -559,16 +589,16 @@ public class EventProcessFunction : MonoBehaviour
         {
             // ∂‡”‡µƒ≥Ô¬ÎÕÀªÿ≥Ô¬Î≈Ã
             int returnCount = SceneViewManager.myChipView.chipsPlaced.Count - currentBet;
-            SceneViewManager.myChipView.GenerateChips(returnCount);
+            SceneViewManager.myChipView.GenerateChips(returnCount, true);
             // ∂‘∑ΩªÒµ√≥Ô¬Î
-            SceneViewManager.opponentChipView.GenerateChips(currentBet);
+            SceneViewManager.opponentChipView.GenerateChips(currentBet, false);
         }
         else
         {
             // ≥Ô¬ÎÕÀªÿ≥Ô¬Î≈Ã
-            SceneViewManager.myChipView.GenerateChips(SceneViewManager.myChipView.chipsPlaced.Count);
+            SceneViewManager.myChipView.GenerateChips(SceneViewManager.myChipView.chipsPlaced.Count, true);
             // ªÒµ√≥Ô¬Î
-            SceneViewManager.myChipView.GenerateChips(currentBet);
+            SceneViewManager.myChipView.GenerateChips(currentBet, true);
         }
         // œ˙ªŸ≥Ô¬Î
         SceneViewManager.myChipView.DestroyChipsPlaced();

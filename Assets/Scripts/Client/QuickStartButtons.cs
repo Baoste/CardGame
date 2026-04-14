@@ -93,19 +93,19 @@ public class QuickStartButtons : MonoBehaviour
         //if (GUI.Button(new Rect(1700, 360, w, h), "S: Opponent draw"))
         //{
         //    Card tmp = CardDatabase.Get(999);
-        //    StartCoroutine(ClientEffectExecutor._StartExecuteCard(tmp, ClientGameState.gateway, ClientGameState.playerSlot, -1));
+        //    StartCoroutine(ClientEffectExecutor._StartExecuteChip(tmp, ClientGameState.gateway, ClientGameState.playerSlot, -1));
         //}
 
         //if (GUI.Button(new Rect(1700, 410, w, h), "S: Discard"))
         //{
         //    Card tmp = CardDatabase.Get(9999);
-        //    StartCoroutine(ClientEffectExecutor._StartExecuteCard(tmp, ClientGameState.gateway, ClientGameState.playerSlot, -1));
+        //    StartCoroutine(ClientEffectExecutor._StartExecuteChip(tmp, ClientGameState.gateway, ClientGameState.playerSlot, -1));
         //}
 
         //if (GUI.Button(new Rect(1700, 460, w, h), "S: Point - 1"))
         //{
         //    Card tmp = CardDatabase.Get(99999);
-        //    StartCoroutine(ClientEffectExecutor._StartExecuteCard(tmp, ClientGameState.gateway, ClientGameState.playerSlot, -1));
+        //    StartCoroutine(ClientEffectExecutor._StartExecuteChip(tmp, ClientGameState.gateway, ClientGameState.playerSlot, -1));
         //}
     }
 }

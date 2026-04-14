@@ -12,8 +12,7 @@ GameObject:
   - component: {fileID: 4961096079672593879}
   - component: {fileID: 488082472874103547}
   - component: {fileID: 7751934983348840951}
-  - component: {fileID: 129616013461525912}
-  - component: {fileID: 3231624197578848701}
+  - component: {fileID: 916725658418439312}
   m_Layer: 0
   m_Name: Model
   m_TagString: Untagged
@@ -106,7 +105,7 @@ MonoBehaviour:
   bakeKeys: []
   bakeValues: []
   outlineFillMaterial: {fileID: 0}
---- !u!114 &129616013461525912
+--- !u!114 &916725658418439312
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -115,30 +114,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 7254515085507195032}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ba31674e7d06f8742aa8b00b8c43587e, type: 3}
+  m_Script: {fileID: 11500000, guid: 89eee00579093ed4ea17bac81e179b3e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tiltStrength: 20
-  maxTilt: 40
-  smoothSpeed: 10
-  useUnscaledDelta: 1
-  meshTransform: {fileID: 2587430206831976745}
---- !u!114 &3231624197578848701
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7254515085507195032}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8827b2009e99677438a26347e1ac70e2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  tiltStrength: 40
-  maxTilt: 10
-  smoothSpeed: 40
-  meshTransform: {fileID: 2587430206831976745}
+  outlineControl: {fileID: 0}
+  rb: {fileID: 0}
+  col: {fileID: 0}
+  originalTransform: {fileID: 0}
+  instanceId: 0
 --- !u!1 &8885925628758046779
 GameObject:
   m_ObjectHideFlags: 0

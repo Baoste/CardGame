@@ -1,42 +1,57 @@
-using DG.Tweening;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using UnityEngine.XR;
 
-public class ChipFlick : MonoBehaviour, IMouseEnter, IMouseStay, IMouseExit
+using DG.Tweening;
+using UnityEngine;
+
+public class ChipInTrayState : ChipState
 {
     private Camera cam;
     private Plane dragPlane;
-    private Outline outlineControl;
 
-    [SerializeField] private float tiltStrength = 20f;
-    [SerializeField] private float maxTilt = 40f;
-    [SerializeField] private float smoothSpeed = 10f;
-    [SerializeField] private Transform meshTransform;
-
+    #region MouseFlick
     private Vector3 lastMousePosition;
     private Quaternion baseRotation;
     private float currentTilt;
     private Quaternion currentRot;
+    private Transform meshTransform;
+    #endregion
 
-    private ChipDraggable draggable;
-
-    private void Start()
+    public ChipInTrayState(ChipStateMachine stateMachine, ChipController chip, string animatorName) : base(stateMachine, chip, animatorName)
     {
         cam = Camera.main;
-        outlineControl = GetComponent<Outline>();
-        baseRotation = meshTransform.localRotation;
-        currentTilt = 0f;
-        currentRot = Quaternion.identity;
-
+        meshTransform = chip.transform;
         Vector3 planeNormal = SceneViewManager.myChipView.transform.rotation * Vector3.up;
         dragPlane = new Plane(planeNormal, SceneViewManager.myChipView.transform.position);
     }
 
-    public void MouseEnter()
+    public override void Enter()
     {
-        outlineControl.Enable = 1f;
+        base.Enter();
+        chip.rb.velocity = Vector3.zero;
+        chip.rb.angularVelocity = Vector3.zero;
+        chip.rb.useGravity = false;
+        chip.col.isTrigger = true;
+        
+        chip.transform.position = chip.originalTransform.position;
+        chip.transform.rotation = chip.originalTransform.rotation;
+        baseRotation = meshTransform.localRotation;
+    }
+
+    public override void Exit()
+    {
+        base.Exit();
+    }
+
+    public override void OnMouseDown()
+    {
+        base.OnMouseDown();
+        stateMachine.ChangeState(chip.dragState);
+    }
+
+    public override void OnMouseEnter()
+    {
+        base.OnMouseEnter();
+
+        chip.outlineControl.Enable = 1f;
 
         if (TryGetMouseWorldPosition(out Vector3 mouseWorld))
         {
@@ -47,11 +62,19 @@ public class ChipFlick : MonoBehaviour, IMouseEnter, IMouseStay, IMouseExit
         }
     }
 
-    public void MouseStay()
+    public override void OnMouseExit()
     {
-        draggable = GetComponent<ChipDraggable>();
-        if (draggable == null || draggable.executed || draggable.IsDragging) return;
+        base.OnMouseExit();
+        chip.outlineControl.Enable = 0f;
 
+        meshTransform.DOLocalRotateQuaternion(baseRotation, 0.3f);
+        currentTilt = 0f;
+        currentRot = Quaternion.identity;
+    }
+
+    public override void OnMouseStay()
+    {
+        base.OnMouseStay();
         if (TryGetMouseWorldPosition(out Vector3 mouseWorld))
         {
             Vector3 mouseLocal = SceneViewManager.myChipView.transform.InverseTransformDirection(mouseWorld);
@@ -66,8 +89,8 @@ public class ChipFlick : MonoBehaviour, IMouseEnter, IMouseStay, IMouseExit
 
             // 鼠标速度
             float mouseVelocity = mouseDelta.magnitude / dt;
-            float targetTilt = Mathf.Clamp(mouseVelocity * tiltStrength, -maxTilt, maxTilt);
-            currentTilt = Mathf.Lerp(currentTilt, targetTilt, smoothSpeed * dt);
+            float targetTilt = Mathf.Clamp(mouseVelocity * 40, -10, 10);
+            currentTilt = Mathf.Lerp(currentTilt, targetTilt, 40 * dt);
 
             mouseDelta.z = -mouseDelta.z;   // 上下移动和左右移动的转向不一样
             Quaternion targetRot = Quaternion.identity;
@@ -76,18 +99,9 @@ public class ChipFlick : MonoBehaviour, IMouseEnter, IMouseStay, IMouseExit
                 Vector3 rotAxis = Quaternion.AngleAxis(-90f, Vector3.up) * mouseDelta;    // 从 handView 的坐标系转到 model 的坐标系下
                 targetRot = Quaternion.AngleAxis(currentTilt, rotAxis);
             }
-            currentRot = Quaternion.Slerp(currentRot, targetRot, smoothSpeed * dt);
+            currentRot = Quaternion.Slerp(currentRot, targetRot, 40 * dt);
             meshTransform.localRotation = currentRot * baseRotation;
         }
-    }
-
-    public void MouseExit()
-    {
-        outlineControl.Enable = 0f;
-
-        meshTransform.DOLocalRotateQuaternion(baseRotation, 0.3f);
-        currentTilt = 0f;
-        currentRot = Quaternion.identity;
     }
 
     private bool TryGetMouseWorldPosition(out Vector3 worldPos)
@@ -105,4 +119,3 @@ public class ChipFlick : MonoBehaviour, IMouseEnter, IMouseStay, IMouseExit
         return false;
     }
 }
-

@@ -19,45 +19,55 @@ public class ChipView : MonoBehaviour
     [SerializeField] private ChipInit chipInit;
     [SerializeField] private Transform chipContainer;
 
-    [HideInInspector] public Dictionary<GameObject, int> chipsInTray = new Dictionary<GameObject, int>();
-    [HideInInspector] public List<GameObject> chipsPlaced = new List<GameObject>();
+    [HideInInspector] public Dictionary<int, GameObject> chipsInTray = new Dictionary<int, GameObject>();
+    [HideInInspector] public Dictionary<int, GameObject> chipsPlaced = new Dictionary<int, GameObject>();
 
     private void Start()
     {
         chipContainer.Rotate(Vector3.forward, 180);
     }
 
-    public void StartGame()
+    public void StartGame(bool isOpponent)
     {
-        GenerateChips(6);
+        chipInit.GenerateChips(6, isOpponent, ref chipsInTray);
         chipContainer.DORotate(new Vector3(0, 0, 180f), 0.5f, RotateMode.LocalAxisAdd).SetEase(Ease.OutBack);
     }
 
-    public void GenerateChips(int count)
+    public void GenerateChips(int count, bool isOpponent)
     {
-        chipInit.GenerateChips(count, ref chipsInTray);
+        chipInit.GenerateChips(count, isOpponent, ref chipsInTray);
     }
 
     public void DestroyChipsPlaced()
     {
-        foreach (GameObject obj in chipsPlaced)
+        foreach (var obj in chipsPlaced.Values)
+        {
             Destroy(obj);
+        }
         chipsPlaced.Clear();
     }
 
-    public void Place1Bet(GameObject chip)
+    public void ReturnCard(int id, GameObject obj)
     {
-        chipsPlaced.Add(chip);
-        chipsInTray.Remove(chip);
+        chipsPlaced.Remove(id);
+        chipsInTray[id] = obj;
+    }
+
+    public void Place1Bet(int id)
+    {
+        chipsPlaced[id] = chipsInTray[id];
+        chipsInTray.Remove(id);
     }
 
     public IEnumerator Place1BetAuto(bool isOpponent)
     {
         if (chipsInTray.Count < 1) yield break;
 
-        GameObject chip = chipsInTray.Keys.Last();
-        chipsPlaced.Add(chip);
-        chipsInTray.Remove(chip);
+        int id = chipsInTray.Keys.Last();
+        GameObject chip = chipsInTray[id];
+
+        chipsPlaced[id] = chipsInTray[id];
+        chipsInTray.Remove(id);
 
         Rigidbody rb = chip.GetComponentInChildren<Rigidbody>();
         Collider col = chip.transform.Find("Model/Chip/default").GetComponent<Collider>();
@@ -70,8 +80,8 @@ public class ChipView : MonoBehaviour
         seq.Append(chip.transform.DOMove(transform.position, 0.5f));
         yield return seq.WaitForCompletion();
 
-        rb.useGravity = true;
-        col.isTrigger = false;
+        ChipController chipController = chip.GetComponentInChildren<ChipController>();
+        chipController.stateMachine.ChangeState(chipController.placedState);
     }
 
     public bool IsOutsideValidArea(Vector3 worldPos)

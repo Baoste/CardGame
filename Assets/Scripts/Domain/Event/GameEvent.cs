@@ -83,9 +83,11 @@ namespace Game.Domain
     /// </summary>
     public class Place1BetEvent : PlayerEvent
     {
-        public Place1BetEvent(int playerId, bool success)
+        public int instanceId;
+        public Place1BetEvent(int playerId, bool success, int instanceId)
             : base(playerId, success)
         {
+            this.instanceId = instanceId;
         }
     }
 

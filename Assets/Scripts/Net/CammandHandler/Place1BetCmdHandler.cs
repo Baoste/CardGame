@@ -7,9 +7,14 @@ public class Place1BetCmdHandler : CommandHandler, ICommandHandler
     public CommandResult Handle(MatchSession session, NetCommand cmd)
     {
         var payload = JsonConvert.DeserializeObject<Place1BetCommand>(cmd.jsonData);  // need change
+        CommandResult results = new CommandResult();
 
         // TODO
         // START
+        int apCount = session.gameState.currentBet / 2 + 1;
+        if (!NetEffectFunction.SpendActionPoint(payload.playerId, payload.instanceId, session, results, apCount))
+            return results;
+
         if (session.gameState.players[1 - payload.playerId].Place1Bet() &&
             session.gameState.players[payload.playerId].Place1Bet())
         {
@@ -18,13 +23,13 @@ public class Place1BetCmdHandler : CommandHandler, ICommandHandler
         // END
 
         // need change
-        CommandResult results = new CommandResult();
         results.events.Enqueue(MakeEvent(
             "Place1Bet",
             new Place1BetEvent
             (
                 payload.playerId,
-                true
+                true,
+                payload.instanceId
             ),
             -1
         ));

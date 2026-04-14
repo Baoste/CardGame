@@ -6,10 +6,14 @@ using UnityEngine;
 
 public class ClickToStartGame : MonoBehaviour, IMouseDown
 {
+    public GameObject startText;
+    public bool isEnabled;
+
     public void MouseDown()
     {
-        if (ClientGameState.Instance.isStart)
+        if (!isEnabled || ClientGameState.Instance.isStart)
             return;
         ClientCommand.StartGame();
+        startText.SetActive(false);
     }
 }

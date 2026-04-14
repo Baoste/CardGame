@@ -16,6 +16,12 @@ public class AssignRolesCmdHandler : CommandHandler, ICommandHandler
         session.gameState.dealerId = dealerId;
         session.gameState.punterId = punterId;
 
+        if (session.gameState.players[1 - payload.playerId].Place1Bet() &&
+            session.gameState.players[payload.playerId].Place1Bet())
+        {
+            session.gameState.currentBet = 1;
+        }
+
         // return
         CommandResult results = new CommandResult();
         results.events.Enqueue(MakeEvent(

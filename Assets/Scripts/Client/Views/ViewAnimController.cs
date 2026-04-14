@@ -50,6 +50,7 @@ public class ViewAnimController : MonoBehaviour
         yield return new WaitForSeconds(delay);
         StartCoroutine(OpenPointCardDeckCover());
         StartCoroutine(OpenChipCover());
+        SceneViewManager.boardView.transform.GetComponentInChildren<ClickToStartGame>().startText.SetActive(true);
     }
 
     public IEnumerator ClosePointCardDeckCover()

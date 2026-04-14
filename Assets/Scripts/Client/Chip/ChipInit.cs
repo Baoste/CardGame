@@ -9,14 +9,16 @@ public class ChipInit : MonoBehaviour
     [SerializeField] private Vector3 instantiatePosition;
     [SerializeField] private float spacing;
 
-    public void GenerateChips(int count, ref Dictionary<GameObject, int> chips)
+    public void GenerateChips(int count, bool isOpponent, ref Dictionary<int, GameObject> chips)
     {
         Vector3 worldPos = transform.TransformPoint(transform.localPosition + instantiatePosition);
+        int baseId = isOpponent ? 600 : 500;
 
         int addCount = 0, i = 0;
         while (addCount < count)
         {
-            if (chips.ContainsValue(i))
+            int k = baseId + i;
+            if (chips.ContainsKey(k))
             {
                 i++;
                 continue;
@@ -24,7 +26,13 @@ public class ChipInit : MonoBehaviour
             GameObject chip = Instantiate(chipPrefab, transform);
             chip.transform.position = worldPos + transform.right * i * spacing;
             chip.transform.rotation = Quaternion.Euler(0, 14.9f, -86f);
-            chips[chip] = i++;
+
+            ChipController chipController = chip.GetComponentInChildren<ChipController>();
+            chipController.instanceId = k;
+            chipController.originalTransform = chip.transform;
+
+            chips[k] = chip;
+            i++;
             addCount++;
         }
     }
