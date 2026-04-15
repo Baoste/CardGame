@@ -570,7 +570,6 @@ MonoBehaviour:
   dragValidArea: {fileID: 124846533}
   chipInit: {fileID: 2071940221}
   chipContainer: {fileID: 1532727566}
-  chipsPlaced: 
 --- !u!65 &124846533
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -6590,7 +6589,6 @@ MonoBehaviour:
   dragValidArea: {fileID: 1086371027}
   chipInit: {fileID: 2002306859}
   chipContainer: {fileID: 1440106551}
-  chipsPlaced: 
 --- !u!1 &1088768160
 GameObject:
   m_ObjectHideFlags: 0
