@@ -12,9 +12,25 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 31b780e492cc3064082aeb76c8e6f088, type: 3}
   m_Name: SharpenPosterizeFeature
   m_EditorClassIdentifier: 
-  m_Active: 1
+  m_Active: 0
   settings:
     material: {fileID: 2100000, guid: 9c5094c370e49ac43a66a2f5a95292f2, type: 2}
+    passEvent: 600
+--- !u!114 &-5390625979352878836
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 309f95f132e80804b89209bf310a743a, type: 3}
+  m_Name: HalftonePostProcessing
+  m_EditorClassIdentifier: 
+  m_Active: 1
+  settings:
+    material: {fileID: 2100000, guid: e38b62ab2e93f1542ab5cd4a4a8e5882, type: 2}
     passEvent: 600
 --- !u!114 &-3349183582968438080
 MonoBehaviour:
@@ -102,9 +118,10 @@ MonoBehaviour:
   m_RendererFeatures:
   - {fileID: -1878332245247344467}
   - {fileID: -3349183582968438080}
+  - {fileID: -5390625979352878836}
   - {fileID: -5820600313286143072}
   - {fileID: -533100069448373991}
-  m_RendererFeatureMap: adc0de57c6d2eee5c0a298a9464f85d1a0530d9bda1239af1929cbb24f0c9af8
+  m_RendererFeatureMap: adc0de57c6d2eee5c0a298a9464f85d10cf1ad873ba630b5a0530d9bda1239af1929cbb24f0c9af8
   m_UseNativeRenderPass: 0
   postProcessData: {fileID: 11400000, guid: 41439944d30ece34e96484bdb6645b55, type: 2}
   xrSystemData: {fileID: 11400000, guid: 60e1133243b97e347b653163a8c01b64, type: 2}
@@ -142,7 +159,7 @@ MonoBehaviour:
     failOperation: 0
     zFailOperation: 0
   m_ShadowTransparentReceive: 1
-  m_RenderingMode: 0
+  m_RenderingMode: 1
   m_DepthPrimingMode: 0
   m_CopyDepthMode: 0
   m_AccurateGbufferNormals: 0
