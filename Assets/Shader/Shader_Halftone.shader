@@ -102,12 +102,12 @@ Shader "Unlit/Shader_Halftone"
                 uv += float2(0.5, 0.5);
 
                 float2 uv2 = 2 * frac(uv * _Freq) - 1;
-                // uv2.y = 0;
+                //uv2.y = 0;
 
                 float dist = length(uv2);
                 float width = 0.01;
                 float ss = smoothstep(radius-width, radius+width, dist);
-                //halftoneColor = lerp(bgColor, halftoneColor, radius/16);
+                halftoneColor = lerp(bgColor, halftoneColor, radius/16);
                 return lerp(halftoneColor, bgColor, ss);
             }
 
@@ -164,7 +164,7 @@ Shader "Unlit/Shader_Halftone"
                 }
 
                 float radius = smoothstep(0.0, 0.12, all_atten) * _Radius;
-                half4 col = half4(CalcHalftone(sample_uv, all_lightColor, color, radius), 1);
+                half4 col = half4(CalcHalftone(sample_uv, all_lightColor * _HalftoneColor, color, radius), 1);
                 return col;
             }
 
