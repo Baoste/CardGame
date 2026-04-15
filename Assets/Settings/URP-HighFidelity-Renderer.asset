@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 31b780e492cc3064082aeb76c8e6f088, type: 3}
   m_Name: SharpenPosterizeFeature
   m_EditorClassIdentifier: 
-  m_Active: 0
+  m_Active: 1
   settings:
     material: {fileID: 2100000, guid: 9c5094c370e49ac43a66a2f5a95292f2, type: 2}
     passEvent: 600
@@ -159,7 +159,7 @@ MonoBehaviour:
     failOperation: 0
     zFailOperation: 0
   m_ShadowTransparentReceive: 1
-  m_RenderingMode: 1
+  m_RenderingMode: 0
   m_DepthPrimingMode: 0
   m_CopyDepthMode: 0
   m_AccurateGbufferNormals: 0

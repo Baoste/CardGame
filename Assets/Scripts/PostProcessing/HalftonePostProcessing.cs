@@ -13,12 +13,12 @@ public class HalftonePostProcessing : ScriptableRendererFeature
         public RenderPassEvent passEvent = RenderPassEvent.AfterRenderingPostProcessing;
     }
 
-    class SharpenPosterizePass : ScriptableRenderPass
+    class HalftonePass : ScriptableRenderPass
     {
         private Material material;
         private RTHandle tempRT;
 
-        public SharpenPosterizePass(Material material, RenderPassEvent passEvent)
+        public HalftonePass(Material material, RenderPassEvent passEvent)
         {
             this.material = material;
             this.renderPassEvent = passEvent;
@@ -45,6 +45,7 @@ public class HalftonePostProcessing : ScriptableRendererFeature
 
             Blitter.BlitCameraTexture(cmd, cameraColorTarget, tempRT);
             Blitter.BlitCameraTexture(cmd, tempRT, cameraColorTarget, material, 0);
+            material.SetInt("_LightsCount", renderingData.lightData.additionalLightsCount);
 
             context.ExecuteCommandBuffer(cmd);
             CommandBufferPool.Release(cmd);
@@ -57,11 +58,11 @@ public class HalftonePostProcessing : ScriptableRendererFeature
     }
 
     public Settings settings = new Settings();
-    private SharpenPosterizePass pass;
+    private HalftonePass pass;
 
     public override void Create()
     {
-        pass = new SharpenPosterizePass(settings.material, settings.passEvent);
+        pass = new HalftonePass(settings.material, settings.passEvent);
     }
 
     public override void AddRenderPasses(ScriptableRenderer renderer, ref RenderingData renderingData)

@@ -6,6 +6,7 @@ Shader "Unlit/Shader_Halftone"
         _HalftoneColor ("Halftone Color", Color) = (1,1,1,1)
         _Radius ("Radius", float) = 0.5
         _Freq ("Frequency of halftone", float) = 5
+        _LightsCount ("Lights Count", float) = 5
     }
     SubShader
     {
@@ -28,9 +29,6 @@ Shader "Unlit/Shader_Halftone"
             #pragma fragment frag
 
             // ∂ÓÕ‚π‚
-            #pragma multi_compile _ _ADDITIONAL_LIGHTS
-            #pragma multi_compile _ _ADDITIONAL_LIGHT_SHADOWS
-
             #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Core.hlsl"
             #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Lighting.hlsl"
             #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/DeclareDepthTexture.hlsl"
@@ -38,12 +36,8 @@ Shader "Unlit/Shader_Halftone"
             TEXTURE2D_X(_BlitTexture);
             SAMPLER(sampler_BlitTexture);
 
-            TEXTURE2D(_GBuffer0);
-            SAMPLER(sampler_GBuffer0);
-            TEXTURE2D(_GBuffer1);
-            SAMPLER(sampler_GBuffer1);
-            TEXTURE2D(_GBuffer2);
-            SAMPLER(sampler_GBuffer2);
+            TEXTURE2D(_CameraNormalsTexture);
+            SAMPLER(sampler_CameraNormalsTexture);
 
             CBUFFER_START(UnityPerMaterial)
                 float4 _BaseColor;
@@ -51,6 +45,7 @@ Shader "Unlit/Shader_Halftone"
                 float4 _BaseMap_ST;
                 float _Radius;
                 float _Freq;
+                float _LightsCount;
             CBUFFER_END
 
             TEXTURE2D(_BaseMap);
@@ -76,17 +71,11 @@ Shader "Unlit/Shader_Halftone"
                 o.positionCS = float4(uv * 2.0 - 1.0, 0.0, 1.0);
                 o.uv = uv;
 
-                #if UNITY_UV_STARTS_AT_TOP
+            #if UNITY_UV_STARTS_AT_TOP
                 o.uv.y = 1.0 - o.uv.y;
-                #endif
+            #endif
 
                 return o;
-            }
-
-            float3 GetWorldNormalFromScreenUV(float2 screenUV)
-            {
-                float4 g2 = SAMPLE_TEXTURE2D(_GBuffer2, sampler_GBuffer2, screenUV);
-                return normalize(g2.xyz);
             }
 
             float3 GetWorldPosFromScreenUV(float2 screenUV)
@@ -118,13 +107,13 @@ Shader "Unlit/Shader_Halftone"
                 float dist = length(uv2);
                 float width = 0.01;
                 float ss = smoothstep(radius-width, radius+width, dist);
-                halftoneColor = lerp(bgColor, halftoneColor, radius/16);
+                //halftoneColor = lerp(bgColor, halftoneColor, radius/16);
                 return lerp(halftoneColor, bgColor, ss);
             }
 
             half4 frag (v2f i) : SV_Target
             {
-                float3 normalWS = GetWorldNormalFromScreenUV(i.uv);
+                float3 normalWS = SAMPLE_TEXTURE2D(_CameraNormalsTexture, sampler_CameraNormalsTexture, i.uv);
                 float3 worldPos = GetWorldPosFromScreenUV(i.uv);
                 float3 absN = abs(normalWS);
 
@@ -151,20 +140,10 @@ Shader "Unlit/Shader_Halftone"
                 float all_atten = 0;
                 half3 all_lightColor = half3(0,0,0);
 
-                //float4 g0 = SAMPLE_TEXTURE2D(_GBuffer0, sampler_GBuffer0, i.uv);
-                //float4 g1 = SAMPLE_TEXTURE2D(_GBuffer1, sampler_GBuffer1, i.uv);
-                //float4 g2 = SAMPLE_TEXTURE2D(_GBuffer2, sampler_GBuffer2, i.uv);
-                //float3 albedo = g0.rgb;
-                //float3 specularOrMetallic = g1.rgb;
-                //float occlusion = g1.a;
-                //float smoothness = g2.a;
-
-            #ifdef _ADDITIONAL_LIGHTS
                 uint excludeMask = 1u << 1;   // π˝¬ÀµÙ Rendering Layer n
-                uint lightCount = GetAdditionalLightsCount();
-                for (uint i = 0; i < lightCount; i++)
+                for (uint i = 0; i < _LightsCount; i++)
                 {
-                    Light light = GetAdditionalLight(i, worldPos);
+                    Light light = GetAdditionalPerObjectLight(i, worldPos);
                     if ((light.layerMask & excludeMask) != 0u)
                         continue;
 
@@ -183,9 +162,8 @@ Shader "Unlit/Shader_Halftone"
                     all_lightColor += lightColor * weight;
                     all_atten += weight;
                 }
-            #endif
 
-                float radius = smoothstep(0.0, 0.15, all_atten) * _Radius;
+                float radius = smoothstep(0.0, 0.12, all_atten) * _Radius;
                 half4 col = half4(CalcHalftone(sample_uv, all_lightColor, color, radius), 1);
                 return col;
             }

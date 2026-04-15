@@ -29,7 +29,7 @@ Material:
     - _EnablePosterize: 1
     - _EnableSharpen: 1
     - _LightWeight: 0.537
-    - _PosterizeSteps: 27.128885
+    - _PosterizeSteps: 27.225399
     - _SharpenStrength: 0.172
     m_Colors: []
   m_BuildTextureStacks: []
