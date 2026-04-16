@@ -36,7 +36,7 @@ public class DissolutionController : MonoBehaviour
                 mpb.SetFloat("_DissolutionStrength", dissolveAmount);
                 r.SetPropertyBlock(mpb);
             },
-            1f,                         // 目标值：1
+            1.2f,                         // 目标值：1
             1f / dissolveSpeed          // 时间
         )
         .OnComplete(() =>

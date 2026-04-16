@@ -21,7 +21,7 @@ public class SkillCardController : MonoBehaviour
     [HideInInspector] public SkillCardInstance instance;
     #endregion
 
-    private bool isOpponent;
+    public bool isOpponent { get; private set; }
 
 
     private void Awake()

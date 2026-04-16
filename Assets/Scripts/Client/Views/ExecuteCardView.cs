@@ -3,6 +3,7 @@ using Game.Domain;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static MeshDestroy;
 
 public class ExecuteCardView : MonoBehaviour
 {
@@ -10,6 +11,8 @@ public class ExecuteCardView : MonoBehaviour
     [SerializeField] private Vector3 executePosition;
     [SerializeField] private float fallHeight;
     private Vector3 fallPosition;
+
+    private GameObject executedCard;
 
     private void Start()
     {
@@ -61,6 +64,42 @@ public class ExecuteCardView : MonoBehaviour
         CommandExecutionState<PlayAnimationCommand>.IsDone = true;
         // TODO: Ҫɾȥ
         ClientEffectContext.isExecutingSkillCard = false;
+    }
+
+    public void DestroyCard(GameObject instance)
+    {
+        if (executedCard != null)
+            StartCoroutine(_DestroyCard(instance));
+        else
+            executedCard = instance;
+    }
+
+    public IEnumerator _DestroyCard(GameObject instance)
+    {
+        MeshDestroy mesh = executedCard.GetComponentInChildren<MeshDestroy>();
+        GameObject tmp = mesh.transform.parent.gameObject;
+        mesh.transform.parent.parent = transform.parent.parent;
+
+        List<PartMesh> submeshes = mesh.DestroyMesh(4);
+        Destroy(tmp);
+        Destroy(executedCard);
+
+        Time.timeScale = 0.01f;
+        Time.fixedDeltaTime = 0.02f * Time.timeScale;
+        yield return new WaitForSecondsRealtime(1f);
+        Time.timeScale = 1f;
+        Time.fixedDeltaTime = 0.02f;
+
+        yield return new WaitForSecondsRealtime(1f);
+        Sequence seq = DOTween.Sequence();
+        seq.OnComplete(() =>
+        {
+            foreach (PartMesh part in submeshes)
+                part.GameObject.GetComponent<DissolutionController>().DestroySelf();
+        });
+        yield return seq.WaitForCompletion();
+
+        executedCard = instance;
     }
 
     private void OnDrawGizmos()

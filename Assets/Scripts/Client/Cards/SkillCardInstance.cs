@@ -19,6 +19,9 @@ public class SkillCardInstance : CardInstance
     public MeshRenderer meshRenderer;
     public Material defaultMaterial { get; private set; }
 
+    public GameObject infoPannel;
+    public TMP_Text info;
+
     public Vector3 originalPos;
 
     public void Awake()
@@ -43,12 +46,13 @@ public class SkillCardInstance : CardInstance
         pointText.text = point.ToString();
 
         defaultMaterial = meshRenderer.sharedMaterial;
+
+        infoPannel.SetActive(false);
+        info.text = description;
     }
 
-    public IEnumerator ReturnToHand()
+    public void ShowInfo()
     {
-        ClientEffectContext.isExecutingSkillCard = false;
-        yield return SceneViewManager.myHandView.UpdateCardPositions(0.15f);
-        yield return SceneViewManager.opponentHandView.UpdateCardPositions(0.15f);
+        infoPannel.SetActive(true);
     }
 }
