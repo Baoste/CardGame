@@ -18,7 +18,7 @@ Shader "Custom/DiskShader"
         _RadialNoiseScale ("Radial Noise Scale", Float) = 80
         _RadialNoiseStrength ("Radial Noise Strength", Range(0,1)) = 0.08
 
-        _DissolutionStrength("Dissolution Strength", Range(0,1)) = 0.5
+        _DissolutionStrength("Dissolution Strength", Range(0,1.2)) = 0.5
         [HDR]_EmissionColor("Emission Color", Color) = (2.9, 2.5, 0.01, 0)
     }
 
