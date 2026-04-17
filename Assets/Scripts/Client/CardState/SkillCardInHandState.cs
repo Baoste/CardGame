@@ -26,6 +26,7 @@ public class SkillCardInHandState : SkillCardState
         skillCard.instance.meshRenderer.sharedMaterial = skillCard.instance.defaultMaterial;
         skillCard.outlineControl.OutlineColor = skillCard.outlineControl.defaultColor;
         skillCard.transform.localScale = Vector3.one * skillCard.instance.localScaleFactor;
+        CameraMouseLook.Locked = false;
     }
 
     public override void FixedUpdate()
@@ -47,6 +48,7 @@ public class SkillCardInHandState : SkillCardState
     public override void OnMouseEnter()
     {
         base.OnMouseEnter();
+        if (skillCard.isOpponent) return;
 
         skillCard.outlineControl.Enable = 1f;
         skillCard.transform.DOScale(Vector3.one * skillCard.instance.localScaleFactor * 2.0f, 0.15f);
@@ -62,6 +64,8 @@ public class SkillCardInHandState : SkillCardState
     public override void OnMouseExit()
     {
         base.OnMouseExit();
+        if (skillCard.isOpponent) return;
+
         skillCard.outlineControl.Enable = 0f;
         skillCard.transform.DOScale(Vector3.one * skillCard.instance.localScaleFactor, 0.15f);
 

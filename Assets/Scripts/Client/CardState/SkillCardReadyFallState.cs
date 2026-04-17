@@ -10,11 +10,13 @@ public class SkillCardReadyFallState : SkillCardState
     public override void Enter()
     {
         base.Enter();
+        ClientEffectContext.isExecutingSkillCard = true;
         skillCard.MoveToFallPosition();
     }
 
     public override void Exit()
     {
         base.Exit();
+        ClientEffectContext.isExecutingSkillCard = false;
     }
 }

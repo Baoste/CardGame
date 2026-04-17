@@ -26,9 +26,23 @@ public class SkillCardState
     public virtual void Update() { }
     public virtual void FixedUpdate() { }
 
-    public virtual void OnMouseEnter() { }
-    public virtual void OnMouseExit() { }
-    public virtual void OnMouseDown() { }
-    public virtual void OnMouseDrag() { }
-    public virtual void OnMouseUp() { }
+    public virtual void OnMouseEnter() 
+    {
+    }
+
+    public virtual void OnMouseExit()
+    {
+    }
+
+    public virtual void OnMouseDown()
+    {
+    }
+
+    public virtual void OnMouseDrag()
+    {
+    }
+
+    public virtual void OnMouseUp()
+    {
+    }
 }

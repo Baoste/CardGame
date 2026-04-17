@@ -10,7 +10,7 @@ public class ConfirmBetCmdHandler : CommandHandler, ICommandHandler
 
         // TODO
         // START
-        int betCount = session.gameState.currentBet;
+        
         //END
 
         // need change
@@ -20,8 +20,7 @@ public class ConfirmBetCmdHandler : CommandHandler, ICommandHandler
             new ConfirmBetEvent
             (
                 payload.playerId,
-                true,
-                betCount
+                true
             ),
             -1
         ));

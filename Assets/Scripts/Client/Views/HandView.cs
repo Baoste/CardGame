@@ -28,6 +28,7 @@ public class HandView : MonoBehaviour, IViewClear
     [SerializeField] private Transform skillCardsDeck;
     [SerializeField] private Vector3 instantiatePosition;
     [SerializeField] private float dropDistance;
+    [SerializeField] private Light pointLight;
     private Vector3 dropRotation;
     private Vector3 deckOriginalPosition;
 
@@ -92,8 +93,8 @@ public class HandView : MonoBehaviour, IViewClear
 
     private void BindDragComponent(GameObject instance)
     {
-        if (isOpponent)
-            return;
+        //if (isOpponent)
+        //    return;
 
         SkillCardMouseEventHandler hoverCard = instance.AddComponent<SkillCardMouseEventHandler>();
         hoverCard.Init();

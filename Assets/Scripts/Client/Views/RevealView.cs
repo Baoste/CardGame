@@ -44,7 +44,7 @@ public class RevealView : MonoBehaviour, IViewClear
 
     public void ShowButton(bool canClick)
     {
-        // revealButton.transform.DOLocalMove(BtnShowPosition, 0.5f);
+        revealButton.transform.DOLocalMove(BtnShowPosition, 0.5f);
         if (canClick)
         {
             revealButton.GetComponent<RevealButton>().enabled = true;

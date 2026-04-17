@@ -96,11 +96,9 @@ namespace Game.Domain
     /// </summary>
     public class ConfirmBetEvent : PlayerEvent
     {
-        public int betCount;
-        public ConfirmBetEvent(int playerId, bool success, int betCount)
+        public ConfirmBetEvent(int playerId, bool success)
             : base(playerId, success)
         {
-            this.betCount = betCount;
         }
     }
 
