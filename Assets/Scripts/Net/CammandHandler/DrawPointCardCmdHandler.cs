@@ -11,14 +11,17 @@ public sealed class DrawPointCardCmdHandler : CommandHandler, ICommandHandler
     {
         // need change
         var payload = JsonConvert.DeserializeObject<DrawPointCardCommand>(cmd.jsonData);
+        CommandResult results = new CommandResult();
 
         // TODO: 服务器端需要做什么
+        if (!NetEffectFunction.SpendActionPoint(payload.playerId, -1, session, results, 1))
+            return results;
+
         int drawCardInstanceId = session.gameState.pointCardsDeck.Draw();
         CardVisualState cardState = session.gameState.GetCardState(drawCardInstanceId);
         session.gameState.AddCard(payload.playerId, session.instanceToCardId[drawCardInstanceId], drawCardInstanceId, CardType.Point, cardState);
 
         // return
-        CommandResult results = new CommandResult();
         results.events.Enqueue(MakeEvent(
             "DrawPointCard",
             new DrawPointCardEvent    // need change

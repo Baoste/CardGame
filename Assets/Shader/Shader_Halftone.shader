@@ -107,7 +107,7 @@ Shader "Unlit/Shader_Halftone"
                 float dist = length(uv2);
                 float width = 0.01;
                 float ss = smoothstep(radius-width, radius+width, dist);
-                halftoneColor = lerp(bgColor, halftoneColor, radius / 16);
+                halftoneColor = lerp(bgColor, halftoneColor, radius / 32);
                 return lerp(halftoneColor, bgColor, ss);
             }
 
