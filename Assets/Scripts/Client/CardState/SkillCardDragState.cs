@@ -27,6 +27,8 @@ public class SkillCardDragState : SkillCardState
     {
         base.Enter();
         baseRotation = meshTransform.localRotation;
+        skillCard.transform.DOKill();
+        skillCard.transform.localScale = Vector3.one * skillCard.instance.localScaleFactor;
     }
 
     public override void Exit()
@@ -45,6 +47,8 @@ public class SkillCardDragState : SkillCardState
     public override void OnMouseDown()
     {
         base.OnMouseDown();
+        if (skillCard.isOpponent) return;
+
         skillCard.transform.DOKill();
 
         if (TryGetMouseWorldPosition(out Vector3 mouseWorld))
@@ -61,6 +65,8 @@ public class SkillCardDragState : SkillCardState
     public override void OnMouseDrag()
     {
         base.OnMouseDrag();
+        if (skillCard.isOpponent) return;
+
         if (TryGetMouseWorldPosition(out Vector3 mouseWorld))
         {
             skillCard.transform.position = mouseWorld;
@@ -115,6 +121,7 @@ public class SkillCardDragState : SkillCardState
     public override void OnMouseUp()
     {
         base.OnMouseUp();
+        if (skillCard.isOpponent) return;
 
         bool shouldRemove = SceneViewManager.myHandView != null && SceneViewManager.myHandView.IsOutsideValidArea(skillCard.transform.position);
         if (shouldRemove)
@@ -125,11 +132,6 @@ public class SkillCardDragState : SkillCardState
         {
             stateMachine.ChangeState(skillCard.inHandState);
         }
-    }
-
-    public override void Update()
-    {
-        base.Update();
     }
 
     private bool TryGetMouseWorldPosition(out Vector3 worldPos)

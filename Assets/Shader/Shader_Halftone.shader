@@ -78,37 +78,6 @@ Shader "Unlit/Shader_Halftone"
                 return o;
             }
 
-            float3 RGB2OKLAB(float3 c)
-            {
-                float l = 0.41222147*c.r + 0.53633254*c.g + 0.05144599*c.b;
-                float m = 0.21190350*c.r + 0.68069955*c.g + 0.10739696*c.b;
-                float s = 0.08830246*c.r + 0.28171884*c.g + 0.62997870*c.b;
-                float3 lms = pow(float3(l,m,s), 1.0/3.0);
-                return float3(
-                    0.21045426*lms.x + 0.79361778*lms.y - 0.00407205*lms.z,
-                    1.97799850*lms.x - 2.42859221*lms.y + 0.45059371*lms.z,
-                    0.02590404*lms.x + 0.78277177*lms.y - 0.80867577*lms.z);
-            }
-
-            float3 OKLAB2RGB(float3 lab)
-            {
-                float L = lab.x, a = lab.y, b = lab.z;
-
-                float l_ = L + 0.3963377774*a + 0.2158037573*b;
-                float m_ = L - 0.1055613458*a - 0.0638541728*b;
-                float s_ = L - 0.0894841775*a - 1.2914855480*b;
-
-                float l = l_*l_*l_;   // cube
-                float m = m_*m_*m_;
-                float s = s_*s_*s_;
-
-                float3 rgb;
-                rgb.r =  4.0767416621*l - 3.3077115913*m + 0.2309699292*s;
-                rgb.g = -1.2684380046*l + 2.6097574011*m - 0.3413193965*s;
-                rgb.b = -0.0041960863*l - 0.7034186147*m + 1.7076147010*s;
-                return rgb;
-            }
-
             float3 GetWorldPosFromScreenUV(float2 screenUV)
             {
                 real depth = SampleSceneDepth(screenUV);
@@ -138,8 +107,7 @@ Shader "Unlit/Shader_Halftone"
                 float dist = length(uv2);
                 float width = 0.01;
                 float ss = smoothstep(radius-width, radius+width, dist);
-                halftoneColor = OKLAB2RGB(lerp(RGB2OKLAB(bgColor), RGB2OKLAB(halftoneColor), radius/4));
-                //halftoneColor = lerp(bgColor, halftoneColor, radius/16);
+                halftoneColor = lerp(bgColor, halftoneColor, radius / 32);
                 return lerp(halftoneColor, bgColor, ss);
             }
 
@@ -194,7 +162,6 @@ Shader "Unlit/Shader_Halftone"
                     all_lightColor += lightColor * weight;
                     all_atten += weight;
                 }
-
                 float radius = smoothstep(0.0, 0.12, all_atten) * _Radius;
                 half4 col = half4(CalcHalftone(sample_uv, all_lightColor * _HalftoneColor, color, radius), 1);
                 return col;

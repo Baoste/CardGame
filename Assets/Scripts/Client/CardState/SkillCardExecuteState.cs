@@ -12,7 +12,6 @@ public class SkillCardExecuteState : SkillCardState
         base.Enter();
         ClientEffectContext.isExecutingSkillCard = true;
         skillCard.MoveToExecutePosition();
-        skillCard.instance.ShowInfo();
 
         ExecuteCardView executeCardView = skillCard.isOpponent ? SceneViewManager.opponentExecuteCardView : SceneViewManager.myExecuteCardView;
         executeCardView.DestroyCard(skillCard.gameObject);
@@ -22,5 +21,15 @@ public class SkillCardExecuteState : SkillCardState
     {
         base.Exit();
         ClientEffectContext.isExecutingSkillCard = false;
+    }
+
+    public override void OnMouseEnter()
+    {
+        skillCard.instance.ShowInfo();
+    }
+
+    public override void OnMouseExit()
+    {
+        skillCard.instance.HideInfo();
     }
 }

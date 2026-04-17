@@ -234,11 +234,9 @@ public class EventProcessFunction : MonoBehaviour
     }
 
     // parameters[0]: int playerId
-    // parameters[1]: int betCount
     public void ConfirmBetTest(object[] parameters)
     {
         int playerId = (int)parameters[0];
-        int betCount = (int)parameters[1];
 
         //foreach (var obj in SceneViewManager.myChipView.chipsInTray.Keys)
         //{
@@ -252,6 +250,8 @@ public class EventProcessFunction : MonoBehaviour
         StartCoroutine(SceneViewManager.viewAnimController.CloseChipCover());
         if (ClientGameState.Instance.punterId == ClientGameState.playerSlot)
             ClientCommand.StartTurn(ClientGameState.Instance.punterId);
+        //ClientCommand.RevealCardsAndScore();
+
     }
 
     // parameters[0]: int playerId
@@ -589,16 +589,16 @@ public class EventProcessFunction : MonoBehaviour
         {
             // 多余的筹码退回筹码盘
             int returnCount = SceneViewManager.myChipView.chipsPlaced.Count - currentBet;
-            SceneViewManager.myChipView.GenerateChips(returnCount, true);
+            SceneViewManager.myChipView.GenerateChips(returnCount, false);
             // 对方获得筹码
-            SceneViewManager.opponentChipView.GenerateChips(currentBet, false);
+            SceneViewManager.opponentChipView.GenerateChips(currentBet, true);
         }
         else
         {
             // 筹码退回筹码盘
-            SceneViewManager.myChipView.GenerateChips(SceneViewManager.myChipView.chipsPlaced.Count, true);
+            SceneViewManager.myChipView.GenerateChips(SceneViewManager.myChipView.chipsPlaced.Count, false);
             // 获得筹码
-            SceneViewManager.myChipView.GenerateChips(currentBet, true);
+            SceneViewManager.myChipView.GenerateChips(currentBet, false);
         }
         // 销毁筹码
         SceneViewManager.myChipView.DestroyChipsPlaced();

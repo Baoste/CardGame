@@ -11,13 +11,16 @@ public class DrawSkillCardCmdHandler : CommandHandler, ICommandHandler
     {
         // need change
         var payload = JsonConvert.DeserializeObject<DrawSkillCardCommand>(cmd.jsonData);
+        CommandResult results = new CommandResult();
 
         // TODO: 服务器端需要做什么
+        if (!NetEffectFunction.SpendActionPoint(payload.playerId, -1, session, results, 1))
+            return results;
+
         int drawCardInstanceId = session.gameState.skillCardsDeck.Draw();
         session.gameState.AddCard(payload.playerId, session.instanceToCardId[drawCardInstanceId], drawCardInstanceId, CardType.Skill);
 
         // return
-        CommandResult results = new CommandResult();
         results.events.Enqueue(MakeEvent(
             "DrawSkillCard",
             new DrawSkillCardEvent    // need change

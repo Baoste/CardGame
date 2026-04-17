@@ -1,3 +1,4 @@
+using DG.Tweening;
 using Game.Domain;
 using System.Collections;
 using System.Collections.Generic;
@@ -54,5 +55,14 @@ public class SkillCardInstance : CardInstance
     public void ShowInfo()
     {
         infoPannel.SetActive(true);
+        infoPannel.transform.DOKill();
+        infoPannel.transform.DOLocalMoveX(0.6f, 0.3f).SetEase(Ease.OutBack);
+    }
+
+    public void HideInfo()
+    {
+        infoPannel.transform.DOKill();
+        infoPannel.transform.DOLocalMoveX(0f, 0.3f);
+        infoPannel.SetActive(false);
     }
 }
