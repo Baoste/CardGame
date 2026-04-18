@@ -7,4 +7,5 @@ public class SkillCardInDeckState : SkillCardState
     public SkillCardInDeckState(SkillCardStateMachine stateMachine, SkillCardController skillCard, string animatorName) : base(stateMachine, skillCard, animatorName)
     {
     }
+
 }

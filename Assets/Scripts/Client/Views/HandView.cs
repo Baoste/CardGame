@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Splines;
 using DG.Tweening;
+using Game.Domain;
 
 public class HandView : MonoBehaviour, IViewClear
 {
@@ -53,8 +54,9 @@ public class HandView : MonoBehaviour, IViewClear
         skillCardInstances.Add(instance);
         BindDragComponent(instance);
         yield return DrawSkillCardAnimation(instance);
-        // yield return new WaitForSeconds(0.5f);
+
         yield return UpdateCardPositions(0.5f);
+        yield return new WaitForSeconds(0.5f);
 
         SkillCardController sc = instance.GetComponent<SkillCardController>();
         sc.SetIsOpponent(isOpponent);
@@ -100,8 +102,9 @@ public class HandView : MonoBehaviour, IViewClear
         hoverCard.Init();
     }
 
-    private IEnumerator DrawSkillCardAnimation(GameObject instance)
+    public IEnumerator DrawSkillCardAnimation(GameObject instance)
     {
+        ClientEffectContext.isDrawingSkillCard = true;
         // init
         skillCardsDeck.transform.position = deckOriginalPosition + dropRotation * dropDistance;
         instance.transform.position = instantiatePosition;
@@ -116,12 +119,13 @@ public class HandView : MonoBehaviour, IViewClear
         seq.Join(skillCardsDeck.transform.DOLocalMove(deckOriginalPosition, 0.3f).SetEase(Ease.OutBack));
 
         yield return seq.WaitForCompletion();
+        ClientEffectContext.isDrawingSkillCard = false;
     }
 
      public IEnumerator UpdateCardPositions(float duration)
      {
          LayoutCards(duration);
-         yield return new WaitForSeconds(duration);
+         yield break;
      }
 
     private void LayoutCards(float duration)

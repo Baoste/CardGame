@@ -112,6 +112,7 @@ public class BoardView : MonoBehaviour, IViewClear
 
     public IEnumerator CardReady(bool isOpponent, GameObject instance)
     {
+        ClientEffectContext.isDrawingPointCard = true;
         yield return UpdateCardPositionsNormal(isOpponent, true);
 
         float minZ, maxZ, centerZ;
@@ -163,6 +164,8 @@ public class BoardView : MonoBehaviour, IViewClear
         instance.GetComponent<PointCardShake>().CardShake();
         Quaternion targetRotation = instance.transform.rotation * Quaternion.Euler(0, 0.5f, 0);
         instance.transform.DORotateQuaternion(targetRotation, 0.2f);
+
+        ClientEffectContext.isDrawingPointCard = false;
     }
 
     public IEnumerator RemoveCard(GameObject instance)

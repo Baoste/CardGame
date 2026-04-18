@@ -40,55 +40,11 @@ namespace Game.Domain
         public static bool ChooseDone = false;          // 是否已经选好目标了
         public static bool GetServerCtxDone = false;    // 是否已经拿到 EffectContext 的数据了
         public static bool JudgeResult = true;         // 判断结果
-        
-        // 是否已经完成了合法性验证了
-        public static bool _isValidateDone = false;      
-        public static bool IsValidateDone
-        {
-            get
-            {
-                bool value = _isValidateDone;
-                _isValidateDone = false;   // 读取后自动重置
-                return value;
-            }
-            set
-            {
-                _isValidateDone = value;
-            }
-        }
-
-        // 上一个命令是否合法（比如玩家选的目标是否合法）
-        private static bool _isCommandValid = false;
-        public static bool IsCommandValid
-        {
-            get
-            {
-                bool value = _isCommandValid;
-                _isCommandValid = false;   // 读取后自动重置
-                return value;
-            }
-            set
-            {
-                _isCommandValid = value;
-            }
-        }
 
         public static bool isExecutingSkillCard = false;
-        // 是否正在执行技能卡效果（从玩家选好目标到服务器验证通过再到客户端执行完技能卡效果，这段时间都算在内）
-        private static bool _isExecuteDone = false;
-        public static bool IsExecuteDone
-        {
-            get
-            {
-                bool value = _isExecuteDone;
-                _isExecuteDone = false;   // 读取后自动重置
-                return value;
-            }
-            set
-            {
-                _isExecuteDone = value;
-            }
-        }
+        public static bool isDrawingPointCard = false;
+        public static bool isDrawingSkillCard = false;
+
         public static EffectContext Instance = new EffectContext();
     }
 }
