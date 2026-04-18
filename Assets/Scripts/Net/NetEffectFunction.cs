@@ -192,6 +192,19 @@ namespace Game.Domain
             }
         }
 
+        public static bool ValidSkillCardCount(int playerId, int instanceId, MatchSession session, CommandResult results)
+        {
+            if (session.gameState.players[playerId].skillCardsInHand.GetCount() <= 6)
+            {
+                return true;
+            }
+            else
+            {
+                SendInvalidEvent(playerId, instanceId, results, InvalidActionType.SkillCardCountFull);
+                return false;
+            }
+        }
+
         public static void SendInvalidEvent(int playerId, int instanceId, CommandResult results, InvalidActionType type)
         {
             results.events.Enqueue(CommandHandler.MakeEvent(

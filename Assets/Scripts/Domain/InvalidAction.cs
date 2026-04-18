@@ -6,5 +6,7 @@ namespace Game.Domain
         InvalidTarget,
         NotEnoughAP,
         NoCardToDraw,
+        SkillCardCountFull,
+        SkillCardCountEmpty
     }
 }

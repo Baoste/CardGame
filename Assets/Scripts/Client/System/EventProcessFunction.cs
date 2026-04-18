@@ -142,6 +142,14 @@ public class EventProcessFunction : MonoBehaviour
             case InvalidActionType.NoCardToDraw:
                 // 显示无牌可抽提示
                 break;
+            case InvalidActionType.SkillCardCountFull:
+                // 显示手牌满了
+                break;
+            case InvalidActionType.SkillCardCountEmpty:
+                // 显示没有技能牌了
+                break;
+            default:
+                break;
         }
     }
 
@@ -217,8 +225,9 @@ public class EventProcessFunction : MonoBehaviour
         bool isOpponent = playerId != ClientGameState.playerSlot;
         if (isOpponent)
         {
-            StartCoroutine(SceneViewManager.myChipView.Place1BetAuto(false));
+            // StartCoroutine(SceneViewManager.myChipView.Place1BetAuto(false));
             StartCoroutine(SceneViewManager.opponentChipView.Place1BetAuto(true));
+            StartCoroutine(SceneViewManager.viewAnimController.ChooseCallOrFold());
         }
         else
         {
@@ -228,7 +237,7 @@ public class EventProcessFunction : MonoBehaviour
             {
                 script.enabled = false;
             }
-            StartCoroutine(SceneViewManager.opponentChipView.Place1BetAuto(true));
+            // StartCoroutine(SceneViewManager.opponentChipView.Place1BetAuto(true));
             SceneViewManager.myChipView.Place1Bet(instanceId);
         }
     }
@@ -237,6 +246,8 @@ public class EventProcessFunction : MonoBehaviour
     public void ConfirmBetTest(object[] parameters)
     {
         int playerId = (int)parameters[0];
+
+        StartCoroutine(SceneViewManager.myChipView.Place1BetAuto(true));
 
         //foreach (var obj in SceneViewManager.myChipView.chipsInTray.Keys)
         //{
@@ -247,9 +258,9 @@ public class EventProcessFunction : MonoBehaviour
         //    }
         //}
 
-        StartCoroutine(SceneViewManager.viewAnimController.CloseChipCover());
-        if (ClientGameState.Instance.punterId == ClientGameState.playerSlot)
-            ClientCommand.StartTurn(ClientGameState.Instance.punterId);
+        //StartCoroutine(SceneViewManager.viewAnimController.CloseChipCover());
+        //if (ClientGameState.Instance.punterId == ClientGameState.playerSlot)
+        //    ClientCommand.StartTurn(ClientGameState.Instance.punterId);
         //ClientCommand.RevealCardsAndScore();
 
     }

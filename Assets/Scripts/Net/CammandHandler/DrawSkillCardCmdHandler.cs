@@ -14,6 +14,17 @@ public class DrawSkillCardCmdHandler : CommandHandler, ICommandHandler
         CommandResult results = new CommandResult();
 
         // TODO: 服务器端需要做什么
+        // 如果牌堆空了，返回错误事件
+        if (session.gameState.skillCardsDeck.GetCount() <= 0)
+        {
+            NetEffectFunction.SendInvalidEvent(payload.playerId, -1, results, InvalidActionType.SkillCardCountEmpty);
+            return results;
+        }
+
+        // 如果玩家手牌满了，返回错误事件
+        if (!NetEffectFunction.ValidSkillCardCount(payload.playerId, -1, session, results))
+            return results;
+
         if (!NetEffectFunction.SpendActionPoint(payload.playerId, -1, session, results, 1))
             return results;
 

@@ -60,6 +60,7 @@ namespace Game.Domain
     public class ConfirmBetCommand : ICommand
     {
         public int playerId;
+        public bool isCall;
     }
 
     /// <summary>
