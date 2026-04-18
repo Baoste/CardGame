@@ -297,6 +297,9 @@ public class BoardView : MonoBehaviour, IViewClear
             float during = Mathf.Abs(card.transform.position.x - targetPos.x);
             during = Mathf.Max(0.25f, during * 1.7f);
             card.transform.DOMove(targetPos, during).SetEase(Ease.OutCubic);
+
+            Quaternion targetRotation = card.transform.rotation * Quaternion.Euler(0, 0.5f, 0);
+            card.transform.DORotateQuaternion(targetRotation, 0.2f);
         }
     }
 

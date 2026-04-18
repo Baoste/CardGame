@@ -4,8 +4,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ClickToDrawSkillCard : MonoBehaviour, IMouseClick
+public class ClickToDrawSkillCard : MonoBehaviour, IMouseClick, IMouseEnter, IMouseExit
 {
+    [SerializeField] private Light pointLight;
+
     public void MouseClick()
     {
         if (ClientEffectContext.isExecutingSkillCard) return;
@@ -19,6 +21,18 @@ public class ClickToDrawSkillCard : MonoBehaviour, IMouseClick
         {
             StartCoroutine(DrawSkillCard());
         }
+    }
+
+    public void MouseEnter()
+    {
+        if (ClientEffectContext.isExecutingSkillCard) return;
+        if (ClientGameState.playerSlot != ClientGameState.Instance.CurrentPlayerId) return;
+        pointLight.color = Color.green;
+    }
+
+    public void MouseExit()
+    {
+        pointLight.color = Color.white;
     }
 
     private IEnumerator DrawSkillCard()
