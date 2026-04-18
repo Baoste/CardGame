@@ -1,5 +1,6 @@
 using Game.Domain;
 using Newtonsoft.Json;
+using System.Collections;
 using UnityEngine;
 
 public static class ClientCommand
@@ -31,10 +32,11 @@ public static class ClientCommand
         ClientGameState.gateway.SendCommandServerRpc("StartMatch", JsonConvert.SerializeObject(cmd));
     }
 
-    public static void StartGame()
+    public static IEnumerator StartGame()
     {
         StartGameCommand cmd = new StartGameCommand { playerId = ClientGameState.playerSlot};
         ClientGameState.gateway.SendCommandServerRpc("StartGame", JsonConvert.SerializeObject(cmd));
+        yield return new WaitForSecondsRealtime(8f);
         AssignRolesCommand cmd2 = new AssignRolesCommand { playerId = ClientGameState.playerSlot };
         ClientGameState.gateway.SendCommandServerRpc("AssignRoles", JsonConvert.SerializeObject(cmd2));
     }

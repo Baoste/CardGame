@@ -8,6 +8,7 @@
         "startAP": 2
     },
     "StartGame": {
-        "startSkillCardCount": 4
+        "startSkillCardCount": 4,
+        "maxSkillCardCount": 7
     }
 }

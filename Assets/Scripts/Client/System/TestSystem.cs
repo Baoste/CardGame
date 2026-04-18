@@ -140,5 +140,11 @@ public class TestSystem : MonoBehaviour
         {
             SceneViewManager.myTurnLightView.SetLight(++turn);
         }
+
+        // ²âÊÔ×¯ÏÐ
+        if (Input.GetKeyDown(KeyCode.D))
+        {
+            SceneViewManager.roleView.ShowRole(ClientGameState.playerSlot);
+        }
     }
 }

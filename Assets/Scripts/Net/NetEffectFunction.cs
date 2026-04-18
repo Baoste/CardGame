@@ -194,7 +194,8 @@ namespace Game.Domain
 
         public static bool ValidSkillCardCount(int playerId, int instanceId, MatchSession session, CommandResult results)
         {
-            if (session.gameState.players[playerId].skillCardsInHand.GetCount() <= 6)
+            int maxCardCount = GameConfigLoader.Config.StartGame.maxSkillCardCount;
+            if (session.gameState.players[playerId].skillCardsInHand.GetCount() < maxCardCount)
             {
                 return true;
             }

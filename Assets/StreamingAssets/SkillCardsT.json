@@ -87,81 +87,6 @@
       ]
     },
     {
-      "id": 1104,
-      "name": "孤注一掷",
-      "description": "丢弃所有点数牌，重新抽三张点数牌",
-      "point": 2,
-      "type": 1,
-      "count": 2,
-      "effects": [
-        {
-          "type": 3,
-          "trueNode": 1,
-          "falseNode": -1,
-          "source": {
-            "participantType": 0,
-            "filter": {
-              "$type": "Game.Domain.NoneCondition, Assembly-CSharp"
-            },
-            "participantSelectionMode": {
-              "$type": "SelectionModeNone, Assembly-CSharp"
-            },
-            "maxSelectCount": {
-              "$type": "Game.Domain.NoneValue, Assembly-CSharp"
-            }
-          },
-          "target": {
-            "participantType": 4,
-            "filter": {
-              "$type": "Game.Domain.AllCondition, Assembly-CSharp"
-            },
-            "participantSelectionMode": {
-              "$type": "SelectionModeAll, Assembly-CSharp"
-            },
-            "maxSelectCount": {
-              "$type": "Game.Domain.NoneValue, Assembly-CSharp"
-            }
-          },
-          "value": {
-            "$type": "Game.Domain.NoneValue, Assembly-CSharp"
-          }
-        },
-        {
-          "type": 0,
-          "trueNode": -1,
-          "falseNode": -1,
-          "source": {
-            "participantType": 0,
-            "filter": {
-              "$type": "Game.Domain.NoneCondition, Assembly-CSharp"
-            },
-            "participantSelectionMode": {
-              "$type": "SelectionModeNone, Assembly-CSharp"
-            },
-            "maxSelectCount": {
-              "$type": "Game.Domain.NoneValue, Assembly-CSharp"
-            }
-          },
-          "target": {
-            "participantType": 0,
-            "filter": {
-              "$type": "Game.Domain.NoneCondition, Assembly-CSharp"
-            },
-            "participantSelectionMode": {
-              "$type": "SelectionModeNone, Assembly-CSharp"
-            },
-            "maxSelectCount": {
-              "$type": "Game.Domain.NoneValue, Assembly-CSharp"
-            }
-          },
-          "value": {
-            "$type": "Game.Domain.ConstValue, Assembly-CSharp",
-            "value": 2
-          }
-        }
-      ]
-    },
-    {
       "id": 1107,
       "name": "掠运",
       "description": "猜单双，猜中后弃置对手的一张点数牌",
@@ -318,49 +243,6 @@
           "value": {
             "$type": "Game.Domain.ConstValue, Assembly-CSharp",
             "value": 3
-          }
-        }
-      ]
-    },
-    {
-      "id": 1205,
-      "name": "点数掠夺",
-      "description": "将对手的一张点数牌抢给自己",
-      "point": 2,
-      "type": 1,
-      "count": 2,
-      "effects": [
-        {
-          "type": 5,
-          "trueNode": -1,
-          "falseNode": -1,
-          "source": {
-            "participantType": 8,
-            "filter": {
-              "$type": "Game.Domain.AllCondition, Assembly-CSharp"
-            },
-            "participantSelectionMode": {
-              "$type": "SelectionModeChoose, Assembly-CSharp"
-            },
-            "maxSelectCount": {
-              "$type": "Game.Domain.ConstValue, Assembly-CSharp",
-              "value": 1
-            }
-          },
-          "target": {
-            "participantType": 128,
-            "filter": {
-              "$type": "Game.Domain.NoneCondition, Assembly-CSharp"
-            },
-            "participantSelectionMode": {
-              "$type": "SelectionModeNone, Assembly-CSharp"
-            },
-            "maxSelectCount": {
-              "$type": "Game.Domain.NoneValue, Assembly-CSharp"
-            }
-          },
-          "value": {
-            "$type": "Game.Domain.NoneValue, Assembly-CSharp"
           }
         }
       ]
@@ -610,7 +492,7 @@
       "description": "丢弃任意一方的一张随机点数牌",
       "point": 1,
       "type": 1,
-      "count": 12,
+      "count": 2,
       "effects": [
         {
           "type": 2,
@@ -751,6 +633,81 @@
           },
           "value": {
             "$type": "Game.Domain.NoneValue, Assembly-CSharp"
+          }
+        }
+      ]
+    },
+    {
+      "id": 1104,
+      "name": "孤注一掷",
+      "description": "丢弃所有点数牌，重新抽三张点数牌",
+      "point": 2,
+      "type": 1,
+      "count": 2,
+      "effects": [
+        {
+          "type": 3,
+          "trueNode": 1,
+          "falseNode": -1,
+          "source": {
+            "participantType": 0,
+            "filter": {
+              "$type": "Game.Domain.NoneCondition, Assembly-CSharp"
+            },
+            "participantSelectionMode": {
+              "$type": "SelectionModeNone, Assembly-CSharp"
+            },
+            "maxSelectCount": {
+              "$type": "Game.Domain.NoneValue, Assembly-CSharp"
+            }
+          },
+          "target": {
+            "participantType": 4,
+            "filter": {
+              "$type": "Game.Domain.AllCondition, Assembly-CSharp"
+            },
+            "participantSelectionMode": {
+              "$type": "SelectionModeAll, Assembly-CSharp"
+            },
+            "maxSelectCount": {
+              "$type": "Game.Domain.NoneValue, Assembly-CSharp"
+            }
+          },
+          "value": {
+            "$type": "Game.Domain.NoneValue, Assembly-CSharp"
+          }
+        },
+        {
+          "type": 0,
+          "trueNode": -1,
+          "falseNode": -1,
+          "source": {
+            "participantType": 0,
+            "filter": {
+              "$type": "Game.Domain.NoneCondition, Assembly-CSharp"
+            },
+            "participantSelectionMode": {
+              "$type": "SelectionModeNone, Assembly-CSharp"
+            },
+            "maxSelectCount": {
+              "$type": "Game.Domain.NoneValue, Assembly-CSharp"
+            }
+          },
+          "target": {
+            "participantType": 0,
+            "filter": {
+              "$type": "Game.Domain.NoneCondition, Assembly-CSharp"
+            },
+            "participantSelectionMode": {
+              "$type": "SelectionModeNone, Assembly-CSharp"
+            },
+            "maxSelectCount": {
+              "$type": "Game.Domain.NoneValue, Assembly-CSharp"
+            }
+          },
+          "value": {
+            "$type": "Game.Domain.ConstValue, Assembly-CSharp",
+            "value": 3
           }
         }
       ]

@@ -3,7 +3,6 @@ using Game.Domain;
 using Newtonsoft.Json;
 using System.Collections;
 using System.Collections.Generic;
-using TMPro;
 using UnityEngine;
 
 public class EventProcessFunction : MonoBehaviour
@@ -135,6 +134,7 @@ public class EventProcessFunction : MonoBehaviour
         {
             case InvalidActionType.InvalidTarget:
             case InvalidActionType.NotEnoughAP:
+                if (instanceId == -1) break;
                 ClientEffectContext.isExecutingSkillCard = false;
                 PlayAnimationCommand cmd = new PlayAnimationCommand { playerId = playerId, animType = AnimationType.ReturnToHand, instanceId = instanceId };
                 ClientGameState.gateway.SendCommandServerRpc("PlayAnimation", JsonConvert.SerializeObject(cmd));
@@ -171,8 +171,8 @@ public class EventProcessFunction : MonoBehaviour
             }
         }
 
-        StartCoroutine(SceneViewManager.myChipView.Place1BetAuto(false));
-        StartCoroutine(SceneViewManager.opponentChipView.Place1BetAuto(true));
+        StartCoroutine(SceneViewManager.myChipView.Place1BetAuto(false, 1f));
+        StartCoroutine(SceneViewManager.opponentChipView.Place1BetAuto(true, 1f));
 
         if (ClientGameState.Instance.punterId == ClientGameState.playerSlot)
             ClientCommand.StartTurn(ClientGameState.Instance.punterId);
@@ -226,7 +226,7 @@ public class EventProcessFunction : MonoBehaviour
         if (isOpponent)
         {
             // StartCoroutine(SceneViewManager.myChipView.Place1BetAuto(false));
-            StartCoroutine(SceneViewManager.opponentChipView.Place1BetAuto(true));
+            StartCoroutine(SceneViewManager.opponentChipView.Place1BetAuto(true, 0));
             StartCoroutine(SceneViewManager.viewAnimController.ChooseCallOrFold());
         }
         else
@@ -247,7 +247,7 @@ public class EventProcessFunction : MonoBehaviour
     {
         int playerId = (int)parameters[0];
 
-        StartCoroutine(SceneViewManager.myChipView.Place1BetAuto(true));
+        StartCoroutine(SceneViewManager.myChipView.Place1BetAuto(true, 0));
 
         //foreach (var obj in SceneViewManager.myChipView.chipsInTray.Keys)
         //{

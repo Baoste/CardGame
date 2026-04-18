@@ -23,5 +23,6 @@ namespace Game.Domain
     public class StartGameConfig
     {
         public int startSkillCardCount;
+        public int maxSkillCardCount;
     }
 }

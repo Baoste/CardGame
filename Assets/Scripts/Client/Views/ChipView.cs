@@ -59,9 +59,11 @@ public class ChipView : MonoBehaviour
         chipsInTray.Remove(id);
     }
 
-    public IEnumerator Place1BetAuto(bool isOpponent)
+    public IEnumerator Place1BetAuto(bool isOpponent, float delay)
     {
         if (chipsInTray.Count < 1) yield break;
+
+        yield return new WaitForSecondsRealtime(delay);
 
         int id = chipsInTray.Keys.Last();
         GameObject chip = chipsInTray[id];

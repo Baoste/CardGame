@@ -28,10 +28,13 @@ public class ClickToDrawSkillCard : MonoBehaviour, IMouseClick, IMouseEnter, IMo
 
     public void MouseEnter()
     {
-        if (ClientEffectContext.isExecutingSkillCard || ClientEffectContext.isDrawingSkillCard) return;
-        if (ClientGameState.playerSlot != ClientGameState.Instance.CurrentPlayerId) return;
+        if (ClientEffectContext.isExecutingSkillCard || ClientEffectContext.isDrawingSkillCard ||
+            ClientGameState.playerSlot != ClientGameState.Instance.CurrentPlayerId)
+        {
+            pointLight.color = Color.red;
+            return;
+        }
 
-        pointLight.color = Color.green;
         skillCard.DOKill();
 
         Sequence seq = DOTween.Sequence();
@@ -40,10 +43,8 @@ public class ClickToDrawSkillCard : MonoBehaviour, IMouseClick, IMouseEnter, IMo
 
     public void MouseStay()
     {
-        if (ClientEffectContext.isExecutingSkillCard ||
-            ClientEffectContext.isDrawingSkillCard ||
-            ClientGameState.playerSlot != ClientGameState.Instance.CurrentPlayerId
-        )
+        if (ClientEffectContext.isExecutingSkillCard || ClientEffectContext.isDrawingSkillCard ||
+            ClientGameState.playerSlot != ClientGameState.Instance.CurrentPlayerId)
         {
             skillCard.localPosition = new Vector3(-0.003446764f, skillCard.localPosition.y, skillCard.localPosition.z);
         }
