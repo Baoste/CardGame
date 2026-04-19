@@ -200,7 +200,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 699601284007552369}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.17079268, y: 0.07707784, z: -0.013402957, w: 0.98219615}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 1
@@ -208,7 +208,7 @@ Transform:
   - {fileID: 317130330711080027}
   - {fileID: 3357194882057117147}
   m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 19.729, y: 8.974, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &8635554806184183513
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -233,6 +233,11 @@ MonoBehaviour:
   meshRenderer: {fileID: 5301152879564225575}
   infoPannel: {fileID: 8661643317612193541}
   info: {fileID: 4533107169168719811}
+  vfxColors:
+  - {r: 4, g: 4, b: 4, a: 1}
+  - {r: 0.38993645, g: 4, b: 2.1688416, a: 1}
+  - {r: 4, g: 0.33194238, b: 0, a: 1}
+  - {r: 4, g: 4, b: 4, a: 1}
   originalPos: {x: 0, y: 0, z: 0}
 --- !u!114 &8678497515182431490
 MonoBehaviour:

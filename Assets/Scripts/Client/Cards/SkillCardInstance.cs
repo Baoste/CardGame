@@ -18,12 +18,18 @@ public class SkillCardInstance : CardInstance
     public TMP_Text descriptionText;
     public TMP_Text pointText; 
     public MeshRenderer meshRenderer;
-    public Material defaultMaterial { get; private set; }
-
     public GameObject infoPannel;
     public TMP_Text info;
 
+    [Header("Anim")]
+    [ColorUsage(true, true)]
+    public Color[] vfxColors;
+
+    public Material defaultMaterial { get; private set; }
+
     public Vector3 originalPos;
+    public Color vfxColor {  get; private set; }
+
 
     public void Awake()
     {
@@ -50,6 +56,8 @@ public class SkillCardInstance : CardInstance
 
         infoPannel.SetActive(false);
         info.text = description;
+
+        vfxColor = vfxColors[point];
     }
 
     public void ShowInfo()

@@ -39,7 +39,7 @@ public class TestSystem : MonoBehaviour
             //ClientCommand.DrawSkillCard();
             instance1 = CardViewCreator.Instance.CreateCardInstance(1001, 9999);
             StartCoroutine(handView.AddCard(instance1));
-            instance2 = CardViewCreator.Instance.CreateCardInstance(1001, 9999);
+            instance2 = CardViewCreator.Instance.CreateCardInstance(1301, 9998);
             StartCoroutine(ophandView.AddCard(instance2));
         }
 
@@ -144,6 +144,7 @@ public class TestSystem : MonoBehaviour
         // ²âÊÔ×¯ÏÐ
         if (Input.GetKeyDown(KeyCode.D))
         {
+            SceneViewManager.roleView.ShowRole(1-ClientGameState.playerSlot);
             SceneViewManager.roleView.ShowRole(ClientGameState.playerSlot);
         }
     }

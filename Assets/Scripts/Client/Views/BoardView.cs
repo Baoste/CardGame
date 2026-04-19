@@ -5,6 +5,7 @@ using Game.Domain;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Rendering.Universal;
 using static MeshDestroy;
 
 public class BoardView : MonoBehaviour, IViewClear
@@ -35,6 +36,9 @@ public class BoardView : MonoBehaviour, IViewClear
     [SerializeField] private Vector3 selfHoleTargetPosition;
     [SerializeField] private Vector3 opponentHoleTargetPosition;
     [SerializeField] private float fallDistance;
+
+    [Header("Destroy Decal")]
+    [SerializeField] private GameObject decalPrefab;
 
     private readonly List<GameObject> selfCards = new();
     private readonly List<GameObject> opponentCards = new();
@@ -395,6 +399,14 @@ public class BoardView : MonoBehaviour, IViewClear
 
     private IEnumerator DestroyCard(GameObject instance)
     {
+        // up and down and shake
+        Sequence upDownSeq = DOTween.Sequence();
+        upDownSeq.Append(instance.transform.DOMoveY(instance.transform.position.y + 0.15f, 0.4f).SetEase(Ease.OutCubic));
+        upDownSeq.Append(instance.transform.DOMoveY(instance.transform.position.y, 0.05f).SetEase(Ease.InCubic));
+        yield return upDownSeq.WaitForCompletion();
+        impulseSource.GenerateImpulse();
+
+        // mesh destroy
         MeshDestroy mesh = instance.GetComponentInChildren<MeshDestroy>();
         GameObject tmp = mesh.transform.parent.gameObject;
         mesh.transform.parent.parent = transform.parent.parent;
@@ -405,9 +417,13 @@ public class BoardView : MonoBehaviour, IViewClear
         Destroy(tmp);
         Destroy(instance);
 
+        // decal
+        DecalProjector decal = Instantiate(decalPrefab, instance.transform.position, Quaternion.Euler(90, 0, 0)).GetComponent<DecalProjector>();
+
+        // mesh split
         Time.timeScale = 0.01f;
         Time.fixedDeltaTime = 0.02f * Time.timeScale;
-        yield return new WaitForSecondsRealtime(1f);
+        yield return new WaitForSecondsRealtime(0.01f);
         Time.timeScale = 1f;
         Time.fixedDeltaTime = 0.02f;
 
@@ -419,6 +435,11 @@ public class BoardView : MonoBehaviour, IViewClear
                 part.GameObject.GetComponent<DissolutionController>().DestroySelf();
         });
         yield return seq.WaitForCompletion();
+
+        // decal destroy
+        yield return new WaitForSecondsRealtime(4f);
+        DOTween.To(() => decal.fadeFactor, x => decal.fadeFactor = x, 0f, 2f);
+        Destroy(decal.gameObject, 2.5f);
     }
 
     public IEnumerator ShakeCards()

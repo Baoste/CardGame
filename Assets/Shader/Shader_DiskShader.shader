@@ -235,26 +235,26 @@ Shader "Custom/DiskShader"
             ENDHLSL
         }
 
-        pass
-        {
-            Name "ShadowCaster"
-            Tags { "LightMode" = "ShadowCaster" }
+        //pass
+        //{
+        //    Name "ShadowCaster"
+        //    Tags { "LightMode" = "ShadowCaster" }
 
-            ZWrite On
-            ZTest LEqual
-            ColorMask 0
-            Cull[_Cull]
+        //    ZWrite On
+        //    ZTest LEqual
+        //    ColorMask 0
+        //    Cull[_Cull]
 
-            HLSLPROGRAM
-            #pragma vertex ShadowPassVertex
-            #pragma fragment ShadowPassFragment
+        //    HLSLPROGRAM
+        //    #pragma vertex ShadowPassVertex
+        //    #pragma fragment ShadowPassFragment
 
-            #pragma multi_compile_vertex _ _CASTING_PUNCTUAL_LIGHT_SHADOW
+        //    #pragma multi_compile_vertex _ _CASTING_PUNCTUAL_LIGHT_SHADOW
 
-            #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Core.hlsl"
-            #include "Packages/com.unity.render-pipelines.core/ShaderLibrary/CommonMaterial.hlsl"
-            #include "Packages/com.unity.render-pipelines.universal/Shaders/ShadowCasterPass.hlsl"
-            ENDHLSL
-        }
+        //    #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Core.hlsl"
+        //    #include "Packages/com.unity.render-pipelines.core/ShaderLibrary/CommonMaterial.hlsl"
+        //    #include "Packages/com.unity.render-pipelines.universal/Shaders/ShadowCasterPass.hlsl"
+        //    ENDHLSL
+        //}
     }
 }

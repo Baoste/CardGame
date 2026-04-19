@@ -3,6 +3,7 @@ using Game.Domain;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.VFX;
 using static MeshDestroy;
 
 public class ExecuteCardView : MonoBehaviour
@@ -12,10 +13,12 @@ public class ExecuteCardView : MonoBehaviour
     [SerializeField] private float fallHeight;
     private Vector3 fallPosition;
 
+    [SerializeField] private VisualEffect executeVFX;
     private GameObject executedCard;
 
     private void Start()
     {
+        executeVFX.Stop();
         fallPosition = executePosition + transform.up * fallHeight;
     }
 
@@ -25,8 +28,8 @@ public class ExecuteCardView : MonoBehaviour
         Quaternion targetRot = Quaternion.LookRotation(transform.forward, -transform.right);
 
         Sequence seq = DOTween.Sequence();
-        seq.Append(card.transform.DOMove(fallPosition, 0.8f));
-        seq.Join(card.transform.DORotateQuaternion(targetRot, 0.6f));
+        seq.Append(card.transform.DOMove(fallPosition, 0.8f).SetEase(Ease.InOutCubic));
+        seq.Join(card.transform.DORotateQuaternion(targetRot, 0.8f).SetEase(Ease.InOutQuad));
 
         yield return seq.WaitForCompletion();
         CommandExecutionState<PlayAnimationCommand>.IsDone = true;
@@ -34,8 +37,8 @@ public class ExecuteCardView : MonoBehaviour
 
     public IEnumerator MoveToExecutePosition(GameObject card)
     {
-        StartCoroutine(SceneViewManager.myHandView.RemoveCard(card));
-        StartCoroutine(SceneViewManager.opponentHandView.RemoveCard(card));
+        //StartCoroutine(SceneViewManager.myHandView.RemoveCard(card));
+        //StartCoroutine(SceneViewManager.opponentHandView.RemoveCard(card));
 
         Vector3 start = card.transform.position;
         Vector3 dir = (executePosition - start).normalized;     // ³¯ÏÂ
@@ -58,6 +61,11 @@ public class ExecuteCardView : MonoBehaviour
             StartCoroutine(SceneViewManager.boardView.ShakeCards());
         });
         seq.Append(card.transform.DOMove(spingPos, 0.08f).SetEase(Ease.OutCubic));
+        seq.AppendCallback(() =>
+        {
+            executeVFX.SetVector4("Color", card.GetComponent<SkillCardInstance>().vfxColor);
+            executeVFX.Play();
+        });
         seq.Append(card.transform.DOMove(executePosition, 0.04f).SetEase(Ease.InCubic));
 
         yield return seq.WaitForCompletion();
