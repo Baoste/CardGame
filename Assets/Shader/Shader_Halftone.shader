@@ -111,6 +111,25 @@ Shader "Unlit/Shader_Halftone"
                 return lerp(halftoneColor, bgColor, ss);
             }
 
+            float3 CalcHalftone2(float2 uv, float3 halftoneColor, float3 bgColor, float radius)
+            {
+                // rotate 45 degree
+                float angle = 0.78539816339;
+                float s = sin(angle);
+                float c = cos(angle);
+                uv -= float2(0.5, 0.5);
+                uv = float2(uv.x * c - uv.y * s, uv.x * s + uv.y * c);
+                uv += float2(0.5, 0.5);
+
+                float2 uv2 = 2 * frac(uv * _Freq*2) - 1;
+                uv2.y = 0;
+
+                float dist = length(uv2);
+                float width = 0.01;
+                float ss = smoothstep(radius-width, radius+width, dist);
+                return lerp(halftoneColor, bgColor, ss);
+            }
+
             half4 frag (v2f i) : SV_Target
             {
                 float3 normalWS = SAMPLE_TEXTURE2D(_CameraNormalsTexture, sampler_CameraNormalsTexture, i.uv);
@@ -135,6 +154,18 @@ Shader "Unlit/Shader_Halftone"
                 }
 
                 float3 color = SAMPLE_TEXTURE2D_X(_BlitTexture, sampler_BlitTexture, i.uv).rgb;
+
+                // === SSAO shadow ===
+                float ssao = SAMPLE_TEXTURE2D(_ScreenSpaceOcclusionTexture, sampler_ScreenSpaceOcclusionTexture, i.uv).r;
+                float contrast = 2;
+                ssao = (ssao - 0.5) * contrast + 0.5;
+                //return half4(ssao.rrr,1);
+                if (ssao < 1)
+                {
+                    float radius = smoothstep(0, 1, 1-ssao) * _Radius;
+                    half4 col = half4(CalcHalftone2(sample_uv, float3(0,0,0), color, radius), 1);
+                    return col;
+                }
 
                 // ===== 额外光（点光 / 聚光 / 非主方向光）=====
                 float all_atten = 0;

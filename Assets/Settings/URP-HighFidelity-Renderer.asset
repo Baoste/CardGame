@@ -31,7 +31,7 @@ MonoBehaviour:
   m_Active: 1
   settings:
     material: {fileID: 2100000, guid: e38b62ab2e93f1542ab5cd4a4a8e5882, type: 2}
-    passEvent: 600
+    passEvent: 300
 --- !u!114 &-3349183582968438080
 MonoBehaviour:
   m_ObjectHideFlags: 0
