@@ -174,8 +174,8 @@ public class EventProcessFunction : MonoBehaviour
         StartCoroutine(SceneViewManager.myChipView.Place1BetAuto(false, 1f));
         StartCoroutine(SceneViewManager.opponentChipView.Place1BetAuto(true, 1f));
 
-        if (ClientGameState.Instance.punterId == ClientGameState.playerSlot)
-            ClientCommand.StartTurn(ClientGameState.Instance.punterId);
+        if (punterId == ClientGameState.playerSlot)
+            ClientCommand.StartTurn(punterId);
     }
 
     // parameters[0]: int playerId
@@ -247,7 +247,15 @@ public class EventProcessFunction : MonoBehaviour
     {
         int playerId = (int)parameters[0];
 
-        StartCoroutine(SceneViewManager.myChipView.Place1BetAuto(true, 0));
+        bool isOpponent = playerId != ClientGameState.playerSlot;
+        if (isOpponent)
+        {
+            StartCoroutine(SceneViewManager.opponentChipView.Place1BetAuto(true, 0));
+        }
+        else
+        {
+            StartCoroutine(SceneViewManager.myChipView.Place1BetAuto(true, 0));
+        }
 
         //foreach (var obj in SceneViewManager.myChipView.chipsInTray.Keys)
         //{
