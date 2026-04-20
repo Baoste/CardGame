@@ -101,4 +101,12 @@ public class SkillCardController : MonoBehaviour
         else
             StartCoroutine(SceneViewManager.myExecuteCardView.MoveToExecutePosition(gameObject));
     }
+
+    public void RemoveFromHand()
+    {
+        if (isOpponent)
+            StartCoroutine(SceneViewManager.opponentHandView.RemoveCard(gameObject));
+        else
+            StartCoroutine(SceneViewManager.myHandView.RemoveCard(gameObject));
+    }
 }

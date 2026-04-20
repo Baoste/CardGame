@@ -1,4 +1,5 @@
 using DG.Tweening;
+using FishNet.Demo.AdditiveScenes;
 using Game.Domain;
 
 public class SkillCardExecuteState : SkillCardState
@@ -11,6 +12,8 @@ public class SkillCardExecuteState : SkillCardState
     {
         base.Enter();
         ClientEffectContext.isExecutingSkillCard = true;
+
+        skillCard.RemoveFromHand();
         skillCard.MoveToExecutePosition();
 
         ExecuteCardView executeCardView = skillCard.isOpponent ? SceneViewManager.opponentExecuteCardView : SceneViewManager.myExecuteCardView;
