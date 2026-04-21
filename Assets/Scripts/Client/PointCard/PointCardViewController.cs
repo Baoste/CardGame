@@ -1,7 +1,6 @@
 using Game.Domain;
 using System.Collections;
 using System.Collections.Generic;
-using System.Drawing;
 using TMPro;
 using UnityEngine;
 
@@ -19,8 +18,11 @@ public class PointCardViewController : MonoBehaviour
         mpb = new MaterialPropertyBlock();
     }
 
-    public void ChangeCardTexture_None(int point)
+    public IEnumerator ChangeCardTexture_None(int point)
     {
+        GetComponent<PointCardController>().smokeVFX.Play();
+        yield return new WaitForSeconds(0.5f);
+
         pointText.text = point.ToString();
         matRenderer.materials = CardViewCreator.Instance.pointCardStateMatMap.Get(CardVisualState.None);
 

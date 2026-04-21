@@ -67,7 +67,7 @@ public class SkillCardController : MonoBehaviour, IDiscardPresentation
         // Start Executing
         // TODO: 需要广播动画
         PlayAnimationCommand animCmd = new PlayAnimationCommand { playerId = ClientGameState.playerSlot, animType = AnimationType.MoveToFallPosition, instanceId = instance.instanceId };
-        ClientGameState.gateway.SendCommandServerRpc("PlayAnimation", JsonConvert.SerializeObject(animCmd));
+        ClientGameState.gateway.SendCommandServerRpc("PlayAnimation", JsonConvert.SerializeObject(animCmd), 1 - ClientGameState.playerSlot);
 
         // 执行
         StartExecuteSkillCommand cmd = new StartExecuteSkillCommand { playerId = ClientGameState.playerSlot, instanceId = instance.instanceId };

@@ -336,8 +336,7 @@ public class EventProcessFunction : MonoBehaviour
         int targeValue = (int)parameters[1];
 
         GameObject obj = instanceMap[instanceId];
-        obj.GetComponent<PointCardController>().smokeVFX.Play();
-        obj.GetComponent<PointCardViewController>().ChangeCardTexture_None(targeValue);
+        StartCoroutine(obj.GetComponent<PointCardViewController>().ChangeCardTexture_None(targeValue));
     }
 
 
@@ -347,6 +346,18 @@ public class EventProcessFunction : MonoBehaviour
     {
         int playerId = (int)parameters[0];
         List<int> instanceIds = (List<int>)parameters[1];
+
+        if (instanceIds.Count == 1)
+        {
+            foreach (int instanceId in instanceIds)
+            {
+                GameObject obj = instanceMap[instanceId];
+                instanceMap.Remove(instanceId);
+                IDiscardPresentation discardPresentation = obj.GetComponent<IDiscardPresentation>();
+                discardPresentation?.DiscardPlay();
+            }
+            return;
+        }
 
         // 检测有没有都在一边
         bool isOneSide = true;
@@ -360,7 +371,7 @@ public class EventProcessFunction : MonoBehaviour
             }
         }
 
-        if (instanceIds.Count == 1 || !isOneSide)
+        if (!isOneSide)
         {
             foreach (int instanceId in instanceIds)
             {

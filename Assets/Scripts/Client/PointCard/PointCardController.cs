@@ -65,6 +65,13 @@ public class PointCardController : MonoBehaviour, IDiscardPresentation
         stateMachine.ChangeState(discardState);
         // mesh destroy
         MeshDestroy mesh = GetComponentInChildren<MeshDestroy>();
+
+        Renderer r = mesh.GetComponent<Renderer>();
+        MaterialPropertyBlock mpb = new MaterialPropertyBlock();
+        r.GetPropertyBlock(mpb);
+        mpb.SetFloat("_FireTraceFactor", 1);
+        r.SetPropertyBlock(mpb);
+
         GameObject tmp = mesh.transform.parent.gameObject;
         mesh.transform.parent.parent = transform.parent.parent;
 

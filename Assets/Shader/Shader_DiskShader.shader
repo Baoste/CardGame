@@ -6,6 +6,8 @@ Shader "Custom/DiskShader"
         _Mask("Mask", 2D) = "white" {}
         _Mask2("Mask2", 2D) = "white" {}
         _Noise("Noise", 2D) = "white" {}
+        _FireTrace("Fire Trace", 2D) = "black" {}
+        _FireTraceFactor("Fire Trace Factor", Range(0,1)) = 0
 
         _BaseColor ("Base Color", Color) = (0.8, 0.8, 0.8, 1)
         _AlbedoFactor ("Albedo Factor", Range(0,1)) = 0.03
@@ -81,6 +83,7 @@ Shader "Custom/DiskShader"
                 float _Metallic;
                 float _Roughness;
                 float _Anisotropy;
+                float _FireTraceFactor;
 
                 float4 _DiskCenterOS;
                 float _RadialNoiseScale;
@@ -97,6 +100,8 @@ Shader "Custom/DiskShader"
             SAMPLER(sampler_Mask2);
             TEXTURE2D(_Noise);
             SAMPLER(sampler_Noise);
+            TEXTURE2D(_FireTrace);
+            SAMPLER(sampler_FireTrace);
 
             v2f vert(a2v v)
             {
@@ -228,6 +233,9 @@ Shader "Custom/DiskShader"
 
                 half3 color = half3(colorr.r, colorg.g, colorb.b) * half3(0.5, 0.5, 0.2);
                 color += pre.albedo * _AlbedoFactor + subNoise * _EmissionColor;
+
+                half3 fireTrace = SAMPLE_TEXTURE2D(_FireTrace, sampler_FireTrace, i.uv) * 2;
+                color += fireTrace * _FireTraceFactor;
 
                 return half4(color, 1 - mask);
             }

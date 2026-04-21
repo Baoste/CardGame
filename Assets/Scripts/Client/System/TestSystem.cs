@@ -1,7 +1,4 @@
-using FishNet.Demo.AdditiveScenes;
 using Game.Domain;
-using Newtonsoft.Json;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -52,8 +49,10 @@ public class TestSystem : MonoBehaviour
         }
         if (Input.GetKeyDown(KeyCode.M))
         {
-            StartCoroutine(SceneViewManager.myExecuteCardView.MoveToExecutePosition(instance1));
-            StartCoroutine(SceneViewManager.opponentExecuteCardView.MoveToExecutePosition(instance2));
+            //StartCoroutine(SceneViewManager.myExecuteCardView.MoveToExecutePosition(instance1));
+            //StartCoroutine(SceneViewManager.opponentExecuteCardView.MoveToExecutePosition(instance2));
+
+            StartCoroutine(objs.Peek().GetComponent<PointCardViewController>().ChangeCardTexture_None(9));
         }
 
         // ≤‚ ‘ResolveZoneView

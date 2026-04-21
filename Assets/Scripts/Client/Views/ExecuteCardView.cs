@@ -40,6 +40,8 @@ public class ExecuteCardView : MonoBehaviour
 
     public IEnumerator MoveToExecutePosition(GameObject card)
     {
+        card.GetComponent<Outline>().Enable = 0f;
+
         StartCoroutine(SceneViewManager.myHandView.RemoveCard(card));
         StartCoroutine(SceneViewManager.opponentHandView.RemoveCard(card));
 
