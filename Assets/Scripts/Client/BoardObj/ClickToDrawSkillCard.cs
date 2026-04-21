@@ -8,7 +8,6 @@ using UnityEngine;
 
 public class ClickToDrawSkillCard : MonoBehaviour, IMouseClick, IMouseEnter, IMouseExit, IMouseStay
 {
-    [SerializeField] private Light pointLight;
     [SerializeField] private Transform skillCard;
 
     public void MouseClick()
@@ -31,7 +30,6 @@ public class ClickToDrawSkillCard : MonoBehaviour, IMouseClick, IMouseEnter, IMo
         if (ClientEffectContext.isExecutingSkillCard || ClientEffectContext.isDrawingSkillCard ||
             ClientGameState.playerSlot != ClientGameState.Instance.CurrentPlayerId)
         {
-            pointLight.color = Color.red;
             return;
         }
 
@@ -55,7 +53,6 @@ public class ClickToDrawSkillCard : MonoBehaviour, IMouseClick, IMouseEnter, IMo
         if (ClientEffectContext.isExecutingSkillCard || ClientEffectContext.isDrawingSkillCard) return;
         if (ClientGameState.playerSlot != ClientGameState.Instance.CurrentPlayerId) return;
 
-        pointLight.color = Color.white;
         skillCard.DOKill();
 
         Sequence seq = DOTween.Sequence();

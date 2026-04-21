@@ -12,11 +12,11 @@ public class DiscardCardEventHandler : IEventProcess, IEventHandler
     {
         payload = JsonConvert.DeserializeObject<DiscardCardEvent>(ev.jsonData);   // need change
         // need change, 需要把参数在这里传进去
-        ProcessQueueManager.Instance.Enqueue(Process, new object[] { payload.playerId, payload.instanceId, payload.allCount }, 0);
+        ProcessQueueManager.Instance.Enqueue(Process, new object[] { payload.playerId, payload.instanceIds }, 0);
 
         // TODO
         // START
-        string context = $"instanceid:{payload.instanceId.ToString()}";
+        string context = $"instanceid:{payload.instanceIds[0].ToString()}";
         Debug.Log($"[Client] Event#{ev.Index} type={ev.type} slot={payload.playerId} payload={context}");
         // END
 

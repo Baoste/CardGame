@@ -19,6 +19,8 @@ public class PointCardController : MonoBehaviour, IDiscardPresentation
     [HideInInspector] public PointCardInstance instance;
     [HideInInspector] public PointCardViewController viewController;
 
+    public bool isOpponent { get; private set; }
+
     public void DiscardPlay()
     {
         StartCoroutine(SceneViewManager.boardView.RemoveCard(gameObject));
@@ -40,6 +42,11 @@ public class PointCardController : MonoBehaviour, IDiscardPresentation
         // animator = GetComponentInChildren<Animator>();
         GetComponent<PointCardMouseEventHandler>().Init();
         stateMachine.Initialize(inDeckState);
+    }
+
+    public void SetIsOpponent(bool isOpponent)
+    {
+        this.isOpponent = isOpponent;
     }
 
     private void OnTriggerEnter(Collider other)

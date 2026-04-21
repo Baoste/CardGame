@@ -340,24 +340,41 @@ public class EventProcessFunction : MonoBehaviour
 
 
     // parameters[0]: int playerId
-    // parameters[1]: int instanceId
-    // parameters[2]: int allCount
+    // parameters[1]: List<int> instanceIds
     public void DiscardCard(object[] parameters)
     {
         int playerId = (int)parameters[0];
-        int instanceId = (int)parameters[1];
-        int allCount = (int)parameters[2];
+        List<int> instanceIds = (List<int>)parameters[1];
 
-        GameObject obj = instanceMap[instanceId];
-        instanceMap.Remove(instanceId);
-
-        if (allCount == 1)
+        // 检测有没有都在一边
+        bool isOneSide = true;
+        bool firstIsOpponent = instanceMap[instanceIds[0]].GetComponent<PointCardController>().isOpponent;
+        foreach (int instanceId in instanceIds)
         {
-            IDiscardPresentation discardPresentation = obj.GetComponent<IDiscardPresentation>();
-            discardPresentation?.DiscardPlay();
+            if (instanceMap[instanceId].GetComponent<PointCardController>().isOpponent != firstIsOpponent)
+            {
+                isOneSide = false;
+                break;
+            }
+        }
+
+        if (instanceIds.Count == 1 || !isOneSide)
+        {
+            foreach (int instanceId in instanceIds)
+            {
+                GameObject obj = instanceMap[instanceId];
+                instanceMap.Remove(instanceId);
+                IDiscardPresentation discardPresentation = obj.GetComponent<IDiscardPresentation>();
+                discardPresentation?.DiscardPlay();
+            }
         }
         else
         {
+            GameObject obj = instanceMap[0];
+            foreach (int instanceId in instanceIds)
+            {
+                instanceMap.Remove(instanceId);
+            }
             SceneViewManager.boardView.GenerateLazer(obj.transform.position);
         }
     }
@@ -440,54 +457,44 @@ public class EventProcessFunction : MonoBehaviour
             {
                 if (instanceMap.TryGetValue(instanceId, out var obj))
                 {
-                    StartCoroutine(SceneViewManager.boardView.RemoveCardInstant(obj));
+                    StartCoroutine(SceneViewManager.boardView.MoveCard(obj, 1 - playerId));
                 }
-                GameObject instance = CardViewCreator.Instance.CreateCardInstance(cardId, instanceId);
-                StartCoroutine(SceneViewManager.boardView.AddCard(instance, playerId, CardVisualState.None));
-                instanceMap[instanceId] = instance;
                 break;
             }
             case ParticipantType.OppentBoardZone:
             {
                 if (instanceMap.TryGetValue(instanceId, out var obj))
                 {
-                    StartCoroutine(SceneViewManager.boardView.RemoveCardInstant(obj));
+                    StartCoroutine(SceneViewManager.boardView.MoveCard(obj, playerId));
                 }
-                GameObject instance = CardViewCreator.Instance.CreateCardInstance(cardId, instanceId);
-                StartCoroutine(SceneViewManager.boardView.AddCard(instance, 1 - playerId, CardVisualState.None));
-                instanceMap[instanceId] = instance;
                 break;
             }
             case ParticipantType.MySkillCardsInHand:
             {
-                GameObject instance = CardViewCreator.Instance.CreateCardInstance(cardId, instanceId);
                 if (isOpponent)
                 {
-                    StartCoroutine(SceneViewManager.myHandView.RemoveCardInstant(instanceMap[instanceId]));
-                    StartCoroutine(SceneViewManager.opponentHandView.AddCard(instance));
+                    StartCoroutine(SceneViewManager.myHandView.RemoveCard(instanceMap[instanceId]));
+                    StartCoroutine(SceneViewManager.opponentHandView.AddCardFromOthers(instanceMap[instanceId]));
                 }
                 else
                 {
-                    StartCoroutine(SceneViewManager.opponentHandView.RemoveCardInstant(instanceMap[instanceId]));
-                    StartCoroutine(SceneViewManager.myHandView.AddCard(instance));
+                    StartCoroutine(SceneViewManager.opponentHandView.RemoveCard(instanceMap[instanceId]));
+                    StartCoroutine(SceneViewManager.myHandView.AddCardFromOthers(instanceMap[instanceId]));
                 }
-                instanceMap[instanceId] = instance;
                 break;
             }
             case ParticipantType.OpponentSkillCardsInHand:
             {
-                GameObject instance = CardViewCreator.Instance.CreateCardInstance(cardId, instanceId);
                 if (isOpponent)
                 { 
-                    StartCoroutine(SceneViewManager.opponentHandView.RemoveCardInstant(instanceMap[instanceId]));
-                    StartCoroutine(SceneViewManager.myHandView.AddCard(instance));
+                    StartCoroutine(SceneViewManager.opponentHandView.RemoveCard(instanceMap[instanceId]));
+                    StartCoroutine(SceneViewManager.myHandView.AddCardFromOthers(instanceMap[instanceId]));
                 }
                 else
                 {
-                    StartCoroutine(SceneViewManager.opponentHandView.AddCard(instance));
-                    StartCoroutine(SceneViewManager.myHandView.RemoveCardInstant(instanceMap[instanceId]));
+                    StartCoroutine(SceneViewManager.myHandView.RemoveCard(instanceMap[instanceId]));
+                    StartCoroutine(SceneViewManager.opponentHandView.AddCardFromOthers(instanceMap[instanceId]));
                 }
-                instanceMap[instanceId] = instance;
                 break;
             }
         }
@@ -599,6 +606,7 @@ public class EventProcessFunction : MonoBehaviour
             SceneViewManager.opponentSumPointView.ChangeSum(playerPoints, true);
         }
         yield return new WaitForSecondsRealtime(1f);
+        yield return SceneViewManager.boardView.RemoveHoleCard(1 - winnerId);
         yield return SceneViewManager.boardView.RemoveOneSideCards(1 - winnerId);
         yield return SceneViewManager.roleView.ShowWin(winnerId);
 

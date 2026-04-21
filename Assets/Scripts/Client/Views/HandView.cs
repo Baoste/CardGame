@@ -52,8 +52,19 @@ public class HandView : MonoBehaviour, IViewClear
     public IEnumerator AddCard(GameObject instance)
     {
         skillCardInstances.Add(instance);
-        BindDragComponent(instance);
         yield return DrawSkillCardAnimation(instance);
+
+        yield return UpdateCardPositions(0.5f);
+        yield return new WaitForSeconds(0.5f);
+
+        SkillCardController sc = instance.GetComponent<SkillCardController>();
+        sc.SetIsOpponent(isOpponent);
+        sc.stateMachine.ChangeState(sc.inHandState);
+    }
+
+    public IEnumerator AddCardFromOthers(GameObject instance)
+    {
+        skillCardInstances.Add(instance);
 
         yield return UpdateCardPositions(0.5f);
         yield return new WaitForSeconds(0.5f);
@@ -74,29 +85,10 @@ public class HandView : MonoBehaviour, IViewClear
     public IEnumerator RemoveCard(GameObject instance)
     {
         SkillCardController sc = instance.GetComponent<SkillCardController>();
-        if (sc.stateMachine.currentState == sc.inHandState)
-        {
-            StartCoroutine(RemoveCardInstant(instance));
-        }
-        else if (skillCardInstances.Remove(instance))
-        {
-            yield return UpdateCardPositions(0.15f);
-        }
-    }
-
-    public IEnumerator RemoveCardInstant(GameObject instance)
-    {
         if (skillCardInstances.Remove(instance))
         {
-            Destroy(instance);
             yield return UpdateCardPositions(0.15f);
         }
-    }
-
-    private void BindDragComponent(GameObject instance)
-    {
-        SkillCardMouseEventHandler hoverCard = instance.AddComponent<SkillCardMouseEventHandler>();
-        hoverCard.Init();
     }
 
     public IEnumerator DrawSkillCardAnimation(GameObject instance)

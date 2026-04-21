@@ -1,3 +1,4 @@
+using FishNet.Demo.AdditiveScenes;
 using Game.Domain;
 using Newtonsoft.Json;
 using System.Collections;
@@ -119,11 +120,11 @@ public class TestSystem : MonoBehaviour
             StartCoroutine(SceneViewManager.boardView.AddCard(instance, 99, CardVisualState.Hole));
         }
 
-        //if (Input.GetKeyDown(KeyCode.A))
-        //{
-        //    SceneViewManager.myRevealButtonView.ShowButton(true);
-        //    SceneViewManager.opponentRevealButtonView.ShowRandom();
-        //}
+        // ≤‚ ‘“∆∂Ø
+        if (Input.GetKeyDown(KeyCode.A))
+        {
+            StartCoroutine(SceneViewManager.boardView.MoveCard(objs.Pop(), ClientGameState.playerSlot));
+        }
 
         if (Input.GetKeyDown(KeyCode.J))
         {

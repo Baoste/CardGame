@@ -40,6 +40,7 @@ public class SkillCardController : MonoBehaviour, IDiscardPresentation
         instance = GetComponent<SkillCardInstance>();
         outlineControl = GetComponent<Outline>();
 
+        GetComponent<SkillCardMouseEventHandler>().Init();
         stateMachine.Initialize(inDeckState);
     }
 
@@ -47,6 +48,7 @@ public class SkillCardController : MonoBehaviour, IDiscardPresentation
     {
         this.isOpponent = isOpponent;
     }
+
     public IEnumerator UpdateCardPosition()
     {
         yield return SceneViewManager.myHandView.UpdateCardPositions(0.15f);

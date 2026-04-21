@@ -160,8 +160,7 @@ namespace Game.Domain
                 (
                     playerId,
                     success,
-                    instanceId,
-                    1
+                    new List<int> { instanceId }
                 ),
                 -1
             ));

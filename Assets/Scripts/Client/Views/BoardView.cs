@@ -4,6 +4,8 @@ using FishNet.Demo.AdditiveScenes;
 using Game.Domain;
 using System.Collections;
 using System.Collections.Generic;
+using System.ComponentModel;
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.Rendering.Universal;
 using static MeshDestroy;
@@ -77,6 +79,7 @@ public class BoardView : MonoBehaviour, IViewClear
             selfCards.Add(instance);
         }
 
+        instance.GetComponent<PointCardController>().SetIsOpponent(isOpponent);
         pointIns.InitCardState(cardState, isOpponent);
 
         // ·¢ÅÆ
@@ -87,6 +90,42 @@ public class BoardView : MonoBehaviour, IViewClear
         else
         {
             yield return CardReady(isOpponent, instance);
+        }
+    }
+
+    public IEnumerator MoveCard(GameObject instance, int fromPlayerId)
+    {
+        bool isFromOpponent = fromPlayerId != ClientGameState.playerSlot;
+
+        if (isFromOpponent)
+        {
+            opponentCards.Remove(instance);
+            yield return UpdateCardPositionsNormal(true, false);
+            
+            // move up
+            Sequence seq = DOTween.Sequence();
+            seq.Append(instance.transform.DOMoveY(instance.transform.position.y + 0.5f, 0.5f));
+            seq.Append(instance.transform.DOMoveZ(instance.transform.position.z - 1.2f, 0.5f));
+            yield return seq.WaitForCompletion();
+            
+            selfCards.Add(instance);
+            instance.GetComponent<PointCardController>().SetIsOpponent(false);
+            yield return UpdateCardPositionsNormal(false, false);
+        }
+        else
+        {
+            selfCards.Remove(instance);
+            yield return UpdateCardPositionsNormal(false, false);
+
+            // move up
+            Sequence seq = DOTween.Sequence();
+            seq.Append(instance.transform.DOMoveY(instance.transform.position.y + 0.5f, 0.5f));
+            seq.Append(instance.transform.DOMoveZ(instance.transform.position.z + 1.2f, 0.5f));
+            yield return seq.WaitForCompletion();
+
+            opponentCards.Add(instance);
+            instance.GetComponent<PointCardController>().SetIsOpponent(true);
+            yield return UpdateCardPositionsNormal(true, false);
         }
     }
 
@@ -219,17 +258,20 @@ public class BoardView : MonoBehaviour, IViewClear
         }
     }
 
-    public IEnumerator RemoveCardInstant(GameObject instance)
+    public IEnumerator RemoveHoleCard(int loserId)
     {
-        if (opponentCards.Remove(instance))
+        bool isOpponent = loserId != ClientGameState.playerSlot;
+        if (isOpponent)
         {
-            Destroy(instance);
-            yield return UpdateCardPositionsNormal(true, false);
+            GameObject obj = opponentCards[0];
+            opponentCards.RemoveAt(0);
+            yield return DestroyCard(obj, 1);
         }
-        if (selfCards.Remove(instance))
+        else
         {
-            Destroy(instance);
-            yield return UpdateCardPositionsNormal(false, false);
+            GameObject obj = selfCards[0];
+            selfCards.RemoveAt(0);
+            yield return DestroyCard(obj, 1);
         }
     }
 
@@ -242,7 +284,7 @@ public class BoardView : MonoBehaviour, IViewClear
             {
                 GameObject obj = opponentCards[i];
                 opponentCards.RemoveAt(i);
-                StartCoroutine(DestroyCard(obj));
+                obj.AddComponent<DissolutionController>().DestroySelf();
                 yield return new WaitForSecondsRealtime(0.1f);
             }
         }
@@ -252,7 +294,7 @@ public class BoardView : MonoBehaviour, IViewClear
             {
                 GameObject obj = selfCards[i];
                 selfCards.RemoveAt(i);
-                StartCoroutine(DestroyCard(obj));
+                obj.AddComponent<DissolutionController>().DestroySelf();
                 yield return new WaitForSecondsRealtime(0.1f);
             }
         }
@@ -341,7 +383,7 @@ public class BoardView : MonoBehaviour, IViewClear
         }
     }
 
-    private IEnumerator DestroyCard(GameObject instance)
+    private IEnumerator DestroyCard(GameObject instance, float timeScaleDelay = 0.01f)
     {
         // up and down and shake
         Sequence upDownSeq = DOTween.Sequence();
@@ -367,7 +409,7 @@ public class BoardView : MonoBehaviour, IViewClear
         // mesh split
         Time.timeScale = 0.01f;
         Time.fixedDeltaTime = 0.02f * Time.timeScale;
-        yield return new WaitForSecondsRealtime(0.01f);
+        yield return new WaitForSecondsRealtime(timeScaleDelay);
         Time.timeScale = 1f;
         Time.fixedDeltaTime = 0.02f;
 

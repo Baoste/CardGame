@@ -185,6 +185,7 @@ GameObject:
   - component: {fileID: 8678497515182431490}
   - component: {fileID: 1898981318327804687}
   - component: {fileID: 4593778783486630254}
+  - component: {fileID: 4293210207712466942}
   m_Layer: 9
   m_Name: SkillCard
   m_TagString: Untagged
@@ -295,6 +296,18 @@ MonoBehaviour:
   bakeKeys: []
   bakeValues: []
   outlineFillMaterial: {fileID: 0}
+--- !u!114 &4293210207712466942
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 699601284007552369}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f630304357f140c4393fd85cdce8a8d7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1082038410426401966
 GameObject:
   m_ObjectHideFlags: 0

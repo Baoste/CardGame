@@ -301,13 +301,11 @@ namespace Game.Domain
     /// </summary>
     public class DiscardCardEvent : PlayerEvent
     {
-        public int instanceId;
-        public int allCount;
-        public DiscardCardEvent(int playerId, bool success, int instanceId, int allCount)
+        public List<int> instanceIds;
+        public DiscardCardEvent(int playerId, bool success, List<int> instanceIds)
             : base(playerId, success)
         {
-            this.instanceId = instanceId;
-            this.allCount = allCount;
+            this.instanceIds = instanceIds;
         }
     }
 

@@ -149,24 +149,24 @@ namespace Game.Domain
 
         private static void DiscardCards(int playerId, EffectOp op, MatchSession session, CommandResult results, List<int> selectedTargetIds)
         {
+            bool success = true;
             for (int i = 0; i < selectedTargetIds.Count; i++)
             {
                 int cardInstanceId = selectedTargetIds[i];
-                bool success = session.gameState.RemoveCard(cardInstanceId);
-
-                // return
-                results.events.Enqueue(CommandHandler.MakeEvent(
-                    "DiscardCard",
-                    new DiscardCardEvent    // need change
-                    (
-                        playerId,
-                        success,
-                        selectedTargetIds[i],
-                        selectedTargetIds.Count
-                    ),
-                    -1
-                ));
+                success = success && session.gameState.RemoveCard(cardInstanceId);
             }
+
+            // return
+            results.events.Enqueue(CommandHandler.MakeEvent(
+                "DiscardCard",
+                new DiscardCardEvent    // need change
+                (
+                    playerId,
+                    success,
+                    selectedTargetIds
+                ),
+                -1
+            ));
         }
 
         private static void ModifyPoint(int playerId, EffectOp op, MatchSession session, CommandResult results, List<int> selectedTargetIds)
