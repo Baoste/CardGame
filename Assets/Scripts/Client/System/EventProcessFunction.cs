@@ -335,7 +335,9 @@ public class EventProcessFunction : MonoBehaviour
         int instanceId = (int)parameters[0];
         int targeValue = (int)parameters[1];
 
-        instanceMap[instanceId].GetComponentInChildren<PointCardViewController>().ChangeCardTexture_None(targeValue);
+        GameObject obj = instanceMap[instanceId];
+        obj.GetComponent<PointCardController>().smokeVFX.Play();
+        obj.GetComponent<PointCardViewController>().ChangeCardTexture_None(targeValue);
     }
 
 

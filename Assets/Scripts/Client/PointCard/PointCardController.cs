@@ -1,10 +1,8 @@
 using DG.Tweening;
-using FishNet.Managing.Object;
-using Game.Domain;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Rendering.Universal;
+using UnityEngine.VFX;
 using static MeshDestroy;
 
 public class PointCardController : MonoBehaviour, IDiscardPresentation
@@ -15,6 +13,9 @@ public class PointCardController : MonoBehaviour, IDiscardPresentation
     [HideInInspector] public PointCardOnBoardState onBoardState;
     [HideInInspector] public PointCardDiscardState discardState;
     #endregion
+
+    [Header("VFX")]
+    public VisualEffect smokeVFX;
 
     [HideInInspector] public PointCardInstance instance;
     [HideInInspector] public PointCardViewController viewController;
@@ -42,6 +43,8 @@ public class PointCardController : MonoBehaviour, IDiscardPresentation
         // animator = GetComponentInChildren<Animator>();
         GetComponent<PointCardMouseEventHandler>().Init();
         stateMachine.Initialize(inDeckState);
+
+        smokeVFX.Stop();
     }
 
     public void SetIsOpponent(bool isOpponent)

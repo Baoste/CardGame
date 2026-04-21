@@ -4479,7 +4479,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 399f694ac583b954ebcbe1ffca9b279c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  pointLight: {fileID: 357227638}
   skillCard: {fileID: 917003121}
 --- !u!1 &693063714
 GameObject:
@@ -12042,7 +12041,7 @@ VFXRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 1
 --- !u!2083052967 &1684337049
 VisualEffect:
   m_ObjectHideFlags: 0
@@ -13910,7 +13909,7 @@ VFXRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 1
 --- !u!2083052967 &1942332409
 VisualEffect:
   m_ObjectHideFlags: 0
