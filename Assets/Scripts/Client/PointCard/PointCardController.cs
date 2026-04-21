@@ -70,22 +70,19 @@ public class PointCardController : MonoBehaviour, IDiscardPresentation
 
         PointCardInstance point = GetComponentInChildren<PointCardInstance>();
         int cutCascades = 1;
-        List<PartMesh> submeshes = mesh.DestroyMesh(cutCascades, 90);
+        List<PartMesh> submeshes = mesh.DestroyMesh(cutCascades, 90, 0);
         Destroy(tmp);
-
-        // mesh split
-        Time.timeScale = 0.01f;
-        Time.fixedDeltaTime = 0.02f * Time.timeScale;
-        yield return new WaitForSecondsRealtime(0.01f);
-        Time.timeScale = 1f;
-        Time.fixedDeltaTime = 0.02f;
 
         yield return new WaitForSecondsRealtime(1f);
         Sequence seq = DOTween.Sequence();
         seq.OnComplete(() =>
         {
             foreach (PartMesh part in submeshes)
-                part.GameObject.GetComponent<DissolutionController>().DestroySelf();
+            {
+                DissolutionController dc = part.GameObject.GetComponent<DissolutionController>();
+                dc.emissionColor = new Color(2, 0.5f, 0);
+                dc.DestroySelf();
+            }
         });
         yield return seq.WaitForCompletion();
 

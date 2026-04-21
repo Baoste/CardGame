@@ -5,6 +5,7 @@ using Game.Domain;
 using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Security.Cryptography;
 using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.Rendering.Universal;
@@ -42,7 +43,7 @@ public class BoardView : MonoBehaviour, IViewClear
     [Header("Destroy")]
     [SerializeField] private GameObject decalPrefab;
     [SerializeField] private GameObject lazer;
-    private Coroutine lazerCoroutine;
+    [SerializeField] private AnimationCurve lazerRotCurve;
 
     private readonly List<GameObject> selfCards = new();
     private readonly List<GameObject> opponentCards = new();
@@ -221,8 +222,7 @@ public class BoardView : MonoBehaviour, IViewClear
 
     public void GenerateLazer(Vector3 cardPosition)
     {
-        if (lazerCoroutine == null)
-            lazerCoroutine = StartCoroutine(_GenerateLazer(cardPosition));
+        StartCoroutine(_GenerateLazer(cardPosition));
     }
 
     private IEnumerator _GenerateLazer(Vector3 cardPosition)
@@ -235,11 +235,15 @@ public class BoardView : MonoBehaviour, IViewClear
 
         // TODO: º§π‚Ãÿ–ß
         Sequence seq = DOTween.Sequence();
-        seq.Append(lazer.transform.DORotate(new Vector3(0, 0, 89), 2f).SetEase(Ease.InOutCubic));
+        seq.Append(
+            lazer.transform
+                .DORotate(new Vector3(0, 0, 89), 1.3f)
+                .SetEase(lazerRotCurve)
+        );
         yield return seq.WaitForCompletion();
 
+        yield return new WaitForSecondsRealtime(1f);
         lazer.SetActive(false);
-        lazerCoroutine = null;
     }
 
     public IEnumerator RemoveCard(GameObject instance)

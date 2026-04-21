@@ -17,7 +17,6 @@ public class MeshDestroy : MonoBehaviour
     [Header("Disc Fracture")]
     public Vector3 LocalUpAxis = Vector3.up;     // 光盘法线
     public float AngleJitter = 12f;              // 每刀角度扰动
-    public float PlaneOffset = 0.05f;            // 平面相对中心的小偏移
     public float TiltJitter = 6f;                // 平面轻微倾斜，别太大
 
     //private void Update()
@@ -26,7 +25,7 @@ public class MeshDestroy : MonoBehaviour
     //        DestroyMesh();
     //}
 
-    public List<PartMesh> DestroyMesh(int CutCascades, float angle = -1)
+    public List<PartMesh> DestroyMesh(int CutCascades, float angle = -1, float planeOffset = 0.05f)
     {
         var originalMesh = GetComponent<MeshFilter>().mesh;
         originalMesh.RecalculateBounds();
@@ -53,7 +52,7 @@ public class MeshDestroy : MonoBehaviour
                 var bounds = parts[i].Bounds;
                 bounds.Expand(0.5f);
 
-                var plane = BuildDiscLikePlane(bounds, c, i, angle);
+                var plane = BuildDiscLikePlane(bounds, c, i, angle, planeOffset);
                 //var plane = new Plane(UnityEngine.Random.onUnitSphere, new Vector3(UnityEngine.Random.Range(bounds.min.x, bounds.max.x),
                 //                                                                   UnityEngine.Random.Range(bounds.min.y, bounds.max.y),
                 //                                                                   UnityEngine.Random.Range(bounds.min.z, bounds.max.z)));
@@ -79,7 +78,7 @@ public class MeshDestroy : MonoBehaviour
         return parts;
     }
 
-    private Plane BuildDiscLikePlane(Bounds bounds, int cascadeIndex, int partIndex, float angle)
+    private Plane BuildDiscLikePlane(Bounds bounds, int cascadeIndex, int partIndex, float angle, float planeOffset)
     {
         Vector3 center = transform.localPosition;
         Vector3 up = LocalUpAxis.normalized;
@@ -117,7 +116,7 @@ public class MeshDestroy : MonoBehaviour
         // 平面不是每次都严格过中心，给一点小偏移，这样更不规律
         Vector3 point = center;
 
-        point += planeNormal * UnityEngine.Random.Range(-PlaneOffset, PlaneOffset);
+        point += planeNormal * UnityEngine.Random.Range(-planeOffset, planeOffset);
 
         // 也可以沿 radialDir 给一点点偏移，让裂纹不要全都完美过心
         float radiusHint = Mathf.Max(bounds.extents.x, bounds.extents.z);

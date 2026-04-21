@@ -12,6 +12,7 @@ public class DissolutionController : MonoBehaviour
 
     public bool isDissolving = false;
     public float dissolveSpeed = 1f;
+    public Color emissionColor = new Color(0, 1.5f, 1.33f);
 
     private MaterialPropertyBlock mpb;
 
@@ -24,6 +25,7 @@ public class DissolutionController : MonoBehaviour
     public void DestroySelf()
     {
         r.GetPropertyBlock(mpb);
+        mpb.SetColor("_EmissionColor", emissionColor);
 
         float dissolveAmount = 0f;
 
