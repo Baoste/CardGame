@@ -46,8 +46,8 @@ public class TestSystem : MonoBehaviour
         // 技能牌落地
         if (Input.GetKeyDown(KeyCode.N))
         {
-            StartCoroutine(SceneViewManager.myExecuteCardView.MoveToFallPosition(instance1));
-            StartCoroutine(SceneViewManager.opponentExecuteCardView.MoveToFallPosition(instance2));
+            StartCoroutine(SceneViewManager.myExecuteCardView.MoveToFallPosition(instance1, false));
+            StartCoroutine(SceneViewManager.opponentExecuteCardView.MoveToFallPosition(instance2, true));
         }
         if (Input.GetKeyDown(KeyCode.M))
         {
@@ -77,10 +77,9 @@ public class TestSystem : MonoBehaviour
         {
             if (card <= 1)
             {
-                //GameObject instance = CardViewCreator.Instance.CreateCardInstance(card++, 98);
-                //StartCoroutine(boardView.AddCard(instance, ClientGameState.playerSlot, CardVisualState.Hidden));
-                //objs.Push(instance);
-                card++;
+                GameObject instance = CardViewCreator.Instance.CreateCardInstance(card++, 98);
+                StartCoroutine(boardView.AddCard(instance, ClientGameState.playerSlot, CardVisualState.Hidden));
+                objs.Push(instance);
             }
             else if (card <= 5)
             {
@@ -108,9 +107,7 @@ public class TestSystem : MonoBehaviour
         // 移除牌局区所有牌
         if (Input.GetKeyDown(KeyCode.T))
         {
-            StartCoroutine(SceneViewManager.boardView.RemoveAllCards());
-            objs.Clear();
-            card = 1;
+            SceneViewManager.boardView.GenerateLazer(objs.Pop().transform.position);
         }
 
         // 发底牌

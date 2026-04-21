@@ -95,9 +95,6 @@ public class HandView : MonoBehaviour, IViewClear
 
     private void BindDragComponent(GameObject instance)
     {
-        //if (isOpponent)
-        //    return;
-
         SkillCardMouseEventHandler hoverCard = instance.AddComponent<SkillCardMouseEventHandler>();
         hoverCard.Init();
     }
@@ -124,13 +121,7 @@ public class HandView : MonoBehaviour, IViewClear
 
      public IEnumerator UpdateCardPositions(float duration)
      {
-         LayoutCards(duration);
-         yield break;
-     }
-
-    private void LayoutCards(float duration)
-    {
-        if (skillCardInstances.Count == 0) return;
+        if (skillCardInstances.Count == 0) yield break;
 
         float spacing = cardSpacing;
         if (skillCardInstances.Count > 1)
@@ -164,7 +155,8 @@ public class HandView : MonoBehaviour, IViewClear
             card.transform.DOMove(targetPos, duration);
             card.transform.DORotateQuaternion(targetRotation, duration);
         }
-    }
+        yield break;
+     }
 
     public bool IsOutsideValidArea(Vector3 worldPos)
     {

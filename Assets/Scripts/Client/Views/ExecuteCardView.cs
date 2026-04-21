@@ -22,25 +22,34 @@ public class ExecuteCardView : MonoBehaviour
         fallPosition = executePosition + transform.up * fallHeight;
     }
 
-    public IEnumerator MoveToFallPosition(GameObject card)
+    public IEnumerator MoveToFallPosition(GameObject card, bool isOpponent)
     {
         card.GetComponent<Outline>().Enable = 0f;
-        Quaternion targetRot = Quaternion.LookRotation(transform.forward, -transform.right);
 
-        Sequence seq = DOTween.Sequence();
-        seq.Append(card.transform.DOMove(fallPosition, 0.8f).SetEase(Ease.InOutCubic));
-        seq.Join(card.transform.DORotateQuaternion(targetRot, 0.8f).SetEase(Ease.InOutQuad));
+        if (isOpponent)
+        {
+            Vector3 readyPosition = card.transform.position + card.transform.forward * 0.5f;
+            readyPosition += card.transform.up * 1f;
+            Sequence seq = DOTween.Sequence();
+            seq.Append(card.transform.DOMove(readyPosition, 0.8f).SetEase(Ease.InOutCubic));
 
-        yield return seq.WaitForCompletion();
-        CommandExecutionState<PlayAnimationCommand>.IsDone = true;
+            yield return seq.WaitForCompletion();
+        }
+        yield break;
     }
 
     public IEnumerator MoveToExecutePosition(GameObject card)
     {
-        //StartCoroutine(SceneViewManager.myHandView.RemoveCard(card));
-        //StartCoroutine(SceneViewManager.opponentHandView.RemoveCard(card));
+        StartCoroutine(SceneViewManager.myHandView.RemoveCard(card));
+        StartCoroutine(SceneViewManager.opponentHandView.RemoveCard(card));
 
-        Vector3 start = card.transform.position;
+        Sequence seq = DOTween.Sequence();
+
+        Quaternion targetRot = Quaternion.LookRotation(transform.forward, -transform.right);
+        seq.Append(card.transform.DOMove(fallPosition, 0.8f).SetEase(Ease.InOutCubic));
+        seq.Join(card.transform.DORotateQuaternion(targetRot, 0.8f).SetEase(Ease.InOutQuad));
+
+        Vector3 start = fallPosition;
         Vector3 dir = (executePosition - start).normalized;     // 朝下
         // 小回撤
         float backDist = 0.1f;
@@ -52,7 +61,6 @@ public class ExecuteCardView : MonoBehaviour
         float spingDist = 0.02f;
         Vector3 spingPos = executePosition + dir * spingDist;
 
-        Sequence seq = DOTween.Sequence();
         seq.Append(card.transform.DOMove(backPos, 0.1f));
         seq.Append(card.transform.DOMove(readyPos, 0.3f).SetEase(Ease.InExpo));
         seq.AppendInterval(0.6f);
@@ -69,9 +77,6 @@ public class ExecuteCardView : MonoBehaviour
         seq.Append(card.transform.DOMove(executePosition, 0.04f).SetEase(Ease.InCubic));
 
         yield return seq.WaitForCompletion();
-        CommandExecutionState<PlayAnimationCommand>.IsDone = true;
-        // TODO: 要删去
-        ClientEffectContext.isExecutingSkillCard = false;
     }
 
     public void DestroyCard(GameObject instance)
@@ -82,7 +87,7 @@ public class ExecuteCardView : MonoBehaviour
             executedCard = instance;
     }
 
-    public IEnumerator _DestroyCard(GameObject instance)
+    private IEnumerator _DestroyCard(GameObject instance)
     {
         MeshDestroy mesh = executedCard.GetComponentInChildren<MeshDestroy>();
         GameObject tmp = mesh.transform.parent.gameObject;
@@ -94,7 +99,7 @@ public class ExecuteCardView : MonoBehaviour
 
         Time.timeScale = 0.01f;
         Time.fixedDeltaTime = 0.02f * Time.timeScale;
-        yield return new WaitForSecondsRealtime(1f);
+        yield return new WaitForSecondsRealtime(0.01f);
         Time.timeScale = 1f;
         Time.fixedDeltaTime = 0.02f;
 

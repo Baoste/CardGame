@@ -161,7 +161,8 @@ namespace Game.Domain
                     (
                         playerId,
                         success,
-                        selectedTargetIds[i]
+                        selectedTargetIds[i],
+                        selectedTargetIds.Count
                     ),
                     -1
                 ));

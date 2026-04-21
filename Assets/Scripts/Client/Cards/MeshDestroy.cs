@@ -26,7 +26,7 @@ public class MeshDestroy : MonoBehaviour
     //        DestroyMesh();
     //}
 
-    public List<PartMesh> DestroyMesh(int CutCascades)
+    public List<PartMesh> DestroyMesh(int CutCascades, float angle = -1)
     {
         var originalMesh = GetComponent<MeshFilter>().mesh;
         originalMesh.RecalculateBounds();
@@ -53,7 +53,7 @@ public class MeshDestroy : MonoBehaviour
                 var bounds = parts[i].Bounds;
                 bounds.Expand(0.5f);
 
-                var plane = BuildDiscLikePlane(bounds, c, i);
+                var plane = BuildDiscLikePlane(bounds, c, i, angle);
                 //var plane = new Plane(UnityEngine.Random.onUnitSphere, new Vector3(UnityEngine.Random.Range(bounds.min.x, bounds.max.x),
                 //                                                                   UnityEngine.Random.Range(bounds.min.y, bounds.max.y),
                 //                                                                   UnityEngine.Random.Range(bounds.min.z, bounds.max.z)));
@@ -79,7 +79,7 @@ public class MeshDestroy : MonoBehaviour
         return parts;
     }
 
-    private Plane BuildDiscLikePlane(Bounds bounds, int cascadeIndex, int partIndex)
+    private Plane BuildDiscLikePlane(Bounds bounds, int cascadeIndex, int partIndex, float angle)
     {
         Vector3 center = transform.localPosition;
         Vector3 up = LocalUpAxis.normalized;
@@ -93,7 +93,8 @@ public class MeshDestroy : MonoBehaviour
         Vector3 axisB = Vector3.Cross(up, axisA).normalized;
 
         // 基础角度：随机，但主要围绕中心放射
-        float angle = UnityEngine.Random.Range(0f, 360f);
+        if (angle == -1)
+            angle = UnityEngine.Random.Range(0f, 360f);
 
         // 可以让后续 cascade 更细碎一点
         angle += UnityEngine.Random.Range(-AngleJitter, AngleJitter);

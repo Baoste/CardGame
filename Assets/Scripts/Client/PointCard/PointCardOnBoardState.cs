@@ -1,65 +1,63 @@
-using System.Collections;
-using UnityEngine;
 using TMPro;
+using UnityEngine;
+using System.Collections;
 
-public class PointCardHover : MonoBehaviour, IMouseEnter, IMouseExit
+public class PointCardOnBoardState : PointCardState
 {
-    [Header("References")]
-    public GameObject pointsRoot;          // 整个投影对象
-    public TextMeshPro pointsText;         // TMP文字
-    public PointCardInstance pointCardInstance;
-
-    [Header("Fade")]
-    public float fadeDuration = 0.25f;
-
-    private Coroutine fadeCoroutine;
+    private float fadeDuration = 0.5f;
+    private GameObject pointsRoot;
+    private TMP_Text pointsText;
     private Color baseColor;
 
-    public bool isHovering;
+    private Coroutine fadeCoroutine;
 
-    private void Awake()
+    public PointCardOnBoardState(PointCardStateMachine stateMachine, PointCardController pointCard, string animatorName) : base(stateMachine, pointCard, animatorName)
     {
-        if (pointsText != null)
-        {
-            baseColor = pointsText.color;
-        }
+        pointsRoot = pointCard.viewController.pointText.transform.parent.gameObject;
+        pointsText = pointCard.viewController.pointText;
+        baseColor = pointsText.color;
+    }
 
+    public override void Enter()
+    {
+        base.Enter();
         SetAlpha(0f);
-        if (pointsRoot != null)
-            pointsRoot.SetActive(false);
+        pointsRoot.SetActive(false);
+        fadeCoroutine = null;
     }
 
-    public void MouseEnter()
+    public override void Exit()
     {
-        ShowPoints();
+        base.Exit();
+        SetAlpha(0f);
+        pointsRoot.SetActive(false);
     }
 
-    public void MouseExit()
+    public override void OnMouseEnter()
     {
-        HidePoints();
-    }
+        base.OnMouseEnter();
 
-    public void ShowPoints()
-    {
         if (pointsText == null || pointsRoot == null) return;
 
-        pointsText.text = GetComponent<PointCardViewController>().pointText.text;
+        pointsText.text = pointCard.viewController.pointText.text;
 
         if (fadeCoroutine != null)
-            StopCoroutine(fadeCoroutine);
+            pointCard.StopCoroutine(fadeCoroutine);
 
         pointsRoot.SetActive(true);
-        fadeCoroutine = StartCoroutine(FadeTo(1f));
+        fadeCoroutine = pointCard.StartCoroutine(FadeTo(1f));
     }
 
-    public void HidePoints()
+    public override void OnMouseExit()
     {
+        base.OnMouseExit();
+
         if (pointsText == null || pointsRoot == null) return;
 
         if (fadeCoroutine != null)
-            StopCoroutine(fadeCoroutine);
+            pointCard.StopCoroutine(fadeCoroutine);
 
-        fadeCoroutine = StartCoroutine(FadeOutAndDisable());
+        fadeCoroutine = pointCard.StartCoroutine(FadeOutAndDisable());
     }
 
     private IEnumerator FadeTo(float targetAlpha)

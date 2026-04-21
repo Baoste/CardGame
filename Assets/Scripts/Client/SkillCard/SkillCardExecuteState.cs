@@ -13,7 +13,6 @@ public class SkillCardExecuteState : SkillCardState
         base.Enter();
         ClientEffectContext.isExecutingSkillCard = true;
 
-        skillCard.RemoveFromHand();
         skillCard.MoveToExecutePosition();
 
         ExecuteCardView executeCardView = skillCard.isOpponent ? SceneViewManager.opponentExecuteCardView : SceneViewManager.myExecuteCardView;

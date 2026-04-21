@@ -172,7 +172,7 @@ Shader "Unlit/Shader_Halftone"
                 float all_atten = 0;
                 half3 all_lightColor = half3(0,0,0);
 
-                uint excludeMask = (1u << 1) | (1u << 3);   // ¹ýÂËµô Rendering Layer n
+                uint excludeMask = (1u << 1) | (1u << 3) | (1u << 4);   // ¹ýÂËµô Rendering Layer n
                 for (uint i = 0; i < _LightsCount; i++)
                 {
                     Light light = GetAdditionalPerObjectLight(i, worldPos);

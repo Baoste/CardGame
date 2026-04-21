@@ -182,10 +182,11 @@ GameObject:
   - component: {fileID: 6648781163875854784}
   - component: {fileID: 6146138188785704976}
   - component: {fileID: 2809529558312641975}
+  - component: {fileID: 496228302200589626}
   - component: {fileID: 3409832576264652307}
   - component: {fileID: -6919129792405217691}
   - component: {fileID: 1950106973989873887}
-  - component: {fileID: 6370248989185608934}
+  - component: {fileID: 7415816805571072158}
   m_Layer: 9
   m_Name: PointCard
   m_TagString: Untagged
@@ -237,6 +238,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   pointText: {fileID: 5737144735302407822}
+--- !u!114 &496228302200589626
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 699601284007552369}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dc2d4f22574015c4cb23f241ea7113df, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  instance: {fileID: 0}
+  viewController: {fileID: 0}
 --- !u!65 &3409832576264652307
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -297,7 +312,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 01358aecfe94b4c4f9b9129cea955285, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &6370248989185608934
+--- !u!114 &7415816805571072158
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -306,14 +321,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 699601284007552369}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 08fca8a7d20d4b74aac6ccb197055cbb, type: 3}
+  m_Script: {fileID: 11500000, guid: 28a64030c2b2fff4b882c09306017c6f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  pointsRoot: {fileID: 1334968689503423970}
-  pointsText: {fileID: 5737144735302407822}
-  pointCardInstance: {fileID: 6146138188785704976}
-  fadeDuration: 0.5
-  isHovering: 0
 --- !u!1 &1334968689503423970
 GameObject:
   m_ObjectHideFlags: 0
@@ -329,7 +339,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &327947733357887090
 Transform:
   m_ObjectHideFlags: 0

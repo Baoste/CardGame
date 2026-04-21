@@ -17,7 +17,7 @@ public class SkillCardInHandState : SkillCardState
         skillCard.instance.meshRenderer.sharedMaterial = skillCard.instance.defaultMaterial;
         skillCard.outlineControl.OutlineColor = skillCard.outlineControl.defaultColor;
         skillCard.transform.localScale = Vector3.one * skillCard.instance.localScaleFactor;
-        skillCard.UpdateCardPosition();
+        skillCard.StartCoroutine(skillCard.UpdateCardPosition());
     }
 
     public override void Exit()

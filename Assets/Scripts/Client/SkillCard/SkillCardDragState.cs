@@ -126,7 +126,7 @@ public class SkillCardDragState : SkillCardState
         bool shouldRemove = SceneViewManager.myHandView != null && SceneViewManager.myHandView.IsOutsideValidArea(skillCard.transform.position);
         if (shouldRemove)
         {
-            skillCard.StartExecuteCard();
+            skillCard.StartCoroutine(skillCard.StartExecuteCard());
         }
         else
         {

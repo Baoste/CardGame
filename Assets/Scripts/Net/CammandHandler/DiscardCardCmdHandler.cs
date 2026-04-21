@@ -22,7 +22,8 @@ public class DiscardCardCmdHandler : CommandHandler, ICommandHandler
             (
                 payload.playerId,
                 success,
-                payload.instanceId
+                payload.instanceId,
+                1
             ),
             -1
         ));

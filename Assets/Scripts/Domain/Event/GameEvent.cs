@@ -302,10 +302,12 @@ namespace Game.Domain
     public class DiscardCardEvent : PlayerEvent
     {
         public int instanceId;
-        public DiscardCardEvent(int playerId, bool success, int instanceId)
+        public int allCount;
+        public DiscardCardEvent(int playerId, bool success, int instanceId, int allCount)
             : base(playerId, success)
         {
             this.instanceId = instanceId;
+            this.allCount = allCount;
         }
     }
 

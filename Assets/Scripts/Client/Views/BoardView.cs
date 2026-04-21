@@ -37,8 +37,10 @@ public class BoardView : MonoBehaviour, IViewClear
     [SerializeField] private Vector3 opponentHoleTargetPosition;
     [SerializeField] private float fallDistance;
 
-    [Header("Destroy Decal")]
+    [Header("Destroy")]
     [SerializeField] private GameObject decalPrefab;
+    [SerializeField] private GameObject lazer;
+    private Coroutine lazerCoroutine;
 
     private readonly List<GameObject> selfCards = new();
     private readonly List<GameObject> opponentCards = new();
@@ -98,6 +100,9 @@ public class BoardView : MonoBehaviour, IViewClear
         Vector3 targetPosition = isOpponent ? opponentHoleTargetPosition : selfHoleTargetPosition;
         Vector3 fallPosition = targetPosition + Vector3.down * fallDistance;
 
+        // 移到目标位置
+        PointCardController pcc = instance.GetComponent<PointCardController>();
+        pcc.stateMachine.ChangeState(pcc.onBoardState);
         Sequence seq = DOTween.Sequence();
         seq.Append(instance.transform.DOMove(targetPosition, 0.5f).SetEase(Ease.OutBack));
         seq.Append(instance.transform.DOMove(fallPosition, 0.1f).SetEase(Ease.InCubic));
@@ -160,6 +165,9 @@ public class BoardView : MonoBehaviour, IViewClear
         StartCoroutine(cardDeck.EjectDisk(instance.transform, targetPosition));
         yield return new WaitForSeconds(0.5f);
 
+        // 移到目标位置
+        PointCardController pcc = instance.GetComponent<PointCardController>();
+        pcc.stateMachine.ChangeState(pcc.onBoardState);
         Sequence seq = DOTween.Sequence();
         seq.Append(instance.transform.DOMove(targetPosition, 0.5f).SetEase(Ease.OutBack));
         seq.Append(instance.transform.DOMove(fallPosition, 0.1f).SetEase(Ease.InCubic));
@@ -170,6 +178,29 @@ public class BoardView : MonoBehaviour, IViewClear
         instance.transform.DORotateQuaternion(targetRotation, 0.2f);
 
         ClientEffectContext.isDrawingPointCard = false;
+    }
+
+    public void GenerateLazer(Vector3 cardPosition)
+    {
+        if (lazerCoroutine == null)
+            lazerCoroutine = StartCoroutine(_GenerateLazer(cardPosition));
+    }
+
+    private IEnumerator _GenerateLazer(Vector3 cardPosition)
+    {
+        Vector3 initPosition = lazer.transform.position;
+        initPosition.z = cardPosition.z;
+        lazer.transform.position = initPosition;
+        lazer.transform.rotation = Quaternion.Euler(new Vector3(0, 0, -90));
+        lazer.SetActive(true);
+
+        // TODO: 激光特效
+        Sequence seq = DOTween.Sequence();
+        seq.Append(lazer.transform.DORotate(new Vector3(0, 0, 89), 2f).SetEase(Ease.InOutCubic));
+        yield return seq.WaitForCompletion();
+
+        lazer.SetActive(false);
+        lazerCoroutine = null;
     }
 
     public IEnumerator RemoveCard(GameObject instance)
@@ -309,93 +340,6 @@ public class BoardView : MonoBehaviour, IViewClear
             card.transform.DORotateQuaternion(targetRotation, 0.2f);
         }
     }
-
-    //public IEnumerator UpdateCardPositionsBounce(bool isOpponent)
-    //{
-    //    if (isOpponent)
-    //        yield return LayoutOneSideBounce(opponentCards, true);
-    //    else
-    //        yield return LayoutOneSideBounce(selfCards, false);
-    //}
-
-    //private IEnumerator LayoutOneSideBounce(List<GameObject> cards, bool isOpponent)
-    //{
-    //    int countOnBoard = cards.Count - 1;
-    //    if (countOnBoard == 0) yield break;
-
-    //    float selfAreaHeight = boardHeight * selfAreaHeightRatio;
-    //    float opponentAreaHeight = boardHeight - selfAreaHeightRatio * boardHeight;
-
-    //    // 假设这个平面在 XZ 平面上：
-    //    // X 控制左右，Z 控制上下（近/远）
-    //    float minZ, maxZ, centerZ;
-    //    float startX, moveDir;
-
-    //    float spacingFactor = countOnBoard < 4 ? 2.3f : 1;
-    //    float cardSpacing = boardWidth / (countOnBoard + spacingFactor);
-    //    float totalWidth = (countOnBoard - 1) * cardSpacing;
-
-    //    if (isOpponent)
-    //    {
-    //        // 上半区
-    //        minZ = boardCenter.z;
-    //        maxZ = boardCenter.z + opponentAreaHeight;
-    //        centerZ = (minZ + maxZ) * 0.5f;
-    //        startX = boardCenter.x + totalWidth * 0.5f;
-    //        moveDir = -1;
-    //    }
-    //    else
-    //    {
-    //        // 下半区
-    //        minZ = boardCenter.z - selfAreaHeight;
-    //        maxZ = boardCenter.z;
-    //        centerZ = (minZ + maxZ) * 0.5f;
-    //        startX = boardCenter.x - totalWidth * 0.5f;
-    //        moveDir = 1;
-    //    }
-
-    //    float shootDuring = 0.6f;
-
-    //    // 只有一张
-    //    if (countOnBoard == 1)
-    //    {
-    //        GameObject card = cards[1];
-    //        Vector3 targetPos = new Vector3(
-    //            startX,
-    //            boardCenter.y,
-    //            centerZ
-    //        );
-    //        card.transform.DOMove(targetPos, shootDuring).SetEase(Ease.OutQuad);
-    //        yield break;
-    //    }
-
-    //    // 最后一张直接射出
-    //    Vector3 fakeTarget = new Vector3(
-    //        boardCenter.x - moveDir * boardWidth * 0.5f,
-    //        boardCenter.y,
-    //        centerZ
-    //    );
-    //    cards[cards.Count - 1].transform.DOMove(fakeTarget, shootDuring);
-
-    //    for (int i = cards.Count - 1; i >= 1; i--)
-    //    {
-    //        GameObject card = cards[i];
-    //        if (card == null) continue;
-
-    //        // 有碰撞后，其他到指定位置
-    //        PointCardInstance ins = card.GetComponent<PointCardInstance>();
-    //        yield return new WaitUntil(() => ins.touchAnotherCard);
-    //        Vector3 targetPos = new Vector3(
-    //            startX + (i - 1) * moveDir * cardSpacing,
-    //            boardCenter.y,
-    //            centerZ
-    //        );
-    //        card.transform.DOKill();
-    //        float during = Mathf.Abs(card.transform.position.x - targetPos.x);
-    //        during = Mathf.Max(0.25f, during * 1.7f);
-    //        card.transform.DOMove(targetPos, during).SetEase(Ease.OutCubic);
-    //    }
-    //}
 
     private IEnumerator DestroyCard(GameObject instance)
     {

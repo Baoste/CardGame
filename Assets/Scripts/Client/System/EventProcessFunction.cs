@@ -341,25 +341,24 @@ public class EventProcessFunction : MonoBehaviour
 
     // parameters[0]: int playerId
     // parameters[1]: int instanceId
+    // parameters[2]: int allCount
     public void DiscardCard(object[] parameters)
     {
         int playerId = (int)parameters[0];
         int instanceId = (int)parameters[1];
+        int allCount = (int)parameters[2];
 
         GameObject obj = instanceMap[instanceId];
         instanceMap.Remove(instanceId);
 
-        if (obj.GetComponent<SkillCardInstance>() != null)
+        if (allCount == 1)
         {
-            bool isOpponent = playerId != ClientGameState.playerSlot;
-            if (isOpponent)
-                StartCoroutine(SceneViewManager.opponentHandView.RemoveCard(obj));
-            else
-                StartCoroutine(SceneViewManager.myHandView.RemoveCard(obj));
+            IDiscardPresentation discardPresentation = obj.GetComponent<IDiscardPresentation>();
+            discardPresentation?.DiscardPlay();
         }
         else
         {
-            StartCoroutine(SceneViewManager.boardView.RemoveCard(obj));
+            SceneViewManager.boardView.GenerateLazer(obj.transform.position);
         }
     }
 

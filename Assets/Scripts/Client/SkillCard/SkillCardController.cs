@@ -4,7 +4,7 @@ using System.Collections;
 using Newtonsoft.Json;
 using UnityEngine;
 
-public class SkillCardController : MonoBehaviour
+public class SkillCardController : MonoBehaviour, IDiscardPresentation
 {
     #region State
     [HideInInspector] public SkillCardStateMachine stateMachine;
@@ -47,24 +47,13 @@ public class SkillCardController : MonoBehaviour
     {
         this.isOpponent = isOpponent;
     }
-
-    public void UpdateCardPosition()
-    {
-        StartCoroutine(_UpdateCardPosition());
-    }
-
-    private IEnumerator _UpdateCardPosition()
+    public IEnumerator UpdateCardPosition()
     {
         yield return SceneViewManager.myHandView.UpdateCardPositions(0.15f);
         yield return SceneViewManager.opponentHandView.UpdateCardPositions(0.15f);
-    }
-
-    public void StartExecuteCard()
-    {
-        StartCoroutine(_StartExecuteCard());
-    }   
+    } 
     
-    private IEnumerator _StartExecuteCard()
+    public IEnumerator StartExecuteCard()
     {
         if (ClientGameState.playerSlot != ClientGameState.Instance.CurrentPlayerId)
         {
@@ -74,12 +63,9 @@ public class SkillCardController : MonoBehaviour
         }
 
         // Start Executing
-        // 准备执行技能
         // TODO: 需要广播动画
         PlayAnimationCommand animCmd = new PlayAnimationCommand { playerId = ClientGameState.playerSlot, animType = AnimationType.MoveToFallPosition, instanceId = instance.instanceId };
         ClientGameState.gateway.SendCommandServerRpc("PlayAnimation", JsonConvert.SerializeObject(animCmd));
-        CommandExecutionState<PlayAnimationCommand>.IsDone = false;
-        yield return new WaitUntil(() => CommandExecutionState<PlayAnimationCommand>.IsDone);
 
         // 执行
         StartExecuteSkillCommand cmd = new StartExecuteSkillCommand { playerId = ClientGameState.playerSlot, instanceId = instance.instanceId };
@@ -89,9 +75,9 @@ public class SkillCardController : MonoBehaviour
     public void MoveToFallPosition()
     {
         if (isOpponent)
-            StartCoroutine(SceneViewManager.opponentExecuteCardView.MoveToFallPosition(gameObject));
+            StartCoroutine(SceneViewManager.opponentExecuteCardView.MoveToFallPosition(gameObject, true));
         else
-            StartCoroutine(SceneViewManager.myExecuteCardView.MoveToFallPosition(gameObject));
+            StartCoroutine(SceneViewManager.myExecuteCardView.MoveToFallPosition(gameObject, false));
     }
 
     public void MoveToExecutePosition()
@@ -102,7 +88,7 @@ public class SkillCardController : MonoBehaviour
             StartCoroutine(SceneViewManager.myExecuteCardView.MoveToExecutePosition(gameObject));
     }
 
-    public void RemoveFromHand()
+    public void DiscardPlay()
     {
         if (isOpponent)
             StartCoroutine(SceneViewManager.opponentHandView.RemoveCard(gameObject));
