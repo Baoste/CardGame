@@ -9,7 +9,7 @@ public class RevealView : MonoBehaviour, IViewClear
 {
     [SerializeField] private GameObject revealButton;
     [SerializeField] private GameObject revealRandom;
-    [SerializeField] private GameObject randomRoulette;
+    [SerializeField] private GameObject slotMachine;
 
     private Vector3 BtnHidePosition;
     private Vector3 BtnShowPosition;
@@ -20,6 +20,8 @@ public class RevealView : MonoBehaviour, IViewClear
 
     public void Start()
     {
+        slotMachine.transform.rotation = Quaternion.Euler(-110, 0, 0);
+
         RdmShowPosition = revealRandom.transform.localPosition;
         RdmHidePosition = RdmShowPosition + Vector3.down * 0.1f;
         revealRandom.transform.localPosition = RdmHidePosition;
@@ -63,21 +65,18 @@ public class RevealView : MonoBehaviour, IViewClear
     {
         if (!isRandomEnabled) yield break;
 
-        Vector3 rot = new Vector3(0, 360 * 3, 0);
-        if (!reveal) rot += new Vector3(0, 90, 0);
-
         // TODO: 播放随机选择的dongh
-        randomRoulette.SetActive(true);
-        Quaternion quaternion = randomRoulette.transform.rotation;
+        slotMachine.SetActive(true);
+        Quaternion quaternion = slotMachine.transform.rotation;
 
         Sequence seq = DOTween.Sequence();
-        seq.Append(randomRoulette.transform.DORotate(rot, 1.5f, RotateMode.LocalAxisAdd).SetEase(Ease.OutBack));
+        seq.Append(slotMachine.transform.DORotate(Vector3.zero, 0.8f).SetEase(Ease.OutBounce));
 
         yield return seq.WaitForCompletion();
         yield return new WaitForSecondsRealtime(1.5f);
 
-        randomRoulette.transform.rotation = quaternion;
-        randomRoulette.SetActive(false);
+        slotMachine.transform.rotation = quaternion;
+        slotMachine.SetActive(false);
 
         if (reveal && ClientGameState.Instance.dealerId == ClientGameState.playerSlot)
         {

@@ -125,9 +125,10 @@ public class TestSystem : MonoBehaviour
             StartCoroutine(SceneViewManager.boardView.MoveCard(objs.Pop(), ClientGameState.playerSlot));
         }
 
+        // ÀÏ»¢»ú
         if (Input.GetKeyDown(KeyCode.J))
         {
-            eventProcessFunction.RevealTest(new object[] { 1 - ClientGameState.playerSlot, 1, 2, 3});
+            // eventProcessFunction.RevealTest(new object[] { 1 - ClientGameState.playerSlot, 1, 2, 3});
             SceneViewManager.myRevealButtonView.ShowRandom();
             StartCoroutine(SceneViewManager.myRevealButtonView.RandomAnimation(true));
         }
