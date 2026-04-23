@@ -24,7 +24,7 @@ public class PointCardController : MonoBehaviour, IDiscardPresentation
 
     public void DiscardPlay()
     {
-        StartCoroutine(SceneViewManager.boardView.RemoveCard(gameObject));
+        StartCoroutine(SceneViewManager.boardView.RemoveCard(transform.gameObject));
     }
 
     private void Awake()

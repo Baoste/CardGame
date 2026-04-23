@@ -11,7 +11,10 @@ public class DetermineParticipants : MonoBehaviour
 {
     [Header("Volume Control")]
     [SerializeField] private Volume volume;
+
+    [Header("Choose UI")]
     [SerializeField] private UIClickSuggest zoneClickSuggest;
+    [SerializeField] private GameObject switchObject;
 
     private ColorAdjustments colorAdjust;
 
@@ -68,18 +71,101 @@ public class DetermineParticipants : MonoBehaviour
             ClientEffectContext.Instance.selectedTargetIds = candidateTargetIds;
             targetClick = false;
         }
-        StartCoroutine(ClickTest(
-            skillCardInstanceId,
-            isSourceParticipantZone, candidateSourceIds, sourceSelectCount, sourceClick,
-            isTargetParticipantZone, candidateTargetIds, targetSelectCount, targetClick
-        ));
+
+        // 如果是单双
+        if (isSourceParticipantZone && (candidateSourceIds.Contains(0) || candidateSourceIds.Contains(1)) ||
+            isTargetParticipantZone && (candidateTargetIds.Contains(0) || candidateTargetIds.Contains(1)) )
+        {
+            StartCoroutine(SwitchTest(
+                skillCardInstanceId,
+                candidateSourceIds, sourceSelectCount, sourceClick,
+                candidateTargetIds, targetSelectCount, targetClick
+            ));
+        }
+        else
+        {
+            StartCoroutine(ClickTest(
+                skillCardInstanceId,
+                isSourceParticipantZone, candidateSourceIds, sourceSelectCount, sourceClick,
+                isTargetParticipantZone, candidateTargetIds, targetSelectCount, targetClick
+            ));
+        }
     }
 
+    private IEnumerator SwitchTest(int skillCardInstanceId,
+        List<int> candidateSourceIds, int SourceSelectCount, bool sourceClick,
+        List<int> candidateTargetIds, int targetSelectCount, bool targetClick)
+    {
+        List<int> selectedSourceIds = candidateSourceIds;
+        List<int> selectedTargetIds = candidateTargetIds;
+
+        if (sourceClick)
+        {
+            selectedSourceIds = new List<int>();
+            Debug.Log($"[Client] Wating for select source {candidateSourceIds}");
+
+            switchObject.SetActive(true);
+            HighLight(switchObject);
+            Tweener tween = switchObject.transform.DORotateQuaternion(Quaternion.Euler(32.89f, 0, 0), 0.8f).SetEase(Ease.OutBounce);
+            yield return tween.WaitForCompletion();
+
+            OddEvenSwitch oddEvenSwitch = switchObject.GetComponentInChildren<OddEvenSwitch>();
+            oddEvenSwitch.Init();
+            yield return new WaitUntil(() => oddEvenSwitch.chosenDone);
+            selectedSourceIds.Add(oddEvenSwitch.chosenId);
+
+            ClientEffectContext.Instance.selectedSourceIds = selectedSourceIds;
+            
+            CancelHighLight(switchObject);
+            tween = switchObject.transform.DORotateQuaternion(Quaternion.Euler(341.729675f, 239.301498f, 332.164734f), 0.7f).SetEase(Ease.InCubic);
+            yield return tween.WaitForCompletion();
+
+            oddEvenSwitch.transform.localRotation = Quaternion.identity;
+            switchObject.SetActive(false);
+        }
+
+        if (targetClick)
+        {
+            selectedTargetIds = new List<int>();
+            Debug.Log("[Client] Wating for select target");
+
+            switchObject.SetActive(true);
+            HighLight(switchObject);
+            Tweener tween = switchObject.transform.DORotateQuaternion(Quaternion.Euler(32.89f, 0, 0), 0.8f).SetEase(Ease.OutBounce);
+            yield return tween.WaitForCompletion();
+
+            OddEvenSwitch oddEvenSwitch = switchObject.GetComponentInChildren<OddEvenSwitch>();
+            oddEvenSwitch.Init();
+            yield return new WaitUntil(() => oddEvenSwitch.chosenDone);
+            selectedTargetIds.Add(oddEvenSwitch.chosenId);
+
+            ClientEffectContext.Instance.selectedTargetIds = selectedTargetIds;
+            
+            CancelHighLight(switchObject);
+            tween = switchObject.transform.DORotateQuaternion(Quaternion.Euler(341.729675f, 239.301498f, 332.164734f), 0.7f).SetEase(Ease.InCubic);
+            yield return tween.WaitForCompletion();
+
+            oddEvenSwitch.transform.localRotation = Quaternion.identity;
+            switchObject.SetActive(false);
+        }
+
+        // ClientEffectContext.ChooseDone = true;
+        CommitChosenIdsCommand discardCmd = new CommitChosenIdsCommand
+        {
+            playerId = ClientGameState.playerSlot,
+            instanceId = skillCardInstanceId,
+            selectedSourceIds = selectedSourceIds,
+            selectedTargetIds = selectedTargetIds,
+        };
+        ClientGameState.gateway.SendCommandServerRpc("CommitChosenIds", JsonConvert.SerializeObject(discardCmd));
+    }
+
+
     private IEnumerator ClickTest(int skillCardInstanceId,
-        bool isSourceParticipantZone, List<int> candidateSouceIds, int SourceSelectCount, bool sourceClick,
+        bool isSourceParticipantZone, List<int> candidateSourceIds, int SourceSelectCount, bool sourceClick,
         bool isTargetParticipantZone, List<int> candidateTargetIds, int targetSelectCount, bool targetClick)
     {
-        List<int> selectedSourceIds = candidateSouceIds;
+        List<int> selectedSourceIds = candidateSourceIds;
         List<int> selectedTargetIds = candidateTargetIds;
 
         int cardLayerMask = LayerMask.GetMask("Card");
@@ -88,8 +174,8 @@ public class DetermineParticipants : MonoBehaviour
         if (sourceClick)
         {
             selectedSourceIds = new List<int>();
-            Debug.Log($"[Client] Wating for select source {candidateSouceIds}");
-            HighLight(candidateSouceIds);
+            Debug.Log($"[Client] Wating for select source {candidateSourceIds}");
+            HighLight(candidateSourceIds);
             int count0 = 0;
             while (count0 < SourceSelectCount)
             {
@@ -107,7 +193,7 @@ public class DetermineParticipants : MonoBehaviour
                     if (!zoneInstance) continue;
 
                     int instanceId = zoneInstance.isType ? (int)zoneInstance.zoneType : zoneInstance.zoneId;
-                    if (!candidateSouceIds.Contains(instanceId)) continue;
+                    if (!candidateSourceIds.Contains(instanceId)) continue;
 
                     selectedSourceIds.Add(instanceId);
                     Debug.Log($"[Client] Select Source instaceId {instanceId}");
@@ -128,7 +214,7 @@ public class DetermineParticipants : MonoBehaviour
                     }
 
                     int instanceId = cardInstance.instanceId;
-                    if (!candidateSouceIds.Contains(instanceId)) continue;
+                    if (!candidateSourceIds.Contains(instanceId)) continue;
 
                     selectedSourceIds.Add(instanceId);
                     Debug.Log($"[Client] Select Source instaceId {instanceId}");
@@ -136,7 +222,7 @@ public class DetermineParticipants : MonoBehaviour
                 }
             }
             ClientEffectContext.Instance.selectedSourceIds = selectedSourceIds;
-            CancelHighLight(candidateSouceIds);
+            CancelHighLight(candidateSourceIds);
         }
 
         if (targetClick)
@@ -245,6 +331,32 @@ public class DetermineParticipants : MonoBehaviour
                 zoneClickSuggest.Hide();
             }
         }
+    }
+
+    private void HighLight(GameObject obj)
+    {
+        DOTween.To(
+            () => colorAdjust.saturation.value,
+            x => colorAdjust.saturation.value = x,
+            -100,
+            0.5f
+        );
+
+        int layer = LayerMask.NameToLayer("HighlightOnly");
+        SetLayerRecursively(obj, layer);
+    }
+
+    private void CancelHighLight(GameObject obj)
+    {
+        DOTween.To(
+            () => colorAdjust.saturation.value,
+            x => colorAdjust.saturation.value = x,
+            0,
+            0.5f
+        );
+
+        int layer = LayerMask.NameToLayer("Default");
+        SetLayerRecursively(obj, layer);
     }
 
     private void SetLayerRecursively(GameObject obj, int layer)

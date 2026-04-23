@@ -40,7 +40,7 @@ namespace Game.Domain
             ));
         }
 
-        public static void ExecuteEffectOp(int effectOpId, Card skillCard, MatchSession session, int playerId, int instanceId, ref CommandResult results)
+        public static void ExecuteEffectOp(ref int effectOpId, Card skillCard, MatchSession session, int playerId, int instanceId, ref CommandResult results)
         {
             while (effectOpId != -1)
             {
@@ -66,9 +66,8 @@ namespace Game.Domain
                 );
                 if (!success)
                 {
-                    SendInvalidEvent(playerId, instanceId, results, InvalidActionType.InvalidTarget);
-                    if (effectOpId != 0)
-                        EndExecuteSkill(playerId, instanceId, session, results);
+                    if (effectOpId == 0)
+                        SendInvalidEvent(playerId, instanceId, results, InvalidActionType.InvalidTarget);
                     return;
                 }
 

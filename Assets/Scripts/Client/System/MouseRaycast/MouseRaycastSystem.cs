@@ -22,7 +22,7 @@ public class MouseRaycastSystem : MonoBehaviour
     private void Start()
     {
         rayCamera = Camera.main;
-        interactMask = LayerMask.GetMask("Card", "Default");
+        interactMask = LayerMask.GetMask("Card", "HighlightOnly", "Default");
     }
 
     private void Update()
