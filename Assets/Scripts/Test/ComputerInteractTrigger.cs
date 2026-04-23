@@ -15,6 +15,8 @@ public class ComputerInteractTrigger : MonoBehaviour
         {
             interactionController.SetPlayerInRange(true);
         }
+
+        Debug.Log("Player entered computer interact trigger.");
     }
 
     private void OnTriggerExit(Collider other)
@@ -26,5 +28,7 @@ public class ComputerInteractTrigger : MonoBehaviour
         {
             interactionController.SetPlayerInRange(false);
         }
+
+        Debug.Log("Player exited computer interact trigger.");
     }
 }

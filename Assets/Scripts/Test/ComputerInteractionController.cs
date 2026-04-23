@@ -26,10 +26,16 @@ public class ComputerInteractionController : MonoBehaviour
 
     private void Start()
     {
+        RefreshInteractHint();
+    }
+
+    private void Update()
+    {
         if (!isUsingComputer)
         {
             if (playerInRange && Input.GetKeyDown(KeyCode.E))
             {
+                Debug.Log("Press E -> EnterComputer");
                 EnterComputer();
             }
         }
@@ -37,6 +43,7 @@ public class ComputerInteractionController : MonoBehaviour
         {
             if (Input.GetKeyDown(KeyCode.Escape))
             {
+                Debug.Log("Press Esc -> ExitComputer");
                 ExitComputer();
             }
         }
