@@ -11,6 +11,8 @@ public class CommitChosenIdsCmdHandler : CommandHandler, ICommandHandler
 
         // START
         int skillCardId = session.instanceToCardId[payload.instanceId];
+        int effectOpId = -1;
+
         Card skillCard = CardDatabase.Get(skillCardId);
         if (skillCard == null)
         {
@@ -36,16 +38,15 @@ public class CommitChosenIdsCmdHandler : CommandHandler, ICommandHandler
                 // TODO: error handling
             }
 
-            int effectOpId = -1;
             if (op.trueNode != -1 && op.falseNode == -1)        effectOpId = op.trueNode;
             else if (op.trueNode == -1 && op.falseNode != -1)   effectOpId = op.falseNode;
             else if (op.trueNode != -1 && op.falseNode != -1)   effectOpId = op.trueNode;
 
             // execute skill card effects
-            NetEffectFunction.ExecuteEffectOp(effectOpId, skillCard, session, payload.playerId, payload.instanceId, ref results);
+            NetEffectFunction.ExecuteEffectOp(ref effectOpId, skillCard, session, payload.playerId, payload.instanceId, ref results);
         }
 
-        if (session.ctx.opStack.Count == 0)
+        if (session.ctx.opStack.Count == 0 && effectOpId != 0)
         {
             NetEffectFunction.EndExecuteSkill(payload.playerId, payload.instanceId, session, results);
         }

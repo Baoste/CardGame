@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Rendering.Universal;
 using static MeshDestroy;
+using static Unity.Burst.Intrinsics.X86.Avx;
 
 public class BoardView : MonoBehaviour, IViewClear
 {
@@ -246,13 +247,13 @@ public class BoardView : MonoBehaviour, IViewClear
     {
         if (opponentCards.Remove(instance))
         {
-            yield return DestroyCard(instance);
+            StartCoroutine(DestroyCard(instance));
             yield return new WaitForSecondsRealtime(0.2f);
             yield return UpdateCardPositionsNormal(true, false);
         }
         if (selfCards.Remove(instance))
         {
-            yield return DestroyCard(instance);
+            StartCoroutine(DestroyCard(instance));
             yield return new WaitForSecondsRealtime(0.2f);
             yield return UpdateCardPositionsNormal(false, false);
         }
@@ -401,7 +402,6 @@ public class BoardView : MonoBehaviour, IViewClear
         int cutCascades = point.cardVisualState == CardVisualState.Hole ? 4 : 1 + point.point / 3;
         List<PartMesh> submeshes = mesh.DestroyMesh(cutCascades);
         Destroy(tmp);
-        Destroy(instance);
 
         // decal
         DecalProjector decal = Instantiate(decalPrefab, instance.transform.position, Quaternion.Euler(90, 0, 0)).GetComponent<DecalProjector>();
@@ -426,6 +426,7 @@ public class BoardView : MonoBehaviour, IViewClear
         yield return new WaitForSecondsRealtime(4f);
         DOTween.To(() => decal.fadeFactor, x => decal.fadeFactor = x, 0f, 2f);
         Destroy(decal.gameObject, 2.5f);
+        Destroy(instance);
     }
 
     public IEnumerator ShakeCards()

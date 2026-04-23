@@ -2,6 +2,7 @@ using Game.Domain;
 using Game.Server;
 using Newtonsoft.Json;
 using System.Collections.Generic;
+using UnityEngine;
 
 public class StartExecuteSkillCmdHandler : CommandHandler, ICommandHandler
 {
@@ -12,6 +13,7 @@ public class StartExecuteSkillCmdHandler : CommandHandler, ICommandHandler
 
         // START
         int skillCardId = session.instanceToCardId[payload.instanceId];
+        int effectOpId = 0;
         Card skillCard = CardDatabase.Get(skillCardId);
         if (skillCard == null)
         {
@@ -23,11 +25,10 @@ public class StartExecuteSkillCmdHandler : CommandHandler, ICommandHandler
                 return results;
 
             // execute skill card effects
-            int effectOpId = 0;
-            NetEffectFunction.ExecuteEffectOp(effectOpId, skillCard, session, payload.playerId, payload.instanceId, ref results);
+            NetEffectFunction.ExecuteEffectOp(ref effectOpId, skillCard, session, payload.playerId, payload.instanceId, ref results);
         }
 
-        if (session.ctx.opStack.Count == 0)
+        if (session.ctx.opStack.Count == 0 && effectOpId != 0)
         {
             NetEffectFunction.EndExecuteSkill(payload.playerId, payload.instanceId, session, results);
         }
