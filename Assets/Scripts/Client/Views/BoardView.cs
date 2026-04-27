@@ -50,6 +50,7 @@ public class BoardView : MonoBehaviour, IViewClear
     private void Start()
     {
         impulseSource = GetComponent<CinemachineImpulseSource>();
+        lazer.SetActive(false);
     }
 
     public void ClearView()
@@ -217,8 +218,13 @@ public class BoardView : MonoBehaviour, IViewClear
         ClientEffectContext.isDrawingPointCard = false;
     }
 
-    public void GenerateLazer(Vector3 cardPosition)
+    public void GenerateLazer(Vector3 cardPosition, List<GameObject> objs)
     {
+        foreach (GameObject obj in objs) 
+        {
+            selfCards.Remove(obj);
+            opponentCards.Remove(obj);
+        }
         StartCoroutine(_GenerateLazer(cardPosition));
     }
 

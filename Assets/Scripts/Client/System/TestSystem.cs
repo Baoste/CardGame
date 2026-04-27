@@ -107,7 +107,7 @@ public class TestSystem : MonoBehaviour
         // 移除一方所有牌
         if (Input.GetKeyDown(KeyCode.T))
         {
-            SceneViewManager.boardView.GenerateLazer(objs.Pop().transform.position);
+            SceneViewManager.boardView.GenerateLazer(objs.Pop().transform.position, new List<GameObject>());
         }
 
         // 发底牌

@@ -383,12 +383,13 @@ public class EventProcessFunction : MonoBehaviour
         }
         else
         {
-            GameObject obj = instanceMap[0];
+            List<GameObject> objs = new List<GameObject>();
             foreach (int instanceId in instanceIds)
             {
+                objs.Add(instanceMap[instanceId]);
                 instanceMap.Remove(instanceId);
             }
-            SceneViewManager.boardView.GenerateLazer(obj.transform.position);
+            SceneViewManager.boardView.GenerateLazer(objs[0].transform.position, objs);
         }
     }
 
@@ -472,6 +473,12 @@ public class EventProcessFunction : MonoBehaviour
                 {
                     StartCoroutine(SceneViewManager.boardView.MoveCard(obj, 1 - playerId));
                 }
+                else
+                {
+                    GameObject instance = CardViewCreator.Instance.CreateCardInstance(cardId, instanceId);
+                    StartCoroutine(SceneViewManager.boardView.AddCard(instance, playerId, CardVisualState.None));
+                    instanceMap[instanceId] = instance;
+                }
                 break;
             }
             case ParticipantType.OppentBoardZone:
@@ -479,6 +486,12 @@ public class EventProcessFunction : MonoBehaviour
                 if (instanceMap.TryGetValue(instanceId, out var obj))
                 {
                     StartCoroutine(SceneViewManager.boardView.MoveCard(obj, playerId));
+                }
+                else
+                {
+                    GameObject instance = CardViewCreator.Instance.CreateCardInstance(cardId, instanceId);
+                    StartCoroutine(SceneViewManager.boardView.AddCard(instance, 1 - playerId, CardVisualState.None));
+                    instanceMap[instanceId] = instance;
                 }
                 break;
             }

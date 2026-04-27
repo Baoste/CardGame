@@ -97,7 +97,7 @@ public class ExecuteCardView : MonoBehaviour
         GameObject tmp = mesh.transform.parent.gameObject;
         mesh.transform.parent.parent = transform.parent.parent;
 
-        List<PartMesh> submeshes = mesh.DestroyMesh(4);
+        List<PartMesh> submeshes = mesh.DestroyMesh(3);
         Destroy(tmp);
         Destroy(executedCard);
 
