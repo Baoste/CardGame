@@ -355,6 +355,16 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.y
       value: -90
       objectReference: {fileID: 0}
+    - target: {fileID: -7550440626349836391, guid: 09e7b9952673b7c4a9bda2c783c4a114,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -7550440626349836391, guid: 09e7b9952673b7c4a9bda2c783c4a114,
+        type: 3}
+      propertyPath: m_Intensity
+      value: 2.5
+      objectReference: {fileID: 0}
     - target: {fileID: -7440285751018214081, guid: 09e7b9952673b7c4a9bda2c783c4a114,
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
