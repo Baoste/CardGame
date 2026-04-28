@@ -1,0 +1,27 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d3c8fc7f53551a7419c1d20c48f57911, type: 3}
+  m_Name: DiscardPointCard
+  m_EditorClassIdentifier: 
+  id: DiscardPointCard
+  clip:
+  - {fileID: 8300000, guid: 331cf190e77b55f4fae9a51553d80b9e, type: 3}
+  - {fileID: 8300000, guid: 6c4473a5200456d4682de9bbc674ded0, type: 3}
+  type: 1
+  volume: 1
+  pitch: 1
+  loop: 0
+  randomClip: 1
+  randomPitch: 0
+  pitchRange: {x: 0.95, y: 1.05}
+  randomVolume: 0
+  volumeRange: {x: 0.9, y: 1}

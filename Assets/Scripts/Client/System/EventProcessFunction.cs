@@ -435,6 +435,8 @@ public class EventProcessFunction : MonoBehaviour
         {
             StartCoroutine(SceneViewManager.myHandView.AddCard(instance));
         }
+
+        AudioManager.Instance.Play("DrawSkillCard");
     }
 
     // parameters[0]: int cardId

@@ -16,6 +16,11 @@ public class TestSystem : MonoBehaviour
 
     [SerializeField] private EventProcessFunction eventProcessFunction;
 
+    private void Start()
+    {
+        AudioManager.Instance.Play("Electric_Buzz");
+    }
+
     private void Update()
     {
         // 模拟开始游戏，生成筹码

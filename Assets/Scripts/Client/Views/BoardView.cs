@@ -145,6 +145,8 @@ public class BoardView : MonoBehaviour, IViewClear
         seq.Append(instance.transform.DOMove(targetPosition, 0.5f).SetEase(Ease.OutBack));
         seq.Append(instance.transform.DOMove(fallPosition, 0.1f).SetEase(Ease.InCubic));
         yield return seq.WaitForCompletion();
+
+        AudioManager.Instance.Play("DrawPointCard");
         instance.GetComponent<PointCardShake>().CardShake();
     }
 
@@ -210,6 +212,8 @@ public class BoardView : MonoBehaviour, IViewClear
         seq.Append(instance.transform.DOMove(targetPosition, 0.5f).SetEase(Ease.OutBack));
         seq.Append(instance.transform.DOMove(fallPosition, 0.1f).SetEase(Ease.InCubic));
         yield return seq.WaitForCompletion();
+
+        AudioManager.Instance.Play("DrawPointCard");
 
         instance.GetComponent<PointCardShake>().CardShake();
         Quaternion targetRotation = instance.transform.rotation * Quaternion.Euler(0, 0.5f, 0);
@@ -398,6 +402,7 @@ public class BoardView : MonoBehaviour, IViewClear
         upDownSeq.Append(instance.transform.DOMoveY(instance.transform.position.y, 0.05f).SetEase(Ease.InCubic));
         yield return upDownSeq.WaitForCompletion();
         impulseSource.GenerateImpulse();
+        AudioManager.Instance.Play("DiscardPointCard");
 
         // mesh destroy
         MeshDestroy mesh = instance.GetComponentInChildren<MeshDestroy>();
