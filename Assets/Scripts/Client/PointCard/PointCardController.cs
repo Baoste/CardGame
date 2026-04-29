@@ -78,9 +78,8 @@ public class PointCardController : MonoBehaviour, IDiscardPresentation
         PointCardInstance point = GetComponentInChildren<PointCardInstance>();
         int cutCascades = 1;
         List<PartMesh> submeshes = mesh.DestroyMesh(cutCascades, 90, 0);
-        Destroy(tmp);
 
-        yield return new WaitForSecondsRealtime(1f);
+        yield return new WaitForSecondsRealtime(0.2f);
         Sequence seq = DOTween.Sequence();
         seq.OnComplete(() =>
         {
@@ -93,6 +92,7 @@ public class PointCardController : MonoBehaviour, IDiscardPresentation
         });
         yield return seq.WaitForCompletion();
 
+        Destroy(tmp);
         Destroy(gameObject);
     }
 }

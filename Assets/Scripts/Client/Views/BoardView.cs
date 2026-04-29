@@ -50,6 +50,7 @@ public class BoardView : MonoBehaviour, IViewClear
     private void Start()
     {
         impulseSource = GetComponent<CinemachineImpulseSource>();
+        lazer.SetActive(false);
     }
 
     public void ClearView()
@@ -144,6 +145,8 @@ public class BoardView : MonoBehaviour, IViewClear
         seq.Append(instance.transform.DOMove(targetPosition, 0.5f).SetEase(Ease.OutBack));
         seq.Append(instance.transform.DOMove(fallPosition, 0.1f).SetEase(Ease.InCubic));
         yield return seq.WaitForCompletion();
+
+        AudioManager.Instance.Play("DrawPointCard");
         instance.GetComponent<PointCardShake>().CardShake();
     }
 
@@ -210,6 +213,8 @@ public class BoardView : MonoBehaviour, IViewClear
         seq.Append(instance.transform.DOMove(fallPosition, 0.1f).SetEase(Ease.InCubic));
         yield return seq.WaitForCompletion();
 
+        AudioManager.Instance.Play("DrawPointCard");
+
         instance.GetComponent<PointCardShake>().CardShake();
         Quaternion targetRotation = instance.transform.rotation * Quaternion.Euler(0, 0.5f, 0);
         instance.transform.DORotateQuaternion(targetRotation, 0.2f);
@@ -217,8 +222,13 @@ public class BoardView : MonoBehaviour, IViewClear
         ClientEffectContext.isDrawingPointCard = false;
     }
 
-    public void GenerateLazer(Vector3 cardPosition)
+    public void GenerateLazer(Vector3 cardPosition, List<GameObject> objs)
     {
+        foreach (GameObject obj in objs) 
+        {
+            selfCards.Remove(obj);
+            opponentCards.Remove(obj);
+        }
         StartCoroutine(_GenerateLazer(cardPosition));
     }
 
@@ -392,6 +402,7 @@ public class BoardView : MonoBehaviour, IViewClear
         upDownSeq.Append(instance.transform.DOMoveY(instance.transform.position.y, 0.05f).SetEase(Ease.InCubic));
         yield return upDownSeq.WaitForCompletion();
         impulseSource.GenerateImpulse();
+        AudioManager.Instance.Play("DiscardPointCard");
 
         // mesh destroy
         MeshDestroy mesh = instance.GetComponentInChildren<MeshDestroy>();

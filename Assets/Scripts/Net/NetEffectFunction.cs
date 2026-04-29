@@ -131,10 +131,10 @@ namespace Game.Domain
                     NetEffectExecutor.ExecuteOp(playerId, op, session, results, selectedSourceIds, selectedTargetIds);
                 }
 
-                if (op.trueNode == -1 && op.falseNode == -1) break;
-                else if (op.trueNode != -1 && op.falseNode == -1) effectOpId = op.trueNode;
-                else if (op.trueNode == -1 && op.falseNode != -1) effectOpId = op.falseNode;
-                else effectOpId = op.trueNode;
+                if (op.trueNode == -1 && op.falseNode == -1)        effectOpId = -1;
+                else if (op.trueNode != -1 && op.falseNode == -1)   effectOpId = op.trueNode;
+                else if (op.trueNode == -1 && op.falseNode != -1)   effectOpId = op.falseNode;
+                else                                                effectOpId = op.trueNode;
             }
         }
 

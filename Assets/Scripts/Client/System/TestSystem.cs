@@ -16,6 +16,11 @@ public class TestSystem : MonoBehaviour
 
     [SerializeField] private EventProcessFunction eventProcessFunction;
 
+    private void Start()
+    {
+        AudioManager.Instance.Play("Electric_Buzz");
+    }
+
     private void Update()
     {
         // 模拟开始游戏，生成筹码
@@ -107,7 +112,7 @@ public class TestSystem : MonoBehaviour
         // 移除一方所有牌
         if (Input.GetKeyDown(KeyCode.T))
         {
-            SceneViewManager.boardView.GenerateLazer(objs.Pop().transform.position);
+            SceneViewManager.boardView.GenerateLazer(objs.Pop().transform.position, new List<GameObject>());
         }
 
         // 发底牌

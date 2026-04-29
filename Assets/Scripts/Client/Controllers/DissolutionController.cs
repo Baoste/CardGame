@@ -17,7 +17,7 @@ public class DissolutionController : MonoBehaviour
 
     private void Awake()
     {
-        r = GetComponent<Renderer>();
+        r = GetComponentInChildren<Renderer>();
         mpb = new MaterialPropertyBlock();
     }
 
