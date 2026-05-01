@@ -31,6 +31,10 @@ public class ComputerUIController : MonoBehaviour
     [SerializeField] private int mainMenuIndex = 0;
     [SerializeField] private string currentRoomCode = "";
 
+    public System.Action<string> OnJoinRoomRequested;
+    public System.Action OnRandomMatchRequested;
+    private bool inputLocked;
+
 
     private readonly string[] mainMenuOptions =
     {
@@ -44,6 +48,7 @@ public class ComputerUIController : MonoBehaviour
 
     public ComputerScreenState CurrentState => currentState;
 
+    // 开电脑
     public void OpenComputer()
     {
         if (rootPanel != null)
@@ -63,6 +68,7 @@ public class ComputerUIController : MonoBehaviour
         EnterBootState();
     }
 
+    // 关电脑
     public void CloseComputer()
     {
         StopAllLocalRoutines();
@@ -81,9 +87,13 @@ public class ComputerUIController : MonoBehaviour
             rootPanel.SetActive(false);
     }
 
+    // Update
     public void Update()
     {
         if (rootPanel == null || !rootPanel.activeSelf)
+            return;
+
+        if (inputLocked)
             return;
 
         switch (currentState)
@@ -195,23 +205,24 @@ public class ComputerUIController : MonoBehaviour
             inputView.SetInputNoCursor("MATCHING");
         }
 
-        matchingRoutine = StartCoroutine(FakeMatchingRoutine(true, null));
+        OnRandomMatchRequested?.Invoke();
     }
 
     private void EnterMatchingByRoomCodeState()
     {
-        StopMatchingRoutineIfNeed();
+        //StopMatchingRoutineIfNeed();
 
         currentState = ComputerScreenState.MatchingByRoomCode;
+        inputLocked = true;
 
         if (terminalLog != null)
         {
             terminalLog.ClearAll();
             terminalLog.PlayLines(new string[]
             {
-                "Room connection request received.",
-                "Validating room code...",
-                "Connecting to room " + currentRoomCode + "..."
+                "Sending room join request...",
+                "Room Code: " + currentRoomCode,
+                "Waiting for server response..."
             });
         }
         if (inputView != null)
@@ -392,6 +403,9 @@ public class ComputerUIController : MonoBehaviour
         }
 
         EnterMatchingByRoomCodeState();
+
+        // 发送Roomcode到服务器
+        OnJoinRoomRequested?.Invoke(currentRoomCode);
     }
 
     #endregion
@@ -544,4 +558,18 @@ public class ComputerUIController : MonoBehaviour
     }
 
     #endregion
+
+    public void OnMatchSuccess(string message)
+    {
+        inputLocked = false;
+
+        EnterResultState("MATCH SUCCESS", message);
+    }
+
+    public void OnMatchFailed(string message)
+    {
+        inputLocked = false;
+
+        EnterResultState("MATCH FAILED", message);
+    }
 }
