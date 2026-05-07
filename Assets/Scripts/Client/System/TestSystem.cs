@@ -39,6 +39,7 @@ public class TestSystem : MonoBehaviour
         // ³é¼¼ÄÜÅÆ
         if (Input.GetKeyDown(KeyCode.Space))
         {
+            SceneViewManager.viewAnimController.displaySkillCard.Display("test", "test", 1);
             //ClientCommand.DrawSkillCard();
             instance1 = CardViewCreator.Instance.CreateCardInstance(1001, 9999);
             StartCoroutine(handView.AddCard(instance1));

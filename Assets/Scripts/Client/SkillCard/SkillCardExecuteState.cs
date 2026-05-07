@@ -15,6 +15,9 @@ public class SkillCardExecuteState : SkillCardState
 
         skillCard.MoveToExecutePosition();
 
+        if (skillCard.isOpponent)
+            SceneViewManager.viewAnimController.displaySkillCard.Display(skillCard.instance.cardName, skillCard.instance.description, skillCard.instance.point);
+
         ExecuteCardView executeCardView = skillCard.isOpponent ? SceneViewManager.opponentExecuteCardView : SceneViewManager.myExecuteCardView;
         executeCardView.DestroyCard(skillCard.gameObject);
     }

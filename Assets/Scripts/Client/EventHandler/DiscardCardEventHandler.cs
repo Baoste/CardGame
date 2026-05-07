@@ -2,6 +2,7 @@ using Game.Domain;
 using Newtonsoft.Json;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class DiscardCardEventHandler : IEventProcess, IEventHandler
@@ -16,7 +17,7 @@ public class DiscardCardEventHandler : IEventProcess, IEventHandler
 
         // TODO
         // START
-        string context = $"instanceid:{payload.instanceIds[0].ToString()}";
+        string context = string.Join("\n", payload.instanceIds.Select(id => $"instanceid:{id}"));
         Debug.Log($"[Client] Event#{ev.Index} type={ev.type} slot={payload.playerId} payload={context}");
         // END
 

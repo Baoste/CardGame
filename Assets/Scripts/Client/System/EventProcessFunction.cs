@@ -347,6 +347,11 @@ public class EventProcessFunction : MonoBehaviour
         int playerId = (int)parameters[0];
         List<int> instanceIds = (List<int>)parameters[1];
 
+        if (instanceIds.Count < 1)
+        {
+            return;
+        }
+
         if (instanceIds.Count == 1)
         {
             foreach (int instanceId in instanceIds)

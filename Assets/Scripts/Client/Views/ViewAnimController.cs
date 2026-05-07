@@ -12,6 +12,9 @@ public class ViewAnimController : MonoBehaviour
     [SerializeField] private Transform pointCardsDeckCoverPivot;
     [SerializeField] private Transform pointCardsDeck;
 
+    [Header("Skill card display")]
+    public DisplaySkillCard displaySkillCard;
+
     [Header("Mine Skill Deck Cover Anim Settings")]
     [SerializeField] private Transform m_SkillCardsDeckCoverPivot;
     [SerializeField] private Transform m_SkillCardsDeck;

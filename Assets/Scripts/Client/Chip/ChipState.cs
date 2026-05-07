@@ -1,4 +1,6 @@
 
+using Game.Domain;
+
 public class ChipState
 {
     public ChipStateMachine stateMachine;
@@ -15,6 +17,10 @@ public class ChipState
     public virtual void Enter()
     {
         // skillCard.animator.SetBool(animatorName, true);
+        if (ClientGameState.playerSlot != ClientGameState.Instance.CurrentPlayerId)
+        {
+            stateMachine.ChangeState(chip.inTrayState);
+        }
     }
 
 
