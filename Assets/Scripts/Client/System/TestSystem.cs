@@ -11,6 +11,7 @@ public class TestSystem : MonoBehaviour
     private Stack<GameObject> objs = new Stack<GameObject>();
     private int turn = 0;
     private int card = 1;
+    private int apCount = 0;
     private GameObject instance1;
     private GameObject instance2;
 
@@ -143,6 +144,17 @@ public class TestSystem : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.S))
         {
             SceneViewManager.myTurnLightView.SetLight(++turn);
+
+            if (apCount++ < 3)
+            {
+                SceneViewManager.myActionPointView.AddPoint(1);
+                SceneViewManager.opponentActionPointView.AddPoint(1);
+            }
+            else
+            {
+                SceneViewManager.myActionPointView.SpendPoint(1);
+                SceneViewManager.opponentActionPointView.SpendPoint(1);
+            }
         }
 
         // ²âÊÔ×¯ÏÐ

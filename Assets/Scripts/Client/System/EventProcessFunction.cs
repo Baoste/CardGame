@@ -90,6 +90,9 @@ public class EventProcessFunction : MonoBehaviour
         int playerId = (int)parameters[0];
         int turn = (int)parameters[1];
 
+        // rotate turn indicator
+        SceneViewManager.turnIndicator.Rotate2Player(ClientGameState.playerSlot != playerId);
+
         if (ClientGameState.playerSlot == playerId)
             SceneViewManager.endTurnView.btnLight.intensity = 1;
 

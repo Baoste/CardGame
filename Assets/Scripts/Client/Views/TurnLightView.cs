@@ -8,15 +8,28 @@ public class TurnLightView : MonoBehaviour, IViewClear
     private Renderer matRenderer;
     private MaterialPropertyBlock mpb;
 
+    [SerializeField] private List<Transform> lightStrips;
+    private Dictionary<Transform, Vector3> lightStripMap;
+
     private void Start()
     {
         matRenderer = GetComponentInChildren<Renderer>();
         mpb = new MaterialPropertyBlock();
+
+        lightStripMap = new Dictionary<Transform, Vector3>();
+        foreach (var strip in lightStrips)
+        {
+            lightStripMap[strip] = strip.localPosition;
+        }
     }
 
     public void ClearView()
     {
         SetLight(0);
+        foreach (var strip in lightStripMap.Keys)
+        {
+            strip.localPosition = lightStripMap[strip];
+        }
     }
 
     public void SetLight(int turn)
@@ -60,6 +73,11 @@ public class TurnLightView : MonoBehaviour, IViewClear
                 // Ñ­»·ºôÎü
                 mpb.SetVector("_LightColor", new Vector3(1, 0, 0));
                 mpb.SetFloat("_IsBreath", 1f);
+                // Î»ÖÃ·É³ö
+                foreach (var strip in lightStripMap.Keys)
+                {
+                    strip.DOMove(Vector3.zero, 0.5f).SetEase(Ease.OutBack);
+                }
                 break;
             default:
                 break;

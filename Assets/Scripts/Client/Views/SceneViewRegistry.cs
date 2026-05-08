@@ -33,6 +33,8 @@ public class SceneViewRegistry : MonoBehaviour
 
     [SerializeField] private ViewAnimController viewAnimController;
 
+    [SerializeField] private TurnIndicator turnIndicator;
+
     private void Awake()
     {
         SceneViewManager.boardView = boardView;
@@ -55,5 +57,6 @@ public class SceneViewRegistry : MonoBehaviour
         SceneViewManager.opponentActionPointView = opponentActionPointView;
         SceneViewManager.endTurnView = endTurnView;
         SceneViewManager.viewAnimController = viewAnimController;
+        SceneViewManager.turnIndicator = turnIndicator;
     }
 }

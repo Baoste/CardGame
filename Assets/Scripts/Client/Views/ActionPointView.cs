@@ -1,51 +1,56 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class ActionPointView : MonoBehaviour
 {
-    [SerializeField] private List<Light> lights = new List<Light>();
-    
-    private Stack<Light> lightsOff = new Stack<Light>();
-    private Stack<Light> lightsOn = new Stack<Light>();
+    [SerializeField] private List<Renderer> renderers = new List<Renderer>();
 
-    private void Start()
+    private Stack<Renderer> offStack = new Stack<Renderer>();
+    private Stack<Renderer> onStack = new Stack<Renderer>();
+    [SerializeField] private Color onColor = Color.green;
+    [SerializeField] private Color offColor = Color.gray;
+
+    private void Awake()
     {
-        foreach (Light light in lights)
+        // 给每个子物体创建材质实例，避免共享
+        for (int i = 0; i < renderers.Count; i++)
         {
-            light.intensity = 0;
-            lightsOff.Push(light);
+            renderers[i].material = new Material(renderers[i].sharedMaterial);
+            renderers[i].material.color = offColor;
+            offStack.Push(renderers[i]);
         }
     }
 
     public void ResetPoint()
     {
-        while (lightsOn.Count > 0)
+        while (onStack.Count > 0)
         {
-            Light light = lightsOn.Pop();
-            light.intensity = 0;
-            lightsOff.Push(light);
+            Renderer r = onStack.Pop();
+            r.material.color = offColor;
+            offStack.Push(r);
         }
     }
 
     public void AddPoint(int count)
     {
-        while (count > 0 && lightsOff.Count > 0)
+        while (count > 0 && offStack.Count > 0)
         {
-            Light light = lightsOff.Pop();
-            light.intensity = 0.1f;
-            lightsOn.Push(light);
+            Renderer r = offStack.Pop();
+            r.material.color = onColor;
+            r.material.EnableKeyword("_EMISSION");
+            onStack.Push(r);
             count--;
         }
     }
 
     public void SpendPoint(int count)
     {
-        while (count > 0 && lightsOn.Count > 0)
+        while (count > 0 && onStack.Count > 0)
         {
-            Light light = lightsOn.Pop();
-            light.intensity = 0;
-            lightsOff.Push(light);
+            Renderer r = onStack.Pop();
+            r.material.color = offColor;
+            r.material.DisableKeyword("_EMISSION");
+            offStack.Push(r);
             count--;
         }
     }

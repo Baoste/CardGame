@@ -24,6 +24,7 @@ public static class SceneViewManager
     public static ActionPointView opponentActionPointView;
     public static ViewAnimController viewAnimController;
     public static EndTurnView endTurnView;
+    public static TurnIndicator turnIndicator;
 
     private static IEnumerable<IViewClear> views => new IViewClear[]
     {
@@ -36,6 +37,7 @@ public static class SceneViewManager
             opponentRevealButtonView,
             myTurnLightView,
             opponentTurnLightView,
+            turnIndicator
     };
 
     public static void ClearViews()
