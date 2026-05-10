@@ -82,13 +82,13 @@ public class DisplaySkillCard : MonoBehaviour
         currentSeq.Append(
             transform.DORotate(
                 new Vector3(0f, 180f, 0f),
-                0.5f,
+                0.1f,
                 RotateMode.LocalAxisAdd
             )
         );
 
         currentSeq.Join(
-            transform.DOScale(Vector3.zero, 0.5f)
+            transform.DOScale(Vector3.zero, 0.1f)
         );
 
         currentSeq.OnComplete(PlayNext);

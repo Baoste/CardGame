@@ -8,23 +8,16 @@ using UnityEngine;
 public class RevealView : MonoBehaviour, IViewClear
 {
     [SerializeField] private GameObject revealButton;
-    [SerializeField] private GameObject revealRandom;
     [SerializeField] private GameObject slotMachine;
 
     private Vector3 BtnHidePosition;
     private Vector3 BtnShowPosition;
-    private Vector3 RdmHidePosition;
-    private Vector3 RdmShowPosition;
     
     private bool isRandomEnabled = false;
 
     public void Start()
     {
         slotMachine.transform.rotation = Quaternion.Euler(-110, 0, 0);
-
-        RdmShowPosition = revealRandom.transform.localPosition;
-        RdmHidePosition = RdmShowPosition + Vector3.down * 0.1f;
-        revealRandom.transform.localPosition = RdmHidePosition;
 
         BtnShowPosition = revealButton.transform.localPosition;
 
@@ -38,7 +31,7 @@ public class RevealView : MonoBehaviour, IViewClear
 
     public void ClearView()
     {
-        revealRandom.transform.localPosition = RdmHidePosition;
+        revealButton.transform.localPosition = BtnHidePosition;
         revealButton.GetComponent<RevealButton>().enabled = false;
         revealButton.GetComponent<Collider>().enabled = false;
         isRandomEnabled = false;
@@ -57,25 +50,15 @@ public class RevealView : MonoBehaviour, IViewClear
     public void ShowRandom()
     {
         isRandomEnabled = true;
-        // TODO: 随机引爆装置
-        revealRandom.transform.DOLocalMove(RdmShowPosition, 0.5f);
     }
 
     public IEnumerator RandomAnimation(bool reveal)
     {
         if (!isRandomEnabled) yield break;
 
-        // TODO: 播放随机选择的dongh
+        // 掉落随机引爆装置
         slotMachine.SetActive(true);
-        Quaternion quaternion = slotMachine.transform.rotation;
-
-        Sequence seq = DOTween.Sequence();
-        seq.Append(slotMachine.transform.DORotate(Vector3.zero, 0.8f).SetEase(Ease.OutBounce));
-
-        yield return seq.WaitForCompletion();
-        yield return new WaitForSecondsRealtime(1.5f);
-
-        slotMachine.transform.rotation = quaternion;
+        yield return slotMachine.GetComponent<SlotMachine>().PlayAnimation(reveal);
         slotMachine.SetActive(false);
 
         if (reveal && ClientGameState.Instance.dealerId == ClientGameState.playerSlot)

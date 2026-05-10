@@ -10,7 +10,7 @@ public class ChipPlacedState : ChipState
 
     public override void Enter()
     {
-        base.Enter();
+        // base.Enter();
 
         chip.rb.useGravity = true;
         chip.col.isTrigger = false;

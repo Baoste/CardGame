@@ -137,7 +137,7 @@ public class TestSystem : MonoBehaviour
         {
             // eventProcessFunction.RevealTest(new object[] { 1 - ClientGameState.playerSlot, 1, 2, 3});
             SceneViewManager.myRevealButtonView.ShowRandom();
-            StartCoroutine(SceneViewManager.myRevealButtonView.RandomAnimation(true));
+            StartCoroutine(SceneViewManager.myRevealButtonView.RandomAnimation(false));
         }
 
         // ≤‚ ‘ªÿ∫œµ∆
