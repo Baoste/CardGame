@@ -657,6 +657,7 @@ public class EventProcessFunction : MonoBehaviour
             //int returnCount = SceneViewManager.myChipView.chipsPlaced.Count - currentBet;
             //SceneViewManager.myChipView.GenerateChips(returnCount, false);
             // 对方获得筹码
+            SceneViewManager.opponentChipView.GenerateChips(SceneViewManager.opponentChipView.chipsPlaced.Count, true);
             SceneViewManager.opponentChipView.GenerateChips(currentBet, true);
         }
         else
