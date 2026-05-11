@@ -3,7 +3,6 @@ using UnityEngine;
 public class MouseRaycastSystem : MonoBehaviour
 {
     private Camera rayCamera;
-    private LayerMask interactMask;
 
     private GameObject currentObj; // 当前 hover
     private GameObject dragObj;    // 当前拖拽对象
@@ -22,13 +21,14 @@ public class MouseRaycastSystem : MonoBehaviour
     private void Start()
     {
         rayCamera = Camera.main;
-        interactMask = LayerMask.GetMask("Card", "HighlightOnly", "Default");
     }
 
     private void Update()
     {
+        if (!GameManager.ManageMouseInputValidity) return;
+
         Ray ray = rayCamera.ScreenPointToRay(Input.mousePosition);
-        bool hasHit = Physics.Raycast(ray, out RaycastHit hit, 1000f, interactMask);
+        bool hasHit = Physics.Raycast(ray, out RaycastHit hit, 1000f, GameManager.interactMask);
 
         HandleHover(hasHit, hit);
         HandleMouseDown(hasHit, hit);

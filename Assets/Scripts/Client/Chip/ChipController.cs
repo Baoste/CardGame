@@ -51,6 +51,13 @@ public class ChipController : MonoBehaviour
             yield break;
         }
 
+        if (SceneViewManager.opponentChipView.chipsInTray.Count < 1)
+        {
+            Debug.Log("对方没有筹码了");
+            stateMachine.ChangeState(inTrayState);
+            yield break;
+        }
+
         // Start Executing
         stateMachine.ChangeState(placedState);
 

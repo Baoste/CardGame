@@ -29,9 +29,6 @@ public class ViewAnimController : MonoBehaviour
     [SerializeField] private Transform m_ChipCoverPivot;
     [SerializeField] private Transform op_ChipCoverPivot;
 
-    [Header("Call Or Fold UI Settings")]
-    [SerializeField] private GameObject callFoldBtnGroup;
-
     private void Start()
     {
         m_SkillDeckOriginalPosition = m_SkillCardsDeck.position;
@@ -105,25 +102,5 @@ public class ViewAnimController : MonoBehaviour
         seq.Join(op_ChipCoverPivot.DORotate(new Vector3(-49.6f, 0, 0), 0.35f).SetEase(Ease.InCubic));
 
         yield return seq.WaitForCompletion();
-    }
-
-    public IEnumerator ChooseCallOrFold()
-    {
-        callFoldBtnGroup.SetActive(true);
-        yield break;
-
-        //Sequence seq = DOTween.Sequence();
-        //seq.Append(m_ChipCoverPivot.DORotate(Vector3.zero, 0.35f).SetEase(Ease.InCubic));
-        //seq.Join(op_ChipCoverPivot.DORotate(new Vector3(-49.6f, 0, 0), 0.35f).SetEase(Ease.InCubic));
-
-        //yield return seq.WaitForCompletion();
-    }
-
-    public void SendCallOrFoldCmd(bool isCall)
-    {
-        ConfirmBetCommand cmd = new ConfirmBetCommand { playerId = ClientGameState.playerSlot, isCall = isCall };
-        ClientGameState.gateway.SendCommandServerRpc("ConfirmBet", JsonConvert.SerializeObject(cmd));
-
-        callFoldBtnGroup.SetActive(false);
     }
 }

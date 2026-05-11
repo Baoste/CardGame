@@ -36,7 +36,7 @@ public class ConfirmBetCmdHandler : CommandHandler, ICommandHandler
                     payload.playerId,
                     true,
                     1 - payload.playerId,
-                    currentBet,
+                    currentBet - 1,
                     playerPoints,
                     opponentPoints
                 ),

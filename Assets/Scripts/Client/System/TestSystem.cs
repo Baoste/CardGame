@@ -15,11 +15,18 @@ public class TestSystem : MonoBehaviour
     private GameObject instance1;
     private GameObject instance2;
 
+    private Dictionary<char, int> keyParamMap = new Dictionary<char, int>();
+
     [SerializeField] private EventProcessFunction eventProcessFunction;
 
     private void Start()
     {
         AudioManager.Instance.Play("Electric_Buzz");
+
+        for (char c = 'A'; c <= 'Z'; c++)
+        {
+            keyParamMap[c] = 0;
+        }
     }
 
     private void Update()
@@ -162,6 +169,21 @@ public class TestSystem : MonoBehaviour
         {
             SceneViewManager.roleView.ShowRole(1-ClientGameState.playerSlot);
             SceneViewManager.roleView.ShowRole(ClientGameState.playerSlot);
+        }
+
+        // ²âÊÔ¸ú×¢×°ÖÃ
+        if (Input.GetKeyDown(KeyCode.K))
+        {
+            if (keyParamMap['K']++ % 2 == 0)
+            {
+                StartCoroutine(SceneViewManager.callOrFoldMachine.Show());
+                StartCoroutine(SceneViewManager.callOrFoldMachineBack.Show());
+            }
+            else
+            {
+                StartCoroutine(SceneViewManager.callOrFoldMachine.Hide());
+                StartCoroutine(SceneViewManager.callOrFoldMachineBack.Hide());
+            }
         }
     }
 }

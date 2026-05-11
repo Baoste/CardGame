@@ -26,6 +26,7 @@ public class DetermineParticipants : MonoBehaviour
     private void Start()
     {
         volume.profile.TryGet(out colorAdjust);
+        switchObject.SetActive(false);
     }
 
 
@@ -104,6 +105,8 @@ public class DetermineParticipants : MonoBehaviour
             selectedSourceIds = new List<int>();
             Debug.Log($"[Client] Wating for select source {candidateSourceIds}");
 
+            GameManager.ChangeInteractMask("HighlightOnly");
+
             switchObject.SetActive(true);
             HighLight(switchObject);
             Tweener tween = switchObject.transform.DORotateQuaternion(Quaternion.Euler(32.89f, 0, 0), 0.8f).SetEase(Ease.OutBounce);
@@ -122,12 +125,16 @@ public class DetermineParticipants : MonoBehaviour
 
             oddEvenSwitch.transform.localRotation = Quaternion.identity;
             switchObject.SetActive(false);
+
+            GameManager.ResetInteractMask();
         }
 
         if (targetClick)
         {
             selectedTargetIds = new List<int>();
             Debug.Log("[Client] Wating for select target");
+
+            GameManager.ChangeInteractMask("HighlightOnly");
 
             switchObject.SetActive(true);
             HighLight(switchObject);
@@ -147,6 +154,8 @@ public class DetermineParticipants : MonoBehaviour
 
             oddEvenSwitch.transform.localRotation = Quaternion.identity;
             switchObject.SetActive(false);
+
+            GameManager.ResetInteractMask();
         }
 
         // ClientEffectContext.ChooseDone = true;

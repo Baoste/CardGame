@@ -35,6 +35,9 @@ public class SceneViewRegistry : MonoBehaviour
 
     [SerializeField] private TurnIndicator turnIndicator;
 
+    [SerializeField] private CallOrFoldMachine callOrFoldMachine;
+    [SerializeField] private CallOrFoldMachine callOrFoldMachineBack;
+
     private void Awake()
     {
         SceneViewManager.boardView = boardView;
@@ -58,5 +61,7 @@ public class SceneViewRegistry : MonoBehaviour
         SceneViewManager.endTurnView = endTurnView;
         SceneViewManager.viewAnimController = viewAnimController;
         SceneViewManager.turnIndicator = turnIndicator;
+        SceneViewManager.callOrFoldMachine = callOrFoldMachine;
+        SceneViewManager.callOrFoldMachineBack = callOrFoldMachineBack;
     }
 }

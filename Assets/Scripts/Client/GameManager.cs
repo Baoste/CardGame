@@ -2,17 +2,18 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GameManager : MonoBehaviour
+public static class GameManager
 {
-    // Start is called before the first frame update
-    void Start()
+    public static bool ManageMouseInputValidity = true;
+    public static LayerMask interactMask = LayerMask.GetMask("Card", "HighlightOnly", "Default");
+
+    public static void ChangeInteractMask(params string[] layerNames)
     {
-        
+        interactMask = LayerMask.GetMask(layerNames);
     }
 
-    // Update is called once per frame
-    void Update()
+    public static void ResetInteractMask()
     {
-        
+        interactMask = LayerMask.GetMask("Card", "HighlightOnly", "Default");
     }
 }

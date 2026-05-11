@@ -25,6 +25,8 @@ public static class SceneViewManager
     public static ViewAnimController viewAnimController;
     public static EndTurnView endTurnView;
     public static TurnIndicator turnIndicator;
+    public static CallOrFoldMachine callOrFoldMachine;
+    public static CallOrFoldMachine callOrFoldMachineBack;
 
     private static IEnumerable<IViewClear> views => new IViewClear[]
     {
@@ -37,7 +39,9 @@ public static class SceneViewManager
             opponentRevealButtonView,
             myTurnLightView,
             opponentTurnLightView,
-            turnIndicator
+            turnIndicator,
+            callOrFoldMachine,
+            callOrFoldMachineBack
     };
 
     public static void ClearViews()

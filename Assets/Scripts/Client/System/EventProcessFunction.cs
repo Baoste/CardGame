@@ -228,9 +228,8 @@ public class EventProcessFunction : MonoBehaviour
         bool isOpponent = playerId != ClientGameState.playerSlot;
         if (isOpponent)
         {
-            // StartCoroutine(SceneViewManager.myChipView.Place1BetAuto(false));
             StartCoroutine(SceneViewManager.opponentChipView.Place1BetAuto(true, 0));
-            StartCoroutine(SceneViewManager.viewAnimController.ChooseCallOrFold());
+            StartCoroutine(SceneViewManager.callOrFoldMachine.Show());
         }
         else
         {
@@ -240,8 +239,8 @@ public class EventProcessFunction : MonoBehaviour
             {
                 script.enabled = false;
             }
-            // StartCoroutine(SceneViewManager.opponentChipView.Place1BetAuto(true));
             SceneViewManager.myChipView.Place1Bet(instanceId);
+            StartCoroutine(SceneViewManager.callOrFoldMachineBack.Show());
         }
     }
 
@@ -254,10 +253,12 @@ public class EventProcessFunction : MonoBehaviour
         if (isOpponent)
         {
             StartCoroutine(SceneViewManager.opponentChipView.Place1BetAuto(true, 0));
+            StartCoroutine(SceneViewManager.callOrFoldMachineBack.Hide());
         }
         else
         {
             StartCoroutine(SceneViewManager.myChipView.Place1BetAuto(true, 0));
+            StartCoroutine(SceneViewManager.callOrFoldMachine.Hide());
         }
 
         //foreach (var obj in SceneViewManager.myChipView.chipsInTray.Keys)
@@ -621,6 +622,9 @@ public class EventProcessFunction : MonoBehaviour
         int playerPoints = (int)parameters[3];
         int opponentPoints = (int)parameters[4];
 
+        StartCoroutine(SceneViewManager.callOrFoldMachine.Hide());
+        StartCoroutine(SceneViewManager.callOrFoldMachineBack.Hide());
+
         StartCoroutine(_Reveal(playerId, winnerId, currentBet, playerPoints, opponentPoints));
     }
 
@@ -650,8 +654,8 @@ public class EventProcessFunction : MonoBehaviour
         if (isOpponent)
         {
             // 多余的筹码退回筹码盘
-            int returnCount = SceneViewManager.myChipView.chipsPlaced.Count - currentBet;
-            SceneViewManager.myChipView.GenerateChips(returnCount, false);
+            //int returnCount = SceneViewManager.myChipView.chipsPlaced.Count - currentBet;
+            //SceneViewManager.myChipView.GenerateChips(returnCount, false);
             // 对方获得筹码
             SceneViewManager.opponentChipView.GenerateChips(currentBet, true);
         }

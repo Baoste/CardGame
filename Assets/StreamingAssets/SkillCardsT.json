@@ -92,7 +92,7 @@
       "description": "猜单双，猜中后弃置对手的一张点数牌",
       "point": 0,
       "type": 1,
-      "count": 2,
+      "count": 92,
       "effects": [
         {
           "type": 2,

@@ -42,7 +42,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _BaseMap:
-        m_Texture: {fileID: 2800000, guid: 40a2931109144b64f8e7b2285ada160f, type: 3}
+        m_Texture: {fileID: 2800000, guid: 8044d63bb6fa6074fbe19039732adf3c, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _EmissionMap:
@@ -50,7 +50,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MetallicMap:
-        m_Texture: {fileID: 2800000, guid: 91050038ef728cb4ca5a877042f0f17a, type: 3}
+        m_Texture: {fileID: 2800000, guid: 674d10a125284b440929ad20df341765, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _NormalMap:
@@ -58,7 +58,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _RoughnessMap:
-        m_Texture: {fileID: 2800000, guid: 29a92456a8f618b40902a0abb9d99ba6, type: 3}
+        m_Texture: {fileID: 2800000, guid: 6f20a5145aa1d984f954cd52b47756aa, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _SmoothMap:

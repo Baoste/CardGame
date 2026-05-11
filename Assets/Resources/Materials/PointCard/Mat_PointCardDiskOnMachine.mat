@@ -1,0 +1,72 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!21 &2100000
+Material:
+  serializedVersion: 8
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: Mat_PointCardDiskOnMachine
+  m_Shader: {fileID: 4800000, guid: b9d41540ffc0d464796930ef72abdc78, type: 3}
+  m_Parent: {fileID: 0}
+  m_ModifiedSerializedProperties: 0
+  m_ValidKeywords: []
+  m_InvalidKeywords: []
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_LockedProperties: 
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - _BaseMap:
+        m_Texture: {fileID: 2800000, guid: fc3502f2069c71f4093f514468e5a41c, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _FireTrace:
+        m_Texture: {fileID: 2800000, guid: da6cdc7707226c1409f7a4f081a51f16, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _MainMap:
+        m_Texture: {fileID: 2800000, guid: c22057b693890e2458daba49213c38bd, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _Mask:
+        m_Texture: {fileID: 2800000, guid: 11d110119474910488440eaaaa1e0dbb, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _Mask2:
+        m_Texture: {fileID: 2800000, guid: 891e74f91bf4c5547bc0cc7c95ccd7d5, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _Noise:
+        m_Texture: {fileID: 2800000, guid: 550d4c1bea372804bb340652fd079b7a, type: 3}
+        m_Scale: {x: 5, y: 5}
+        m_Offset: {x: 0, y: 0}
+    m_Ints: []
+    m_Floats:
+    - _AlbedoFactor: 0.16
+    - _AnisColorOffset: 0
+    - _AnisoStrength: 0
+    - _Anisotropy: 0.92
+    - _DissolutionStrength: 0
+    - _FireTraceFactor: 0
+    - _IridescenceScale: 18
+    - _IridescenceStrength: 0.7
+    - _Metallic: 1
+    - _RadialNoiseScale: 183.2
+    - _RadialNoiseStrength: 0.1
+    - _RingContrast: 1.2
+    - _RingIntensity: 0.2
+    - _RingScale: 120
+    - _Roughness: 0.7
+    m_Colors:
+    - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
+    - _DiskCenterOS: {r: 0, g: 0, b: 0, a: 1}
+    - _EmissionColor: {r: 0, g: 2.9000003, b: 2.565969, a: 1}
+    - _RadialCenter: {r: 0.5, g: 0.5, b: 0, a: 0}
+  m_BuildTextureStacks: []
