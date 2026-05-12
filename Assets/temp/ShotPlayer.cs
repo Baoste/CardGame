@@ -21,7 +21,7 @@ public class ShotPlayer : MonoBehaviour
 
     private int currentIndex = 0;
 
-    void Start()
+    private void Start()
     {
         InitShots();
 
@@ -29,7 +29,7 @@ public class ShotPlayer : MonoBehaviour
         PlayShotFromStart(0);
     }
 
-    void Update()
+    private void Update()
     {
         if (Input.GetKeyDown(nextKey))
         {

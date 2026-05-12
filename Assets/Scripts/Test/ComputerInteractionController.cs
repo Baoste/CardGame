@@ -63,7 +63,7 @@ public class ComputerInteractionController : MonoBehaviour
         isUsingComputer = true;
 
         SetPlayerControlEnabled(false);
-        ApplyEnterCursorState();
+        //ApplyEnterCursorState();
 
         if (uiController != null)
         {
@@ -81,7 +81,7 @@ public class ComputerInteractionController : MonoBehaviour
         isUsingComputer = false;
 
         SetPlayerControlEnabled(true);
-        ApplyExitCursorState();
+        //ApplyExitCursorState();
 
         if (uiController != null)
         {

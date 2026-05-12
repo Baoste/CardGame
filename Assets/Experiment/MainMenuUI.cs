@@ -6,17 +6,26 @@ public class MainMenuUI : MonoBehaviour
 {
     public GameObject mainMenuCanvas;
     private Animator cameraAnimator;
-    public GameObject movingCamera;
+    //public GameObject movingCamera;
+    public ShotPlayer shotPlayer;
 
-    public void Awake()
+    private void Awake()
     {
-        cameraAnimator = movingCamera.GetComponent<Animator>();
+        //cameraAnimator = movingCamera.GetComponent<Animator>();
     }
+
+    private void Update()
+    {
+        
+    }
+
     public void StartGame()
     {
-        // 在这里添加开始游戏的逻辑，例如加载游戏场景
+        // 在这里添加开始游戏的逻辑
         Debug.Log("开始游戏");
-        cameraAnimator.SetTrigger("PlayIntro"); // 播放摄像机动画
+
+        shotPlayer.PlayShot(1); // 下楼梯
+
         mainMenuCanvas.SetActive(false); // 隐藏主菜单UI
     }
 
