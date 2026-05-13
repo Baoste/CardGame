@@ -21,6 +21,7 @@ public class TestSystem : MonoBehaviour
 
     private void Start()
     {
+        AudioManager.Instance.Play("BGM");
         AudioManager.Instance.Play("Electric_Buzz");
 
         for (char c = 'A'; c <= 'Z'; c++)
@@ -176,8 +177,8 @@ public class TestSystem : MonoBehaviour
         {
             if (keyParamMap['K']++ % 2 == 0)
             {
-                StartCoroutine(SceneViewManager.callOrFoldMachine.Show());
-                StartCoroutine(SceneViewManager.callOrFoldMachineBack.Show());
+                StartCoroutine(SceneViewManager.callOrFoldMachine.Show(2));
+                StartCoroutine(SceneViewManager.callOrFoldMachineBack.Show(2));
             }
             else
             {

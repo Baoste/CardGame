@@ -72,6 +72,7 @@ Material:
     m_Floats:
     - _FlashFactor: 0
     - _IsBreath: 0
+    - _LightStrength: 3
     - _QueueControl: 0
     - _QueueOffset: 0
     m_Colors:

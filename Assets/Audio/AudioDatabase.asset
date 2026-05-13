@@ -13,7 +13,9 @@ MonoBehaviour:
   m_Name: AudioDatabase
   m_EditorClassIdentifier: 
   clips:
+  - {fileID: 11400000, guid: aa7efcd5217781540a42a7c8718d2c6a, type: 2}
   - {fileID: 11400000, guid: 9a62c756f334fbe4ca8ad865ddd3d0db, type: 2}
   - {fileID: 11400000, guid: c1d751037654a0543b319ecb70dc734b, type: 2}
   - {fileID: 11400000, guid: 800d09a264896ab489ab1b16d120c719, type: 2}
   - {fileID: 11400000, guid: 208d2ebb75c5928409ed5922b0e5cf83, type: 2}
+  - {fileID: 11400000, guid: 395ad96c76201cb478b1fd9d78901159, type: 2}

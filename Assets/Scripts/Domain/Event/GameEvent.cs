@@ -91,14 +91,26 @@ namespace Game.Domain
         }
     }
 
+    public class PlaceBetsEvent : PlayerEvent
+    {
+        public int[] instanceIds;
+        public PlaceBetsEvent(int playerId, bool success, int[] instanceIds)
+            : base(playerId, success)
+        {
+            this.instanceIds = instanceIds;
+        }
+    }
+
     /// <summary>
     /// È·¶¨ÏÂ×¢
     /// </summary>
     public class ConfirmBetEvent : PlayerEvent
     {
-        public ConfirmBetEvent(int playerId, bool success)
+        public int betCount;
+        public ConfirmBetEvent(int playerId, bool success, int betCount)
             : base(playerId, success)
         {
+            this.betCount = betCount;
         }
     }
 
