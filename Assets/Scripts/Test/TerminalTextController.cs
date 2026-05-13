@@ -9,8 +9,8 @@ public class TerminalTextController : MonoBehaviour
     [SerializeField] private TMP_Text[] lineTexts;
 
     [Header("Typing")]
-    [SerializeField] private float charInterval = 0.03f;
-    [SerializeField] private float lineStayDuration = 0.4f;
+    [SerializeField] private float charInterval = 0f;
+    [SerializeField] private float lineStayDuration = 0f;
     [SerializeField] private bool useBlinkCursor = true;
     [SerializeField] private string cursorChar = "_";
 
@@ -19,6 +19,25 @@ public class TerminalTextController : MonoBehaviour
     private bool isPlaying;
 
     public bool IsPlaying => isPlaying;
+
+    public enum TerminalLineMode
+    {
+        Typewriter,
+        Instant
+    }
+
+    [System.Serializable]
+    public struct TerminalLine
+    {
+        public string text;
+        public TerminalLineMode mode;
+
+        public TerminalLine(string text, TerminalLineMode mode)
+        {
+            this.text = text;
+            this.mode = mode;
+        }
+    }
 
     private void Awake()
     {
@@ -48,6 +67,27 @@ public class TerminalTextController : MonoBehaviour
         playCoroutine = StartCoroutine(PlayLinesRoutine(lines));
     }
 
+    public void PlayLines(IEnumerable<TerminalLine> lines)
+    {
+        if (playCoroutine != null)
+            StopCoroutine(playCoroutine);
+
+        playCoroutine = StartCoroutine(PlayTerminalLinesRoutine(lines));
+    }
+
+    private IEnumerator PlayTerminalLinesRoutine(IEnumerable<TerminalLine> lines)
+    {
+        isPlaying = true;
+
+        foreach (TerminalLine line in lines)
+        {
+            yield return PlayOneLine(line.text, line.mode);
+        }
+
+        isPlaying = false;
+        playCoroutine = null;
+    }
+
     public void PlaySingleLine(string line)
     {
         if (playCoroutine != null)
@@ -70,7 +110,7 @@ public class TerminalTextController : MonoBehaviour
 
         foreach (string line in lines)
         {
-            yield return PlayOneLine(line);
+            yield return PlayOneLine(line, TerminalLineMode.Typewriter);
         }
 
         isPlaying = false;
@@ -80,14 +120,48 @@ public class TerminalTextController : MonoBehaviour
     private IEnumerator PlaySingleLineRoutine(string line)
     {
         isPlaying = true;
-        yield return PlayOneLine(line);
+        yield return PlayOneLine(line, TerminalLineMode.Typewriter);
         isPlaying = false;
         playCoroutine = null;
     }
 
-    private IEnumerator PlayOneLine(string fullLine)
+    //private IEnumerator PlayLinesRoutine(IEnumerable<TerminalLine> lines)
+    //{
+    //    isPlaying = true;
+
+    //    foreach (TerminalLine line in lines)
+    //    {
+    //        yield return PlayOneLine(line.text, line.mode);
+    //    }
+
+    //    isPlaying = false;
+    //    playCoroutine = null;
+    //}
+
+    //private IEnumerator PlaySingleLineRoutine(TerminalLine line)
+    //{
+    //    isPlaying = true;
+
+    //    yield return PlayOneLine(line.text, line.mode);
+
+    //    isPlaying = false;
+    //    playCoroutine = null;
+    //}
+
+    private IEnumerator PlayOneLine(string fullLine, TerminalLineMode mode)
     {
         PushLine(string.Empty);
+
+        if (mode == TerminalLineMode.Instant || charInterval <= 0f)
+        {
+            visibleLines[visibleLines.Count - 1] = fullLine;
+            RefreshView(-1, null, false);
+
+            if (lineStayDuration > 0f)
+                yield return new WaitForSeconds(lineStayDuration);
+
+            yield break;
+        }
 
         for (int i = 0; i <= fullLine.Length; i++)
         {
@@ -99,8 +173,10 @@ public class TerminalTextController : MonoBehaviour
         visibleLines[visibleLines.Count - 1] = fullLine;
         RefreshView(-1, null, false);
 
-        yield return new WaitForSeconds(lineStayDuration);
+        if (lineStayDuration > 0f)
+            yield return new WaitForSeconds(lineStayDuration);
     }
+
 
     private void PushLine(string line)
     {

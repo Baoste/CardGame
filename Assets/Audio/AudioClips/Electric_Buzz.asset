@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   id: Electric_Buzz
   clip:
-  - {fileID: 8300000, guid: 8da53fc470a675849a8ca6929e583acb, type: 3}
+  - {fileID: 8300000, guid: e78cdbc9e8ac21a419ce27c6053a2eb2, type: 3}
   type: 3
   volume: 1
   pitch: 1
