@@ -19,6 +19,7 @@ public class EventProcessFunction : MonoBehaviour
         ProcessDispatcher.Register("AddActionPointTest", AddActionPointTest);
         ProcessDispatcher.Register("SpendActionPointTest", SpendActionPointTest);
         ProcessDispatcher.Register("Place1BetTest", Place1BetTest);
+        ProcessDispatcher.Register("PlaceBetsTest", PlaceBetsTest);
         ProcessDispatcher.Register("ConfirmBetTest", ConfirmBetTest);
         ProcessDispatcher.Register("PlayAnimation", PlayAnimation);
         ProcessDispatcher.Register("DrawPointCard", DrawPointCard);
@@ -104,8 +105,8 @@ public class EventProcessFunction : MonoBehaviour
                 SceneViewManager.myTurnLightView.SetLight(1);
         }
 
-        int endTurnCount = 8;
-        if (turn == endTurnCount)
+        int endTurnCount = 9;
+        if (turn >= endTurnCount)
         {
             if (ClientGameState.Instance.punterId == ClientGameState.playerSlot)
                 SceneViewManager.myRevealButtonView.ShowButton(true);
@@ -150,6 +151,9 @@ public class EventProcessFunction : MonoBehaviour
                 break;
             case InvalidActionType.SkillCardCountEmpty:
                 // 显示没有技能牌了
+                break;
+            case InvalidActionType.PointCardDrawLimit:
+                // 显示点数牌抽牌限制
                 break;
             default:
                 break;
@@ -229,7 +233,7 @@ public class EventProcessFunction : MonoBehaviour
         if (isOpponent)
         {
             StartCoroutine(SceneViewManager.opponentChipView.Place1BetAuto(true, 0));
-            StartCoroutine(SceneViewManager.callOrFoldMachine.Show());
+            StartCoroutine(SceneViewManager.callOrFoldMachine.Show(1));
         }
         else
         {
@@ -240,24 +244,61 @@ public class EventProcessFunction : MonoBehaviour
                 script.enabled = false;
             }
             SceneViewManager.myChipView.Place1Bet(instanceId);
-            StartCoroutine(SceneViewManager.callOrFoldMachineBack.Show());
+            StartCoroutine(SceneViewManager.callOrFoldMachineBack.Show(1));
         }
     }
 
     // parameters[0]: int playerId
+    // parameters[1]: int[] instanceIds
+    public void PlaceBetsTest(object[] parameters)
+    {
+        int playerId = (int)parameters[0];
+        int[] instanceId = (int[])parameters[1];
+
+        bool isOpponent = playerId != ClientGameState.playerSlot;
+        
+        if (isOpponent)
+        {
+            foreach (int id in instanceId)
+            {
+                StartCoroutine(SceneViewManager.opponentChipView.Place1BetAuto(true, 0));
+            }
+            StartCoroutine(SceneViewManager.callOrFoldMachine.Show(instanceId.Length));
+        }
+        else
+        {
+            foreach (int id in instanceId)
+            {
+                GameObject obj = SceneViewManager.myChipView.chipsInTray[id];
+                ChipMouseEventHandler script = obj.GetComponentInChildren<ChipMouseEventHandler>();
+                if (script != null)
+                {
+                    script.enabled = false;
+                }
+                SceneViewManager.myChipView.Place1Bet(id);
+                StartCoroutine(SceneViewManager.callOrFoldMachineBack.Show(instanceId.Length));
+            }
+        }
+    }
+
+    // parameters[0]: int playerId
+    // parameters[1]: int betCount
     public void ConfirmBetTest(object[] parameters)
     {
         int playerId = (int)parameters[0];
+        int betCount = (int)parameters[1];
 
         bool isOpponent = playerId != ClientGameState.playerSlot;
         if (isOpponent)
         {
-            StartCoroutine(SceneViewManager.opponentChipView.Place1BetAuto(true, 0));
+            for (int i = 0; i < betCount; i++)
+                StartCoroutine(SceneViewManager.opponentChipView.Place1BetAuto(true, 0));
             StartCoroutine(SceneViewManager.callOrFoldMachineBack.Hide());
         }
         else
         {
-            StartCoroutine(SceneViewManager.myChipView.Place1BetAuto(true, 0));
+            for (int i = 0; i < betCount; i++)
+                StartCoroutine(SceneViewManager.myChipView.Place1BetAuto(true, 0));
             StartCoroutine(SceneViewManager.callOrFoldMachine.Hide());
         }
 
@@ -419,6 +460,12 @@ public class EventProcessFunction : MonoBehaviour
         instanceMap[instanceId] = instance;
 
         StartCoroutine(SceneViewManager.boardView.AddCard(instance, playerId, cardState));
+
+        // 操作了就隐藏爆牌按钮
+        if (ClientGameState.Instance.punterId == ClientGameState.playerSlot)
+            SceneViewManager.myRevealButtonView.HideButton();
+        else
+            SceneViewManager.opponentRevealButtonView.HideButton();
     }
 
     // parameters[0]: int cardId
@@ -446,6 +493,12 @@ public class EventProcessFunction : MonoBehaviour
         }
 
         AudioManager.Instance.Play("DrawSkillCard");
+
+        // 操作了就隐藏爆牌按钮
+        if (ClientGameState.Instance.punterId == ClientGameState.playerSlot)
+            SceneViewManager.myRevealButtonView.HideButton();
+        else
+            SceneViewManager.opponentRevealButtonView.HideButton();
     }
 
     // parameters[0]: int cardId
@@ -589,24 +642,33 @@ public class EventProcessFunction : MonoBehaviour
         int turn = (int)parameters[1];
         bool reveal = (bool)parameters[2];
 
+        bool isOpponent = playerId != ClientGameState.playerSlot;
         // 亮灯
         if (ClientGameState.Instance.dealerId == playerId)
         {
-            int myTurn = (turn + 1) / 2;
-            int opTurn = turn / 2 + 1;
-            SceneViewManager.myTurnLightView.SetLight(myTurn);
-            SceneViewManager.opponentTurnLightView.SetLight(opTurn);
+            int dealerTurn = (turn + 1) / 2;
+            if (isOpponent)
+                SceneViewManager.opponentTurnLightView.SetLight(dealerTurn + 1);
+            else
+                SceneViewManager.myTurnLightView.SetLight(dealerTurn + 1);
 
             StartCoroutine(SceneViewManager.myRevealButtonView.RandomAnimation(reveal));
             StartCoroutine(SceneViewManager.opponentRevealButtonView.RandomAnimation(reveal));
         }
         else
         {
-            int myTurn = turn / 2 + 1;
-            int opTurn = (turn + 1) / 2;
-            SceneViewManager.myTurnLightView.SetLight(myTurn);
-            SceneViewManager.opponentTurnLightView.SetLight(opTurn);
+            int playerTurn = turn / 2 + 1;
+            if (isOpponent)
+                SceneViewManager.opponentTurnLightView.SetLight(playerTurn + 1);
+            else
+                SceneViewManager.myTurnLightView.SetLight(playerTurn + 1);
         }
+
+        // 隐藏爆牌按钮
+        if (ClientGameState.Instance.punterId == ClientGameState.playerSlot)
+            SceneViewManager.myRevealButtonView.HideButton();
+        else
+            SceneViewManager.opponentRevealButtonView.HideButton();
     }
 
     // parameters[0]: int playerId

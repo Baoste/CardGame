@@ -11,29 +11,33 @@ public class CallOrFoldMachine : MonoBehaviour, IViewClear
 
     [SerializeField] private Transform disk;
     private Vector3 diskOriginalPosition = new Vector3(-0.379f, 1.131f, -0.96f);
+    [SerializeField] private ClickToCallOrFold callBtn;
 
-    private Quaternion originalRotation;
+    private Vector3 originalPosition;
     
     private void Start()
     {
         disk.transform.localPosition = diskOriginalPosition;
-        originalRotation = transform.rotation;
+        originalPosition = transform.localPosition;
         gameObject.SetActive(false);
     }
 
     public void ClearView()
     {
         disk.transform.localPosition = diskOriginalPosition;
-        transform.rotation = originalRotation;
+        transform.localPosition = originalPosition;
     }
 
-    public IEnumerator Show()
+    public IEnumerator Show(int betCount)
     {
+        if (callBtn != null)
+            callBtn.betCount = betCount;
+
         gameObject.SetActive(true);
         GameManager.ChangeInteractMask("Machine");
 
         Sequence seq = DOTween.Sequence();
-        seq.Append(transform.DORotate(new Vector3(0, isBack ? 120 : -80, 0), 0.8f, RotateMode.LocalAxisAdd).SetEase(Ease.OutBounce));
+        seq.Append(transform.DOLocalMoveX(isBack ? -3.11f : 2.016f, 0.8f).SetEase(Ease.OutBounce));
         seq.Append(disk.DOLocalMoveZ(-0.217f, 0.5f).SetEase(Ease.InOutCubic));
 
         yield return seq.WaitForCompletion();
@@ -42,7 +46,7 @@ public class CallOrFoldMachine : MonoBehaviour, IViewClear
     public IEnumerator Hide()
     {
         Sequence seq = DOTween.Sequence();
-        seq.Append(transform.DORotateQuaternion(originalRotation, 0.8f).SetEase(Ease.OutBounce));
+        seq.Append(transform.DOLocalMoveX(originalPosition.x, 0.8f).SetEase(Ease.OutBounce));
         seq.Append(disk.DOLocalMoveZ(diskOriginalPosition.z, 0.5f).SetEase(Ease.InOutCubic));
 
         yield return seq.WaitForCompletion();

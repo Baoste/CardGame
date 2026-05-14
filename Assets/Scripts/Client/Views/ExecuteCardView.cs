@@ -73,6 +73,8 @@ public class ExecuteCardView : MonoBehaviour
         seq.Append(card.transform.DOMove(spingPos, 0.08f).SetEase(Ease.OutCubic));
         seq.AppendCallback(() =>
         {
+            AudioManager.Instance.Play("SkillCard_Execute");
+
             executeVFX.SetVector4("Color", card.GetComponent<SkillCardInstance>().vfxColor);
             executeVFX.Play();
         });

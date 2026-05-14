@@ -8,6 +8,7 @@ using UnityEngine;
 public class ClickToCallOrFold : MonoBehaviour, IMouseDown, IMouseUp
 {
     public bool isCall;
+    [HideInInspector] public int betCount;
 
     private Tween rotateTween;
     private Transform parent;
@@ -41,7 +42,7 @@ public class ClickToCallOrFold : MonoBehaviour, IMouseDown, IMouseUp
 
     private void SendCallOrFoldCmd(bool isCall)
     {
-        ConfirmBetCommand cmd = new ConfirmBetCommand { playerId = ClientGameState.playerSlot, isCall = isCall };
+        ConfirmBetCommand cmd = new ConfirmBetCommand { playerId = ClientGameState.playerSlot, isCall = isCall, betCount = betCount };
         ClientGameState.gateway.SendCommandServerRpc("ConfirmBet", JsonConvert.SerializeObject(cmd));
     }
 }

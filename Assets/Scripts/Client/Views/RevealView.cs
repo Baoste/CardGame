@@ -47,6 +47,13 @@ public class RevealView : MonoBehaviour, IViewClear
         }
     }
 
+    public void HideButton()
+    {
+        revealButton.GetComponent<RevealButton>().enabled = false;
+        revealButton.GetComponent<Collider>().enabled = false;
+        revealButton.transform.DOLocalMove(BtnHidePosition, 0.5f);
+    }
+
     public void ShowRandom()
     {
         isRandomEnabled = true;

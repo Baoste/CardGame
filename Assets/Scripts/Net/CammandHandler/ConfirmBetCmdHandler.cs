@@ -18,7 +18,8 @@ public class ConfirmBetCmdHandler : CommandHandler, ICommandHandler
                 new ConfirmBetEvent
                 (
                     payload.playerId,
-                    true
+                    true,
+                    payload.betCount
                 ),
                 -1
             ));

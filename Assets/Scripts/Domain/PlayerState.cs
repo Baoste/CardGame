@@ -33,5 +33,13 @@ namespace Game.Domain
             chipCount -= 1;
             return true;
         }
+
+        public bool PlaceBets(int count)
+        {
+            if (chipCount < count)
+                return false;
+            chipCount -= count;
+            return true;
+        }
     }
 }

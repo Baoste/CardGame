@@ -1,3 +1,4 @@
+using FishNet.Demo.AdditiveScenes;
 using Game.Domain;
 using Game.Server;
 using Newtonsoft.Json;
@@ -17,9 +18,18 @@ public sealed class DrawPointCardCmdHandler : CommandHandler, ICommandHandler
         //if (!NetEffectFunction.SpendActionPoint(payload.playerId, -1, session, results, 1))
         //    return results;
 
+        // 只能抽一次
+        if (session.ctx.drawPointCardCount >= 1)
+        { 
+            NetEffectFunction.SendInvalidEvent(payload.playerId, -1, results, InvalidActionType.PointCardDrawLimit);
+            return results;
+        }
+
         int drawCardInstanceId = session.gameState.pointCardsDeck.Draw();
         CardVisualState cardState = session.gameState.GetCardState(drawCardInstanceId);
         session.gameState.AddCard(payload.playerId, session.instanceToCardId[drawCardInstanceId], drawCardInstanceId, CardType.Point, cardState);
+
+        session.ctx.drawPointCardCount++;
 
         // return
         results.events.Enqueue(MakeEvent(

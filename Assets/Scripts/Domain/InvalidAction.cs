@@ -7,6 +7,7 @@ namespace Game.Domain
         NotEnoughAP,
         NoCardToDraw,
         SkillCardCountFull,
-        SkillCardCountEmpty
+        SkillCardCountEmpty,
+        PointCardDrawLimit
     }
 }

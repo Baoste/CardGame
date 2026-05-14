@@ -57,10 +57,17 @@ namespace Game.Domain
         public int instanceId;
     }
 
+    public class PlaceBetsCommand : ICommand
+    {
+        public int playerId;
+        public int[] instanceIds;
+    }
+
     public class ConfirmBetCommand : ICommand
     {
         public int playerId;
         public bool isCall;
+        public int betCount;
     }
 
     /// <summary>

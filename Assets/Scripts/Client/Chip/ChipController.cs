@@ -11,6 +11,7 @@ public class ChipController : MonoBehaviour
     [HideInInspector] public ChipInTrayState inTrayState;
     [HideInInspector] public ChipDragState dragState;
     [HideInInspector] public ChipPlacedState placedState;
+    [HideInInspector] public ChipSelectedState selectedState;
     #endregion
 
     [HideInInspector] public Outline outlineControl;
@@ -26,6 +27,7 @@ public class ChipController : MonoBehaviour
         inTrayState = new ChipInTrayState(stateMachine, this, "isInTray");
         dragState = new ChipDragState(stateMachine, this, "isDrag");
         placedState = new ChipPlacedState(stateMachine, this, "isPlaced");
+        selectedState = new ChipSelectedState(stateMachine, this, "isSelected");
     }
     private void Start()
     {

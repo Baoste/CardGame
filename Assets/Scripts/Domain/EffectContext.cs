@@ -17,6 +17,9 @@ namespace Game.Domain
         // 用于执行效果时的操作栈，存储当前正在执行的 EffectOp
         public Stack<EffectOpExecutionContext> opStack = new Stack<EffectOpExecutionContext>();   
 
+        // 用于标识抽点数牌次数
+        public int drawPointCardCount = 0;
+
         public void ClearContext()
         {
             selectedSourceIds.Clear();
@@ -25,6 +28,7 @@ namespace Game.Domain
             candidateTargetIds.Clear();
             caster = -1;
             opponent = -1;
+            drawPointCardCount = 0;
         }
     }
 
