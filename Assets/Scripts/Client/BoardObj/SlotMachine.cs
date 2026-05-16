@@ -5,6 +5,11 @@ using UnityEngine;
 
 public class SlotMachine : MonoBehaviour
 {
+    private void Start()
+    {
+        gameObject.SetActive(false);        
+    }
+
     public IEnumerator PlayAnimation(bool reveal)
     {
         Quaternion quaternion = transform.rotation;
