@@ -60,39 +60,42 @@ Shader "Custom/PixelateShader"
 				float exp = 4;
 				float a = range / pow((range - 0.5), exp);
 
-				// corner twist
-				float2 newUV;
-				if (uv.x < 0.5 && uv.y < 0.5)
-				{
-					float ty = a*pow((uv.x-0.5), exp);
-					float tx = a*pow((uv.y-0.5), exp);
-					newUV = uv + float2(-tx*2*abs(uv.x-0.5), -ty*2*abs(uv.y-0.5));
-				}
-				else if (uv.x > 0.5 && uv.y < 0.5)
-				{
-					float ty = a*pow((uv.x-0.5), exp);
-					float tx = -a*pow((uv.y-0.5), exp) + 1;
-					newUV = uv + float2((1-tx)*2*abs(uv.x-0.5), -ty*2*abs(uv.y-0.5));
-				}
-				else if (uv.x < 0.5 && uv.y > 0.5)
-				{
-					float ty = -a*pow((uv.x-0.5), exp) + 1;
-					float tx = a*pow((uv.y-0.5), exp);
-					newUV = uv + float2(-tx*2*abs(uv.x-0.5), (1-ty)*2*abs(uv.y-0.5));
-				}
-				else
-				{
-					float ty = -a*pow((uv.x-0.5), exp) + 1;
-					float tx = -a*pow((uv.y-0.5), exp) + 1;
-					if (uv.y > ty || uv.x > tx)
-					newUV = uv + float2((1-tx)*2*abs(uv.x-0.5), (1-ty)*2*abs(uv.y-0.5));
-				}
+				//// corner twist
+				//float2 newUV;
+				//if (uv.x < 0.5 && uv.y < 0.5)
+				//{
+				//	float ty = a*pow((uv.x-0.5), exp);
+				//	float tx = a*pow((uv.y-0.5), exp);
+				//	newUV = uv + float2(-tx*2*abs(uv.x-0.5), -ty*2*abs(uv.y-0.5));
+				//}
+				//else if (uv.x > 0.5 && uv.y < 0.5)
+				//{
+				//	float ty = a*pow((uv.x-0.5), exp);
+				//	float tx = -a*pow((uv.y-0.5), exp) + 1;
+				//	newUV = uv + float2((1-tx)*2*abs(uv.x-0.5), -ty*2*abs(uv.y-0.5));
+				//}
+				//else if (uv.x < 0.5 && uv.y > 0.5)
+				//{
+				//	float ty = -a*pow((uv.x-0.5), exp) + 1;
+				//	float tx = a*pow((uv.y-0.5), exp);
+				//	newUV = uv + float2(-tx*2*abs(uv.x-0.5), (1-ty)*2*abs(uv.y-0.5));
+				//}
+				//else
+				//{
+				//	float ty = -a*pow((uv.x-0.5), exp) + 1;
+				//	float tx = -a*pow((uv.y-0.5), exp) + 1;
+				//	if (uv.y > ty || uv.x > tx)
+				//	newUV = uv + float2((1-tx)*2*abs(uv.x-0.5), (1-ty)*2*abs(uv.y-0.5));
+				//}
+
+				float2 newUV = uv;
 
 				float pixelHeight = _ScreenHeight / 3.14159265;
 				newUV.y = (floor(newUV.y * pixelHeight) + 0.5) / pixelHeight;
 				float pixelWidth = _ScreenWidth / 3.14159265 * 16 / 9;
 				newUV.x = (floor(newUV.x * pixelWidth) + 0.5) / pixelWidth;
 				half4 col = SAMPLE_TEXTURE2D(_MainTex, sampler_MainTex, newUV);
+
 				
 				// scan line
 				// col.rb *= step(0, sin(uv.y * _ScreenHeight)+1) * 0.5 + 1;
@@ -106,22 +109,22 @@ Shader "Custom/PixelateShader"
 				//float ssScanX = smoothstep(-1, 1, sin((newUV.y + _Time.x)* _ScreenHeight));
 				//col *= ssScanX * pixelScanlineBrightness.z + pixelScanlineBrightness.w;
 				
-				// dark corner
-				float dx = newUV.x;
-				float dy = newUV.y;
-				float ex = 0.01;
-				if (newUV.x < 0.5)
-					col.rgb *= pow(dx/0.5, ex);
-				else
-					col.rgb *= pow((1-dx)/0.5, ex);
-				if (newUV.y < 0.5)
-					col.rgb *= pow(dy/0.5, ex);
-				else
-					col.rgb *= pow((1-dy)/0.5, ex);
+				//// dark corner
+				//float dx = newUV.x;
+				//float dy = newUV.y;
+				//float ex = 0.01;
+				//if (newUV.x < 0.5)
+				//	col.rgb *= pow(dx/0.5, ex);
+				//else
+				//	col.rgb *= pow((1-dx)/0.5, ex);
+				//if (newUV.y < 0.5)
+				//	col.rgb *= pow(dy/0.5, ex);
+				//else
+				//	col.rgb *= pow((1-dy)/0.5, ex);
 				
-				// black corner
-				if (newUV.x < 0 || newUV.x > 1 || newUV.y < 0 || newUV.y > 1)
-					col.rgb *= 0;
+				//// black corner
+				//if (newUV.x < 0 || newUV.x > 1 || newUV.y < 0 || newUV.y > 1)
+				//	col.rgb *= 0;
 				return col;
 			}
 			ENDHLSL
