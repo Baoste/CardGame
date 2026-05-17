@@ -10464,11 +10464,11 @@ Light:
   serializedVersion: 10
   m_Type: 0
   m_Shape: 0
-  m_Color: {r: 0.59119487, g: 0.3476523, b: 0.3476523, a: 1}
-  m_Intensity: 36.94
+  m_Color: {r: 0.8679245, g: 0.6359321, b: 0.6359321, a: 1}
+  m_Intensity: 4.5
   m_Range: 6.2
-  m_SpotAngle: 179
-  m_InnerSpotAngle: 80.08722
+  m_SpotAngle: 146.92838
+  m_InnerSpotAngle: 48.01556
   m_CookieSize: 10
   m_Shadows:
     m_Type: 0
@@ -14740,6 +14740,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_hasFontAssetChanged
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7544226383736773256, guid: 6678889e48721ab458cea4d34ac45d65,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7825253381685563305, guid: 6678889e48721ab458cea4d34ac45d65,
         type: 3}

@@ -51,7 +51,8 @@ public class ViewAnimController : MonoBehaviour
     {
         yield return new WaitForSeconds(delay);
         StartCoroutine(OpenPointCardDeckCover());
-        StartCoroutine(OpenChipCover());
+        StartCoroutine(CloseSkillCardDeckCover());
+        // StartCoroutine(OpenChipCover());
         SceneViewManager.boardView.transform.GetComponentInChildren<ClickToStartGame>().startText.SetActive(true);
     }
 
@@ -80,6 +81,17 @@ public class ViewAnimController : MonoBehaviour
         seq.Join(m_SkillCardsDeck.DOMove(m_SkillDeckOriginalPosition, 0.5f).SetEase(Ease.OutBack));
         seq.Join(op_SkillCardsDeckCoverPivot.DORotate(new Vector3(-66.11f, 0, 0), 0.25f).SetEase(Ease.OutBack));
         seq.Join(op_SkillCardsDeck.DOMove(op_SkillDeckOriginalPosition, 0.5f).SetEase(Ease.OutBack));
+
+        yield return seq.WaitForCompletion();
+    }
+
+    public IEnumerator CloseSkillCardDeckCover()
+    {
+        Sequence seq = DOTween.Sequence();
+        seq.Append(m_SkillCardsDeckCoverPivot.DORotate(new Vector3(-66.11f, 0, 0), 0.25f).SetEase(Ease.InBack));
+        seq.Join(m_SkillCardsDeck.DOMove(m_SkillDeckOriginalPosition - m_SkillCardsDeck.up * 0.3f, 0.5f).SetEase(Ease.InBack));
+        seq.Join(op_SkillCardsDeckCoverPivot.DORotate(Vector3.zero, 0.25f).SetEase(Ease.InBack));
+        seq.Join(op_SkillCardsDeck.DOMove(op_SkillDeckOriginalPosition - op_SkillCardsDeck.up * 0.3f, 0.5f).SetEase(Ease.InBack));
 
         yield return seq.WaitForCompletion();
     }

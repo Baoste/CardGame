@@ -1,8 +1,6 @@
 using DG.Tweening;
-using Game.Domain;
-using Newtonsoft.Json;
 using System.Collections;
-using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class CallOrFoldMachine : MonoBehaviour, IViewClear
@@ -12,6 +10,7 @@ public class CallOrFoldMachine : MonoBehaviour, IViewClear
     [SerializeField] private Transform disk;
     private Vector3 diskOriginalPosition = new Vector3(-0.379f, 1.131f, -0.96f);
     [SerializeField] private ClickToCallOrFold callBtn;
+    [SerializeField] private TMP_Text betCountText;
 
     private Vector3 originalPosition;
     
@@ -32,6 +31,8 @@ public class CallOrFoldMachine : MonoBehaviour, IViewClear
     {
         if (callBtn != null)
             callBtn.betCount = betCount;
+        if (betCountText != null)
+            betCountText.text = betCount.ToString();
 
         gameObject.SetActive(true);
         GameManager.ChangeInteractMask("Machine");

@@ -21,8 +21,8 @@ public class TestSystem : MonoBehaviour
 
     private void Start()
     {
-        AudioManager.Instance.Play("BGM");
-        AudioManager.Instance.Play("Electric_Buzz");
+        //AudioManager.Instance.Play("BGM");
+        //AudioManager.Instance.Play("Electric_Buzz");
 
         for (char c = 'A'; c <= 'Z'; c++)
         {
