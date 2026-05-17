@@ -7,6 +7,7 @@ public class Cam2 : MonoBehaviour
 {
     public ShotPlayer shotPlayer;
     public GameObject player;
+    public GameObject mainMenuCanvas;
     //public GameObject freeCam;
 
     public void SwitchFreeCam()
@@ -14,5 +15,10 @@ public class Cam2 : MonoBehaviour
         shotPlayer.PlayShot(2); // 切换到自由摄像机
         player.GetComponent<PlayerController>().enabled = true;
         player.GetComponent<PlayerMouseLook>().enabled = true;
+    }
+
+    public void MainMenuActivate()
+    {
+        mainMenuCanvas.SetActive(true);
     }
 }
