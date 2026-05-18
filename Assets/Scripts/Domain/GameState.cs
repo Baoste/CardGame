@@ -262,7 +262,7 @@ namespace Game.Domain
         public static bool GetServerGameStateDone = false;     // 是否已经拿到 ClientGameState 的数据了
         public static GameState Instance = new GameState();
 
-        public static MatchGateway gateway;
+        public static MatchGateway gateway = null;
         public static string matchId;
         public static string token;
         public static int lastEventIndex = -1;

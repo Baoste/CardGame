@@ -6,7 +6,6 @@ using UnityEngine;
 using Game.Domain;
 using Game.Server;
 using Newtonsoft.Json;
-using Unity.VisualScripting.Antlr3.Runtime;
 
 
 public class MatchGateway : NetworkBehaviour
@@ -70,18 +69,48 @@ public class MatchGateway : NetworkBehaviour
         {
             JoinOrCreateMatchCommand payload = JsonConvert.DeserializeObject<JoinOrCreateMatchCommand>(jsonData);
 
-            // 如果这个连接已经在某局里，先踢掉旧映射（最小实现：直接覆盖）
+            // 如果这个连接已经在某局里，先踢掉旧映射
             if (_connMap.TryGetValue(sender.ClientId, out var old))
             {
                 DetachConnection(sender.ClientId, old.matchId, old.slot);
             }
 
-            var matchId = string.IsNullOrWhiteSpace(payload.matchIdOrEmpty) ? NewId() : payload.matchIdOrEmpty;
+            MatchSession session;
+            string matchId;
 
-            if (!_sessions.TryGetValue(matchId, out var session))
+            // -----------------------------
+            // 1. 指定了 matchId：加入指定房间
+            // -----------------------------
+            if (!string.IsNullOrWhiteSpace(payload.matchIdOrEmpty))
             {
-                session = new MatchSession(matchId);
-                _sessions.Add(matchId, session);
+                matchId = payload.matchIdOrEmpty;
+
+                if (!_sessions.TryGetValue(matchId, out session))
+                {
+                    session = new MatchSession(matchId);
+                    _sessions.Add(matchId, session);
+                }
+            }
+            // -----------------------------
+            // 2. 没指定 matchId：找 slot 1 为空的房间
+            // -----------------------------
+            else
+            {
+                session = FindSessionWithFreeSlot1();
+
+                // -----------------------------
+                // 3. 没找到：创建新房间
+                // -----------------------------
+                if (session == null)
+                {
+                    matchId = GenerateUniqueMatchId();
+                    session = new MatchSession(matchId);
+                    _sessions.Add(matchId, session);
+                }
+                else
+                {
+                    matchId = session.MatchId;
+                }
             }
 
             // 找空槽位
@@ -99,25 +128,26 @@ public class MatchGateway : NetworkBehaviour
             session.Slots[slot].LastSeenUtc = DateTime.UtcNow;
             _connMap[sender.ClientId] = (matchId, slot);
 
-            // 发 snapshot（最小：只告诉你 matchId/slot/服务器事件index）
+            // 发 snapshot
             var snap = new Snapshot
             {
                 matchId = matchId,
                 slot = slot,
                 serverLastEventIndex = session.ServerLastEventIndex
             };
+
             var snapJson = JsonConvert.SerializeObject(snap);
 
-            // 只发给本人：你需要保存 matchId/token/lastEventIndex
             TargetJoined(sender, matchId, slot, token, snapJson);
 
-            // 凑齐两人就开始（演示：写入一条 start 事件并广播）
+            // 凑齐两人就开始
             if (!session.Started && IsReady(session))
             {
                 session.Started = true;
 
                 var cmd = session.AddCommand(type, jsonData);
                 CommandResult results = ProcessCommand(session, cmd);
+
                 while (results.events.Count > 0)
                 {
                     var res = results.events.Dequeue();
@@ -182,6 +212,38 @@ public class MatchGateway : NetworkBehaviour
                 }
             }
         }
+    }
+
+    private string GenerateUniqueMatchId()
+    {
+        string matchId;
+
+        do
+        {
+            matchId = Guid.NewGuid().ToString("N")[..8];
+        }
+        while (_sessions.ContainsKey(matchId));
+
+        return matchId;
+    }
+
+    private MatchSession FindSessionWithFreeSlot1()
+    {
+        foreach (var pair in _sessions)
+        {
+            MatchSession session = pair.Value;
+
+            if (session.Started)
+                continue;
+
+            if (session.Slots == null || session.Slots.Length <= 1)
+                continue;
+
+            if (session.Slots[1].Conn == null)
+                return session;
+        }
+
+        return null;
     }
 
     // =======================
@@ -353,7 +415,6 @@ public class MatchGateway : NetworkBehaviour
     }
 
     // ===== Helpers =====
-    private static string NewId() => Guid.NewGuid().ToString("N");
     private static string NewToken() => Guid.NewGuid().ToString("N");
 
     private static int FindFreeSlot(MatchSession s)

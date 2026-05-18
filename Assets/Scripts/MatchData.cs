@@ -6,7 +6,8 @@ public class MatchData : MonoBehaviour
 {
     public static MatchData Instance { get; private set; }
 
-    public int matchSeed { get; private set; }
+    public int matchSeed;
+    public string matchId = "";
 
     private void Awake()
     {
@@ -18,10 +19,5 @@ public class MatchData : MonoBehaviour
 
         Instance = this;
         DontDestroyOnLoad(gameObject);
-    }
-
-    public void SetMatchData(int matchSeed)
-    {
-        this.matchSeed = matchSeed;
     }
 }

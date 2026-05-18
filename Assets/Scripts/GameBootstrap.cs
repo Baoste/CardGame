@@ -14,7 +14,8 @@ public class GameBootstrap : MonoBehaviour
         if (_initialized) return;
         _initialized = true;
 
-        ClientGameState.gateway = gateway;
+        if (ClientGameState.gateway == null)
+            ClientGameState.gateway = gateway;
 
         if (isDebugMode)
         {
