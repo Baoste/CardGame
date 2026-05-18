@@ -21,6 +21,8 @@ public class ComputerInteractionController : MonoBehaviour
     [SerializeField] private bool playerInRange;
     [SerializeField] private bool isUsingComputer;
 
+    public ShotPlayer shotPlayer;
+
     public bool PlayerInRange => playerInRange;
     public bool IsUsingComputer => isUsingComputer;
 
@@ -60,6 +62,8 @@ public class ComputerInteractionController : MonoBehaviour
         if (isUsingComputer)
             return;
 
+        shotPlayer.PlayShot(2); // 切换到电脑交互摄像机
+
         isUsingComputer = true;
 
         SetPlayerControlEnabled(false);
@@ -77,6 +81,8 @@ public class ComputerInteractionController : MonoBehaviour
     {
         if (!isUsingComputer)
             return;
+
+        shotPlayer.PlayShot(1);
 
         isUsingComputer = false;
 

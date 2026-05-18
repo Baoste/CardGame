@@ -2,46 +2,26 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
-    public float walkSpeed = 5f;
-    public float runSpeed = 10f;
-    public float jumpForce = 8f;
-    public float gravity = 20f;
+    public float moveSpeed = 5f;
+    public Transform camFreeTransform;
 
-    private CharacterController controller;
     private Vector3 moveDirection = Vector3.zero;
     private bool isJumping = false;
 
     void Start()
     {
-        controller = GetComponent<CharacterController>();
     }
 
-    void Update()
+    void FixedUpdate()
     {
-        if (controller.isGrounded)
-        {
-            float horizontal = Input.GetAxis("Horizontal");
-            float vertical = Input.GetAxis("Vertical");
+        // 获取输入
+        float inputX = Input.GetAxis("Horizontal"); // A/D
+        float inputZ = Input.GetAxis("Vertical");   // W/S
 
-            float currentSpeed = Input.GetKey(KeyCode.LeftShift) ? runSpeed : walkSpeed;
+        // 移动向量，基于自身朝向
+        Vector3 move = transform.right * inputX + transform.forward * inputZ;
 
-            moveDirection = new Vector3(horizontal, 0, vertical);
-            moveDirection = transform.TransformDirection(moveDirection);
-            moveDirection *= currentSpeed;
-
-            if (Input.GetButtonDown("Jump"))
-            {
-                moveDirection.y = jumpForce;
-                isJumping = true;
-            }
-            else
-            {
-                isJumping = false;
-            }
-        }
-
-        moveDirection.y -= gravity * Time.deltaTime;
-
-        controller.Move(moveDirection * Time.deltaTime);
+        // 应用移动
+        transform.position += move * moveSpeed * Time.deltaTime;
     }
 }
