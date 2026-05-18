@@ -1945,7 +1945,7 @@ AnimationClip:
   m_HasMotionFloatCurves: 0
   m_Events:
   - time: 9.433333
-    functionName: SwitchFreeCam
+    functionName: MainMenuActivate
     data: 
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0

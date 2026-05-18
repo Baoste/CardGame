@@ -26,7 +26,7 @@ public class ShotPlayer : MonoBehaviour
         InitShots();
 
         SetActiveShot(0);
-        PlayShotFromStart(0);
+        //PlayShotFromStart(0);
     }
 
     private void Update()
@@ -45,6 +45,8 @@ public class ShotPlayer : MonoBehaviour
             nextIndex = 0;
 
         PlayShot(nextIndex);
+
+        Debug.Log("Playing shot: " + nextIndex);
     }
 
     public void PlayShot(int index)
