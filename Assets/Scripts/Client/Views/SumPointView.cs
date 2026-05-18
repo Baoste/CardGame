@@ -9,7 +9,7 @@ public class SumPointView : MonoBehaviour
 
     public void ChangeSum(int sum, bool isShown)
     {
-        string text = isShown ? sum.ToString() : sum.ToString() + " + ?";
+        string text = isShown ? sum.ToString() : sum.ToString() + " + X";
         sumPointTMP.text = text;
     }
 }

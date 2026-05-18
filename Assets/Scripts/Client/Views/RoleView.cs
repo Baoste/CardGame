@@ -1,12 +1,9 @@
-using Cinemachine;
 using DG.Tweening;
 using Game.Domain;
 using System.Collections;
 using System.Collections.Generic;
-using TMPro;
 using UnityEngine;
 using UnityEngine.VFX;
-using static UnityEngine.Rendering.DebugUI;
 
 public class RoleView : MonoBehaviour
 {
@@ -67,8 +64,6 @@ public class RoleView : MonoBehaviour
             // TODO: show lose effect
         }
 
-        ApplyDissolution(MyDealer, My_DissolutionVFX, 1.2f);
-        ApplyDissolution(OpDealer, OP_DissolutionVFX, 1.2f);
         yield break;
     }
 }

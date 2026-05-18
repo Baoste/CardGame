@@ -3,6 +3,8 @@ using Game.Domain;
 using Newtonsoft.Json;
 using System.Collections;
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.Linq;
 using UnityEngine;
 
 public class EventProcessFunction : MonoBehaviour
@@ -106,7 +108,7 @@ public class EventProcessFunction : MonoBehaviour
         }
 
         int endTurnCount = 9;
-        if (turn >= endTurnCount)
+        if (playerId != ClientGameState.Instance.dealerId && turn >= endTurnCount)
         {
             if (ClientGameState.Instance.punterId == ClientGameState.playerSlot)
                 SceneViewManager.myRevealButtonView.ShowButton(true);
@@ -119,6 +121,25 @@ public class EventProcessFunction : MonoBehaviour
                 SceneViewManager.myRevealButtonView.ShowRandom();
             else
                 SceneViewManager.opponentRevealButtonView.ShowRandom();
+        }
+
+        // 亮灯
+        bool isOpponent = playerId != ClientGameState.playerSlot;
+        if (ClientGameState.Instance.dealerId == playerId)
+        {
+            int dealerTurn = (turn + 1) / 2;
+            if (isOpponent)
+                SceneViewManager.opponentTurnLightView.SetLight(dealerTurn);
+            else
+                SceneViewManager.myTurnLightView.SetLight(dealerTurn);
+        }
+        else
+        {
+            int playerTurn = turn / 2 + 1;
+            if (isOpponent)
+                SceneViewManager.opponentTurnLightView.SetLight(playerTurn);
+            else
+                SceneViewManager.myTurnLightView.SetLight(playerTurn);
         }
     }
 
@@ -256,10 +277,12 @@ public class EventProcessFunction : MonoBehaviour
         int[] instanceId = (int[])parameters[1];
 
         bool isOpponent = playerId != ClientGameState.playerSlot;
-        
+
+
         if (isOpponent)
         {
-            foreach (int id in instanceId)
+            if (instanceId.Length < 1)  return;
+            for (int i = 0; i < instanceId.Length; i++)
             {
                 StartCoroutine(SceneViewManager.opponentChipView.Place1BetAuto(true, 0));
             }
@@ -267,17 +290,35 @@ public class EventProcessFunction : MonoBehaviour
         }
         else
         {
+            if (instanceId.Length > 0)
+                StartCoroutine(SceneViewManager.callOrFoldMachineBack.Show(instanceId.Length));
+
+            List<ChipController> copiedList = SceneViewManager.myChipView.chipRaycastSelect.SelectedChips.ToList();
+            // 放置有的
             foreach (int id in instanceId)
             {
                 GameObject obj = SceneViewManager.myChipView.chipsInTray[id];
+
+                ChipController chipController = obj.GetComponentInChildren<ChipController>();
+                chipController.stateMachine.ChangeState(chipController.placedState);
+
+                copiedList.Remove(chipController);
+
                 ChipMouseEventHandler script = obj.GetComponentInChildren<ChipMouseEventHandler>();
                 if (script != null)
                 {
                     script.enabled = false;
                 }
                 SceneViewManager.myChipView.Place1Bet(id);
-                StartCoroutine(SceneViewManager.callOrFoldMachineBack.Show(instanceId.Length));
             }
+
+            // 返回没有的
+            foreach (var chipController in copiedList)
+            {
+                chipController.stateMachine.ChangeState(chipController.inTrayState);
+            }
+
+            SceneViewManager.myChipView.chipRaycastSelect.ClearList();
         }
     }
 
@@ -646,23 +687,23 @@ public class EventProcessFunction : MonoBehaviour
         // 亮灯
         if (ClientGameState.Instance.dealerId == playerId)
         {
-            int dealerTurn = (turn + 1) / 2;
-            if (isOpponent)
-                SceneViewManager.opponentTurnLightView.SetLight(dealerTurn + 1);
-            else
-                SceneViewManager.myTurnLightView.SetLight(dealerTurn + 1);
+            //int dealerTurn = (turn + 1) / 2;
+            //if (isOpponent)
+            //    SceneViewManager.opponentTurnLightView.SetLight(dealerTurn + 1);
+            //else
+            //    SceneViewManager.myTurnLightView.SetLight(dealerTurn + 1);
 
             StartCoroutine(SceneViewManager.myRevealButtonView.RandomAnimation(reveal));
             StartCoroutine(SceneViewManager.opponentRevealButtonView.RandomAnimation(reveal));
         }
-        else
-        {
-            int playerTurn = turn / 2 + 1;
-            if (isOpponent)
-                SceneViewManager.opponentTurnLightView.SetLight(playerTurn + 1);
-            else
-                SceneViewManager.myTurnLightView.SetLight(playerTurn + 1);
-        }
+        //else
+        //{
+        //    int playerTurn = turn / 2 + 1;
+        //    if (isOpponent)
+        //        SceneViewManager.opponentTurnLightView.SetLight(playerTurn + 1);
+        //    else
+        //        SceneViewManager.myTurnLightView.SetLight(playerTurn + 1);
+        //}
 
         // 隐藏爆牌按钮
         if (ClientGameState.Instance.punterId == ClientGameState.playerSlot)
@@ -692,7 +733,7 @@ public class EventProcessFunction : MonoBehaviour
 
     private IEnumerator _Reveal(int playerId, int winnerId, int currentBet, int playerPoints, int opponentPoints)
     {
-        bool isOpponent = winnerId != ClientGameState.playerSlot;
+        bool isOpponentWin = winnerId != ClientGameState.playerSlot;
 
         SceneViewManager.endTurnView.btnLight.intensity = 0;
 
@@ -713,13 +754,11 @@ public class EventProcessFunction : MonoBehaviour
         yield return SceneViewManager.roleView.ShowWin(winnerId);
 
         // chip
-        if (isOpponent)
+        if (isOpponentWin)
         {
-            // 多余的筹码退回筹码盘
-            //int returnCount = SceneViewManager.myChipView.chipsPlaced.Count - currentBet;
-            //SceneViewManager.myChipView.GenerateChips(returnCount, false);
-            // 对方获得筹码
+            // 筹码退回筹码盘
             SceneViewManager.opponentChipView.GenerateChips(SceneViewManager.opponentChipView.chipsPlaced.Count, true);
+            // 对方获得筹码
             SceneViewManager.opponentChipView.GenerateChips(currentBet, true);
         }
         else

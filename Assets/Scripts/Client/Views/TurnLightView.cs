@@ -35,19 +35,6 @@ public class TurnLightView : MonoBehaviour, IViewClear
     public void SetLight(int turn)
     {
         matRenderer.GetPropertyBlock(mpb);
-
-        if (turn == 1 || turn == 4)
-        {
-            float t = 0f;
-            DOTween.To(() => t, x =>
-            {
-                t = x;
-                mpb.SetFloat("_FlashFactor", t);
-                matRenderer.SetPropertyBlock(mpb);
-
-            }, 1f, 1f).SetEase(Ease.InCubic);
-        }
-
         switch (turn)
         {
             case 0:
@@ -83,5 +70,19 @@ public class TurnLightView : MonoBehaviour, IViewClear
                 break;
         }
         matRenderer.SetPropertyBlock(mpb);
+
+        //if (turn == 1 || turn == 4)
+        //{
+        //    float t = 0f;
+        //    DOTween.To(() => t, x =>
+        //    {
+        //        t = x;
+        //        matRenderer.GetPropertyBlock(mpb);
+        //        mpb.SetFloat("_FlashFactor", t);
+        //        matRenderer.SetPropertyBlock(mpb);
+
+        //    }, 2f, 1f).SetEase(Ease.InCubic);
+        //}
+
     }
 }

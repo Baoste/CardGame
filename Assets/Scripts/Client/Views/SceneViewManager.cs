@@ -39,6 +39,8 @@ public static class SceneViewManager
             opponentRevealButtonView,
             myTurnLightView,
             opponentTurnLightView,
+            myActionPointView,
+            opponentActionPointView,
             turnIndicator,
             callOrFoldMachine,
             callOrFoldMachineBack

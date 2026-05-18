@@ -11,7 +11,7 @@ public class Place1BetCmdHandler : CommandHandler, ICommandHandler
 
         // TODO
         // START
-        int apCount = session.gameState.currentBet / 2 + 1;
+        int apCount = ++session.gameState.placeBetTimes;
         if (!NetEffectFunction.SpendActionPoint(payload.playerId, payload.instanceId, session, results, apCount))
             return results;
 

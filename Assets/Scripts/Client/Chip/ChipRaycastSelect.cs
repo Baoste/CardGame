@@ -99,4 +99,10 @@ public class ChipRaycastSelect : MonoBehaviour
         selectedChips.Clear();
         toggledThisHold.Clear();
     }
+
+    public void ClearList()
+    {
+        selectedChips.Clear();
+        toggledThisHold.Clear();
+    }
 }

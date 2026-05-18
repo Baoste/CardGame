@@ -37,6 +37,8 @@ namespace Game.Domain
 
         // 赌注相关
         public int currentBet = 0;
+        public int placeBetTimes = 0;
+
 
         // CardInstanceID -> CardZone 的映射，方便快速查询某张牌当前在哪个牌堆/玩家的哪个区域
         private Dictionary<int, CardZone> cardLocationMap = new Dictionary<int, CardZone>();
@@ -70,6 +72,7 @@ namespace Game.Domain
             CurrentPlayerId = -1;
 
             currentBet = 0;
+            placeBetTimes = 0;
 
             skillCardsDeck._Clear();
             pointCardsDeck._Clear();

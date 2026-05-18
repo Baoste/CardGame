@@ -11,7 +11,10 @@ public class AssignRolesCmdHandler : CommandHandler, ICommandHandler
         var payload = JsonConvert.DeserializeObject<AssignRolesCommand>(cmd.jsonData);
 
         // TODO: 服务器端需要做什么
-        int dealerId = session.gameState.rng.Next(2);
+        int dealerId = session.gameState.dealerId == -1
+            ? session.gameState.rng.Next(2)
+            : 1 - session.gameState.dealerId;
+
         int punterId = 1 - dealerId;
         session.gameState.dealerId = dealerId;
         session.gameState.punterId = punterId;

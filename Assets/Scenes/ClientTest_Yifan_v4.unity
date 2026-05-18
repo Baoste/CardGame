@@ -1890,6 +1890,7 @@ MonoBehaviour:
   zoneHeight: 0.64
   cameraTransform: {fileID: 47329602}
   dragValidArea: {fileID: 124846533}
+  chipRaycastSelect: {fileID: 909554470}
   chipInit: {fileID: 2071940221}
   chipContainer: {fileID: 1532727566}
 --- !u!65 &124846533
@@ -4415,6 +4416,7 @@ MonoBehaviour:
   disk: {fileID: 543450652572640022}
   callBtn: {fileID: 42319922}
   betCountText: {fileID: 405529623}
+  volume: {fileID: 832575518}
 --- !u!1 &296390870
 GameObject:
   m_ObjectHideFlags: 0
@@ -6829,6 +6831,10 @@ GameObject:
   - component: {fileID: 411854050}
   - component: {fileID: 411854051}
   - component: {fileID: 411854053}
+  - component: {fileID: 411854057}
+  - component: {fileID: 411854056}
+  - component: {fileID: 411854055}
+  - component: {fileID: 411854054}
   m_Layer: 2
   m_Name: ChipCollider0
   m_TagString: Untagged
@@ -6844,13 +6850,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 411854049}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0.13130483, z: 0, w: 0.99134207}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -1.226, y: 0.534, z: 0.819}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1324977441}
-  m_LocalEulerAnglesHint: {x: 0, y: 15.09, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!54 &411854051
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -6897,8 +6903,92 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 0.58, y: 0.1, z: 0.57}
-  m_Center: {x: 0.14, y: 0.38, z: 0.8}
+  m_Size: {x: 0.68293756, y: 0.100000024, z: 0.7261062}
+  m_Center: {x: 0.3826046, y: 0.38, z: 0.72194684}
+--- !u!65 &411854054
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 411854049}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 0.11509362, y: 0.2508037, z: 0.7261062}
+  m_Center: {x: 0.009999998, y: 0.45540184, z: 0.72194684}
+--- !u!65 &411854055
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 411854049}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 0.11509368, y: 0.25304902, z: 0.7261062}
+  m_Center: {x: 0.76662326, y: 0.4565245, z: 0.72194684}
+--- !u!65 &411854056
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 411854049}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 0.6618616, y: 0.2598883, z: 0.15633197}
+  m_Center: {x: 0.37206662, y: 0.45994413, z: 1.13}
+--- !u!65 &411854057
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 411854049}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 0.6618616, y: 0.25345135, z: 0.15633203}
+  m_Center: {x: 0.37206662, y: 0.45672566, z: 0.30768365}
 --- !u!1001 &413808681
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -16890,6 +16980,7 @@ MonoBehaviour:
   disk: {fileID: 512185647}
   callBtn: {fileID: 0}
   betCountText: {fileID: 0}
+  volume: {fileID: 832575518}
 --- !u!1 &1001179829
 GameObject:
   m_ObjectHideFlags: 0
@@ -18564,6 +18655,7 @@ MonoBehaviour:
   zoneHeight: 0.64
   cameraTransform: {fileID: 47329602}
   dragValidArea: {fileID: 1086371027}
+  chipRaycastSelect: {fileID: 0}
   chipInit: {fileID: 2002306859}
   chipContainer: {fileID: 1440106551}
 --- !u!1 &1088768160

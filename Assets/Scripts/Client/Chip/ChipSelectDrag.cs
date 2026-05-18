@@ -150,11 +150,11 @@ public class ChipSelectDrag : MonoBehaviour
                 Debug.Log("不是你的回合");
                 chipRaycastSelect.ClearSelection();
             }
-            else if (SceneViewManager.opponentChipView.chipsInTray.Count < chipStartPositions.Count)
-            {
-                Debug.Log("对方没有筹码了");
-                chipRaycastSelect.ClearSelection();
-            }
+            //else if (SceneViewManager.opponentChipView.chipsInTray.Count < chipStartPositions.Count)
+            //{
+            //    Debug.Log("对方没有筹码了");
+            //    chipRaycastSelect.ClearSelection();
+            //}
             else
             {
                 PlaceBetsCommand cmd = new PlaceBetsCommand { 
@@ -165,7 +165,7 @@ public class ChipSelectDrag : MonoBehaviour
                         .ToArray()
                 };
                 ClientGameState.gateway.SendCommandServerRpc("PlaceBets", JsonConvert.SerializeObject(cmd));
-                chipRaycastSelect.PlaceSelection();
+                // chipRaycastSelect.PlaceSelection();
             }
         }
         else

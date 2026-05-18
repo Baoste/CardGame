@@ -14,6 +14,7 @@ public class ChipView : MonoBehaviour
 
     [Header("Drag Settings")]
     [SerializeField] private BoxCollider dragValidArea; // 安全区域，松手时如果不在这里就回位置
+    [SerializeField] public ChipRaycastSelect chipRaycastSelect;
 
     [Header("Init Settings")]
     [SerializeField] private ChipInit chipInit;

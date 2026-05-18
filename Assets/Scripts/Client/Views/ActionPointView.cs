@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ActionPointView : MonoBehaviour
+public class ActionPointView : MonoBehaviour, IViewClear
 {
     [SerializeField] private List<Renderer> renderers = new List<Renderer>();
 
@@ -53,5 +53,10 @@ public class ActionPointView : MonoBehaviour
             offStack.Push(r);
             count--;
         }
+    }
+
+    public void ClearView()
+    {
+        ResetPoint();
     }
 }

@@ -12,8 +12,7 @@ public class PlaceBetsEventHandler : IEventProcess, IEventHandler
         // need change, 需要把参数在这里传进去
         ProcessQueueManager.Instance.Enqueue(Process, new object[] { payload.playerId, payload.instanceIds }, 0);
 
-        string context = payload.success.ToString();
-        Debug.Log($"[Client] Event#{ev.Index} type={ev.type} slot={payload.playerId} payload={context}");
+        Debug.Log($"[Client] Event#{ev.Index} type={ev.type} slot={payload.playerId} payload={payload.instanceIds.Length}");
 
         return true;
     }
