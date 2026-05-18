@@ -7,8 +7,8 @@ using UnityEngine.SceneManagement;
 
 public class SceneBootstrap : MonoBehaviour
 {
-    [SerializeField] TMP_Text logo;
-    [SerializeField] GameObject camera;
+    [SerializeField] private TMP_Text logo;
+    [SerializeField] private GameObject cam;
 
     void Start()
     {
@@ -26,7 +26,7 @@ public class SceneBootstrap : MonoBehaviour
         logo.transform.parent.gameObject.SetActive(false);
 
         yield return new WaitForSecondsRealtime(0.3f);
-        Destroy(camera);
+        Destroy(cam);
         SceneManager.LoadScene("gxz", LoadSceneMode.Additive);
     }
 

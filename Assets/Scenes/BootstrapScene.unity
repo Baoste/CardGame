@@ -426,7 +426,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   logo: {fileID: 1571631469}
-  camera: {fileID: 764221107}
+  cam: {fileID: 764221107}
 --- !u!1 &647186112
 GameObject:
   m_ObjectHideFlags: 0
