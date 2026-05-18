@@ -2,6 +2,8 @@ using DG.Tweening;
 using System.Collections;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Rendering;
+using UnityEngine.Rendering.Universal;
 
 public class CallOrFoldMachine : MonoBehaviour, IViewClear
 {
@@ -13,9 +15,15 @@ public class CallOrFoldMachine : MonoBehaviour, IViewClear
     [SerializeField] private TMP_Text betCountText;
 
     private Vector3 originalPosition;
-    
+
+    [Header("Volume Control")]
+    [SerializeField] private Volume volume;
+
+    private ColorAdjustments colorAdjust;
+
     private void Start()
     {
+        volume.profile.TryGet(out colorAdjust);
         disk.transform.localPosition = diskOriginalPosition;
         originalPosition = transform.localPosition;
         gameObject.SetActive(false);
@@ -35,7 +43,8 @@ public class CallOrFoldMachine : MonoBehaviour, IViewClear
             betCountText.text = betCount.ToString();
 
         gameObject.SetActive(true);
-        GameManager.ChangeInteractMask("Machine");
+        HighLight(gameObject);
+        GameManager.ChangeInteractMask("HighlightOnly");
 
         Sequence seq = DOTween.Sequence();
         seq.Append(transform.DOLocalMoveX(isBack ? -3.11f : 2.016f, 0.8f).SetEase(Ease.OutBounce));
@@ -58,6 +67,42 @@ public class CallOrFoldMachine : MonoBehaviour, IViewClear
         yield return seq.WaitForCompletion();
         
         GameManager.ResetInteractMask();
+        CancelHighLight(gameObject);
         gameObject.SetActive(false);
+    }
+
+    private void HighLight(GameObject obj)
+    {
+        DOTween.To(
+            () => colorAdjust.saturation.value,
+            x => colorAdjust.saturation.value = x,
+            -100,
+            0.5f
+        );
+
+        int layer = LayerMask.NameToLayer("HighlightOnly");
+        SetLayerRecursively(obj, layer);
+    }
+
+    private void CancelHighLight(GameObject obj)
+    {
+        DOTween.To(
+            () => colorAdjust.saturation.value,
+            x => colorAdjust.saturation.value = x,
+            0,
+            0.5f
+        );
+
+        int layer = LayerMask.NameToLayer("Default");
+        SetLayerRecursively(obj, layer);
+    }
+
+    private void SetLayerRecursively(GameObject obj, int layer)
+    {
+        foreach (Transform child in obj.transform)
+        {
+            child.gameObject.layer = layer;
+            SetLayerRecursively(child.gameObject, layer);
+        }
     }
 }

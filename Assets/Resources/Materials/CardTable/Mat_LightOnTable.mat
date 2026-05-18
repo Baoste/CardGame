@@ -70,7 +70,7 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
-    - _FlashFactor: 0
+    - _FlashFactor: 1
     - _IsBreath: 0
     - _LightStrength: 3
     - _QueueControl: 0
