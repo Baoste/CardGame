@@ -31,7 +31,15 @@ public class QuickStartButtons : MonoBehaviour
 
     private void OnGUI()
     {
-        if (nm == null) return;
+        if (nm == null)
+        {
+            if (GUI.Button(ScaleRect(1700, 10, w, h), "Start Match"))
+            {
+                int seed = MatchData.Instance.matchSeed;
+                ClientCommand.StartMatch(seed);
+            }
+            return;
+        }
 
 
         if (GUI.Button(ScaleRect(100, 10, w, h), "Start Server"))

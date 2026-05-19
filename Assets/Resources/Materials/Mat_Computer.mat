@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!114 &-622234544634852953
+--- !u!114 &-1483971495550499096
 MonoBehaviour:
   m_ObjectHideFlags: 11
   m_CorrespondingSourceObject: {fileID: 0}
@@ -21,7 +21,7 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: Mat_Computer
-  m_Shader: {fileID: -6465566751694194690, guid: 13dc26bd8b81cdd488dec29ed0fd30d5,
+  m_Shader: {fileID: -6465566751694194690, guid: d337228ad09ad8341ac9e7538e1c7306,
     type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
@@ -37,24 +37,32 @@ Material:
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs:
-    - _SampleTexture2D_4b74a7486d874548b44a7bf3c73b1bdc_Texture_1_Texture2D:
-        m_Texture: {fileID: 2800000, guid: 926a1b2e21c24e947a6cff9162d068d5, type: 3}
+    - _AOMap:
+        m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
-    - _SampleTexture2D_4f54ef5229364490b1e315e186f640cc_Texture_1_Texture2D:
+    - _BaseMap:
+        m_Texture: {fileID: 2800000, guid: 5b5fc2069faccd34e81c68414dd48ec2, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _EmissionMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _MetallicMap:
         m_Texture: {fileID: 2800000, guid: 9c170e7c94a60e649bdb515f199ba2ad, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
-    - _SampleTexture2D_642e97ca1a404a01a34398b8212e6ca2_Texture_1_Texture2D:
+    - _NormalMap:
+        m_Texture: {fileID: 2800000, guid: 926a1b2e21c24e947a6cff9162d068d5, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _RoughnessMap:
         m_Texture: {fileID: 2800000, guid: eaf08b309ac54de4082f2edb84680308, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
-    - _SampleTexture2D_de3a48da90c54731a3d8b079667c96dd_Texture_1_Texture2D:
-        m_Texture: {fileID: 2800000, guid: 0cd853373c6782142a15d9fc870345a1, type: 3}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    - _SampleTexture2D_f62a205df9b6418eb176e2ae70b14772_Texture_1_Texture2D:
-        m_Texture: {fileID: 2800000, guid: 2483ba42184e9f34e8d6c831bfd94ffe, type: 3}
+    - _SmoothMap:
+        m_Texture: {fileID: 2800000, guid: 72f11465d0d7945478321193068c3d4b, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - unity_Lightmaps:

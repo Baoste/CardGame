@@ -10,7 +10,7 @@ public class GetCardDeckEventHandler : IEventProcess, IEventHandler
     {
         var payload = JsonConvert.DeserializeObject<GetCardDeckEvent>(ev.jsonData);
         // need change, 需要把参数在这里传进去
-        // CardDatabase.InitFromString(payload.pointCardDeckJson, payload.skillCardDeckJson);
+        CardDatabase.InitFromString(payload.pointCardDeckJson, payload.skillCardDeckJson);
 
         Debug.Log($"[Client] Event#{ev.Index} type={ev.type} slot={payload.playerId} payload=GetCardDeck");
 
