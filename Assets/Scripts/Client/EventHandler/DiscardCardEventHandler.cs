@@ -13,7 +13,8 @@ public class DiscardCardEventHandler : IEventProcess, IEventHandler
     {
         payload = JsonConvert.DeserializeObject<DiscardCardEvent>(ev.jsonData);   // need change
         // need change, 需要把参数在这里传进去
-        ProcessQueueManager.Instance.Enqueue(Process, new object[] { payload.playerId, payload.instanceIds }, 0);
+        float delay = payload.instanceIds.Count > 1 ? 1f : 0.3f;
+        ProcessQueueManager.Instance.Enqueue(Process, new object[] { payload.playerId, payload.instanceIds }, delay);
 
         // TODO
         // START

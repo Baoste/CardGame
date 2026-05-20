@@ -50,7 +50,7 @@ public class BoardView : MonoBehaviour, IViewClear
     private void Start()
     {
         impulseSource = GetComponent<CinemachineImpulseSource>();
-        lazer.SetActive(false);
+        // lazer.SetActive(false);
     }
 
     public void ClearView()

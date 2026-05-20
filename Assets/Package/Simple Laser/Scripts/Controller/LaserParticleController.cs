@@ -25,6 +25,7 @@ namespace Controller
         {
             SetUpParticles();
             SetUpMaterials();
+            transform.parent.parent.gameObject.SetActive(false);
         }
 
         public void Play(LaserHit hit)

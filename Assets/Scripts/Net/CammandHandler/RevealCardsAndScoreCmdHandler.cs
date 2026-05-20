@@ -19,7 +19,11 @@ public class RevealCardsAndScoreCmdHandler : CommandHandler, ICommandHandler
         bool playerBust = playerPoints > 21;
         bool opponentBust = opponentPoints > 21;
 
-        if (playerBust && opponentBust)
+        if (playerPoints == opponentPoints)
+        {
+            winnerId = session.gameState.dealerId;
+        }
+        else if (playerBust && opponentBust)
         {
             // 都爆，点数小的赢
             winnerId = playerPoints < opponentPoints ? payload.playerId : 1 - payload.playerId;
