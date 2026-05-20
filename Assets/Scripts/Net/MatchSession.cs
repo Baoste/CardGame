@@ -24,6 +24,8 @@ namespace Game.Server   // 这里用你 MatchGateway 所在的 namespace
         public int NextCmdIndex = 0;
         public bool Started;
 
+        public int ReadyCount = 0;
+
         public GameState gameState = new GameState();
         public EffectContext ctx = new EffectContext();
         public Dictionary<int, int> instanceToCardId = new Dictionary<int, int>();

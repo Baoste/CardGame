@@ -33,11 +33,11 @@ public class QuickStartButtons : MonoBehaviour
     {
         if (nm == null)
         {
-            if (GUI.Button(ScaleRect(1700, 10, w, h), "Start Match"))
-            {
-                int seed = MatchData.Instance.matchSeed;
-                ClientCommand.StartMatch(seed);
-            }
+            //if (GUI.Button(ScaleRect(1700, 10, w, h), "Start Match"))
+            //{
+            //    int seed = MatchData.Instance.matchSeed;
+            //    ClientCommand.StartMatch(seed);
+            //}
             return;
         }
 

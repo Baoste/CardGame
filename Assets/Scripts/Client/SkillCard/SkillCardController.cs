@@ -44,6 +44,14 @@ public class SkillCardController : MonoBehaviour, IDiscardPresentation
         stateMachine.Initialize(inDeckState);
     }
 
+    //private void Update()
+    //{
+    //    if (Input.GetKeyDown(KeyCode.F1))
+    //    {
+    //        DiscardPlay();
+    //    }
+    //}
+
     public void SetIsOpponent(bool isOpponent)
     {
         this.isOpponent = isOpponent;
@@ -93,8 +101,8 @@ public class SkillCardController : MonoBehaviour, IDiscardPresentation
     public void DiscardPlay()
     {
         if (isOpponent)
-            StartCoroutine(SceneViewManager.opponentHandView.RemoveCard(gameObject));
+            StartCoroutine(SceneViewManager.opponentHandView.RemoveCard(gameObject, true));
         else
-            StartCoroutine(SceneViewManager.myHandView.RemoveCard(gameObject));
+            StartCoroutine(SceneViewManager.myHandView.RemoveCard(gameObject, true));
     }
 }

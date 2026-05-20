@@ -6,7 +6,7 @@ public class MatchData : MonoBehaviour
 {
     public static MatchData Instance { get; private set; }
 
-    public int matchSeed;
+    public int matchSeed = 123;
     public string matchId = "";
 
     private void Awake()

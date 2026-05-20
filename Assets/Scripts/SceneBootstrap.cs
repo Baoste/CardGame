@@ -1,13 +1,13 @@
 using DG.Tweening;
 using System.Collections;
 using System.Collections.Generic;
-using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class SceneBootstrap : MonoBehaviour
 {
-    [SerializeField] private TMP_Text logo;
+    [SerializeField] private RawImage logo;
     [SerializeField] private GameObject cam;
 
     void Start()
@@ -17,7 +17,10 @@ public class SceneBootstrap : MonoBehaviour
 
     private IEnumerator LoadFirstScene()
     {
-        logo.alpha = 0f;
+        Color c = logo.color;
+        c.a = 0;
+        logo.color = c;
+
         Sequence seq = DOTween.Sequence();
         seq.Append(logo.DOFade(1f, 0.5f));
         seq.AppendInterval(1.0f);

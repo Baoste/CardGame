@@ -8,8 +8,12 @@ public class StartGameCmdHandler : CommandHandler, ICommandHandler
     public CommandResult Handle(MatchSession session, NetCommand cmd)
     {
         var payload = JsonConvert.DeserializeObject<StartGameCommand>(cmd.jsonData);  // need change
+        CommandResult results = new CommandResult();
 
         // TODO: 服务器端需要做什么
+        if (session.gameState.isStart)
+            return results;   // 已经开始了，直接返回
+
         session.gameState.Start();
 
         // 初始化牌堆
@@ -44,7 +48,6 @@ public class StartGameCmdHandler : CommandHandler, ICommandHandler
         session.gameState.AddCardsToDeck(skillCardInstanceIds, session.instanceToCardId, CardType.Skill);
 
         // return results
-        CommandResult results = new CommandResult();
         results.events.Enqueue(MakeEvent(
             "StartGame",
             new StartGameEvent    // need change

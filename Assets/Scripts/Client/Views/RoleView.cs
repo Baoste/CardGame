@@ -64,6 +64,9 @@ public class RoleView : MonoBehaviour
             // TODO: show lose effect
         }
 
+        ApplyDissolution(MyDealer, My_DissolutionVFX, 1.2f);
+        ApplyDissolution(OpDealer, OP_DissolutionVFX, 1.2f);
+
         yield break;
     }
 }

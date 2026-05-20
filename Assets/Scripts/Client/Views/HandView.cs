@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.Splines;
 using DG.Tweening;
 using Game.Domain;
+using static MeshDestroy;
 
 public class HandView : MonoBehaviour, IViewClear
 {
@@ -82,13 +83,44 @@ public class HandView : MonoBehaviour, IViewClear
         }
     }
 
-    public IEnumerator RemoveCard(GameObject instance)
+    public IEnumerator RemoveCard(GameObject instance, bool isDestroy = false)
     {
+        if (isDestroy)
+        {
+            StartCoroutine(_DestroyCard(instance));
+        }
+
         SkillCardController sc = instance.GetComponent<SkillCardController>();
         if (skillCardInstances.Remove(instance))
         {
             yield return UpdateCardPositions(0.15f);
         }
+    }
+
+    private IEnumerator _DestroyCard(GameObject instance)
+    {
+        MeshDestroy mesh = instance.GetComponentInChildren<MeshDestroy>();
+        GameObject tmp = mesh.transform.parent.gameObject;
+        mesh.transform.parent.parent = transform.parent.parent;
+
+        List<PartMesh> submeshes = mesh.DestroyMesh(3);
+        Destroy(tmp);
+        Destroy(instance);
+
+        Time.timeScale = 0.01f;
+        Time.fixedDeltaTime = 0.02f * Time.timeScale;
+        yield return new WaitForSecondsRealtime(0.01f);
+        Time.timeScale = 1f;
+        Time.fixedDeltaTime = 0.02f;
+
+        yield return new WaitForSecondsRealtime(1f);
+        Sequence seq = DOTween.Sequence();
+        seq.OnComplete(() =>
+        {
+            foreach (PartMesh part in submeshes)
+                part.GameObject.GetComponent<DissolutionController>().DestroySelf();
+        });
+        yield return seq.WaitForCompletion();
     }
 
     public IEnumerator DrawSkillCardAnimation(GameObject instance)

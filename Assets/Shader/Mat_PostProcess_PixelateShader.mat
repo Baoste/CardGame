@@ -29,7 +29,7 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
-    - _ScreenHeight: 2048
+    - _ScreenHeight: 3072
     - _ScreenWidth: 2048
     m_Colors: []
   m_BuildTextureStacks: []

@@ -450,12 +450,13 @@ public class EventProcessFunction : MonoBehaviour
             return;
         }
 
-        // 检测有没有都在一边
+        // 检测有没有技能牌或者都在一边
         bool isOneSide = true;
         bool firstIsOpponent = instanceMap[instanceIds[0]].GetComponent<PointCardController>().isOpponent;
         foreach (int instanceId in instanceIds)
         {
-            if (instanceMap[instanceId].GetComponent<PointCardController>().isOpponent != firstIsOpponent)
+            if (instanceMap[instanceId].GetComponent<SkillCardController>() != null || 
+                instanceMap[instanceId].GetComponent<PointCardController>().isOpponent != firstIsOpponent)
             {
                 isOneSide = false;
                 break;
