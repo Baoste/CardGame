@@ -1,5 +1,7 @@
 using UnityEngine;
 using Cinemachine;
+using System.Collections;
+using Unity.VisualScripting;
 
 [System.Serializable]
 public class Shot
@@ -20,12 +22,14 @@ public class ShotPlayer : MonoBehaviour
     public int inactivePriority = 0;
 
     private int currentIndex = 0;
+    private bool isPlayingShot1 = false;
 
     private void Start()
     {
         InitShots();
 
         SetActiveShot(0);
+        StartCoroutine(PlayShotWithDelay(1, 1f));
         //PlayShotFromStart(0);
     }
 
@@ -34,6 +38,11 @@ public class ShotPlayer : MonoBehaviour
         if (Input.GetKeyDown(nextKey))
         {
             PlayNextShot();
+        }
+        if (Input.GetMouseButtonDown(0) && currentIndex == 1 && !isPlayingShot1)
+        {
+            shots[1].animators[0].speed = 6;
+            isPlayingShot1 = true;
         }
     }
 
@@ -113,5 +122,11 @@ public class ShotPlayer : MonoBehaviour
             anim.Play(shots[index].animState, 0, 0f);
             anim.Update(0f);
         }
+    }
+
+    IEnumerator PlayShotWithDelay(int index, float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        PlayShot(index);
     }
 }
