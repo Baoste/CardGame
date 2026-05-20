@@ -11,7 +11,7 @@ public class PlayerMouseLook : MonoBehaviour
     public float verticalRotationLimit = 80.0f;
 
     private float rotationX = 0;
-    private float currentRotationY = 0;
+    private float currentRotationY = 75;
 
     private void Start()
     {

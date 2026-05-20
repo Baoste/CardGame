@@ -62,7 +62,7 @@ public class ComputerInteractionController : MonoBehaviour
         if (isUsingComputer)
             return;
 
-        shotPlayer.PlayShot(2); // 切换到电脑交互摄像机
+        shotPlayer.PlayShot(3); // 切换到电脑交互摄像机
 
         isUsingComputer = true;
 
@@ -82,7 +82,7 @@ public class ComputerInteractionController : MonoBehaviour
         if (!isUsingComputer)
             return;
 
-        shotPlayer.PlayShot(1);
+        shotPlayer.PlayShot(2);
 
         isUsingComputer = false;
 

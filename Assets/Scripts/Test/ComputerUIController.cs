@@ -35,11 +35,13 @@ public class ComputerUIController : MonoBehaviour
     public System.Action OnRandomMatchRequested;
     private bool inputLocked;
 
+    public SceneSwitcher sceneSwitcher;
+
 
     private readonly string[] mainMenuOptions =
     {
-        "Join by Room Code",
         "Random Match",
+        "Join by Room Code",
         "Exit Terminal"
     };
 
@@ -111,6 +113,7 @@ public class ComputerUIController : MonoBehaviour
                 break;
 
             case ComputerScreenState.MatchingRandom:
+                
             case ComputerScreenState.MatchingByRoomCode:
                 UpdateMatchingState();
                 break;
@@ -152,12 +155,12 @@ public class ComputerUIController : MonoBehaviour
         if(terminalLog!= null)
         {
             terminalLog.ClearAll();
-            terminalLog.PlayLines(new string[]
+            terminalLog.PlayLines(new TerminalTextController.TerminalLine[]
             {
-                "MATCH SYSTEM OS READY.",
-                "Navigation: W/S or Up/Down",
-                "Confirm: Enter",
-                "Exit: Esc"
+                new TerminalTextController.TerminalLine("MATCH SYSTEM OS READY.", TerminalTextController.TerminalLineMode.Instant),
+                new TerminalTextController.TerminalLine("Navigation: W/S or Up/Down", TerminalTextController.TerminalLineMode.Instant),
+                new TerminalTextController.TerminalLine("Confirm: Enter", TerminalTextController.TerminalLineMode.Instant),
+                new TerminalTextController.TerminalLine("Exit: Esc", TerminalTextController.TerminalLineMode.Instant)
             });
         }
 
@@ -206,6 +209,7 @@ public class ComputerUIController : MonoBehaviour
         }
 
         OnRandomMatchRequested?.Invoke();
+        matchingRoutine = StartCoroutine(FakeMatchingRoutine(true, null));
     }
 
     private void EnterMatchingByRoomCodeState()
@@ -353,7 +357,7 @@ public class ComputerUIController : MonoBehaviour
     {
         if (inputView == null) return;
 
-        inputView.SetPrompt("> Main Menu");
+        inputView.SetPrompt("Main Menu");
         inputView.SetInputNoCursor(BuildMenuDisplay());
     }
 
@@ -379,11 +383,11 @@ public class ComputerUIController : MonoBehaviour
         switch (mainMenuIndex)
         {
             case 0:
-                EnterInputRoomCodeState();
+                EnterMatchingRandomState();
                 break;
 
             case 1:
-                EnterMatchingRandomState();
+                EnterInputRoomCodeState();
                 break;
 
             case 2:
@@ -480,6 +484,8 @@ public class ComputerUIController : MonoBehaviour
         {
             if (terminalLog != null)
                 terminalLog.PlaySingleLine("Candidate session found.");
+
+            sceneSwitcher.SwitchScene();
         }
         else
         {
