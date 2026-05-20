@@ -25,6 +25,7 @@ public class StartExecuteSkillCmdHandler : CommandHandler, ICommandHandler
                 return results;
 
             // execute skill card effects
+            session.gameState.MoveCard(payload.instanceId, session.gameState.players[payload.playerId].skillCardsExecute);
             NetEffectFunction.ExecuteEffectOp(ref effectOpId, skillCard, session, payload.playerId, payload.instanceId, ref results);
         }
 

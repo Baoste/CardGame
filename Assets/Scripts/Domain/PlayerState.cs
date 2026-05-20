@@ -16,6 +16,7 @@ namespace Game.Domain
         public int _holeCard = -1;
         public int chipCount = 6;
         public SkillCardsInHand skillCardsInHand = new SkillCardsInHand();
+        public SkillCardsInHand skillCardsExecute = new SkillCardsInHand();
         public PointCardsOnBoard pointCardsOnBoard = new PointCardsOnBoard();
 
         public void Init()
@@ -24,6 +25,7 @@ namespace Game.Domain
             _holeCard = -1;
             skillCardsInHand._Clear();
             pointCardsOnBoard._Clear();
+            skillCardsExecute._Clear();
         }
 
         public bool Place1Bet()

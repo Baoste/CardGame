@@ -85,9 +85,10 @@ public class HandView : MonoBehaviour, IViewClear
 
     public IEnumerator RemoveCard(GameObject instance, bool isDestroy = false)
     {
-        if (isDestroy)
+        if (isDestroy && skillCardInstances.Remove(instance))
         {
             StartCoroutine(_DestroyCard(instance));
+            yield break;
         }
 
         SkillCardController sc = instance.GetComponent<SkillCardController>();

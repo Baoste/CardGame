@@ -6,6 +6,8 @@ public class StartPlaySceneAnim : MonoBehaviour
 {
     void Start()
     {
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
         StartCoroutine(StartAnim());
     }
 

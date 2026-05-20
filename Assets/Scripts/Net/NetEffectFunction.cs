@@ -67,7 +67,10 @@ namespace Game.Domain
                 if (!success)
                 {
                     if (effectOpId == 0)
+                    {
+                        session.gameState.MoveCard(instanceId, session.gameState.players[playerId].skillCardsInHand);
                         SendInvalidEvent(playerId, instanceId, results, InvalidActionType.InvalidTarget);
+                    }
                     return;
                 }
 
