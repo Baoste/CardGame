@@ -86,7 +86,8 @@ namespace Game.Domain
                         drawCardInstanceId != -1,
                         session.instanceToCardId.GetValueOrDefault(drawCardInstanceId, -1),
                         drawCardInstanceId,
-                        cardState
+                        cardState,
+                        op.effectAnimationType
                     ),
                     -1
                 ));
@@ -116,7 +117,8 @@ namespace Game.Domain
                         casterId,
                         drawCardInstanceId != -1,
                         session.instanceToCardId.GetValueOrDefault(drawCardInstanceId, -1),
-                        drawCardInstanceId
+                        drawCardInstanceId,
+                        op.effectAnimationType
                     ),
                     -1
                 ));
@@ -140,7 +142,8 @@ namespace Game.Domain
                         playerId,
                         drawCardInstanceId != -1,
                         drawCardId,
-                        drawCardInstanceId
+                        drawCardInstanceId,
+                        op.effectAnimationType
                     ),
                     -1
                 ));
@@ -163,7 +166,8 @@ namespace Game.Domain
                 (
                     playerId,
                     success,
-                    selectedTargetIds
+                    selectedTargetIds,
+                    op.effectAnimationType
                 ),
                 -1
             ));
@@ -190,7 +194,8 @@ namespace Game.Domain
                         playerId,
                         success,
                         selectedTargetIds[i],
-                        targeValue
+                        targeValue,
+                        op.effectAnimationType
                     ),
                     -1
                 ));
@@ -251,7 +256,8 @@ namespace Game.Domain
                         success,
                         cardId,
                         selectedSourceIds[i],
-                        selectZone
+                        selectZone,
+                        op.effectAnimationType
                     ),
                     -1
                 ));
@@ -293,7 +299,8 @@ namespace Game.Domain
                         playerId,
                         true,
                         drawCardId,
-                        drawCardInstanceId
+                        drawCardInstanceId,
+                        op.effectAnimationType
                     ),
                     -1
                 ));
@@ -319,7 +326,8 @@ namespace Game.Domain
                         playerId,
                         success,
                         selectedTargetIds[i],
-                        cardState
+                        cardState,
+                        op.effectAnimationType
                     ),
                     -1
                 ));

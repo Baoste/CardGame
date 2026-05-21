@@ -11,7 +11,7 @@ public class StartGameCmdHandler : CommandHandler, ICommandHandler
         CommandResult results = new CommandResult();
 
         // TODO: 服务器端需要做什么
-        if (session.gameState.isStart)
+        if (session.gameState.isStart || session.gameState.readyToStartCount++ < 1)
             return results;   // 已经开始了，直接返回
 
         session.gameState.Start();
@@ -70,7 +70,8 @@ public class StartGameCmdHandler : CommandHandler, ICommandHandler
                 drawCardInstanceId != -1,
                 session.instanceToCardId.GetValueOrDefault(drawCardInstanceId, -1),
                 drawCardInstanceId,
-                CardVisualState.Hole
+                CardVisualState.Hole,
+                EffectAnimation.DrawPoint_Normal
             ),
             -1
         ));
@@ -84,7 +85,8 @@ public class StartGameCmdHandler : CommandHandler, ICommandHandler
                 drawCardInstanceId != -1,
                 session.instanceToCardId.GetValueOrDefault(drawCardInstanceId, -1),
                 drawCardInstanceId,
-                CardVisualState.Hole
+                CardVisualState.Hole,
+                EffectAnimation.DrawPoint_Normal
             ),
             -1
         ));
@@ -100,7 +102,8 @@ public class StartGameCmdHandler : CommandHandler, ICommandHandler
                 drawCardInstanceId != -1,
                 session.instanceToCardId.GetValueOrDefault(drawCardInstanceId, -1),
                 drawCardInstanceId,
-                CardVisualState.None
+                CardVisualState.None,
+                EffectAnimation.DrawPoint_Normal
             ),
             -1
         ));
@@ -114,7 +117,8 @@ public class StartGameCmdHandler : CommandHandler, ICommandHandler
                 drawCardInstanceId != -1,
                 session.instanceToCardId.GetValueOrDefault(drawCardInstanceId, -1),
                 drawCardInstanceId,
-                CardVisualState.None
+                CardVisualState.None,
+                EffectAnimation.DrawPoint_Normal
             ),
             -1
         ));
@@ -131,7 +135,8 @@ public class StartGameCmdHandler : CommandHandler, ICommandHandler
                     payload.playerId,
                     drawCardInstanceId != -1,
                     session.instanceToCardId.GetValueOrDefault(drawCardInstanceId, -1),
-                    drawCardInstanceId
+                    drawCardInstanceId,
+                    EffectAnimation.DrawSkill_Normal
                 ),
             -1
             ));
@@ -144,13 +149,41 @@ public class StartGameCmdHandler : CommandHandler, ICommandHandler
                     1 - payload.playerId,
                     drawCardInstanceId != -1,
                     session.instanceToCardId.GetValueOrDefault(drawCardInstanceId, -1),
-                    drawCardInstanceId
+                    drawCardInstanceId,
+                    EffectAnimation.DrawSkill_Normal
                 ),
             -1
             ));
         }
 
-        NetEffectFunction.SumPoint(session, ref results);
+        // 分配庄闲
+        int dealerId = session.gameState.dealerId == -1
+            ? session.gameState.rng.Next(2)
+            : 1 - session.gameState.dealerId;
+
+        int punterId = 1 - dealerId;
+        session.gameState.dealerId = dealerId;
+        session.gameState.punterId = punterId;
+
+        if (session.gameState.players[1 - payload.playerId].Place1Bet() &&
+            session.gameState.players[payload.playerId].Place1Bet())
+        {
+            session.gameState.currentBet = 1;
+        }
+
+        results.events.Enqueue(MakeEvent(
+            "AssignRoles",
+            new AssignRolesEvent    // need change
+            (
+                payload.playerId,
+                true,
+                dealerId,
+                punterId
+            ),
+            -1
+        ));
+
+        NetEffectFunction.SumPoint(session, payload.playerId, ref results);
 
         return results;
     }

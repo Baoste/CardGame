@@ -57,11 +57,18 @@ public class EventProcessFunction : MonoBehaviour
         CinemachineVirtualCamera vcam = GameObject.Find("VCamera_Playing").GetComponent<CinemachineVirtualCamera>();
         vcam.Priority = 20;
 
-        SceneViewManager.boardView.transform.GetComponentInChildren<ClickToStartGame>().isEnabled = true;
-        SceneViewManager.boardView.transform.GetComponentInChildren<ClickToStartGame>().startText.SetActive(true);
+        // SceneViewManager.boardView.transform.GetComponentInChildren<ClickToStartGame>().isEnabled = true;
+        // SceneViewManager.boardView.transform.GetComponentInChildren<ClickToStartGame>().startText.SetActive(true);
+        StartCoroutine(_SendStartGameCmd());
 
         SceneViewManager.myChipView.StartGame(false);
         SceneViewManager.opponentChipView.StartGame(true);
+    }
+
+    private IEnumerator _SendStartGameCmd()
+    {
+        yield return new WaitForSeconds(1f);
+        ClientCommand.StartGame();
     }
 
     public void StartGameTest(object[] parameters)
@@ -428,10 +435,12 @@ public class EventProcessFunction : MonoBehaviour
 
     // parameters[0]: int playerId
     // parameters[1]: List<int> instanceIds
+    // parameters[2]: EffectAnimation effectAnimation
     public void DiscardCard(object[] parameters)
     {
         int playerId = (int)parameters[0];
         List<int> instanceIds = (List<int>)parameters[1];
+        EffectAnimation effectAnimation = (EffectAnimation)parameters[2];
 
         if (instanceIds.Count < 1)
         {
@@ -450,38 +459,30 @@ public class EventProcessFunction : MonoBehaviour
             return;
         }
 
-        // 检测有没有技能牌或者都在一边
-        bool isOneSide = true;
-        bool firstIsOpponent = instanceMap[instanceIds[0]].GetComponent<PointCardController>() != null && instanceMap[instanceIds[0]].GetComponent<PointCardController>().isOpponent;
-        foreach (int instanceId in instanceIds)
+        switch (effectAnimation)
         {
-            if (instanceMap[instanceId].GetComponent<SkillCardController>() != null || 
-                instanceMap[instanceId].GetComponent<PointCardController>().isOpponent != firstIsOpponent)
+            case EffectAnimation.Discard_Normal:
             {
-                isOneSide = false;
+                foreach (int instanceId in instanceIds)
+                {
+                    GameObject obj = instanceMap[instanceId];
+                    instanceMap.Remove(instanceId);
+                    IDiscardPresentation discardPresentation = obj.GetComponent<IDiscardPresentation>();
+                    discardPresentation?.DiscardPlay();
+                }
                 break;
             }
-        }
-
-        if (!isOneSide)
-        {
-            foreach (int instanceId in instanceIds)
+            case EffectAnimation.Discard_Lazer:
             {
-                GameObject obj = instanceMap[instanceId];
-                instanceMap.Remove(instanceId);
-                IDiscardPresentation discardPresentation = obj.GetComponent<IDiscardPresentation>();
-                discardPresentation?.DiscardPlay();
+                List<GameObject> objs = new List<GameObject>();
+                foreach (int instanceId in instanceIds)
+                {
+                    objs.Add(instanceMap[instanceId]);
+                    instanceMap.Remove(instanceId);
+                }
+                SceneViewManager.boardView.GenerateLazer(objs[0].transform.position, objs);
+                break;
             }
-        }
-        else
-        {
-            List<GameObject> objs = new List<GameObject>();
-            foreach (int instanceId in instanceIds)
-            {
-                objs.Add(instanceMap[instanceId]);
-                instanceMap.Remove(instanceId);
-            }
-            SceneViewManager.boardView.GenerateLazer(objs[0].transform.position, objs);
         }
     }
 

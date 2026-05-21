@@ -25,7 +25,8 @@ public class PeekTopCardCmdHandler : CommandHandler, ICommandHandler
                     payload.playerId,
                     true,
                     drawCardId,
-                    drawCardInstanceId
+                    drawCardInstanceId,
+                    EffectAnimation.Peek_Normal
                 ),
                 -1
             ));

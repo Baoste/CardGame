@@ -7,7 +7,8 @@ public class QuickStartButtons : MonoBehaviour
 {
     public NetworkManager nm;
     private string matchId = "123";
-    private string ClientIP = "49.232.222.222";
+    // private string ClientIP = "49.232.222.222";
+    private string ClientIP = "localhost";
     [HideInInspector] public string matchSeed = "12345";
 
     const int w = 200;

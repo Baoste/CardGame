@@ -257,11 +257,13 @@ namespace Game.Domain
     {
         public int cardId;
         public int instanceId;
-        public DrawSkillCardEvent(int playerId, bool success, int cardId, int instanceId)
+        public EffectAnimation effectAnimation;
+        public DrawSkillCardEvent(int playerId, bool success, int cardId, int instanceId, EffectAnimation effectAnimation)
             : base(playerId, success)
         {
             this.cardId = cardId;
             this.instanceId = instanceId;
+            this.effectAnimation = effectAnimation;
         }
     }
 
@@ -273,12 +275,14 @@ namespace Game.Domain
         public int cardId;
         public int instanceId;
         public CardVisualState cardState;
-        public DrawPointCardEvent(int playerId, bool success, int cardId, int instanceId, CardVisualState cardState)
+        public EffectAnimation effectAnimation;
+        public DrawPointCardEvent(int playerId, bool success, int cardId, int instanceId, CardVisualState cardState, EffectAnimation effectAnimation)
             : base(playerId, success)
         {
             this.cardId = cardId;
             this.instanceId = instanceId;
             this.cardState = cardState;
+            this.effectAnimation = effectAnimation;
         }
     }
 
@@ -289,12 +293,14 @@ namespace Game.Domain
     {
         public int cardId;
         public int instanceId;
+        public EffectAnimation effectAnimation;
 
-        public DrawPointCardToResolveEvent(int playerId, bool success, int cardId, int instanceId)
+        public DrawPointCardToResolveEvent(int playerId, bool success, int cardId, int instanceId, EffectAnimation effectAnimation)
             : base(playerId, success)
         {
             this.cardId = cardId;
             this.instanceId = instanceId;
+            this.effectAnimation = effectAnimation;
         }
     }
 
@@ -314,10 +320,12 @@ namespace Game.Domain
     public class DiscardCardEvent : PlayerEvent
     {
         public List<int> instanceIds;
-        public DiscardCardEvent(int playerId, bool success, List<int> instanceIds)
+        public EffectAnimation effectAnimation;
+        public DiscardCardEvent(int playerId, bool success, List<int> instanceIds, EffectAnimation effectAnimation)
             : base(playerId, success)
         {
             this.instanceIds = instanceIds;
+            this.effectAnimation = effectAnimation;
         }
     }
 
@@ -328,11 +336,13 @@ namespace Game.Domain
     {
         public int instanceId;
         public int pointChange;
-        public ModifyPointEvent(int playerId, bool success, int instanceId, int pointChange)
+        public EffectAnimation effectAnimation;
+        public ModifyPointEvent(int playerId, bool success, int instanceId, int pointChange, EffectAnimation effectAnimation)
             : base(playerId, success)
         {
             this.instanceId = instanceId;
             this.pointChange = pointChange;
+            this.effectAnimation = effectAnimation;
         }
     }
 
@@ -344,12 +354,14 @@ namespace Game.Domain
         public int cardId;
         public int selectedId;
         public ParticipantType toZone;
-        public MoveCardEvent(int playerId, bool success, int cardId, int selectedId, ParticipantType toZone)
+        public EffectAnimation effectAnimation;
+        public MoveCardEvent(int playerId, bool success, int cardId, int selectedId, ParticipantType toZone, EffectAnimation effectAnimation)
             : base(playerId, success)
         {
             this.cardId = cardId;
             this.selectedId = selectedId;
             this.toZone = toZone;
+            this.effectAnimation = effectAnimation;
         }
     }
 
@@ -360,11 +372,13 @@ namespace Game.Domain
     {
         public int instanceId;
         public CardVisualState cardState;
-        public ChangeCardStateEvent(int playerId, bool success, int instanceId, CardVisualState cardState)
+        public EffectAnimation effectAnimation;
+        public ChangeCardStateEvent(int playerId, bool success, int instanceId, CardVisualState cardState, EffectAnimation effectAnimation)
             : base(playerId, success)
         {
             this.instanceId = instanceId;
             this.cardState = cardState;
+            this.effectAnimation = effectAnimation;
         }
     }
 
@@ -375,11 +389,13 @@ namespace Game.Domain
     {
         public int cardId;
         public int instanceId;
-        public PeekTopCardEvent(int playerId, bool success, int cardId, int instanceId)
+        public EffectAnimation effectAnimation;
+        public PeekTopCardEvent(int playerId, bool success, int cardId, int instanceId, EffectAnimation effectAnimation)
             : base(playerId, success)
         {
             this.cardId = cardId;
             this.instanceId = instanceId;
+            this.effectAnimation = effectAnimation;
         }
     }
 

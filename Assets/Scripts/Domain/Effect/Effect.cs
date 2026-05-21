@@ -31,5 +31,6 @@ namespace Game.Domain
         public ParticipantSpec source;
         public ParticipantSpec target;
         public ValueExpr value;
+        public EffectAnimation effectAnimationType;
     }
 }

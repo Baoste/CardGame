@@ -1,49 +1,6 @@
 {
   "cards": [
     {
-      "id": 1004,
-      "name": "行动补充",
-      "description": "获得两个行动点",
-      "point": 1,
-      "type": 1,
-      "count": 4,
-      "effects": [
-        {
-          "type": 7,
-          "trueNode": -1,
-          "falseNode": -1,
-          "source": {
-            "participantType": 0,
-            "filter": {
-              "$type": "Game.Domain.NoneCondition, Assembly-CSharp"
-            },
-            "participantSelectionMode": {
-              "$type": "SelectionModeNone, Assembly-CSharp"
-            },
-            "maxSelectCount": {
-              "$type": "Game.Domain.NoneValue, Assembly-CSharp"
-            }
-          },
-          "target": {
-            "participantType": 0,
-            "filter": {
-              "$type": "Game.Domain.NoneCondition, Assembly-CSharp"
-            },
-            "participantSelectionMode": {
-              "$type": "SelectionModeNone, Assembly-CSharp"
-            },
-            "maxSelectCount": {
-              "$type": "Game.Domain.NoneValue, Assembly-CSharp"
-            }
-          },
-          "value": {
-            "$type": "Game.Domain.ConstValue, Assembly-CSharp",
-            "value": 2
-          }
-        }
-      ]
-    },
-    {
       "id": 1203,
       "name": "强取豪夺",
       "description": "偷对手1张技能牌",
@@ -82,7 +39,8 @@
           },
           "value": {
             "$type": "Game.Domain.NoneValue, Assembly-CSharp"
-          }
+          },
+          "effectAnimationType": 6
         }
       ]
     },
@@ -126,7 +84,8 @@
           "value": {
             "$type": "Game.Domain.ConstValue, Assembly-CSharp",
             "value": 3
-          }
+          },
+          "effectAnimationType": 5
         }
       ]
     },
@@ -169,7 +128,8 @@
           "value": {
             "$type": "Game.Domain.ConstValue, Assembly-CSharp",
             "value": 1
-          }
+          },
+          "effectAnimationType": 0
         },
         {
           "type": 0,
@@ -202,7 +162,8 @@
           "value": {
             "$type": "Game.Domain.ConstValue, Assembly-CSharp",
             "value": 2
-          }
+          },
+          "effectAnimationType": 0
         }
       ]
     },
@@ -246,7 +207,8 @@
           "value": {
             "$type": "Game.Domain.ConstValue, Assembly-CSharp",
             "value": -3
-          }
+          },
+          "effectAnimationType": 5
         }
       ]
     },
@@ -289,7 +251,8 @@
           "value": {
             "$type": "Game.Domain.ConstValue, Assembly-CSharp",
             "value": 2
-          }
+          },
+          "effectAnimationType": 9
         }
       ]
     },
@@ -332,7 +295,8 @@
           },
           "value": {
             "$type": "Game.Domain.NoneValue, Assembly-CSharp"
-          }
+          },
+          "effectAnimationType": 2
         },
         {
           "type": 5,
@@ -365,7 +329,8 @@
           },
           "value": {
             "$type": "Game.Domain.NoneValue, Assembly-CSharp"
-          }
+          },
+          "effectAnimationType": 6
         }
       ]
     },
@@ -409,7 +374,8 @@
           },
           "value": {
             "$type": "Game.Domain.NoneValue, Assembly-CSharp"
-          }
+          },
+          "effectAnimationType": 2
         },
         {
           "type": 6,
@@ -450,7 +416,8 @@
           },
           "value": {
             "$type": "Game.Domain.NoneValue, Assembly-CSharp"
-          }
+          },
+          "effectAnimationType": 7
         },
         {
           "type": 3,
@@ -483,7 +450,8 @@
           },
           "value": {
             "$type": "Game.Domain.NoneValue, Assembly-CSharp"
-          }
+          },
+          "effectAnimationType": 3
         },
         {
           "type": 3,
@@ -516,7 +484,8 @@
           },
           "value": {
             "$type": "Game.Domain.NoneValue, Assembly-CSharp"
-          }
+          },
+          "effectAnimationType": 3
         }
       ]
     },
@@ -560,7 +529,8 @@
           },
           "value": {
             "$type": "Game.Domain.NoneValue, Assembly-CSharp"
-          }
+          },
+          "effectAnimationType": 2
         },
         {
           "type": 6,
@@ -600,7 +570,8 @@
           },
           "value": {
             "$type": "Game.Domain.NoneValue, Assembly-CSharp"
-          }
+          },
+          "effectAnimationType": 7
         },
         {
           "type": 3,
@@ -633,14 +604,205 @@
           },
           "value": {
             "$type": "Game.Domain.NoneValue, Assembly-CSharp"
+          },
+          "effectAnimationType": 3
+        }
+      ]
+    },
+    {
+      "id": 1005,
+      "name": "置换",
+      "description": "随机弃一张技能牌，抽两张技能牌",
+      "point": 1,
+      "type": 1,
+      "count": 2,
+      "effects": [
+        {
+          "type": 3,
+          "trueNode": 1,
+          "falseNode": -1,
+          "effectAnimationType": 3,
+          "source": {
+            "participantType": 0,
+            "filter": {
+              "$type": "Game.Domain.NoneCondition, Assembly-CSharp"
+            },
+            "participantSelectionMode": {
+              "$type": "SelectionModeNone, Assembly-CSharp"
+            },
+            "maxSelectCount": {
+              "$type": "Game.Domain.NoneValue, Assembly-CSharp"
+            }
+          },
+          "target": {
+            "participantType": 1,
+            "filter": {
+              "$type": "Game.Domain.AllCondition, Assembly-CSharp"
+            },
+            "participantSelectionMode": {
+              "$type": "SelectionModeRandom, Assembly-CSharp"
+            },
+            "maxSelectCount": {
+              "$type": "Game.Domain.ConstValue, Assembly-CSharp",
+              "value": 1
+            }
+          },
+          "value": {
+            "$type": "Game.Domain.NoneValue, Assembly-CSharp"
+          }
+        },
+        {
+          "type": 1,
+          "trueNode": -1,
+          "falseNode": -1,
+          "effectAnimationType": 1,
+          "source": {
+            "participantType": 0,
+            "filter": {
+              "$type": "Game.Domain.NoneCondition, Assembly-CSharp"
+            },
+            "participantSelectionMode": {
+              "$type": "SelectionModeNone, Assembly-CSharp"
+            },
+            "maxSelectCount": {
+              "$type": "Game.Domain.NoneValue, Assembly-CSharp"
+            }
+          },
+          "target": {
+            "participantType": 0,
+            "filter": {
+              "$type": "Game.Domain.NoneCondition, Assembly-CSharp"
+            },
+            "participantSelectionMode": {
+              "$type": "SelectionModeNone, Assembly-CSharp"
+            },
+            "maxSelectCount": {
+              "$type": "Game.Domain.NoneValue, Assembly-CSharp"
+            }
+          },
+          "value": {
+            "$type": "Game.Domain.ConstValue, Assembly-CSharp",
+            "value": 2
+          }
+        }
+      ]
+    },
+    {
+      "id": 1006,
+      "name": "变幻",
+      "description": "变化场上的一张牌",
+      "point": 0,
+      "type": 1,
+      "count": 2,
+      "effects": [
+        {
+          "type": 4,
+          "trueNode": 1,
+          "falseNode": -1,
+          "effectAnimationType": 5,
+          "source": {
+            "participantType": 0,
+            "filter": {
+              "$type": "Game.Domain.NoneCondition, Assembly-CSharp"
+            },
+            "participantSelectionMode": {
+              "$type": "SelectionModeNone, Assembly-CSharp"
+            },
+            "maxSelectCount": {
+              "$type": "Game.Domain.NoneValue, Assembly-CSharp"
+            }
+          },
+          "target": {
+            "participantType": 12,
+            "filter": {
+              "$type": "Game.Domain.AllCondition, Assembly-CSharp"
+            },
+            "participantSelectionMode": {
+              "$type": "SelectionModeChoose, Assembly-CSharp"
+            },
+            "maxSelectCount": {
+              "$type": "Game.Domain.ConstValue, Assembly-CSharp",
+              "value": 1
+            }
+          },
+          "value": {
+            "$type": "Game.Domain.RandomValue, Assembly-CSharp",
+            "valueMin": {
+              "$type": "Game.Domain.BinaryValue, Assembly-CSharp",
+              "left": {
+                "$type": "Game.Domain.ConstValue, Assembly-CSharp",
+                "value": 1
+              },
+              "right": {
+                "$type": "Game.Domain.VariableValue, Assembly-CSharp",
+                "source": 6
+              },
+              "op": 1
+            },
+            "valueMax": {
+              "$type": "Game.Domain.BinaryValue, Assembly-CSharp",
+              "left": {
+                "$type": "Game.Domain.ConstValue, Assembly-CSharp",
+                "value": 6
+              },
+              "right": {
+                "$type": "Game.Domain.VariableValue, Assembly-CSharp",
+                "source": 6
+              },
+              "op": 1
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": 1004,
+      "name": "行动补充",
+      "description": "获得两个行动点",
+      "point": 1,
+      "type": 1,
+      "count": 2,
+      "effects": [
+        {
+          "type": 7,
+          "trueNode": -1,
+          "falseNode": -1,
+          "effectAnimationType": 8,
+          "source": {
+            "participantType": 0,
+            "filter": {
+              "$type": "Game.Domain.NoneCondition, Assembly-CSharp"
+            },
+            "participantSelectionMode": {
+              "$type": "SelectionModeNone, Assembly-CSharp"
+            },
+            "maxSelectCount": {
+              "$type": "Game.Domain.NoneValue, Assembly-CSharp"
+            }
+          },
+          "target": {
+            "participantType": 0,
+            "filter": {
+              "$type": "Game.Domain.NoneCondition, Assembly-CSharp"
+            },
+            "participantSelectionMode": {
+              "$type": "SelectionModeNone, Assembly-CSharp"
+            },
+            "maxSelectCount": {
+              "$type": "Game.Domain.NoneValue, Assembly-CSharp"
+            }
+          },
+          "value": {
+            "$type": "Game.Domain.ConstValue, Assembly-CSharp",
+            "value": 2
           }
         }
       ]
     },
     {
       "id": 1104,
-      "name": "孤注一掷",
-      "description": "丢弃所有点数牌和技能牌，重新抽三张点数牌",
+      "name": "重整旗鼓",
+      "description": "丢弃所有点数牌，重新抽两张点数牌和两张技能牌",
       "point": 2,
       "type": 1,
       "count": 2,
@@ -649,6 +811,7 @@
           "type": 3,
           "trueNode": 1,
           "falseNode": -1,
+          "effectAnimationType": 3,
           "source": {
             "participantType": 0,
             "filter": {
@@ -707,12 +870,14 @@
           },
           "value": {
             "$type": "Game.Domain.NoneValue, Assembly-CSharp"
-          }
+          },
+          "effectAnimationType": 3
         },
         {
           "type": 0,
-          "trueNode": -1,
+          "trueNode": 3,
           "falseNode": -1,
+          "effectAnimationType": 0,
           "source": {
             "participantType": 0,
             "filter": {
@@ -740,6 +905,40 @@
           "value": {
             "$type": "Game.Domain.ConstValue, Assembly-CSharp",
             "value": 3
+          }
+        },
+        {
+          "type": 1,
+          "trueNode": -1,
+          "falseNode": -1,
+          "effectAnimationType": 1,
+          "source": {
+            "participantType": 0,
+            "filter": {
+              "$type": "Game.Domain.NoneCondition, Assembly-CSharp"
+            },
+            "participantSelectionMode": {
+              "$type": "SelectionModeNone, Assembly-CSharp"
+            },
+            "maxSelectCount": {
+              "$type": "Game.Domain.NoneValue, Assembly-CSharp"
+            }
+          },
+          "target": {
+            "participantType": 0,
+            "filter": {
+              "$type": "Game.Domain.NoneCondition, Assembly-CSharp"
+            },
+            "participantSelectionMode": {
+              "$type": "SelectionModeNone, Assembly-CSharp"
+            },
+            "maxSelectCount": {
+              "$type": "Game.Domain.NoneValue, Assembly-CSharp"
+            }
+          },
+          "value": {
+            "$type": "Game.Domain.ConstValue, Assembly-CSharp",
+            "value": 2
           }
         }
       ]

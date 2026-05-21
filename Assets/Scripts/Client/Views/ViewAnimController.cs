@@ -53,7 +53,10 @@ public class ViewAnimController : MonoBehaviour
         StartCoroutine(OpenPointCardDeckCover());
         StartCoroutine(CloseSkillCardDeckCover());
         // StartCoroutine(OpenChipCover());
-        SceneViewManager.boardView.transform.GetComponentInChildren<ClickToStartGame>().startText.SetActive(true);
+        // SceneViewManager.boardView.transform.GetComponentInChildren<ClickToStartGame>().startText.SetActive(true);
+
+        yield return new WaitForSeconds(2f);
+        ClientCommand.StartGame();
     }
 
     public IEnumerator ClosePointCardDeckCover()

@@ -1,4 +1,5 @@
 using System;
+using UnityEngine;
 
 namespace Game.Domain
 {
@@ -22,6 +23,19 @@ namespace Game.Domain
             => value;
     }
 
+    // 随机
+    public class RandomValue : ValueExpr
+    {
+        public ValueExpr valueMin;
+        public ValueExpr valueMax;
+        public override int Evaluate(GameState state, EffectContext ctx)
+        {
+            int l = valueMin.Evaluate(state, ctx);
+            int r = valueMax.Evaluate(state, ctx);
+            return state.rng.Next(l, r + 1);
+        }
+    }
+
     // 读取变量
     public class VariableValue : ValueExpr
     {
@@ -30,6 +44,7 @@ namespace Game.Domain
         {
             switch (source)
             {
+                // 这个意思是会遍历候选区的牌
                 case ValueSource.CardPointInPool:
                     return -1;
 

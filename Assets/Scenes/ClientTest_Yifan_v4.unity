@@ -5687,7 +5687,7 @@ Transform:
   m_GameObject: {fileID: 357227635}
   serializedVersion: 2
   m_LocalRotation: {x: 0.5, y: -0.5, z: 0.5, w: 0.5}
-  m_LocalPosition: {x: 0.884, y: 1.592, z: -0.795}
+  m_LocalPosition: {x: 0.884, y: 1.592, z: -0.619}
   m_LocalScale: {x: 100.00004, y: 100.00006, z: 100.00004}
   m_ConstrainProportionsScale: 1
   m_Children: []
@@ -5728,7 +5728,7 @@ Light:
   m_Type: 2
   m_Shape: 0
   m_Color: {r: 0.82075465, g: 0.90373856, b: 1, a: 1}
-  m_Intensity: 1
+  m_Intensity: 0.22
   m_Range: 0.74
   m_SpotAngle: 45
   m_InnerSpotAngle: 21.80208
@@ -33585,7 +33585,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 361584648}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c191c1d87d794eb45a45d972ad3ff8e8, type: 3}
   m_Name: 

@@ -22,7 +22,8 @@ public class DiscardCardCmdHandler : CommandHandler, ICommandHandler
             (
                 payload.playerId,
                 success,
-                new List<int> { cardInstanceId }
+                new List<int> { cardInstanceId },
+                EffectAnimation.Discard_Normal
             ),
             -1
         ));

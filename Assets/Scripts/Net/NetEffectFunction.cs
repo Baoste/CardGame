@@ -6,10 +6,10 @@ namespace Game.Domain
 {
     public static class NetEffectFunction
     {
-        public static void SumPoint(MatchSession session, ref CommandResult results)
+        public static void SumPoint(MatchSession session, int playerId, ref CommandResult results)
         {
-            session.gameState.SumPoint(0, out int player0OnBoardPoints, out bool player0HasHiddenCard);
-            session.gameState.SumPoint(1, out int player1OnBoardPoints, out bool player1HasHiddenCard);
+            int player0Points = session.gameState.SumPoint(0, out int player0OnBoardPoints, out bool player0HasHiddenCard);
+            int player1Points = session.gameState.SumPoint(1, out int player1OnBoardPoints, out bool player1HasHiddenCard);
 
             results.events.Enqueue(CommandHandler.MakeEvent(
                 "SumPoint",
@@ -38,6 +38,41 @@ namespace Game.Domain
                 ),
                 1
             ));
+
+            //! if both players have 21 points, the player who triggered the sum point action wins
+            int winnerId = -1;
+            if (player0Points == 21 && player1Points == 21)
+            {
+                winnerId = playerId;
+            }
+            else if (player0Points == 21)
+            {
+                winnerId = 0;
+            }
+            else if (player1Points == 21)
+            {
+                winnerId = 1;
+            }
+            int playerPoints = playerId == 0 ? player0Points : player1Points;
+            int opponentPoints = playerId == 0 ? player1Points : player0Points;
+
+            if (winnerId != -1)
+            {
+                results.events.Enqueue(CommandHandler.MakeEvent(
+                    "RevealCardsAndScore",
+                    new RevealCardsAndScoreEvent    // need change
+                    (
+                        playerId,
+                        true,
+                        winnerId,
+                        session.gameState.currentBet,
+                        playerPoints,
+                        opponentPoints
+                    ),
+                    -1
+                ));
+            }
+
         }
 
         public static void ExecuteEffectOp(ref int effectOpId, Card skillCard, MatchSession session, int playerId, int instanceId, ref CommandResult results)
@@ -162,12 +197,13 @@ namespace Game.Domain
                 (
                     playerId,
                     success,
-                    new List<int> { instanceId }
+                    new List<int> { instanceId },
+                    EffectAnimation.Discard_Normal
                 ),
                 -1
             ));
 
-            SumPoint(session, ref results);
+            SumPoint(session, playerId, ref results);
         }
 
         public static bool SpendActionPoint(int playerId, int instanceId, MatchSession session, CommandResult results, int apCount)

@@ -52,7 +52,8 @@ public class MoveCardCmdHandler : CommandHandler, ICommandHandler
                 success,
                 cardId,
                 payload.instanceId,
-                payload.toZone
+                payload.toZone,
+                EffectAnimation.Move_Normal
             ),
             -1
         ));

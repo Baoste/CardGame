@@ -32,13 +32,13 @@ public static class ClientCommand
         ClientGameState.gateway.SendCommandServerRpc("StartMatch", JsonConvert.SerializeObject(cmd));
     }
 
-    public static IEnumerator StartGame()
+    public static void StartGame()
     {
-        StartGameCommand cmd = new StartGameCommand { playerId = ClientGameState.playerSlot};
+        StartGameCommand cmd = new StartGameCommand { playerId = ClientGameState.playerSlot };
         ClientGameState.gateway.SendCommandServerRpc("StartGame", JsonConvert.SerializeObject(cmd));
-        yield return new WaitForSecondsRealtime(8f);
-        AssignRolesCommand cmd2 = new AssignRolesCommand { playerId = ClientGameState.playerSlot };
-        ClientGameState.gateway.SendCommandServerRpc("AssignRoles", JsonConvert.SerializeObject(cmd2));
+        //yield return new WaitForSecondsRealtime(8f);
+        //AssignRolesCommand cmd2 = new AssignRolesCommand { playerId = ClientGameState.playerSlot };
+        //ClientGameState.gateway.SendCommandServerRpc("AssignRoles", JsonConvert.SerializeObject(cmd2));
     }
 
     public static void StartTurn(int turnPlayerId)

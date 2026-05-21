@@ -39,7 +39,8 @@ public class DrawSkillCardCmdHandler : CommandHandler, ICommandHandler
                 payload.playerId,
                 drawCardInstanceId != -1,
                 session.instanceToCardId.GetValueOrDefault(drawCardInstanceId, -1),
-                drawCardInstanceId
+                drawCardInstanceId,
+                EffectAnimation.DrawSkill_Normal
             ),
             -1
         ));

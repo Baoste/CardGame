@@ -40,11 +40,12 @@ public sealed class DrawPointCardCmdHandler : CommandHandler, ICommandHandler
                 drawCardInstanceId != -1,
                 session.instanceToCardId.GetValueOrDefault(drawCardInstanceId, -1),
                 drawCardInstanceId,
-                cardState
+                cardState,
+                EffectAnimation.DrawPoint_Normal
             ),
             -1
         ));
-        NetEffectFunction.SumPoint(session, ref results);
+        NetEffectFunction.SumPoint(session, payload.playerId, ref results);
         return results;
     }
 }

@@ -28,6 +28,7 @@ namespace Game.Domain
 
         public Random rng;
         public bool isStart = false;
+        public int readyToStartCount = 0;
 
         public PlayerState[] players;
         public SkillCardsDeck skillCardsDeck = new SkillCardsDeck();
@@ -67,6 +68,8 @@ namespace Game.Domain
         public void Start()
         {
             isStart = true;
+            readyToStartCount = 0;
+
             Turn = 0;
             GameCount++;
             CurrentPlayerId = -1;

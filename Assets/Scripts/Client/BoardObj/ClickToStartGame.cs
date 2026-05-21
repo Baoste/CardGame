@@ -13,7 +13,7 @@ public class ClickToStartGame : MonoBehaviour, IMouseDown
     {
         if (!isEnabled || ClientGameState.Instance.isStart)
             return;
-        StartCoroutine(ClientCommand.StartGame());
+        ClientCommand.StartGame();
         startText.SetActive(false);
     }
 }

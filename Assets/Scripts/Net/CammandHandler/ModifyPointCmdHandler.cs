@@ -23,7 +23,8 @@ public class ModifyPointCmdHandler : CommandHandler, ICommandHandler
                 payload.playerId,
                 success,
                 payload.instanceId,
-                payload.pointChange
+                payload.pointChange,
+                EffectAnimation.ModifyPoint_Normal
             ),
             -1
         ));

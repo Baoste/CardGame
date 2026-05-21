@@ -27,7 +27,8 @@ public class ChangeCardStateCmdHandler : CommandHandler, ICommandHandler
                 payload.playerId,
                 success,
                 payload.instanceId,
-                payload.cardState
+                payload.cardState,
+                EffectAnimation.ChangeCardState_Normal
             ),
             -1
         ));
