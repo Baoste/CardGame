@@ -4,6 +4,7 @@ using UnityEngine;
 public class OnScreenLog : MonoBehaviour
 {
     private bool isDebug = false;
+    [SerializeField] TestSystem testSystem;
 
     static readonly Queue<string> lines = new Queue<string>();
 
@@ -19,7 +20,10 @@ public class OnScreenLog : MonoBehaviour
     private void Update()
     {
         if (Input.GetKeyDown(KeyCode.F12))
+        {
             isDebug = !isDebug;
+            testSystem.enabled = isDebug;
+        }
     }
 
     void OnGUI()

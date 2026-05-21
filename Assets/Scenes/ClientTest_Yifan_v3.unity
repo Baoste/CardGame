@@ -96,8 +96,7 @@ LightmapSettings:
     m_ExportTrainingData: 0
     m_TrainingDataDestination: TrainingData
     m_LightProbeSampleCountMultiplier: 4
-  m_LightingDataAsset: {fileID: 112000000, guid: 6a9d864a134c2724da2eb1988e257dd1,
-    type: 2}
+  m_LightingDataAsset: {fileID: 0}
   m_LightingSettings: {fileID: 4890085278179872738, guid: d36de18a3c84b724fa0cd9a9fcffd4f4,
     type: 2}
 --- !u!196 &4
@@ -1766,6 +1765,7 @@ MonoBehaviour:
   zoneHeight: 0.64
   cameraTransform: {fileID: 47329602}
   dragValidArea: {fileID: 124846533}
+  chipRaycastSelect: {fileID: 0}
   chipInit: {fileID: 2071940221}
   chipContainer: {fileID: 1532727566}
 --- !u!65 &124846533
@@ -4269,6 +4269,8 @@ MonoBehaviour:
   isBack: 0
   disk: {fileID: 543450652572640022}
   callBtn: {fileID: 42319922}
+  betCountText: {fileID: 0}
+  volume: {fileID: 0}
 --- !u!1 &296390870
 GameObject:
   m_ObjectHideFlags: 0
@@ -15945,6 +15947,8 @@ MonoBehaviour:
   isBack: 1
   disk: {fileID: 512185647}
   callBtn: {fileID: 0}
+  betCountText: {fileID: 0}
+  volume: {fileID: 0}
 --- !u!1 &1001179829
 GameObject:
   m_ObjectHideFlags: 0
@@ -17383,6 +17387,7 @@ MonoBehaviour:
   zoneHeight: 0.64
   cameraTransform: {fileID: 47329602}
   dragValidArea: {fileID: 1086371027}
+  chipRaycastSelect: {fileID: 0}
   chipInit: {fileID: 2002306859}
   chipContainer: {fileID: 1440106551}
 --- !u!1 &1088768160
