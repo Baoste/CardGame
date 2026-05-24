@@ -1,6 +1,5 @@
 using Game.Server;
 using System.Collections.Generic;
-using UnityEngine;
 
 namespace Game.Domain
 {
@@ -58,6 +57,10 @@ namespace Game.Domain
 
             if (winnerId != -1)
             {
+                ClientGameState.Instance.Dispose();
+                session.gameState.players[winnerId].chipCount += session.gameState.currentBet;
+                session.gameState.players[1 - winnerId].chipCount -= session.gameState.currentBet;
+
                 results.events.Enqueue(CommandHandler.MakeEvent(
                     "RevealCardsAndScore",
                     new RevealCardsAndScoreEvent    // need change
@@ -89,6 +92,20 @@ namespace Game.Domain
                         judgePool = judgePool.FindAll(c => op.source.filter.Evaluate(session.gameState, session.ctx, c));
 
                     bool judgeResult = judgePool.Count > 0;
+
+                    // send judge result event to client
+                    results.events.Enqueue(CommandHandler.MakeEvent(
+                        "JudgeResult",
+                        new JudgeResultEvent
+                        (
+                            playerId,
+                            true,
+                            judgeResult,
+                            op.effectAnimationType
+                        ),
+                        -1
+                    ));
+
                     if (judgeResult) effectOpId = op.trueNode;
                     else effectOpId = op.falseNode;
                     continue;

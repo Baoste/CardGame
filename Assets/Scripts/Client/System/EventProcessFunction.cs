@@ -3,7 +3,6 @@ using Game.Domain;
 using Newtonsoft.Json;
 using System.Collections;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Linq;
 using UnityEngine;
 
@@ -20,6 +19,7 @@ public class EventProcessFunction : MonoBehaviour
         ProcessDispatcher.Register("AssignRolesTest", AssignRolesTest);
         ProcessDispatcher.Register("AddActionPointTest", AddActionPointTest);
         ProcessDispatcher.Register("SpendActionPointTest", SpendActionPointTest);
+        ProcessDispatcher.Register("JudgeResultTest", JudgeResultTest);
         ProcessDispatcher.Register("Place1BetTest", Place1BetTest);
         ProcessDispatcher.Register("PlaceBetsTest", PlaceBetsTest);
         ProcessDispatcher.Register("ConfirmBetTest", ConfirmBetTest);
@@ -249,6 +249,36 @@ public class EventProcessFunction : MonoBehaviour
             SceneViewManager.myActionPointView.SpendPoint(apCount);
     }
 
+    // parameters[0]: int playerId
+    // parameters[1]: bool judgeResult
+    // parameters[2]: EffectAnimation effectAnimation
+    public void JudgeResultTest(object[] parameters)
+    {
+        int playerId = (int)parameters[0];
+        bool judgeResult = (bool)parameters[1];
+        EffectAnimation effectAnimation = (EffectAnimation)parameters[2];
+
+        switch (effectAnimation)
+        {
+            case EffectAnimation.Judge_Normal:
+            {
+                break;
+            }
+            case EffectAnimation.Judge_OddEven:
+            {
+                if (judgeResult)
+                {
+                    AudioManager.Instance.Play("GuessOddEvenWin");
+                }
+                else
+                {
+                    AudioManager.Instance.Play("GuessOddEvenLose");
+                }
+                break;
+            }
+        }
+    }
+
 
     // parameters[0]: int playerId
     // parameters[1]: int instanceId
@@ -429,7 +459,8 @@ public class EventProcessFunction : MonoBehaviour
         int targeValue = (int)parameters[1];
 
         GameObject obj = instanceMap[instanceId];
-        StartCoroutine(obj.GetComponent<PointCardViewController>().ChangeCardTexture_None(targeValue));
+        PointCardInstance pointIns = obj.GetComponent<PointCardInstance>();
+        obj.GetComponent<PointCardViewController>().ChangeCardTexture(pointIns.cardVisualState, targeValue);
     }
 
 
@@ -548,27 +579,31 @@ public class EventProcessFunction : MonoBehaviour
     // parameters[1]: int instanceId
     // parameters[2]: int playerId
     // parameters[3]: bool isShown
+    // parameters[4]: CardVisualState cardState
     public void ToResolveTest(object[] parameters)
     {
-        int cardId = (int)parameters[0];
-        int instanceId = (int)parameters[1];
-        int playerId = (int)parameters[2];
-        bool isShown = (bool)parameters[3];
+        int cardId      = (int)parameters[0];
+        int instanceId  = (int)parameters[1];
+        int playerId    = (int)parameters[2];
+        bool isShown    = (bool)parameters[3];
+        CardVisualState cardState = (CardVisualState)parameters[4];
 
         GameObject instance = CardViewCreator.Instance.CreateCardResolved(cardId, instanceId);
-        StartCoroutine(SceneViewManager.resolveZoneView.AddCard(instance, playerId, isShown));
+        StartCoroutine(SceneViewManager.resolveZoneView.AddCard(instance, playerId, isShown, cardState));
     }
 
-    // parameters[0]: int cardId
-    // parameters[1]: int instanceId
-    // parameters[2]: ParticipantType toZone
-    // parameters[3]: int playerId
+    // parameters[0]: int playerId
+    // parameters[1]: int cardId
+    // parameters[2]: int instanceId
+    // parameters[3]: ParticipantType toZone
+    // parameters[4]: CardVisualState cardState
     public void MoveCard(object[] parameters)
     {
-        int cardId = (int)parameters[0];
-        int instanceId = (int)parameters[1];
-        ParticipantType toZone = (ParticipantType)parameters[2];
-        int playerId = (int)parameters[3];
+        int playerId                = (int)parameters[0];
+        int cardId                  = (int)parameters[1];
+        int instanceId              = (int)parameters[2];
+        ParticipantType toZone      = (ParticipantType)parameters[3];
+        CardVisualState cardState   = (CardVisualState)parameters[4];
 
         bool isOpponent = playerId != ClientGameState.playerSlot;
 
@@ -583,7 +618,7 @@ public class EventProcessFunction : MonoBehaviour
                 else
                 {
                     GameObject instance = CardViewCreator.Instance.CreateCardInstance(cardId, instanceId);
-                    StartCoroutine(SceneViewManager.boardView.AddCard(instance, playerId, CardVisualState.None));
+                    StartCoroutine(SceneViewManager.boardView.AddCard(instance, playerId, cardState));
                     instanceMap[instanceId] = instance;
                 }
                 break;
@@ -597,7 +632,7 @@ public class EventProcessFunction : MonoBehaviour
                 else
                 {
                     GameObject instance = CardViewCreator.Instance.CreateCardInstance(cardId, instanceId);
-                    StartCoroutine(SceneViewManager.boardView.AddCard(instance, 1 - playerId, CardVisualState.None));
+                    StartCoroutine(SceneViewManager.boardView.AddCard(instance, 1 - playerId, cardState));
                     instanceMap[instanceId] = instance;
                 }
                 break;
@@ -662,7 +697,7 @@ public class EventProcessFunction : MonoBehaviour
         int cardId = (int)parameters[1];
         int instanceId = (int)parameters[2];
         GameObject instance = CardViewCreator.Instance.CreateCardResolved(cardId, instanceId);
-        StartCoroutine(SceneViewManager.peekZoneView.AddCard(instance, playerId, false));
+        StartCoroutine(SceneViewManager.peekZoneView.AddCard(instance, playerId, false, CardVisualState.None));
     }
 
     // parameters[0]: bool isPeekZone

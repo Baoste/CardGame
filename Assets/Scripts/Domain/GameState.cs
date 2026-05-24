@@ -218,7 +218,7 @@ namespace Game.Domain
 
             cardLocationMap[instanceId] = cardsToResolve;
             instancePointMap[instanceId] = CardDatabase.Get(cardId).point;
-            instanceStateMap[instanceId] = CardVisualState.None;
+            // instanceStateMap[instanceId] = CardVisualState.None;
             cardsToResolve._Add(instanceId);
         }
 

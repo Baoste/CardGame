@@ -134,6 +134,7 @@ namespace Game.Domain
                 int drawCardInstanceId = session.gameState.pointCardsDeck.Draw();
                 int drawCardId = session.instanceToCardId[drawCardInstanceId];
                 session.gameState.AddToResolve(drawCardId, drawCardInstanceId);
+                CardVisualState cardState = session.gameState.GetCardState(drawCardInstanceId);
 
                 results.events.Enqueue(CommandHandler.MakeEvent(
                     "DrawPointCardToResolve",
@@ -143,6 +144,7 @@ namespace Game.Domain
                         drawCardInstanceId != -1,
                         drawCardId,
                         drawCardInstanceId,
+                        cardState,
                         op.effectAnimationType
                     ),
                     -1
@@ -246,6 +248,7 @@ namespace Game.Domain
                 }
                 bool success = session.gameState.MoveCard(selectedSourceIds[i], toZone);
                 int cardId = session.instanceToCardId[selectedSourceIds[i]];
+                CardVisualState cardState = session.gameState.GetCardState(selectedSourceIds[i]);
 
                 // return
                 results.events.Enqueue(CommandHandler.MakeEvent(
@@ -257,6 +260,7 @@ namespace Game.Domain
                         cardId,
                         selectedSourceIds[i],
                         selectZone,
+                        cardState,
                         op.effectAnimationType
                     ),
                     -1

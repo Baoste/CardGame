@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: -6919129792405217691}
   - component: {fileID: 1950106973989873887}
   - component: {fileID: 432809973123919595}
+  - component: {fileID: 7653628449820168731}
   m_Layer: 9
   m_Name: PointCardResolve
   m_TagString: Untagged
@@ -111,6 +112,19 @@ MonoBehaviour:
   instanceId: 0
   point: 0
   localScaleFactor: 0
+  pointText: {fileID: 2850062255717980671}
+--- !u!114 &7653628449820168731
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 699601284007552369}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a5ed49a04e74974418f91ebeb95021a4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
   pointText: {fileID: 2850062255717980671}
 --- !u!1 &2070443361540589667
 GameObject:
@@ -444,7 +458,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   LocalUpAxis: {x: 0, y: 1, z: 0}
   AngleJitter: 12
-  PlaneOffset: 0.05
   TiltJitter: 6
 --- !u!4 &7840944024115681645 stripped
 Transform:

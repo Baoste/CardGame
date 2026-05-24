@@ -28,13 +28,16 @@ public class ResolveZoneView : MonoBehaviour, IViewClear
         resolveCards.Clear();
     }
 
-    public IEnumerator AddCard(GameObject instance, int playerId, bool isShown)
+    public IEnumerator AddCard(GameObject instance, int playerId, bool isShown, CardVisualState cardState)
     {
         bool isOpponent = playerId != ClientGameState.playerSlot && !isShown;
         if (confirmBtn != null && !isOpponent)
         {
             confirmBtn.SetActive(true);
         }
+
+        PointCardResolve pointIns = instance.GetComponent<PointCardResolve>();
+        pointIns.InitCardState(cardState);
 
         resolveCards.Add(instance);
         yield return UpdateCardPositions(animationDuration, playerId, isShown);

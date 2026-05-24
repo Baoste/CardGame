@@ -18,7 +18,20 @@ public class PointCardViewController : MonoBehaviour
         mpb = new MaterialPropertyBlock();
     }
 
-    public IEnumerator ChangeCardTexture_None(int point)
+    public void ChangeCardTexture(CardVisualState cardState, int point)
+    {
+        switch (cardState)
+        {
+            case CardVisualState.None:
+                StartCoroutine(ChangeCardTexture_None(point));
+                break;
+            case CardVisualState.Hidden:
+                StartCoroutine(ChangeCardTexture_Hidden());
+                break;
+        }
+    }
+
+    private IEnumerator ChangeCardTexture_None(int point)
     {
         GetComponent<PointCardController>().smokeVFX.Play();
         yield return new WaitForSeconds(0.5f);
@@ -30,6 +43,12 @@ public class PointCardViewController : MonoBehaviour
         matRenderer.GetPropertyBlock(mpb);
         mpb.SetTexture("_MainMap", tex);
         matRenderer.SetPropertyBlock(mpb);
+    }
+
+    private IEnumerator ChangeCardTexture_Hidden()
+    {
+        GetComponent<PointCardController>().smokeVFX.Play();
+        yield return new WaitForSeconds(0.5f);
     }
 
     public void SetCardTexture_None(int point)

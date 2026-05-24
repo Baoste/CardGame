@@ -18,6 +18,7 @@ public static class DispatcherBootstrap
         EventDispatcher.Register("GetCtx", new GetCtxEventHandler());
         EventDispatcher.Register("Chat", new ChatEventHandler());
         EventDispatcher.Register("Emoji", new EmojiEventHandler());
+        EventDispatcher.Register("JudgeResult", new JudgeResultEventHandler());
         EventDispatcher.Register("WaitForPlayer2Choose", new WaitForPlayer2ChooseEventHandler());
         EventDispatcher.Register("PlayAnimation", new PlayAnimationEventHandler());
         EventDispatcher.Register("ValidateActionPoint", new ValidateActionPointEventHandler());
