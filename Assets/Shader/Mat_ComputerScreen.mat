@@ -7,9 +7,9 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Mat_MusicRhythm
-  m_Shader: {fileID: 4800000, guid: ec63cb701632d6a42abcc186abd8a5a5, type: 3}
-  m_Parent: {fileID: 2100000, guid: 7a474b5317d0dfb49a7c39e32a023811, type: 2}
+  m_Name: Mat_ComputerScreen
+  m_Shader: {fileID: 4800000, guid: b8d58af004c3a5745b6c26d1084ac259, type: 3}
+  m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords: []
   m_InvalidKeywords: []
@@ -22,9 +22,17 @@ Material:
   m_LockedProperties: 
   m_SavedProperties:
     serializedVersion: 3
-    m_TexEnvs: []
+    m_TexEnvs:
+    - _MainTex:
+        m_Texture: {fileID: 8400000, guid: ebffc4923cd99de48b5da88174c37abd, type: 2}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _StandbyTex:
+        m_Texture: {fileID: 2800000, guid: 1a0d2d9bda782e74ebdcfd39e87a8eb0, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     m_Ints: []
-    m_Floats: []
-    m_Colors:
-    - _OutlineColor: {r: 0, g: 1, b: 1, a: 1}
+    m_Floats:
+    - _isStandby: 1
+    m_Colors: []
   m_BuildTextureStacks: []

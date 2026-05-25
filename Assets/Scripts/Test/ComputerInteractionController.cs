@@ -22,6 +22,7 @@ public class ComputerInteractionController : MonoBehaviour
     [SerializeField] private bool isUsingComputer;
 
     public ShotPlayer shotPlayer;
+    public GameObject screenMesh;
 
     public bool PlayerInRange => playerInRange;
     public bool IsUsingComputer => isUsingComputer;
@@ -64,6 +65,8 @@ public class ComputerInteractionController : MonoBehaviour
 
         shotPlayer.PlayShot(3); // 切换到电脑交互摄像机
 
+        screenMesh.GetComponent<Renderer>().material.SetInt("_isStandby", 0); // 切换到正常屏幕材质
+
         isUsingComputer = true;
 
         SetPlayerControlEnabled(false);
@@ -83,6 +86,8 @@ public class ComputerInteractionController : MonoBehaviour
             return;
 
         shotPlayer.PlayShot(2);
+
+        screenMesh.GetComponent<Renderer>().material.SetInt("_isStandby", 1); // 切换到待机屏幕材质
 
         isUsingComputer = false;
 

@@ -7,9 +7,9 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Mat_MusicRhythm
+  m_Name: Mat_OutlineShader
   m_Shader: {fileID: 4800000, guid: ec63cb701632d6a42abcc186abd8a5a5, type: 3}
-  m_Parent: {fileID: 2100000, guid: 7a474b5317d0dfb49a7c39e32a023811, type: 2}
+  m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords: []
   m_InvalidKeywords: []
@@ -22,9 +22,15 @@ Material:
   m_LockedProperties: 
   m_SavedProperties:
     serializedVersion: 3
-    m_TexEnvs: []
+    m_TexEnvs:
+    - _MainTex:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     m_Ints: []
-    m_Floats: []
+    m_Floats:
+    - _OutlineWidth: 3
     m_Colors:
-    - _OutlineColor: {r: 0, g: 1, b: 1, a: 1}
+    - _Color: {r: 1, g: 1, b: 1, a: 1}
+    - _OutlineColor: {r: 0.66149926, g: 0.57254905, b: 1, a: 0.2627451}
   m_BuildTextureStacks: []
