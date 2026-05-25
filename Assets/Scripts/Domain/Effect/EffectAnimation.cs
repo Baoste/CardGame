@@ -14,6 +14,7 @@ namespace Game.Domain
         AddActionPoint_Normal,
         Peek_Normal,
         ChangeCardState_Normal,
-        Judge_OddEven
+        Judge_OddEven,
+        ChangeCardState_Hidden,
     }
 }

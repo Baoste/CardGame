@@ -5,6 +5,9 @@ using UnityEngine;
 
 public class ViewAnimController : MonoBehaviour
 {
+    [Header("Table Plane Anim Settings")]
+    [SerializeField] public TablePlaneMatManager TablePlaneMatManager;
+
     [Header("Point Deck Cover Anim Settings")]
     [SerializeField] private Transform pointCardsDeckCoverPivot;
     [SerializeField] private Transform pointCardsDeck;

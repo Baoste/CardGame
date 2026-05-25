@@ -188,5 +188,12 @@ public class TestSystem : MonoBehaviour
                 StartCoroutine(SceneViewManager.callOrFoldMachineBack.Hide());
             }
         }
+
+        // ²âÊÔ¸ú×¢×°ÖÃ
+        if (Input.GetKeyDown(KeyCode.L))
+        {
+            SceneViewManager.viewAnimController.TablePlaneMatManager.SetFirstMaterial("Tar");
+            SceneViewManager.viewAnimController.TablePlaneMatManager.PlayPlaneAnim(0.5f);
+        }
     }
 }

@@ -11,7 +11,7 @@ public class ChangeCardStateEventHandler : IEventProcess, IEventHandler
     {
         var payload = JsonConvert.DeserializeObject<ChangeCardStateEvent>(ev.jsonData);   // need change
         // need change, 需要把参数在这里传进去
-        ProcessQueueManager.Instance.Enqueue(Process, new object[] { payload.playerId, payload.instanceId, payload.cardState }, 0.5f);
+        ProcessQueueManager.Instance.Enqueue(Process, new object[] { payload.playerId, payload.instanceId, payload.cardState, payload.effectAnimation }, 0.5f);
 
         // TODO
         // START

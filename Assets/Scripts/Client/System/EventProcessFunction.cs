@@ -671,11 +671,27 @@ public class EventProcessFunction : MonoBehaviour
     // parameters[0]: int playerId
     // parameters[1]: int instanceId
     // parameters[2]: CardVisualState cardVisualState
+    // parameters[3]: EffectAnimation effectAnimation
     public void ChangeCardStateTest(object[] parameters)
     {
         int playerId = (int)parameters[0];
         int instanceId = (int)parameters[1];
         CardVisualState cardState = (CardVisualState)parameters[2];
+        EffectAnimation effectAnimation = (EffectAnimation)parameters[3];
+
+        switch (effectAnimation)
+        {
+            case EffectAnimation.ChangeCardState_Normal:
+            {
+                break;
+            }
+            case EffectAnimation.ChangeCardState_Hidden:
+            {
+                SceneViewManager.viewAnimController.TablePlaneMatManager.SetFirstMaterial("Tar");
+                SceneViewManager.viewAnimController.TablePlaneMatManager.PlayPlaneAnim(0.1f);
+                break;
+            }
+        }
 
         if (instanceMap.TryGetValue(instanceId, out GameObject obj))
         {
