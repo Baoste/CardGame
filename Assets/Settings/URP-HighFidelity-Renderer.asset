@@ -60,7 +60,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4712cf04f99310d489dcf48c5601575c, type: 3}
   m_Name: VoronoiPostProcessing
   m_EditorClassIdentifier: 
-  m_Active: 1
+  m_Active: 0
   settings:
     blitMaterial: {fileID: 2100000, guid: 13c8489fd916d624087703741deeee5c, type: 2}
     passEvent: 550
@@ -111,7 +111,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7536a14e79f0b554f8a88554265e21c8, type: 3}
   m_Name: GlitchPostProcessing
   m_EditorClassIdentifier: 
-  m_Active: 1
+  m_Active: 0
   settings:
     blitMaterial: {fileID: 2100000, guid: d58c259857f55f344878bf81f753ae67, type: 2}
     passEvent: 600

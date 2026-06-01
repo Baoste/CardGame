@@ -7,7 +7,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Mat_Glitch
+  m_Name: Mat_PostProcess_Glitch
   m_Shader: {fileID: 4800000, guid: 5415fe43964cf014ba236cd2a09ab9a8, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
@@ -30,7 +30,7 @@ Material:
     m_Ints: []
     m_Floats:
     - _BlockCount: 80
-    - _Intensity: 1
+    - _Intensity: 0
     - _NoiseStrength: 0.05
     - _OffsetStrength: 0.03
     - _RGBOffset: 0.005
