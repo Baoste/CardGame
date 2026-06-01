@@ -62,12 +62,14 @@ public class TestSystem : MonoBehaviour
             StartCoroutine(SceneViewManager.myExecuteCardView.MoveToFallPosition(instance1, false));
             StartCoroutine(SceneViewManager.opponentExecuteCardView.MoveToFallPosition(instance2, true));
         }
+
         if (Input.GetKeyDown(KeyCode.M))
         {
             //StartCoroutine(SceneViewManager.myExecuteCardView.MoveToExecutePosition(instance1));
             //StartCoroutine(SceneViewManager.opponentExecuteCardView.MoveToExecutePosition(instance2));
 
-            StartCoroutine(objs.Peek().GetComponent<PointCardViewController>().ChangeCardTexture_None(9));
+            PointCardInstance pointIns = objs.Peek().GetComponent<PointCardInstance>();
+            objs.Peek().GetComponent<PointCardViewController>().ChangeCardTexture(pointIns.cardVisualState, 9);
         }
 
         // ≤‚ ‘ResolveZoneView
@@ -76,7 +78,7 @@ public class TestSystem : MonoBehaviour
             if (card <= 10)
             {
                 GameObject instance = CardViewCreator.Instance.CreateCardResolved(card++, 989);
-                StartCoroutine(ResolveZoneView.AddCard(instance, -1, true));
+                StartCoroutine(ResolveZoneView.AddCard(instance, -1, true, CardVisualState.None));
             }
         }
 
@@ -84,7 +86,7 @@ public class TestSystem : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.P))
         {
             GameObject instance = CardViewCreator.Instance.CreateCardResolved(2, 99);
-            StartCoroutine(SceneViewManager.peekZoneView.AddCard(instance, -1, false));
+            StartCoroutine(SceneViewManager.peekZoneView.AddCard(instance, -1, false, CardVisualState.None));
         }
 
         // ≥Èµ„ ˝≈∆
@@ -185,6 +187,13 @@ public class TestSystem : MonoBehaviour
                 StartCoroutine(SceneViewManager.callOrFoldMachine.Hide());
                 StartCoroutine(SceneViewManager.callOrFoldMachineBack.Hide());
             }
+        }
+
+        // ≤‚ ‘∏˙◊¢◊∞÷√
+        if (Input.GetKeyDown(KeyCode.L))
+        {
+            SceneViewManager.viewAnimController.TablePlaneMatManager.SetFirstMaterial("Tar");
+            SceneViewManager.viewAnimController.TablePlaneMatManager.PlayPlaneAnim(0.5f);
         }
     }
 }

@@ -1,13 +1,13 @@
 using DG.Tweening;
-using Game.Domain;
-using Newtonsoft.Json;
 using System.Collections;
 using System.Collections.Generic;
-using System.ComponentModel;
 using UnityEngine;
 
 public class ViewAnimController : MonoBehaviour
 {
+    [Header("Table Plane Anim Settings")]
+    [SerializeField] public TablePlaneMatManager TablePlaneMatManager;
+
     [Header("Point Deck Cover Anim Settings")]
     [SerializeField] private Transform pointCardsDeckCoverPivot;
     [SerializeField] private Transform pointCardsDeck;
@@ -55,7 +55,7 @@ public class ViewAnimController : MonoBehaviour
         // StartCoroutine(OpenChipCover());
         // SceneViewManager.boardView.transform.GetComponentInChildren<ClickToStartGame>().startText.SetActive(true);
 
-        yield return new WaitForSeconds(2f);
+        yield return new WaitForSecondsRealtime(1f);
         ClientCommand.StartGame();
     }
 

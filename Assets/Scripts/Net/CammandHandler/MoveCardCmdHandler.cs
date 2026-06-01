@@ -41,6 +41,7 @@ public class MoveCardCmdHandler : CommandHandler, ICommandHandler
         }
         bool success = session.gameState.MoveCard(payload.instanceId, toZone);
         int cardId = session.instanceToCardId[payload.instanceId];
+        CardVisualState cardState = session.gameState.GetCardState(cardId);
 
         // return
         CommandResult results = new CommandResult();
@@ -53,6 +54,7 @@ public class MoveCardCmdHandler : CommandHandler, ICommandHandler
                 cardId,
                 payload.instanceId,
                 payload.toZone,
+                cardState,
                 EffectAnimation.Move_Normal
             ),
             -1

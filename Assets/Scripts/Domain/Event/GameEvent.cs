@@ -212,6 +212,21 @@ namespace Game.Domain
     }
 
     /// <summary>
+    /// 判断结果事件，成功时 playerId 是玩家ID，cardId 是被判断的牌的牌ID，instanceId 是被判断的牌的实例ID，judgeResult 表示判断结果；失败时 playerId 是玩家ID，cardId 是 -1，instanceId 是 -1，judgeResult 是 false
+    /// </summary>
+    public class JudgeResultEvent : PlayerEvent
+    {
+        public bool judgeResult;
+        public EffectAnimation effectAnimation;
+        public JudgeResultEvent(int playerId, bool success, bool judgeResult, EffectAnimation effectAnimation)
+            : base(playerId, success)
+        {
+            this.judgeResult = judgeResult;
+            this.effectAnimation = effectAnimation;
+        }
+    }
+
+    /// <summary>
     /// 检查行动点事件
     /// </summary>
     public class ValidateActionPointEvent : PlayerEvent
@@ -293,13 +308,15 @@ namespace Game.Domain
     {
         public int cardId;
         public int instanceId;
+        public CardVisualState cardState;
         public EffectAnimation effectAnimation;
 
-        public DrawPointCardToResolveEvent(int playerId, bool success, int cardId, int instanceId, EffectAnimation effectAnimation)
+        public DrawPointCardToResolveEvent(int playerId, bool success, int cardId, int instanceId, CardVisualState cardState, EffectAnimation effectAnimation)
             : base(playerId, success)
         {
             this.cardId = cardId;
             this.instanceId = instanceId;
+            this.cardState = cardState;
             this.effectAnimation = effectAnimation;
         }
     }
@@ -354,13 +371,15 @@ namespace Game.Domain
         public int cardId;
         public int selectedId;
         public ParticipantType toZone;
+        public CardVisualState cardState;
         public EffectAnimation effectAnimation;
-        public MoveCardEvent(int playerId, bool success, int cardId, int selectedId, ParticipantType toZone, EffectAnimation effectAnimation)
+        public MoveCardEvent(int playerId, bool success, int cardId, int selectedId, ParticipantType toZone, CardVisualState cardState, EffectAnimation effectAnimation)
             : base(playerId, success)
         {
             this.cardId = cardId;
             this.selectedId = selectedId;
             this.toZone = toZone;
+            this.cardState = cardState;
             this.effectAnimation = effectAnimation;
         }
     }

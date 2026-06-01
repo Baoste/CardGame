@@ -6,15 +6,12 @@ using UnityEngine;
 
 public class PointCardResolve : CardInstance
 {
-    [Header("Component")]
-    public TMP_Text pointText;
+    public CardVisualState cardVisualState { get; private set; }
+    private PointCardViewController viewController;
 
-    private Renderer matRenderer;
-    private MaterialPropertyBlock mpb;
     private void Awake()
     {
-        matRenderer = GetComponentInChildren<Renderer>();
-        mpb = new MaterialPropertyBlock();
+        viewController = GetComponent<PointCardViewController>();
     }
 
     public override void InitCardInstance(int cardId, int instanceId)
@@ -22,12 +19,24 @@ public class PointCardResolve : CardInstance
         base.InitCardInstance(cardId, instanceId);
 
         localScaleFactor = 0.45f;
-        pointText.text = point.ToString();
-
-        Texture2D tex = CardViewCreator.Instance.pointCardTexs[point - 1];
-        matRenderer.GetPropertyBlock(mpb);
-        mpb.SetTexture("_BaseMap", tex);
-        matRenderer.SetPropertyBlock(mpb);
+        viewController.SetCardTexture_None(point);
     }
 
+    public void InitCardState(CardVisualState cardVisualState)
+    {
+        this.cardVisualState = cardVisualState;
+
+        switch (cardVisualState)
+        {
+            case CardVisualState.None:
+                break;
+            case CardVisualState.Hidden:
+                viewController.SetCardTexture_Hidden();
+                // TODO: change mat
+                break;
+            case CardVisualState.Locked:
+                // TODO: change mat
+                break;
+        }
+    }
 }
