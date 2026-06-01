@@ -9,6 +9,7 @@ using UnityEngine;
 public class ClickToDrawPointCard : MonoBehaviour, IMouseClick, IMouseEnter, IMouseExit, IMouseStay
 {
     [SerializeField] private Transform disk;
+    private bool diskIsOut = true;
 
     public void MouseClick()
     {
@@ -22,6 +23,7 @@ public class ClickToDrawPointCard : MonoBehaviour, IMouseClick, IMouseEnter, IMo
         if (ClientGameState.Instance.CurrentPlayerId != -1 && ClientGameState.Instance.CurrentPlayerId == ClientGameState.playerSlot)
         {
             StartCoroutine(DrawPointCard());
+            ClientEffectContext.Instance.drawPointCardCount++;
         }
     }
 
@@ -35,9 +37,10 @@ public class ClickToDrawPointCard : MonoBehaviour, IMouseClick, IMouseEnter, IMo
 
     public void MouseEnter()
     {
-        if (ClientEffectContext.isExecutingSkillCard || ClientEffectContext.isDrawingPointCard) return;
+        if (ClientEffectContext.isExecutingSkillCard || ClientEffectContext.isDrawingPointCard || ClientEffectContext.Instance.drawPointCardCount > 0) return;
         if (ClientGameState.playerSlot != ClientGameState.Instance.CurrentPlayerId) return;
         
+        diskIsOut = true;
         disk.DOKill();
         Sequence seq = DOTween.Sequence();
         seq.Append(disk.DOLocalMoveZ(-0.18f, 0.2f));
@@ -45,22 +48,22 @@ public class ClickToDrawPointCard : MonoBehaviour, IMouseClick, IMouseEnter, IMo
 
     public void MouseStay()
     {
-        if (ClientEffectContext.isExecutingSkillCard ||
-            ClientEffectContext.isDrawingPointCard ||
-            ClientGameState.playerSlot != ClientGameState.Instance.CurrentPlayerId
-        )
+        if (ClientEffectContext.isExecutingSkillCard || ClientEffectContext.isDrawingPointCard || ClientEffectContext.Instance.drawPointCardCount > 0 ||
+            ClientGameState.playerSlot != ClientGameState.Instance.CurrentPlayerId)
         {
+            diskIsOut = false;
             disk.localPosition = new Vector3(disk.localPosition.x, disk.localPosition.y, 0f);
         }
     }
 
     public void MouseExit()
     {
-        if (ClientEffectContext.isExecutingSkillCard || ClientEffectContext.isDrawingPointCard) return;
-        if (ClientGameState.playerSlot != ClientGameState.Instance.CurrentPlayerId) return;
-
-        disk.DOKill();
-        Sequence seq = DOTween.Sequence();
-        seq.Append(disk.DOLocalMoveZ(0f, 0.2f));
+        if (diskIsOut)
+        {
+            diskIsOut = false;
+            disk.DOKill();
+            Sequence seq = DOTween.Sequence();
+            seq.Append(disk.DOLocalMoveZ(0f, 0.2f));
+        }
     }
 }

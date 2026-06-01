@@ -21,7 +21,7 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: Mat_ResolvedCard
-  m_Shader: {fileID: -6465566751694194690, guid: b20ee83e02cc46a42a8bff8d0859a7b0,
+  m_Shader: {fileID: -6465566751694194690, guid: ee640e6f66afc5444915bd4d8f061841,
     type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
@@ -79,10 +79,11 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
+    - _ClipFactor: 1
     - _MosaicFactor: 1
     - _QueueControl: 0
     - _QueueOffset: 0
     m_Colors:
     - _FresnelColor: {r: 2.670157, g: 2.670157, b: 2.670157, a: 1}
-    - _GlowColor: {r: 0.5, g: 0.9, b: 1, a: 0}
+    - _GlowColor: {r: 0.5, g: 0.9, b: 1, a: 1}
   m_BuildTextureStacks: []

@@ -53,7 +53,7 @@ public class TablePlaneMatManager : MonoBehaviour
         }
     }
 
-    public void PlayPlaneAnim(float delay)
+    public void PlayPlaneAnim(float showTime, float delay, float dispearTime)
     {
         SetStrength(-1f);
 
@@ -62,15 +62,23 @@ public class TablePlaneMatManager : MonoBehaviour
                 () => strength,
                 value => SetStrength(value),
                 1f,
-                1.5f
+                showTime
             ))
             .AppendInterval(delay)
             .Append(DOTween.To(
                 () => strength,
                 value => SetStrength(value),
                 -1f,
-                1.5f
-            ));
+                dispearTime
+            ))
+            .AppendCallback(() =>
+            {
+                Material[] mats = targetRenderer.materials;
+                if (mats.Length > 1)
+                {
+                    targetRenderer.materials = new Material[] { mats[1] };
+                }
+            });
     }
 
     private void SetStrength(float value)

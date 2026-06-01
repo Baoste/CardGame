@@ -7,6 +7,7 @@ public class ViewAnimController : MonoBehaviour
 {
     [Header("Table Plane Anim Settings")]
     [SerializeField] public TablePlaneMatManager TablePlaneMatManager;
+    [SerializeField] public ParticleSystem scannerVFX;
 
     [Header("Point Deck Cover Anim Settings")]
     [SerializeField] private Transform pointCardsDeckCoverPivot;
@@ -47,15 +48,26 @@ public class ViewAnimController : MonoBehaviour
         StartCoroutine(OpenSkillCardDeckCover());
     }
 
-    public IEnumerator PlayGameEndAnim(float delay = 0)
+    public IEnumerator PlayGameEndAnim()
     {
-        yield return new WaitForSeconds(delay);
+        // 充电
+        TablePlaneMatManager.SetFirstMaterial("Charge");
+        TablePlaneMatManager.PlayPlaneAnim(1.5f, 1f, 0.2f);
+
+        // 清空桌面
+        yield return new WaitForSeconds(2.5f);
+        scannerVFX.Play();
+        SceneViewManager.ClearViews();
+        // TODO: 清空动画。可以打一个波，把手牌和底牌都摧毁
+
+        // 准备下一把
+        yield return new WaitForSeconds(1f);
         StartCoroutine(OpenPointCardDeckCover());
         StartCoroutine(CloseSkillCardDeckCover());
         // StartCoroutine(OpenChipCover());
         // SceneViewManager.boardView.transform.GetComponentInChildren<ClickToStartGame>().startText.SetActive(true);
 
-        yield return new WaitForSecondsRealtime(1f);
+        yield return new WaitForSecondsRealtime(2f);
         ClientCommand.StartGame();
     }
 

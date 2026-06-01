@@ -90,7 +90,6 @@ public class EventProcessFunction : MonoBehaviour
         {
             Destroy(child.gameObject);
         }
-        SceneViewManager.ClearViews();
     }
 
     // parameters[0]: int playerId
@@ -688,7 +687,7 @@ public class EventProcessFunction : MonoBehaviour
             case EffectAnimation.ChangeCardState_Hidden:
             {
                 SceneViewManager.viewAnimController.TablePlaneMatManager.SetFirstMaterial("Tar");
-                SceneViewManager.viewAnimController.TablePlaneMatManager.PlayPlaneAnim(0.1f);
+                SceneViewManager.viewAnimController.TablePlaneMatManager.PlayPlaneAnim(1.2f, 0.5f, 1.2f);
                 break;
             }
         }
@@ -825,7 +824,7 @@ public class EventProcessFunction : MonoBehaviour
         SceneViewManager.myChipView.DestroyChipsPlaced();
         SceneViewManager.opponentChipView.DestroyChipsPlaced();
 
-        yield return SceneViewManager.viewAnimController.PlayGameEndAnim(1f);
+        yield return SceneViewManager.viewAnimController.PlayGameEndAnim();
 
     }
 

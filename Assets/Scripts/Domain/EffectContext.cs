@@ -43,7 +43,7 @@ namespace Game.Domain
     {
         public static bool ChooseDone = false;          // 是否已经选好目标了
         public static bool GetServerCtxDone = false;    // 是否已经拿到 EffectContext 的数据了
-        public static bool JudgeResult = true;         // 判断结果
+        public static bool JudgeResult = true;          // 判断结果
 
         public static bool isExecutingSkillCard = false;
         public static bool isDrawingPointCard = false;

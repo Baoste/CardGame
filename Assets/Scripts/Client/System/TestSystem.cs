@@ -52,7 +52,7 @@ public class TestSystem : MonoBehaviour
             //ClientCommand.DrawSkillCard();
             instance1 = CardViewCreator.Instance.CreateCardInstance(1001, 9999);
             StartCoroutine(handView.AddCard(instance1));
-            instance2 = CardViewCreator.Instance.CreateCardInstance(1301, 9998);
+            instance2 = CardViewCreator.Instance.CreateCardInstance(1001, 9998);
             StartCoroutine(ophandView.AddCard(instance2));
         }
 
@@ -193,7 +193,7 @@ public class TestSystem : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.L))
         {
             SceneViewManager.viewAnimController.TablePlaneMatManager.SetFirstMaterial("Tar");
-            SceneViewManager.viewAnimController.TablePlaneMatManager.PlayPlaneAnim(0.5f);
+            SceneViewManager.viewAnimController.TablePlaneMatManager.PlayPlaneAnim(1.2f, 0.5f, 1.2f);
         }
     }
 }

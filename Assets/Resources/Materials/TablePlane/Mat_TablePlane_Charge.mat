@@ -20,17 +20,17 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Mat_TablePlane_Normal
-  m_Shader: {fileID: -6465566751694194690, guid: d337228ad09ad8341ac9e7538e1c7306,
+  m_Name: Mat_TablePlane_Charge
+  m_Shader: {fileID: -6465566751694194690, guid: cd3988ee998d99f4491905eb5cecc744,
     type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords: []
   m_InvalidKeywords: []
-  m_LightmapFlags: 0
+  m_LightmapFlags: 2
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
-  m_CustomRenderQueue: 2000
+  m_CustomRenderQueue: 2451
   stringTagMap: {}
   disabledShaderPasses: []
   m_LockedProperties: 
@@ -79,7 +79,10 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
+    - _123: 1.16
+    - _P: 60.45
     - _QueueControl: 0
-    - _QueueOffset: 0
+    - _QueueOffset: 1
+    - _Strength: -1
     m_Colors: []
   m_BuildTextureStacks: []
