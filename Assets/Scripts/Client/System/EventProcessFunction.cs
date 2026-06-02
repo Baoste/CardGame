@@ -84,12 +84,6 @@ public class EventProcessFunction : MonoBehaviour
         {
             instanceMap[k] = SceneViewManager.opponentChipView.chipsInTray[k];
         }
-
-        Transform root = CardViewCreator.Instance.transform;
-        foreach (Transform child in root)
-        {
-            Destroy(child.gameObject);
-        }
     }
 
     // parameters[0]: int playerId

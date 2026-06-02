@@ -64,7 +64,12 @@ public class TablePlaneMatManager : MonoBehaviour
                 1f,
                 showTime
             ))
-            .AppendInterval(delay)
+            .Append(DOTween.To(
+                () => strength,
+                value => SetStrength(value),
+                2f,
+                delay
+            ))
             .Append(DOTween.To(
                 () => strength,
                 value => SetStrength(value),

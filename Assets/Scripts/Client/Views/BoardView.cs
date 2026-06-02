@@ -404,6 +404,9 @@ public class BoardView : MonoBehaviour, IViewClear
         impulseSource.GenerateImpulse();
         AudioManager.Instance.Play("DiscardPointCard");
 
+        PointCardController pc = instance.GetComponent<PointCardController>();
+        pc.stateMachine.ChangeState(pc.discardState);
+
         // mesh destroy
         MeshDestroy mesh = instance.GetComponentInChildren<MeshDestroy>();
         GameObject tmp = mesh.transform.parent.gameObject;
@@ -434,9 +437,9 @@ public class BoardView : MonoBehaviour, IViewClear
         yield return seq.WaitForCompletion();
 
         // decal destroy
-        yield return new WaitForSecondsRealtime(4f);
-        DOTween.To(() => decal.fadeFactor, x => decal.fadeFactor = x, 0f, 2f);
-        Destroy(decal.gameObject, 2.5f);
+        yield return new WaitForSecondsRealtime(2f);
+        DOTween.To(() => decal.fadeFactor, x => decal.fadeFactor = x, 0f, 1f);
+        Destroy(decal.gameObject, 1.5f);
         Destroy(instance);
     }
 

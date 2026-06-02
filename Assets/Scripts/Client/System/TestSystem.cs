@@ -45,6 +45,12 @@ public class TestSystem : MonoBehaviour
             }
         }
 
+        // 模拟结束
+        if (Input.GetKeyDown(KeyCode.F2))
+        {
+            StartCoroutine(SceneViewManager.viewAnimController.PlayGameEndAnim());
+        }
+
         // 抽技能牌
         if (Input.GetKeyDown(KeyCode.Space))
         {
@@ -189,7 +195,7 @@ public class TestSystem : MonoBehaviour
             }
         }
 
-        // 测试跟注装置
+        // 测试牌桌特效
         if (Input.GetKeyDown(KeyCode.L))
         {
             SceneViewManager.viewAnimController.TablePlaneMatManager.SetFirstMaterial("Tar");

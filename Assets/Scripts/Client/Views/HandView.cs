@@ -100,6 +100,8 @@ public class HandView : MonoBehaviour, IViewClear
 
     private IEnumerator _DestroyCard(GameObject instance)
     {
+        yield return new WaitForSeconds(0.45f);
+
         MeshDestroy mesh = instance.GetComponentInChildren<MeshDestroy>();
         GameObject tmp = mesh.transform.parent.gameObject;
         mesh.transform.parent.parent = transform.parent.parent;

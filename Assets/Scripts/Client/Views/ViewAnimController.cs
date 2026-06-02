@@ -1,3 +1,4 @@
+using Cinemachine;
 using DG.Tweening;
 using System.Collections;
 using System.Collections.Generic;
@@ -5,6 +6,8 @@ using UnityEngine;
 
 public class ViewAnimController : MonoBehaviour
 {
+    public CinemachineImpulseSource ImpulseSource;
+
     [Header("Table Plane Anim Settings")]
     [SerializeField] public TablePlaneMatManager TablePlaneMatManager;
     [SerializeField] public ParticleSystem scannerVFX;
@@ -32,6 +35,8 @@ public class ViewAnimController : MonoBehaviour
 
     private void Start()
     {
+        ImpulseSource = GetComponent<CinemachineImpulseSource>();
+
         m_SkillDeckOriginalPosition = m_SkillCardsDeck.position;
         m_SkillCardsDeck.position = m_SkillDeckOriginalPosition - m_SkillCardsDeck.up * 0.3f;
         m_SkillCardsDeckCoverPivot.rotation = Quaternion.Euler(-66.11f, 0, 0);
@@ -55,20 +60,30 @@ public class ViewAnimController : MonoBehaviour
         TablePlaneMatManager.PlayPlaneAnim(1.5f, 1f, 0.2f);
 
         // 清空桌面
-        yield return new WaitForSeconds(2.5f);
+        // 清空动画。可以打一个波，把手牌和底牌都摧毁
+        yield return new WaitForSeconds(2f);
+        Transform root = CardViewCreator.Instance.transform;
+        foreach (Transform child in root)
+        {
+            IDiscardPresentation discardPresentation = child.gameObject.GetComponent<IDiscardPresentation>();
+            discardPresentation?.DiscardPlay();
+        }
+
+        yield return new WaitForSeconds(0.4f);
         scannerVFX.Play();
-        SceneViewManager.ClearViews();
-        // TODO: 清空动画。可以打一个波，把手牌和底牌都摧毁
+        // ImpulseSource.GenerateImpulseWithVelocity(Vector3.up * 0.05f);
+
 
         // 准备下一把
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForSeconds(2f);
+        SceneViewManager.ClearViews();
         StartCoroutine(OpenPointCardDeckCover());
         StartCoroutine(CloseSkillCardDeckCover());
         // StartCoroutine(OpenChipCover());
         // SceneViewManager.boardView.transform.GetComponentInChildren<ClickToStartGame>().startText.SetActive(true);
 
         yield return new WaitForSecondsRealtime(2f);
-        ClientCommand.StartGame();
+        //ClientCommand.StartGame();
     }
 
     public IEnumerator ClosePointCardDeckCover()
