@@ -1,4 +1,5 @@
 using Game.Domain;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -30,6 +31,13 @@ public class TestSystem : MonoBehaviour
         }
     }
 
+    private IEnumerator EndGame()
+    {
+        // yield return StartCoroutine(SceneViewManager.boardView.RemoveHoleCard(999));
+        yield return StartCoroutine(SceneViewManager.boardView.RemoveHoleCard(ClientGameState.playerSlot));
+        StartCoroutine(SceneViewManager.viewAnimController.PlayGameEndAnim());
+    }
+
     private void Update()
     {
         // 模拟开始游戏，生成筹码
@@ -48,7 +56,7 @@ public class TestSystem : MonoBehaviour
         // 模拟结束
         if (Input.GetKeyDown(KeyCode.F2))
         {
-            StartCoroutine(SceneViewManager.viewAnimController.PlayGameEndAnim());
+            StartCoroutine(EndGame());
         }
 
         // 抽技能牌

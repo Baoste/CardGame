@@ -24,7 +24,7 @@ public class MeshDestroy : MonoBehaviour
     //        DestroyMesh();
     //}
 
-    public List<PartMesh> DestroyMesh(int CutCascades, float angle = -1, float planeOffset = 0.05f)
+    public List<PartMesh> DestroyMesh(int CutCascades, float angle = -1, float planeOffset = 0.05f, float forceMagnification = 1f)
     {
         var originalMesh = GetComponent<MeshFilter>().mesh;
         originalMesh.RecalculateBounds();
@@ -70,7 +70,7 @@ public class MeshDestroy : MonoBehaviour
             //Vector3 moveDir = parts[i].Bounds.center - transform.position;
             //moveDir.y = 0f;
             //parts[i].GameObject.transform.position += moveDir * ExplodeForce;
-            parts[i].GameObject.GetComponent<Rigidbody>().AddForceAtPosition(parts[i].Bounds.center * ExplodeForce, transform.position, ForceMode.Impulse);
+            parts[i].GameObject.GetComponent<Rigidbody>().AddForceAtPosition(parts[i].Bounds.center * ExplodeForce * forceMagnification, transform.position, ForceMode.Impulse);
         }
 
         Destroy(gameObject);

@@ -11,6 +11,7 @@ public class ViewAnimController : MonoBehaviour
     [Header("Table Plane Anim Settings")]
     [SerializeField] public TablePlaneMatManager TablePlaneMatManager;
     [SerializeField] public ParticleSystem scannerVFX;
+    [SerializeField] public MirzaBeig.LightningVFX.DemoManager LightingManager;
 
     [Header("Point Deck Cover Anim Settings")]
     [SerializeField] private Transform pointCardsDeckCoverPivot;

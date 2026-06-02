@@ -276,13 +276,13 @@ public class BoardView : MonoBehaviour, IViewClear
         {
             GameObject obj = opponentCards[0];
             opponentCards.RemoveAt(0);
-            yield return DestroyCard(obj, 1);
+            yield return DestroyHoleCard(obj);
         }
         else
         {
             GameObject obj = selfCards[0];
             selfCards.RemoveAt(0);
-            yield return DestroyCard(obj, 1);
+            yield return DestroyHoleCard(obj);
         }
     }
 
@@ -401,6 +401,7 @@ public class BoardView : MonoBehaviour, IViewClear
         upDownSeq.Append(instance.transform.DOMoveY(instance.transform.position.y + 0.15f, 0.4f).SetEase(Ease.OutCubic));
         upDownSeq.Append(instance.transform.DOMoveY(instance.transform.position.y, 0.05f).SetEase(Ease.InCubic));
         yield return upDownSeq.WaitForCompletion();
+
         impulseSource.GenerateImpulse();
         AudioManager.Instance.Play("DiscardPointCard");
 
@@ -432,7 +433,10 @@ public class BoardView : MonoBehaviour, IViewClear
         seq.OnComplete(() =>
         {
             foreach (PartMesh part in submeshes)
-                part.GameObject.GetComponent<DissolutionController>().DestroySelf();
+            {
+                DissolutionController dc = part.GameObject.GetComponent<DissolutionController>();
+                dc.DestroySelf();
+            }
         });
         yield return seq.WaitForCompletion();
 
@@ -440,6 +444,55 @@ public class BoardView : MonoBehaviour, IViewClear
         yield return new WaitForSecondsRealtime(2f);
         DOTween.To(() => decal.fadeFactor, x => decal.fadeFactor = x, 0f, 1f);
         Destroy(decal.gameObject, 1.5f);
+        Destroy(instance);
+    }
+
+    private IEnumerator DestroyHoleCard(GameObject instance)
+    {
+        Vector3 originalPos = instance.transform.position;
+
+        // up and down and shake
+        Sequence upDownSeq = DOTween.Sequence();
+        upDownSeq.Append(instance.transform.DOMoveY(instance.transform.position.y + 0.25f, 0.8f).SetEase(Ease.OutCubic));
+        upDownSeq.Append(instance.transform.DOMoveY(instance.transform.position.y + 0.2f, 0.05f).SetEase(Ease.InCubic));
+        yield return upDownSeq.WaitForCompletion();
+        //impulseSource.GenerateImpulse();
+        AudioManager.Instance.Play("DiscardPointCard");
+
+        PointCardController pc = instance.GetComponent<PointCardController>();
+        pc.stateMachine.ChangeState(pc.discardState);
+
+        // lighting generation
+        SceneViewManager.viewAnimController.LightingManager.GenerateLighting(originalPos);
+        yield return new WaitForSecondsRealtime(0.05f);
+
+        // mesh destroy
+        MeshDestroy mesh = instance.GetComponentInChildren<MeshDestroy>();
+        GameObject tmp = mesh.transform.parent.gameObject;
+        mesh.transform.parent.parent = transform.parent.parent;
+
+        PointCardInstance point = instance.GetComponentInChildren<PointCardInstance>();
+        int cutCascades = point.cardVisualState == CardVisualState.Hole ? 4 : 1 + point.point / 3;
+        List<PartMesh> submeshes = mesh.DestroyMesh(3, forceMagnification: 3f);
+        Destroy(tmp);
+
+        // mesh split
+        Time.timeScale = 0.01f;
+        Time.fixedDeltaTime = 0.02f * Time.timeScale;
+        yield return new WaitForSecondsRealtime(1f);
+        Time.timeScale = 1f;
+        Time.fixedDeltaTime = 0.02f;
+
+        yield return new WaitForSecondsRealtime(1f);
+        Sequence seq = DOTween.Sequence();
+        seq.OnComplete(() =>
+        {
+            foreach (PartMesh part in submeshes)
+                part.GameObject.GetComponent<DissolutionController>().DestroySelf();
+        });
+        yield return seq.WaitForCompletion();
+
+        // decal destroy
         Destroy(instance);
     }
 
