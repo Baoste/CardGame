@@ -46,8 +46,8 @@ public class RevealCardsAndScoreCmdHandler : CommandHandler, ICommandHandler
 
         int currentBet = session.gameState.currentBet;
         session.gameState.Dispose();
-        session.gameState.players[winnerId].chipCount += session.gameState.currentBet;
-        session.gameState.players[1 - winnerId].chipCount -= session.gameState.currentBet;
+        session.gameState.players[winnerId].chipCount += currentBet;
+        session.gameState.players[1 - winnerId].chipCount -= currentBet;
 
         // return
         CommandResult results = new CommandResult();

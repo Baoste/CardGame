@@ -7,6 +7,7 @@ using UnityEngine;
 public class SceneSwitcher : MonoBehaviour
 {
     private NetworkManager nm;
+    public ShotPlayer shotPlayer;
 
     private void Start()
     {
@@ -30,6 +31,13 @@ public class SceneSwitcher : MonoBehaviour
 
     public void BothJoinMatch(object[] parameters)
     {
-        FindAnyObjectByType<SceneBootstrap>().SwitchToGameScene("ClientTest_Yifan_v4");
+        shotPlayer.PlayShot(4);
+        StartCoroutine(_JoinMatch());
+    }
+
+    private IEnumerator _JoinMatch()
+    {
+        yield return new WaitForSeconds(11f);
+        FindAnyObjectByType<StartSceneBootstrap>().SwitchToGameScene("ClientTest_Yifan_v4");
     }
 }

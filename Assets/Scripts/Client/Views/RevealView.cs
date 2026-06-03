@@ -31,10 +31,11 @@ public class RevealView : MonoBehaviour, IViewClear
 
     public void ClearView()
     {
-        revealButton.transform.localPosition = BtnHidePosition;
+        revealButton.GetComponent<RevealButton>().DOKill();
         revealButton.GetComponent<RevealButton>().enabled = false;
         revealButton.GetComponent<Collider>().enabled = false;
         isRandomEnabled = false;
+        revealButton.transform.localPosition = BtnHidePosition;
     }
 
     public void ShowButton(bool canClick)
@@ -68,7 +69,7 @@ public class RevealView : MonoBehaviour, IViewClear
         yield return slotMachine.GetComponent<SlotMachine>().PlayAnimation(reveal);
         slotMachine.SetActive(false);
 
-        if (reveal && ClientGameState.Instance.dealerId == ClientGameState.playerSlot)
+        if (reveal && ClientGameState.playerSlot != -1 && ClientGameState.Instance.dealerId == ClientGameState.playerSlot)
         {
             ClientCommand.RevealCardsAndScore();
         }

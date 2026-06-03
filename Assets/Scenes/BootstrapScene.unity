@@ -351,7 +351,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   gateway: {fileID: 143018883}
-  isDebugMode: 0
 --- !u!4 &204329698
 Transform:
   m_ObjectHideFlags: 0
@@ -422,7 +421,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 442670096}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 661bbeb649cc74746b75f548076d558f, type: 3}
+  m_Script: {fileID: 11500000, guid: f13acc948ad5aed4281918d29a31a4df, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   logo: {fileID: 1262966388}

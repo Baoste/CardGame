@@ -6,7 +6,7 @@ using UnityEngine;
 
 public class ViewAnimController : MonoBehaviour
 {
-    public CinemachineImpulseSource ImpulseSource;
+    [HideInInspector] public CinemachineImpulseSource ImpulseSource;
 
     [Header("Table Plane Anim Settings")]
     [SerializeField] public TablePlaneMatManager TablePlaneMatManager;
@@ -66,6 +66,7 @@ public class ViewAnimController : MonoBehaviour
         Transform root = CardViewCreator.Instance.transform;
         foreach (Transform child in root)
         {
+            yield return null;
             IDiscardPresentation discardPresentation = child.gameObject.GetComponent<IDiscardPresentation>();
             discardPresentation?.DiscardPlay();
         }
@@ -84,7 +85,6 @@ public class ViewAnimController : MonoBehaviour
         // SceneViewManager.boardView.transform.GetComponentInChildren<ClickToStartGame>().startText.SetActive(true);
 
         yield return new WaitForSecondsRealtime(2f);
-        //ClientCommand.StartGame();
     }
 
     public IEnumerator ClosePointCardDeckCover()

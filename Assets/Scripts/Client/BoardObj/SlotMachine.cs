@@ -5,6 +5,8 @@ using UnityEngine;
 
 public class SlotMachine : MonoBehaviour
 {
+    [SerializeField] private Animator animator;
+
     private void Start()
     {
         gameObject.SetActive(false);        
@@ -20,10 +22,23 @@ public class SlotMachine : MonoBehaviour
 
         // TODO: 显示随机引爆装置爆炸动画
         if (reveal)
-            yield return new WaitForSecondsRealtime(1.5f);
+        {
+            animator.Play("Win");
+        }
         else
-            yield return new WaitForSecondsRealtime(1.5f);
+        {
+            animator.Play("Lose");
+        }
+        yield return null; // 等一帧保证播放
+        // 获取当前 clip 时长
+        var clips = animator.GetCurrentAnimatorClipInfo(0);
+        if (clips.Length > 0)
+        {
+            float clipLength = clips[0].clip.length;
+            yield return new WaitForSeconds(clipLength);
+        }
 
-        transform.rotation = quaternion;
+        transform.DORotateQuaternion(quaternion, 0.3f).SetEase(Ease.InBack);
+        yield return new WaitForSeconds(0.3f);
     }
 }

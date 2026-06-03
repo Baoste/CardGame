@@ -57,9 +57,10 @@ namespace Game.Domain
 
             if (winnerId != -1)
             {
-                ClientGameState.Instance.Dispose();
-                session.gameState.players[winnerId].chipCount += session.gameState.currentBet;
-                session.gameState.players[1 - winnerId].chipCount -= session.gameState.currentBet;
+                int currentBet = session.gameState.currentBet;
+                session.gameState.Dispose();
+                session.gameState.players[winnerId].chipCount += currentBet;
+                session.gameState.players[1 - winnerId].chipCount -= currentBet;
 
                 results.events.Enqueue(CommandHandler.MakeEvent(
                     "RevealCardsAndScore",

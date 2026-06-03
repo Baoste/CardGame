@@ -794,7 +794,7 @@ public class EventProcessFunction : MonoBehaviour
             SceneViewManager.mySumPointView.ChangeSum(opponentPoints, true);
             SceneViewManager.opponentSumPointView.ChangeSum(playerPoints, true);
         }
-        yield return new WaitForSecondsRealtime(1f);
+        yield return new WaitForSecondsRealtime(0.5f);
         yield return SceneViewManager.boardView.RemoveHoleCard(1 - winnerId);
         yield return SceneViewManager.boardView.RemoveOneSideCards(1 - winnerId);
         yield return SceneViewManager.roleView.ShowWin(winnerId);
@@ -819,7 +819,7 @@ public class EventProcessFunction : MonoBehaviour
         SceneViewManager.opponentChipView.DestroyChipsPlaced();
 
         yield return SceneViewManager.viewAnimController.PlayGameEndAnim();
-
+        ClientCommand.StartGame();
     }
 
     // parameters[0]: int playerId

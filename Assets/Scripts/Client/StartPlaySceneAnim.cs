@@ -1,20 +1,43 @@
+using Cinemachine;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class StartPlaySceneAnim : MonoBehaviour
 {
-    void Start()
+    [SerializeField] private CinemachineVirtualCamera startCamera;
+
+    public void StartGame()
     {
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
-        StartCoroutine(StartAnim());
+        if (GameBootstrap.isDebugMode)
+            StartCoroutine(StartDebug());
+        else
+            StartCoroutine(StartAnim());
     }
 
     private IEnumerator StartAnim()
     {
-        yield return new WaitForSeconds(1f);
+        startCamera.Priority = -1; // 切换到开始动画的摄像机
+        yield return null;
+        
         int seed = MatchData.Instance.matchSeed;
         ClientCommand.StartMatch(seed);
+    }
+
+    private IEnumerator StartDebug()
+    {
+        startCamera.Priority = -1; // 切换到开始动画的摄像机
+        yield return new WaitForSeconds(0.5f);
+
+        StartCoroutine(SceneViewManager.viewAnimController.PlayStartGameAnim());
+        SceneViewManager.myChipView.StartGame(false);
+        SceneViewManager.opponentChipView.StartGame(true);
+        foreach (var obj in SceneViewManager.myChipView.chipsInTray.Values)
+        {
+            ChipMouseEventHandler drag = obj.transform.GetChild(0).gameObject.AddComponent<ChipMouseEventHandler>();
+            drag.Init();
+        }
     }
 }

@@ -35,7 +35,6 @@ namespace MirzaBeig.LightningVFX
 
         public float mainLightIntensityLerpSpeed = 1.0f;
 
-
         void Start()
         {
             camera = Camera.main;
@@ -44,27 +43,34 @@ namespace MirzaBeig.LightningVFX
 
         }
 
-        void Update()
+        //void Update()
+        //{
+        //    if (Input.GetMouseButtonDown(0) || Input.GetMouseButton(1))
+        //    {
+        //        Ray ray = camera.ScreenPointToRay(Input.mousePosition);
+
+        //        if (Physics.Raycast(ray, out RaycastHit raycastHitInfo, Mathf.Infinity, ~0, QueryTriggerInteraction.Ignore))
+        //        {
+        //            GameObject lightning = Instantiate(fxPrefab, raycastHitInfo.point, Quaternion.identity);
+        //            StartCoroutine(ChangeMainLightIntensity());
+
+        //            spawnedLightningList.Add(lightning);
+        //        }
+        //    }
+        //}
+
+        private IEnumerator ChangeMainLightIntensity()
         {
-            // Application.targetFrameRate = targetFrameRate;
-
-            //if (Input.GetMouseButtonDown(0) || Input.GetMouseButton(1))
-            //{
-            //    Ray ray = camera.ScreenPointToRay(Input.mousePosition);
-
-            //    if (Physics.Raycast(ray, out RaycastHit raycastHitInfo, Mathf.Infinity, ~0, QueryTriggerInteraction.Ignore))
-            //    {
-            //        GameObject lightning = Instantiate(fxPrefab, raycastHitInfo.point, Quaternion.identity);
-            //        //lightning.transform.localScale = Vector3.one * 0.2f;
-
-            //        spawnedLightningList.Add(lightning);
-            //    }
-            //}
+            //yield return new WaitForSeconds(0.01f);
+            mainLight.intensity = float.NaN;
+            yield return new WaitForSecondsRealtime(1f);
+            mainLight.intensity = 1;
         }
 
         public void GenerateLighting(Vector3 pos)
         {
             GameObject lightning = Instantiate(fxPrefab, pos, Quaternion.identity);
+            // StartCoroutine(ChangeMainLightIntensity());
             spawnedLightningList.Add(lightning);
         }
 
@@ -72,10 +78,10 @@ namespace MirzaBeig.LightningVFX
         {
             spawnedLightningList.RemoveAll(x => x == null);
 
-            float normalizedLightningCount = spawnedLightningList.Count / (float)fullDimLightningCount;
-            float mainLightTargetIntensity = Mathf.Lerp(mainLightStartIntensity, mainLightDimIntensity, normalizedLightningCount);
+            //float normalizedLightningCount = spawnedLightningList.Count / (float)fullDimLightningCount;
+            //float mainLightTargetIntensity = Mathf.Lerp(mainLightStartIntensity, mainLightDimIntensity, normalizedLightningCount);
 
-            mainLight.intensity = Mathf.Lerp(mainLight.intensity, mainLightTargetIntensity, Time.deltaTime * mainLightIntensityLerpSpeed);
+            //mainLight.intensity = Mathf.Lerp(mainLight.intensity, mainLightTargetIntensity, Time.deltaTime * mainLightIntensityLerpSpeed);
         }
     }
 }

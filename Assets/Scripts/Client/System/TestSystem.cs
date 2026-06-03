@@ -1,3 +1,4 @@
+using FishNet.Demo.AdditiveScenes;
 using Game.Domain;
 using System.Collections;
 using System.Collections.Generic;
@@ -33,8 +34,15 @@ public class TestSystem : MonoBehaviour
 
     private IEnumerator EndGame()
     {
+        SceneViewManager.myRevealButtonView.ShowRandom();
+        yield return SceneViewManager.myRevealButtonView.RandomAnimation(true);
+
+        yield return SceneViewManager.boardView.HoleCardFlip();
+        yield return new WaitForSecondsRealtime(0.5f);
+
         // yield return StartCoroutine(SceneViewManager.boardView.RemoveHoleCard(999));
-        yield return StartCoroutine(SceneViewManager.boardView.RemoveHoleCard(ClientGameState.playerSlot));
+        yield return SceneViewManager.boardView.RemoveHoleCard(ClientGameState.playerSlot);
+        yield return SceneViewManager.roleView.ShowWin(ClientGameState.playerSlot);
         StartCoroutine(SceneViewManager.viewAnimController.PlayGameEndAnim());
     }
 
@@ -100,7 +108,7 @@ public class TestSystem : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.P))
         {
             GameObject instance = CardViewCreator.Instance.CreateCardResolved(2, 99);
-            StartCoroutine(SceneViewManager.peekZoneView.AddCard(instance, -1, false, CardVisualState.None));
+            StartCoroutine(SceneViewManager.peekZoneView.AddCard(instance, 999, false, CardVisualState.None));
         }
 
         // ³éµãÊýÅÆ

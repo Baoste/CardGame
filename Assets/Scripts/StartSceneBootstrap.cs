@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
-public class SceneBootstrap : MonoBehaviour
+public class StartSceneBootstrap : MonoBehaviour
 {
     [SerializeField] private RawImage logo;
     [SerializeField] private GameObject cam;
@@ -13,6 +13,7 @@ public class SceneBootstrap : MonoBehaviour
     void Start()
     {
         StartCoroutine(LoadFirstScene());
+        GameBootstrap.isDebugMode = false;
     }
 
     private IEnumerator LoadFirstScene()

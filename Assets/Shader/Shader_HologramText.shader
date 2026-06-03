@@ -22,7 +22,7 @@ Shader "Custom/HologramText"
 
         Blend SrcAlpha One
         ZWrite Off
-        Cull Off
+        Cull Back
 
         Pass
         {

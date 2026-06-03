@@ -58,10 +58,12 @@ public class RoleView : MonoBehaviour
         if (winnerId == ClientGameState.playerSlot)
         {
             // TODO: show win effect
+            yield return new WaitForSecondsRealtime(1.5f);
         }
         else
         {
             // TODO: show lose effect
+            yield return new WaitForSecondsRealtime(1.5f);
         }
 
         ApplyDissolution(ClientGameState.Instance.dealerId == ClientGameState.playerSlot ? MyDealer : OpDealer, My_DissolutionVFX, 1.2f);
