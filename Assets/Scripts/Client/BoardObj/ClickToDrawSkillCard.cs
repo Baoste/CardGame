@@ -8,6 +8,7 @@ using UnityEngine;
 public class ClickToDrawSkillCard : MonoBehaviour, IMouseClick, IMouseEnter, IMouseExit, IMouseStay
 {
     [SerializeField] private Transform skillCard;
+    [SerializeField] private Material buttomMat;
     public Stack<GameObject> SkillCardStack;
 
     private void Start()
@@ -23,10 +24,20 @@ public class ClickToDrawSkillCard : MonoBehaviour, IMouseClick, IMouseEnter, IMo
             GameObject topCard = SkillCardStack.Pop();
             topCard.SetActive(false);
         }
+        if (ClientGameState.SkillCardCount == 4)
+        {
+            DOTween.To(
+                () => buttomMat.GetFloat("_MaskAppearProgress"),
+                x => buttomMat.SetFloat("_MaskAppearProgress", x),
+                2f, // 目标值
+                3f  // 持续时间
+            ).SetEase(Ease.Linear);
+        }
     }
 
     public void ResetCardStack()
     {
+        buttomMat.SetFloat("_MaskAppearProgress", -1f);
         SkillCardStack.Clear();
         for (int i = 0; i < transform.childCount; i++)
         {
