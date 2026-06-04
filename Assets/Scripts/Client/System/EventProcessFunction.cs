@@ -73,6 +73,8 @@ public class EventProcessFunction : MonoBehaviour
 
     public void StartGameTest(object[] parameters)
     {
+        SceneViewManager.myHandView.skillCardDeck.ResetCardStack();
+
         StartCoroutine(SceneViewManager.viewAnimController.PlayStartGameAnim());
 
         instanceMap.Clear();

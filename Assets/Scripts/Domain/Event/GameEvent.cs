@@ -57,9 +57,11 @@ namespace Game.Domain
     /// </summary>
     public class StartGameEvent : PlayerEvent
     {
-        public StartGameEvent(int playerId, bool success) 
+        public int skillCardCount;
+        public StartGameEvent(int playerId, bool success, int skillCardCount) 
             : base(playerId, success)
         {
+            this.skillCardCount = skillCardCount;
         }
     }
 

@@ -1,7 +1,5 @@
 using System;
 using System.Collections.Generic;
-using Unity.VisualScripting;
-using static System.Collections.Specialized.BitVector32;
 
 namespace Game.Domain
 {
@@ -269,5 +267,16 @@ namespace Game.Domain
         public static string matchId;
         public static string token;
         public static int lastEventIndex = -1;
+
+        private static int _skillCardCount = 6;
+        public static int SkillCardCount
+        {
+            get => _skillCardCount;
+            set
+            {
+                _skillCardCount = value;
+                SceneViewManager.myHandView.skillCardDeck.Draw1Card();
+            }
+        }
     }
 }

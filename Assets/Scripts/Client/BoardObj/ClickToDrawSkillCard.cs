@@ -1,6 +1,5 @@
 using DG.Tweening;
 using Game.Domain;
-using GameKit.Dependencies.Utilities;
 using Newtonsoft.Json;
 using System.Collections;
 using System.Collections.Generic;
@@ -9,6 +8,33 @@ using UnityEngine;
 public class ClickToDrawSkillCard : MonoBehaviour, IMouseClick, IMouseEnter, IMouseExit, IMouseStay
 {
     [SerializeField] private Transform skillCard;
+    public Stack<GameObject> SkillCardStack;
+
+    private void Start()
+    {
+        SkillCardStack = new Stack<GameObject>();
+        ResetCardStack();
+    }
+
+    public void Draw1Card()
+    {
+        if (ClientGameState.SkillCardCount < 6 && SkillCardStack.Count > 0)
+        {
+            GameObject topCard = SkillCardStack.Pop();
+            topCard.SetActive(false);
+        }
+    }
+
+    public void ResetCardStack()
+    {
+        SkillCardStack.Clear();
+        for (int i = 0; i < transform.childCount; i++)
+        {
+            GameObject child = transform.GetChild(i).gameObject;
+            child.SetActive(true);
+            SkillCardStack.Push(child);
+        }
+    }
 
     public void MouseClick()
     {
@@ -27,7 +53,7 @@ public class ClickToDrawSkillCard : MonoBehaviour, IMouseClick, IMouseEnter, IMo
 
     public void MouseEnter()
     {
-        if (ClientEffectContext.isExecutingSkillCard || ClientEffectContext.isDrawingSkillCard ||
+        if (ClientEffectContext.isExecutingSkillCard || ClientEffectContext.isDrawingSkillCard || ClientGameState.SkillCardCount < 1 ||
             ClientGameState.playerSlot != ClientGameState.Instance.CurrentPlayerId)
         {
             return;
@@ -41,6 +67,8 @@ public class ClickToDrawSkillCard : MonoBehaviour, IMouseClick, IMouseEnter, IMo
 
     public void MouseStay()
     {
+        if (ClientGameState.SkillCardCount < 1) return;
+
         if (ClientEffectContext.isExecutingSkillCard || ClientEffectContext.isDrawingSkillCard ||
             ClientGameState.playerSlot != ClientGameState.Instance.CurrentPlayerId)
         {
@@ -50,7 +78,7 @@ public class ClickToDrawSkillCard : MonoBehaviour, IMouseClick, IMouseEnter, IMo
 
     public void MouseExit()
     {
-        if (ClientEffectContext.isExecutingSkillCard || ClientEffectContext.isDrawingSkillCard) return;
+        if (ClientEffectContext.isExecutingSkillCard || ClientEffectContext.isDrawingSkillCard || ClientGameState.SkillCardCount < 1) return;
         if (ClientGameState.playerSlot != ClientGameState.Instance.CurrentPlayerId) return;
 
         skillCard.DOKill();

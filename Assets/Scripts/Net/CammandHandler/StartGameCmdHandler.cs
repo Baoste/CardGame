@@ -47,13 +47,16 @@ public class StartGameCmdHandler : CommandHandler, ICommandHandler
         var skillCardsDeck = session.gameState.skillCardsDeck;
         session.gameState.AddCardsToDeck(skillCardInstanceIds, session.instanceToCardId, CardType.Skill);
 
+        int skillCardCount = session.gameState.skillCardsDeck.GetCount();
+
         // return results
         results.events.Enqueue(MakeEvent(
             "StartGame",
             new StartGameEvent    // need change
             (
                 payload.playerId,
-                true
+                true,
+                skillCardCount
             ),
             -1
         ));

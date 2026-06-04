@@ -11,6 +11,7 @@ public class StartGameEventHandler : IEventProcess, IEventHandler
         // need change, 需要把参数在这里传进去
         ProcessQueueManager.Instance.Enqueue(Process, new object[] { }, 0);
         ClientGameState.Instance.Start();
+        ClientGameState.SkillCardCount = payload.skillCardCount;
 
         // TODO
         // START

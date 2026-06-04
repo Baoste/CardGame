@@ -13,6 +13,7 @@ public class DrawSkillCardEventHandler : IEventProcess, IEventHandler
         payload = JsonConvert.DeserializeObject<DrawSkillCardEvent>(ev.jsonData);   // need change
         // need change, 需要把参数在这里传进去
         ProcessQueueManager.Instance.Enqueue(Process, new object[] { payload.cardId, payload.instanceId, payload.playerId }, 0.1f);
+        ClientGameState.SkillCardCount--;
 
         // TODO
         // START

@@ -9,6 +9,7 @@ using static MeshDestroy;
 public class HandView : MonoBehaviour, IViewClear
 {
     [SerializeField] private bool isOpponent = false;
+    [SerializeField] public ClickToDrawSkillCard skillCardDeck;
 
     [Header("Resolve Zone Size")]
     [SerializeField] private float zoneWidth = 6f;
@@ -129,6 +130,7 @@ public class HandView : MonoBehaviour, IViewClear
     public IEnumerator DrawSkillCardAnimation(GameObject instance)
     {
         ClientEffectContext.isDrawingSkillCard = true;
+
         // init
         skillCardsDeck.transform.position = deckOriginalPosition + dropRotation * dropDistance;
         instance.transform.position = instantiatePosition;
@@ -140,7 +142,7 @@ public class HandView : MonoBehaviour, IViewClear
         Sequence seq = DOTween.Sequence();
         seq.Append(instance.transform.DOMove(instantiatePosition + moveDir * instance.transform.right * 0.05f, 0.15f));
         seq.Append(instance.transform.DOMove(instantiatePosition - moveDir * instance.transform.right * 1f, 0.5f).SetEase(Ease.OutBack));
-        seq.Join(skillCardsDeck.transform.DOLocalMove(deckOriginalPosition, 0.3f).SetEase(Ease.OutBack));
+        seq.Append(skillCardsDeck.transform.DOLocalMove(deckOriginalPosition, 0.3f).SetEase(Ease.OutBack));
 
         yield return seq.WaitForCompletion();
         ClientEffectContext.isDrawingSkillCard = false;
