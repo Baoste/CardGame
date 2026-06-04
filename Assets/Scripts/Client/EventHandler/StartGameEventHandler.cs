@@ -16,7 +16,7 @@ public class StartGameEventHandler : IEventProcess, IEventHandler
         // TODO
         // START
         // TODO: Client start game function
-        Debug.Log($"[Client] Event#{ev.Index} type={ev.type} slot={payload.playerId} payload=start_game");
+        Debug.Log($"[Client] Event#{ev.Index} type={ev.type} slot={payload.playerId}:{payload.skillCardCount} payload=start_game");
         // END
 
         return true;

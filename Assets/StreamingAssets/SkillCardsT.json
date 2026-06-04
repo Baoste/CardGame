@@ -6,7 +6,7 @@
       "description": "为任意一方加一张点数牌",
       "point": 1,
       "type": 1,
-      "count": 10,
+      "count": 8,
       "effects": [
         {
           "type": 2,
@@ -84,7 +84,7 @@
       "description": "将牌堆顶上的2张牌倒扣。倒扣后，不可以查看点数",
       "point": 1,
       "type": 1,
-      "count": 10,
+      "count": 8,
       "effects": [
         {
           "type": 9,

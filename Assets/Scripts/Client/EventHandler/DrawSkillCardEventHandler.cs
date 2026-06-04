@@ -18,7 +18,7 @@ public class DrawSkillCardEventHandler : IEventProcess, IEventHandler
         // TODO
         // START
         string context = $"instanceid:{payload.instanceId.ToString()} cardid:{payload.cardId.ToString()}";
-        Debug.Log($"[Client] Event#{ev.Index} type={ev.type} slot={payload.playerId} payload={context}");
+        Debug.Log($"[Client] Event#{ev.Index} type={ev.type} slot={payload.playerId} payload={context}:{ClientGameState.SkillCardCount}");
         // END
 
         return true;
