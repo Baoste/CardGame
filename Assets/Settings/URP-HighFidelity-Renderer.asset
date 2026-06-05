@@ -1,5 +1,21 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!114 &-8390994341440510940
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 31b780e492cc3064082aeb76c8e6f088, type: 3}
+  m_Name: ColorAdjustmentFeature
+  m_EditorClassIdentifier: 
+  m_Active: 1
+  settings:
+    material: {fileID: 2100000, guid: 41b8c19e911c68a4187b690115a9d7ce, type: 2}
+    passEvent: 600
 --- !u!114 &-5820600313286143072
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -48,22 +64,6 @@ MonoBehaviour:
   downsampleDepthShader: {fileID: 4800000, guid: cffeaeec0396a2c4dad475266cc8dfeb,
     type: 3}
   volumetricFogShader: {fileID: 4800000, guid: 08f816187f9af0244a95556ee0cab83f, type: 3}
---- !u!114 &-3032124903074373287
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4712cf04f99310d489dcf48c5601575c, type: 3}
-  m_Name: VoronoiPostProcessing
-  m_EditorClassIdentifier: 
-  m_Active: 0
-  settings:
-    blitMaterial: {fileID: 2100000, guid: 13c8489fd916d624087703741deeee5c, type: 2}
-    passEvent: 550
 --- !u!114 &-1878332245247344467
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -111,7 +111,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7536a14e79f0b554f8a88554265e21c8, type: 3}
   m_Name: GlitchPostProcessing
   m_EditorClassIdentifier: 
-  m_Active: 0
+  m_Active: 1
   settings:
     blitMaterial: {fileID: 2100000, guid: d58c259857f55f344878bf81f753ae67, type: 2}
     passEvent: 600
@@ -152,11 +152,11 @@ MonoBehaviour:
   - {fileID: 4352853899533007263}
   - {fileID: -3349183582968438080}
   - {fileID: -5390625979352878836}
-  - {fileID: -3032124903074373287}
   - {fileID: -5820600313286143072}
+  - {fileID: -8390994341440510940}
   - {fileID: -533100069448373991}
   - {fileID: -910156076838047688}
-  m_RendererFeatureMap: adc0de57c6d2eee59fb9d6288f71683cc0a298a9464f85d10cf1ad873ba630b559e1a22d77baebd5a0530d9bda1239af1929cbb24f0c9af838b0e7cdde795ef3
+  m_RendererFeatureMap: adc0de57c6d2eee59fb9d6288f71683cc0a298a9464f85d10cf1ad873ba630b5a0530d9bda1239af242420961a338d8b1929cbb24f0c9af838b0e7cdde795ef3
   m_UseNativeRenderPass: 0
   postProcessData: {fileID: 11400000, guid: 41439944d30ece34e96484bdb6645b55, type: 2}
   xrSystemData: {fileID: 11400000, guid: 60e1133243b97e347b653163a8c01b64, type: 2}

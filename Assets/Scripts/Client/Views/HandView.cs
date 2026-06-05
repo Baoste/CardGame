@@ -9,7 +9,10 @@ using static MeshDestroy;
 public class HandView : MonoBehaviour, IViewClear
 {
     [SerializeField] private bool isOpponent = false;
+
+    [Header("Card Deck Component")]
     [SerializeField] public ClickToDrawSkillCard skillCardDeck;
+    [SerializeField] public Animator panelAnimator;
 
     [Header("Resolve Zone Size")]
     [SerializeField] private float zoneWidth = 6f;

@@ -54,7 +54,7 @@ public class DisplaySkillCard : MonoBehaviour
 
         skillCard.nameText.text = data.CardName;
         skillCard.descriptionText.text = data.Description;
-        skillCard.pointText.text = data.Point.ToString();
+        skillCard.SetPointText(data.Point);
 
         // 初始状态：缩小 + 正面
         transform.localScale = Vector3.zero;
@@ -82,13 +82,13 @@ public class DisplaySkillCard : MonoBehaviour
         currentSeq.Append(
             transform.DORotate(
                 new Vector3(0f, 180f, 0f),
-                0.1f,
+                0.01f,
                 RotateMode.LocalAxisAdd
             )
         );
 
         currentSeq.Join(
-            transform.DOScale(Vector3.zero, 0.1f)
+            transform.DOScale(Vector3.zero, 0.01f)
         );
 
         currentSeq.OnComplete(PlayNext);

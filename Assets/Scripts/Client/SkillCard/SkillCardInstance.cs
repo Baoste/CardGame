@@ -16,7 +16,8 @@ public class SkillCardInstance : CardInstance
     [Header("Component")]
     public TMP_Text nameText;
     public TMP_Text descriptionText;
-    public TMP_Text pointText; 
+    [SerializeField] private TMP_Text pointText;
+    public GameObject[] pointLights;
     public MeshRenderer meshRenderer;
     public GameObject infoPannel;
     public TMP_Text info;
@@ -38,6 +39,15 @@ public class SkillCardInstance : CardInstance
         //pointText = transform.Find("Point").GetComponent<TMP_Text>();
     }
 
+    public void SetPointText(int point)
+    {
+        pointText.text = point.ToString();
+        for (int i = 0; i < pointLights.Length; i++)
+        {
+            pointLights[i].SetActive(i < point);
+        }
+    }
+
     public override void InitCardInstance(int cardId, int instaceId)
     {
         base.InitCardInstance(cardId, instaceId);
@@ -50,7 +60,7 @@ public class SkillCardInstance : CardInstance
 
         nameText.text = cardName;
         descriptionText.text = description;
-        pointText.text = point.ToString();
+        SetPointText(point);
 
         defaultMaterial = meshRenderer.sharedMaterial;
 

@@ -47,7 +47,7 @@ public class CallOrFoldMachine : MonoBehaviour, IViewClear
         GameManager.ChangeInteractMask("HighlightOnly");
 
         Sequence seq = DOTween.Sequence();
-        seq.Append(transform.DOLocalMoveX(isBack ? -3.11f : 2.016f, 0.8f).SetEase(Ease.OutBounce));
+        seq.Append(transform.DOLocalMoveX(isBack ? -2.9f : 1.89f, 0.8f).SetEase(Ease.OutBounce));
         seq.Append(disk.DOLocalMoveZ(-0.217f, 0.5f).SetEase(Ease.InOutCubic));
         seq.Append(disk.DOLocalRotate(new Vector3(0f, 10f, 0f), 0.5f, RotateMode.LocalAxisAdd).SetEase(Ease.InCubic));
         seq.AppendCallback(() =>

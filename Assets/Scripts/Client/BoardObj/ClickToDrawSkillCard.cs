@@ -3,12 +3,14 @@ using Game.Domain;
 using Newtonsoft.Json;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class ClickToDrawSkillCard : MonoBehaviour, IMouseClick, IMouseEnter, IMouseExit, IMouseStay
 {
     [SerializeField] private Transform skillCard;
     [SerializeField] private Material buttomMat;
+    [SerializeField] private TMP_Text skillCardCountText;
     public Stack<GameObject> SkillCardStack;
 
     private void Start()
@@ -19,6 +21,8 @@ public class ClickToDrawSkillCard : MonoBehaviour, IMouseClick, IMouseEnter, IMo
 
     public void Draw1Card()
     {
+        skillCardCountText.text = ClientGameState.SkillCardCount.ToString();
+
         if (ClientGameState.SkillCardCount < 6 && SkillCardStack.Count > 0)
         {
             GameObject topCard = SkillCardStack.Pop();

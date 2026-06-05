@@ -114,15 +114,19 @@ public class ViewAnimController : MonoBehaviour
         seq.Join(op_SkillCardsDeck.DOMove(op_SkillDeckOriginalPosition, 0.5f).SetEase(Ease.OutBack));
 
         yield return seq.WaitForCompletion();
+        SceneViewManager.myHandView.panelAnimator.SetTrigger("Pop");
     }
 
     public IEnumerator CloseSkillCardDeckCover()
     {
+        SceneViewManager.myHandView.panelAnimator.SetTrigger("Retract");
+        yield return new WaitForSeconds(0.3f);
+
         Sequence seq = DOTween.Sequence();
-        seq.Append(m_SkillCardsDeckCoverPivot.DORotate(new Vector3(-66.11f, 0, 0), 0.25f).SetEase(Ease.InBack));
-        seq.Join(m_SkillCardsDeck.DOMove(m_SkillDeckOriginalPosition - m_SkillCardsDeck.up * 0.3f, 0.5f).SetEase(Ease.InBack));
-        seq.Join(op_SkillCardsDeckCoverPivot.DORotate(Vector3.zero, 0.25f).SetEase(Ease.InBack));
+        seq.Append(m_SkillCardsDeck.DOMove(m_SkillDeckOriginalPosition - m_SkillCardsDeck.up * 0.3f, 0.5f).SetEase(Ease.InBack));
+        seq.Join(m_SkillCardsDeckCoverPivot.DORotate(new Vector3(-66.11f, 0, 0), 0.5f).SetEase(Ease.InBack));
         seq.Join(op_SkillCardsDeck.DOMove(op_SkillDeckOriginalPosition - op_SkillCardsDeck.up * 0.3f, 0.5f).SetEase(Ease.InBack));
+        seq.Join(op_SkillCardsDeckCoverPivot.DORotate(Vector3.zero, 0.5f).SetEase(Ease.InBack));
 
         yield return seq.WaitForCompletion();
     }

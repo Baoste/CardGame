@@ -1,3 +1,4 @@
+using DG.Tweening;
 using FishNet.Demo.AdditiveScenes;
 using Game.Domain;
 using System.Collections;
@@ -10,6 +11,7 @@ public class TestSystem : MonoBehaviour
     [SerializeField] private HandView ophandView;
     [SerializeField] private BoardView boardView;
     [SerializeField] private ResolveZoneView ResolveZoneView;
+    [SerializeField] private GameObject switchObject;
     private Stack<GameObject> objs = new Stack<GameObject>();
     private int turn = 0;
     private int card = 1;
@@ -204,11 +206,16 @@ public class TestSystem : MonoBehaviour
             {
                 StartCoroutine(SceneViewManager.callOrFoldMachine.Show(2));
                 StartCoroutine(SceneViewManager.callOrFoldMachineBack.Show(2));
+
+                switchObject.SetActive(true); 
+                switchObject.transform.DORotateQuaternion(Quaternion.Euler(38.509922f, 337.755066f, 344.368011f), 0.8f).SetEase(Ease.OutBounce);
             }
             else
             {
                 StartCoroutine(SceneViewManager.callOrFoldMachine.Hide());
                 StartCoroutine(SceneViewManager.callOrFoldMachineBack.Hide());
+
+                switchObject.transform.DORotateQuaternion(Quaternion.Euler(341.729675f, 239.301498f, 332.164734f), 0.7f).SetEase(Ease.InCubic);
             }
         }
 
