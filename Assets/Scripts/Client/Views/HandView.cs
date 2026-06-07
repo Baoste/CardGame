@@ -110,7 +110,7 @@ public class HandView : MonoBehaviour, IViewClear
         GameObject tmp = mesh.transform.parent.gameObject;
         mesh.transform.parent.parent = transform.parent.parent;
 
-        List<PartMesh> submeshes = mesh.DestroyMesh(3);
+        List<PartMesh> submeshes = mesh.DestroyMesh(1);
         Destroy(tmp);
         Destroy(instance);
 

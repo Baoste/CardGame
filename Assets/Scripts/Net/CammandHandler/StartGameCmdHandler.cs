@@ -56,7 +56,8 @@ public class StartGameCmdHandler : CommandHandler, ICommandHandler
             (
                 payload.playerId,
                 true,
-                skillCardCount
+                skillCardCount,
+                session.gameState.GameRound
             ),
             -1
         ));

@@ -1,4 +1,5 @@
 using Cinemachine;
+using FishNet.Demo.AdditiveScenes;
 using Game.Domain;
 using Newtonsoft.Json;
 using System.Collections;
@@ -35,6 +36,7 @@ public class EventProcessFunction : MonoBehaviour
         ProcessDispatcher.Register("EndTurnTest", EndTurnTest);
         ProcessDispatcher.Register("ClearCardsToResolveTest", ClearResolve);
         ProcessDispatcher.Register("RevealTest", RevealTest);
+        ProcessDispatcher.Register("EndMatchTest", EndMatchTest);
         ProcessDispatcher.Register("SumPointTest", SumPointTest);
         ProcessDispatcher.Register("EmojiTest", EmojiTest);
     }
@@ -99,7 +101,10 @@ public class EventProcessFunction : MonoBehaviour
         SceneViewManager.turnIndicator.Rotate2Player(ClientGameState.playerSlot != playerId);
 
         if (ClientGameState.playerSlot == playerId)
+        {
             SceneViewManager.endTurnView.btnLight.intensity = 1;
+            SceneViewManager.endTurnView.hasClicked = false;
+        }
 
         if (turn == 1)
         {
@@ -731,33 +736,24 @@ public class EventProcessFunction : MonoBehaviour
         int turn = (int)parameters[1];
         bool reveal = (bool)parameters[2];
 
-        bool isOpponent = playerId != ClientGameState.playerSlot;
-        // ¡¡µ∆
-        if (ClientGameState.Instance.dealerId == playerId)
-        {
-            //int dealerTurn = (turn + 1) / 2;
-            //if (isOpponent)
-            //    SceneViewManager.opponentTurnLightView.SetLight(dealerTurn + 1);
-            //else
-            //    SceneViewManager.myTurnLightView.SetLight(dealerTurn + 1);
-
-            StartCoroutine(SceneViewManager.myRevealButtonView.RandomAnimation(reveal));
-            StartCoroutine(SceneViewManager.opponentRevealButtonView.RandomAnimation(reveal));
-        }
-        //else
-        //{
-        //    int playerTurn = turn / 2 + 1;
-        //    if (isOpponent)
-        //        SceneViewManager.opponentTurnLightView.SetLight(playerTurn + 1);
-        //    else
-        //        SceneViewManager.myTurnLightView.SetLight(playerTurn + 1);
-        //}
-
-        // “˛≤ÿ±¨≈∆∞¥≈•
         if (ClientGameState.Instance.punterId == ClientGameState.playerSlot)
             SceneViewManager.myRevealButtonView.HideButton();
         else
             SceneViewManager.opponentRevealButtonView.HideButton();
+        StartCoroutine(_PlayTurnEndAnim(playerId, reveal));
+    }
+
+    private IEnumerator _PlayTurnEndAnim(int playerId, bool reveal)
+    {
+        if (ClientGameState.Instance.dealerId == playerId)
+        {
+            yield return SceneViewManager.myRevealButtonView.RandomAnimation(reveal);
+            yield return SceneViewManager.opponentRevealButtonView.RandomAnimation(reveal);
+        }
+
+        yield return new WaitForSeconds(0.5f);
+        if (ClientGameState.playerSlot == playerId)
+            ClientCommand.StartTurn(1 - ClientGameState.playerSlot);
     }
 
     // parameters[0]: int playerId
@@ -821,6 +817,28 @@ public class EventProcessFunction : MonoBehaviour
         SceneViewManager.opponentChipView.DestroyChipsPlaced();
 
         yield return SceneViewManager.viewAnimController.PlayGameEndAnim();
+    }
+
+    // parameters[0]: int finalWinnerId
+    public void EndMatchTest(object[] parameters)
+    {
+        int finalWinnerId = (int)parameters[0];
+        if (finalWinnerId == -1)
+        {
+            StartCoroutine(DelayToStartGame(12f));
+            return;
+        }
+        else
+        {
+            bool isWinner = finalWinnerId == ClientGameState.playerSlot;
+            // TODO: œ‘ æ §∏∫∂Øª≠
+            Debug.Log(isWinner ? "You win the match!" : "You lose the match!");
+        }
+    }
+
+    private IEnumerator DelayToStartGame(float delay)
+    {
+        yield return new WaitForSeconds(delay);
         ClientCommand.StartGame();
     }
 

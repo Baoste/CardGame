@@ -58,10 +58,12 @@ namespace Game.Domain
     public class StartGameEvent : PlayerEvent
     {
         public int skillCardCount;
-        public StartGameEvent(int playerId, bool success, int skillCardCount) 
+        public int gameRound;
+        public StartGameEvent(int playerId, bool success, int skillCardCount, int gameRound) 
             : base(playerId, success)
         {
             this.skillCardCount = skillCardCount;
+            this.gameRound = gameRound;
         }
     }
 
@@ -506,6 +508,16 @@ namespace Game.Domain
             this.opponentId = opponentId;
             this.turn = turn;
             this.reveal = reveal;
+        }
+    }
+
+    public class EndMatchEvent : PlayerEvent
+    {
+        public int finalWinnerId;
+        public EndMatchEvent(int playerId, bool success, int finalWinnerId)
+            : base(playerId, success)
+        {
+            this.finalWinnerId = finalWinnerId;
         }
     }
 }
