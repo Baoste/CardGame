@@ -8019,7 +8019,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &468713284
 Transform:
   m_ObjectHideFlags: 0
@@ -8989,6 +8989,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isOpponent: 1
+  skillCardDeck: {fileID: 0}
+  panelAnimator: {fileID: 0}
   zoneWidth: 2.42
   zoneHeight: 0.96
   cameraTransform: {fileID: 0}
@@ -10855,16 +10857,16 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 681027265}
-  m_LocalRotation: {x: 0.7041416, y: -0.06468898, z: 0.06468895, w: 0.7041416}
-  m_LocalPosition: {x: 0, y: 0, z: 1.207}
+  m_LocalRotation: {x: -0.08867943, y: -0.7015242, z: 0.70152396, w: -0.08867954}
+  m_LocalPosition: {x: 0, y: 0, z: 1.22035}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1136250466}
-  m_LocalEulerAnglesHint: {x: 90, y: 0, z: 10.498}
+  m_LocalEulerAnglesHint: {x: 90, y: 0, z: 194.409}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -0.713, y: 0.99}
+  m_AnchoredPosition: {x: -0.71047974, y: 0.99}
   m_SizeDelta: {x: 0.5, y: 0.25}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &681027267
@@ -10887,10 +10889,11 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 0 + ?
+  m_text: 12345?
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 17d4a12d05c1cad46b72ceb93a950b32, type: 2}
+  m_sharedMaterial: {fileID: 6635505472484436595, guid: 17d4a12d05c1cad46b72ceb93a950b32,
+    type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -10979,7 +10982,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  - {fileID: 6635505472484436595, guid: 17d4a12d05c1cad46b72ceb93a950b32, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -11121,6 +11124,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   skillCard: {fileID: 917003121}
+  buttomMat: {fileID: 0}
+  skillCardCountText: {fileID: 0}
 --- !u!1 &693063714
 GameObject:
   m_ObjectHideFlags: 0
@@ -11991,16 +11996,16 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 759947906}
-  m_LocalRotation: {x: 0.7041416, y: -0.06468898, z: 0.06468895, w: 0.7041416}
-  m_LocalPosition: {x: 0, y: 0, z: -1.211}
+  m_LocalRotation: {x: 0.702942, y: -0.07663279, z: 0.07663275, w: 0.702942}
+  m_LocalPosition: {x: 0, y: 0, z: -1.2270467}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 693063715}
-  m_LocalEulerAnglesHint: {x: 90, y: 0, z: 10.498}
+  m_LocalEulerAnglesHint: {x: 90, y: 0, z: 12.443}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0.718, y: 0.99}
+  m_AnchoredPosition: {x: 0.72422594, y: 0.99}
   m_SizeDelta: {x: 0.5, y: 0.25}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &759947908
@@ -12023,17 +12028,18 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 0
+  m_text: 12345?
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 5a97ea2da095adc4586c6eb0f44ae325, type: 2}
+  m_sharedMaterial: {fileID: -896105662291340241, guid: 5a97ea2da095adc4586c6eb0f44ae325,
+    type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4294967295
-  m_fontColor: {r: 1, g: 1, b: 1, a: 1}
+    rgba: 4280106011
+  m_fontColor: {r: 0.10568709, g: 0.23584908, b: 0.113228425, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -12115,7 +12121,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  - {fileID: -896105662291340241, guid: 5a97ea2da095adc4586c6eb0f44ae325, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -12319,6 +12325,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 33ea9bf5846ed5c4abdafa130cd31600, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  ImpulseSource: {fileID: 0}
+  TablePlaneMatManager: {fileID: 0}
+  scannerVFX: {fileID: 0}
+  LightingManager: {fileID: 0}
   pointCardsDeckCoverPivot: {fileID: 400866842}
   pointCardsDeck: {fileID: 2044909669}
   displaySkillCard: {fileID: 1286952805}
@@ -13022,6 +13032,7 @@ MonoBehaviour:
   ophandView: {fileID: 556365365}
   boardView: {fileID: 711737596}
   ResolveZoneView: {fileID: 1299879608}
+  switchObject: {fileID: 0}
   eventProcessFunction: {fileID: 1772693942}
 --- !u!1 &819773678
 GameObject:
@@ -14913,6 +14924,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04164c497de2bb44d999249f31925d79, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  testSystem: {fileID: 0}
 --- !u!4 &926721638
 Transform:
   m_ObjectHideFlags: 0
@@ -16290,6 +16302,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isOpponent: 0
+  skillCardDeck: {fileID: 0}
+  panelAnimator: {fileID: 0}
   zoneWidth: 2.42
   zoneHeight: 0.96
   cameraTransform: {fileID: 47329602}
@@ -16429,7 +16443,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   gateway: {fileID: 1964602098}
-  isDebugMode: 1
 --- !u!4 &1027894503
 Transform:
   m_ObjectHideFlags: 0
@@ -32029,6 +32042,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 791bcf1e17cd52d4eb0cb59df2dd6079, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  animator: {fileID: 0}
 --- !u!1 &2094626426
 GameObject:
   m_ObjectHideFlags: 0
@@ -39856,6 +39870,7 @@ MonoBehaviour:
   nameText: {fileID: 7261995960582388221}
   descriptionText: {fileID: 4704261164892009843}
   pointText: {fileID: 2850062255293091153}
+  pointLights: []
   meshRenderer: {fileID: 8991758880971301591}
   infoPannel: {fileID: 8661643316930474923}
   info: {fileID: 4533107168760310637}
