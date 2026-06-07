@@ -64,7 +64,7 @@ public class RevealCardsAndScoreCmdHandler : CommandHandler, ICommandHandler
             -1
         ));
 
-        NetEffectFunction.EndMatch(session, payload.playerId, winnerId, ref results);
+        NetEffectFunction.EndMatch(session, payload.playerId, winnerId, currentBet, ref results);
 
         return results;
     }

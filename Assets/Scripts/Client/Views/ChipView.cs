@@ -20,8 +20,8 @@ public class ChipView : MonoBehaviour
     [SerializeField] private ChipInit chipInit;
     [SerializeField] private Transform chipContainer;
 
-    [HideInInspector] public Dictionary<int, GameObject> chipsInTray = new Dictionary<int, GameObject>();
-    [HideInInspector] public Dictionary<int, GameObject> chipsPlaced = new Dictionary<int, GameObject>();
+    public Dictionary<int, GameObject> chipsInTray = new Dictionary<int, GameObject>();
+    public Dictionary<int, GameObject> chipsPlaced = new Dictionary<int, GameObject>();
 
     private void Start()
     {
@@ -51,6 +51,16 @@ public class ChipView : MonoBehaviour
         foreach (var obj in chipsPlaced.Values)
         {
             Destroy(obj);
+        }
+        chipsPlaced.Clear();
+    }
+
+    public void MoveChipsPlaced()
+    {
+        foreach (var obj in chipsPlaced.Values)
+        {
+            ChipController chipController = obj.GetComponentInChildren<ChipController>();
+            chipController.stateMachine.ChangeState(chipController.discardState);
         }
         chipsPlaced.Clear();
     }

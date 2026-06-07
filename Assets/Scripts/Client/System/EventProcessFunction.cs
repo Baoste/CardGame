@@ -5,6 +5,7 @@ using Newtonsoft.Json;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using UnityEngine;
 
 public class EventProcessFunction : MonoBehaviour
@@ -803,6 +804,57 @@ public class EventProcessFunction : MonoBehaviour
         yield return SceneViewManager.roleView.ShowWin(winnerId);
 
         // chip
+        //StartCoroutine(SceneViewManager.myChipView.RotateContainer());
+        //yield return SceneViewManager.opponentChipView.RotateContainer();
+        //if (isOpponentWin)
+        //{
+        //    // 筹码退回筹码盘
+        //    SceneViewManager.opponentChipView.GenerateChips(SceneViewManager.opponentChipView.chipsPlaced.Count, true);
+        //    // 对方获得筹码
+        //    SceneViewManager.opponentChipView.GenerateChips(currentBet, true);
+        //}
+        //else
+        //{
+        //    // 筹码退回筹码盘
+        //    SceneViewManager.myChipView.GenerateChips(SceneViewManager.myChipView.chipsPlaced.Count, false);
+        //    // 获得筹码
+        //    SceneViewManager.myChipView.GenerateChips(currentBet, false);
+        //}
+        //// 销毁筹码
+        //SceneViewManager.myChipView.DestroyChipsPlaced();
+        //SceneViewManager.opponentChipView.DestroyChipsPlaced();
+        //StartCoroutine(SceneViewManager.myChipView.RotateContainer());
+        //yield return SceneViewManager.opponentChipView.RotateContainer();
+
+        //yield return SceneViewManager.viewAnimController.PlayGameEndAnim();
+    }
+
+    // parameters[0]: int finalWinnerId
+    // parameters[1]: int winnerId
+    // parameters[2]: int currentBet
+    public void EndMatchTest(object[] parameters)
+    {
+        int finalWinnerId = (int)parameters[0];
+        int winnerId = (int)parameters[1];
+        int currentBet = (int)parameters[2];
+
+        if (finalWinnerId == -1)
+        {
+            StartCoroutine(DelayToStartGame(winnerId, currentBet));
+        }
+        else
+        {
+            bool isWinner = finalWinnerId == ClientGameState.playerSlot;
+            StartCoroutine(DelayToEndGame(isWinner));
+        }
+    }
+
+    private IEnumerator DelayToStartGame(int winnerId, int currentBet)
+    {
+        bool isOpponentWin = winnerId != ClientGameState.playerSlot;
+
+        yield return new WaitForSeconds(2f);
+
         StartCoroutine(SceneViewManager.myChipView.RotateContainer());
         yield return SceneViewManager.opponentChipView.RotateContainer();
         if (isOpponentWin)
@@ -826,29 +878,19 @@ public class EventProcessFunction : MonoBehaviour
         yield return SceneViewManager.opponentChipView.RotateContainer();
 
         yield return SceneViewManager.viewAnimController.PlayGameEndAnim();
-    }
 
-    // parameters[0]: int finalWinnerId
-    public void EndMatchTest(object[] parameters)
-    {
-        int finalWinnerId = (int)parameters[0];
-        if (finalWinnerId == -1)
-        {
-            StartCoroutine(DelayToStartGame(13f));
-            return;
-        }
-        else
-        {
-            bool isWinner = finalWinnerId == ClientGameState.playerSlot;
-            // TODO: 显示胜负动画
-            Debug.Log(isWinner ? "You win the match!" : "You lose the match!");
-        }
-    }
-
-    private IEnumerator DelayToStartGame(float delay)
-    {
-        yield return new WaitForSeconds(delay);
+        yield return new WaitForSeconds(2f);
         ClientCommand.StartGame();
+    }
+
+    private IEnumerator DelayToEndGame(bool isWinner)
+    {
+        yield return new WaitForSeconds(2f);
+
+        SceneViewManager.myChipView.MoveChipsPlaced();
+        SceneViewManager.opponentChipView.MoveChipsPlaced();
+        // TODO: 显示胜负动画
+        StartCoroutine(SceneViewManager.viewAnimController.PlayMatchEndAnim(isWinner));
     }
 
     // parameters[0]: int playerId

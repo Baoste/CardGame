@@ -34,6 +34,10 @@ public class ViewAnimController : MonoBehaviour
     [SerializeField] private Transform m_ChipCoverPivot;
     [SerializeField] private Transform op_ChipCoverPivot;
 
+    [Header("Final Win Animation")]
+    [SerializeField] private Animator finalWinAC;
+    [SerializeField] public Transform ChipMoveTransformParent;
+
     private void Start()
     {
         ImpulseSource = GetComponent<CinemachineImpulseSource>();
@@ -147,5 +151,11 @@ public class ViewAnimController : MonoBehaviour
         seq.Join(op_ChipCoverPivot.DORotate(new Vector3(-49.6f, 0, 0), 0.35f).SetEase(Ease.InCubic));
 
         yield return seq.WaitForCompletion();
+    }
+
+    public IEnumerator PlayMatchEndAnim(bool isWin)
+    {
+        finalWinAC.SetTrigger(isWin ? "Win" : "Lose");
+        yield return null;
     }
 }

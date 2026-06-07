@@ -56,9 +56,9 @@ namespace Game.Domain
             int playerPoints = playerId == 0 ? player0Points : player1Points;
             int opponentPoints = playerId == 0 ? player1Points : player0Points;
 
+            int currentBet = session.gameState.currentBet;
             if (winnerId != -1)
             {
-                int currentBet = session.gameState.currentBet;
                 session.gameState.Dispose();
                 session.gameState.players[winnerId].chipCount += 2 * currentBet;
                 // session.gameState.players[1 - winnerId].chipCount -= currentBet; // 输家扣除筹码在 PlaceBets 阶段已经处理了
@@ -77,12 +77,12 @@ namespace Game.Domain
                     -1
                 ));
 
-                EndMatch(session, playerId, winnerId, ref results);
+                EndMatch(session, playerId, winnerId, currentBet, ref results);
             }
 
         }
 
-        public static void EndMatch(MatchSession session, int playerId, int winnerId, ref CommandResult results)
+        public static void EndMatch(MatchSession session, int playerId, int winnerId, int currentBet, ref CommandResult results)
         {
             if (session.gameState.players[1 - winnerId].chipCount <= 0)
             {
@@ -92,7 +92,9 @@ namespace Game.Domain
                     (
                         playerId,
                         true,
-                        winnerId
+                        winnerId,
+                        winnerId,
+                        currentBet
                     ),
                     -1
                 ));
@@ -119,7 +121,9 @@ namespace Game.Domain
                     (
                         playerId,
                         true,
-                        -1
+                        -1,
+                        winnerId,
+                        currentBet
                     ),
                     -1
                 ));

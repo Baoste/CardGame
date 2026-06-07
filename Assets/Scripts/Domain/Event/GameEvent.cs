@@ -516,10 +516,14 @@ namespace Game.Domain
     public class EndMatchEvent : PlayerEvent
     {
         public int finalWinnerId;
-        public EndMatchEvent(int playerId, bool success, int finalWinnerId)
+        public int winnerId;
+        public int currentBet;
+        public EndMatchEvent(int playerId, bool success, int finalWinnerId, int winnerId, int currentBet)
             : base(playerId, success)
         {
             this.finalWinnerId = finalWinnerId;
+            this.winnerId = winnerId;
+            this.currentBet = currentBet;
         }
     }
 }
