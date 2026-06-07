@@ -16,6 +16,7 @@ public class ResolveZoneView : MonoBehaviour, IViewClear
     // [SerializeField] private float depthOffsetPerCard = 0.02f;
     [SerializeField] private float animationDuration = 0.2f;
     [SerializeField] private GameObject confirmBtn = null;
+    [SerializeField] private GameObject confirmText = null;
 
     [Header("Card Rotation")]
     [SerializeField] private Vector3 cardEuler = new Vector3(90f, 0f, 0f);
@@ -31,9 +32,10 @@ public class ResolveZoneView : MonoBehaviour, IViewClear
     public IEnumerator AddCard(GameObject instance, int playerId, bool isShown, CardVisualState cardState)
     {
         bool isOpponent = playerId != ClientGameState.playerSlot && !isShown;
-        if (confirmBtn != null && !isOpponent)
+        if (confirmBtn != null && confirmText != null && !isOpponent)
         {
             confirmBtn.SetActive(true);
+            confirmText.SetActive(true);
         }
 
         PointCardResolve pointIns = instance.GetComponent<PointCardResolve>();
@@ -54,6 +56,10 @@ public class ResolveZoneView : MonoBehaviour, IViewClear
         if (confirmBtn != null)
         {
             confirmBtn.SetActive(false);
+        }
+        if (confirmText != null)
+        {
+            confirmText.SetActive(false);
         }
 
         foreach (var card in resolveCards)
