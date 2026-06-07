@@ -803,6 +803,8 @@ public class EventProcessFunction : MonoBehaviour
         yield return SceneViewManager.roleView.ShowWin(winnerId);
 
         // chip
+        StartCoroutine(SceneViewManager.myChipView.RotateContainer());
+        yield return SceneViewManager.opponentChipView.RotateContainer();
         if (isOpponentWin)
         {
             // ≥Ô¬ÎÕÀªÿ≥Ô¬Î≈Ã
@@ -820,6 +822,8 @@ public class EventProcessFunction : MonoBehaviour
         // œ˙ªŸ≥Ô¬Î
         SceneViewManager.myChipView.DestroyChipsPlaced();
         SceneViewManager.opponentChipView.DestroyChipsPlaced();
+        StartCoroutine(SceneViewManager.myChipView.RotateContainer());
+        yield return SceneViewManager.opponentChipView.RotateContainer();
 
         yield return SceneViewManager.viewAnimController.PlayGameEndAnim();
     }
@@ -830,7 +834,7 @@ public class EventProcessFunction : MonoBehaviour
         int finalWinnerId = (int)parameters[0];
         if (finalWinnerId == -1)
         {
-            StartCoroutine(DelayToStartGame(12f));
+            StartCoroutine(DelayToStartGame(13f));
             return;
         }
         else

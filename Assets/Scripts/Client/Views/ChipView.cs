@@ -34,6 +34,13 @@ public class ChipView : MonoBehaviour
         chipContainer.DORotate(new Vector3(0, 0, 180f), 0.5f, RotateMode.LocalAxisAdd).SetEase(Ease.OutBack);
     }
 
+    public IEnumerator RotateContainer()
+    {
+        Sequence seq = DOTween.Sequence();
+        seq.Append(chipContainer.DORotate(new Vector3(0, 0, 180f), 0.5f, RotateMode.LocalAxisAdd).SetEase(Ease.OutBack));
+        yield return seq.WaitForCompletion();
+    }
+
     public void GenerateChips(int count, bool isOpponent)
     {
         chipInit.GenerateChips(count, isOpponent, ref chipsInTray);
