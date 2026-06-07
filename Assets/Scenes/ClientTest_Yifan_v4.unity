@@ -13615,6 +13615,7 @@ MonoBehaviour:
   maxTiltAngle: 5
   tiltSpeed: 0.1
   pivot: {fileID: 2011038364}
+  hasClicked: 1
 --- !u!1 &512185646
 GameObject:
   m_ObjectHideFlags: 0
@@ -21323,6 +21324,7 @@ MonoBehaviour:
   maxTiltAngle: 0.8
   tiltSpeed: 0.1
   pivot: {fileID: 1001179830}
+  hasClicked: 1
 --- !u!4 &945241354
 Transform:
   m_ObjectHideFlags: 0

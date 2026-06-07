@@ -64,46 +64,8 @@ public class RevealCardsAndScoreCmdHandler : CommandHandler, ICommandHandler
             -1
         ));
 
-        if (session.gameState.players[1 - winnerId].chipCount <= 0)
-        {
-            results.events.Enqueue(MakeEvent(
-                "EndMatch",
-                new EndMatchEvent    // need change
-                (
-                    payload.playerId,
-                    true,
-                    winnerId
-                ),
-                -1
-            ));
-        }
-        else if (session.gameState.GameRound >= 5 && session.gameState.players[0].chipCount != session.gameState.players[1].chipCount)
-        {
-            int finalWinnerId = session.gameState.players[0].chipCount > session.gameState.players[1].chipCount ? 0 : 1;
-            results.events.Enqueue(MakeEvent(
-                "EndMatch",
-                new EndMatchEvent    // need change
-                (
-                    payload.playerId,
-                    true,
-                    finalWinnerId
-                ),
-                -1
-            ));
-        }
-        else
-        {
-            results.events.Enqueue(MakeEvent(
-                "EndMatch",
-                new EndMatchEvent    // need change
-                (
-                    payload.playerId,
-                    true,
-                    -1
-                ),
-                -1
-            ));
-        }
+        NetEffectFunction.EndMatch(session, payload.playerId, winnerId, ref results);
+
         return results;
     }
 }

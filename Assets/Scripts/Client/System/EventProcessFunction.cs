@@ -190,10 +190,12 @@ public class EventProcessFunction : MonoBehaviour
 
     // parameters[0]: int dealerId
     // parameters[1]: int punterId
+    // parameters[2]: int placeBetCount
     public void AssignRolesTest(object[] parameters)
     {
         int dealerId = (int)parameters[0];
         int punterId = (int)parameters[1];
+        int placeBetCount = (int)parameters[2];
 
         SceneViewManager.roleView.ShowRole(dealerId);
 
@@ -206,8 +208,11 @@ public class EventProcessFunction : MonoBehaviour
             }
         }
 
-        StartCoroutine(SceneViewManager.myChipView.Place1BetAuto(false, 1f));
-        StartCoroutine(SceneViewManager.opponentChipView.Place1BetAuto(true, 1f));
+        for (int i = 0; i < placeBetCount; i++)
+        {
+            StartCoroutine(SceneViewManager.myChipView.Place1BetAuto(false, 1f));
+            StartCoroutine(SceneViewManager.opponentChipView.Place1BetAuto(true, 1f));
+        }
 
         if (punterId == ClientGameState.playerSlot)
             ClientCommand.StartTurn(punterId);

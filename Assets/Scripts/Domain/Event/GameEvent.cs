@@ -74,11 +74,13 @@ namespace Game.Domain
     {
         public int dealerId;
         public int punterId;
-        public AssignRolesEvent(int playerId, bool success, int dealerId, int punterId)
+        public int placeBetCount;
+        public AssignRolesEvent(int playerId, bool success, int dealerId, int punterId, int placeBetCount)
             : base(playerId, success)
         {
             this.dealerId = dealerId;
             this.punterId = punterId;
+            this.placeBetCount = placeBetCount;
         }
     }
 

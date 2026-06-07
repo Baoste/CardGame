@@ -43,6 +43,7 @@ public class RevealView : MonoBehaviour, IViewClear
         revealButton.transform.DOLocalMove(BtnShowPosition, 0.5f);
         if (canClick)
         {
+            revealButton.GetComponent<RevealButton>().hasClicked = false;
             revealButton.GetComponent<RevealButton>().enabled = true;
             revealButton.GetComponent<Collider>().enabled = true;
         }

@@ -1,3 +1,4 @@
+using FishNet.Demo.AdditiveScenes;
 using Game.Server;
 using System.Collections.Generic;
 
@@ -76,48 +77,53 @@ namespace Game.Domain
                     -1
                 ));
 
-                if (session.gameState.players[1 - winnerId].chipCount <= 0)
-                {
-                    results.events.Enqueue(CommandHandler.MakeEvent(
-                        "EndMatch",
-                        new EndMatchEvent    // need change
-                        (
-                            playerId,
-                            true,
-                            winnerId
-                        ),
-                        -1
-                    ));
-                }
-                else if (session.gameState.GameRound >= 5 && session.gameState.players[0].chipCount != session.gameState.players[1].chipCount)
-                {
-                    int finalWinnerId = session.gameState.players[0].chipCount > session.gameState.players[1].chipCount ? 0 : 1;
-                    results.events.Enqueue(CommandHandler.MakeEvent(
-                        "EndMatch",
-                        new EndMatchEvent    // need change
-                        (
-                            playerId,
-                            true,
-                            finalWinnerId
-                        ),
-                        -1
-                    ));
-                }
-                else
-                {
-                    results.events.Enqueue(CommandHandler.MakeEvent(
-                        "EndMatch",
-                        new EndMatchEvent    // need change
-                        (
-                            playerId,
-                            true,
-                            -1
-                        ),
-                        -1
-                    ));
-                }
+                EndMatch(session, playerId, winnerId, ref results);
             }
 
+        }
+
+        public static void EndMatch(MatchSession session, int playerId, int winnerId, ref CommandResult results)
+        {
+            if (session.gameState.players[1 - winnerId].chipCount <= 0)
+            {
+                results.events.Enqueue(CommandHandler.MakeEvent(
+                    "EndMatch",
+                    new EndMatchEvent    // need change
+                    (
+                        playerId,
+                        true,
+                        winnerId
+                    ),
+                    -1
+                ));
+            }
+            //else if (session.gameState.GameRound >= 5 && session.gameState.players[0].chipCount != session.gameState.players[1].chipCount)
+            //{
+            //    int finalWinnerId = session.gameState.players[0].chipCount > session.gameState.players[1].chipCount ? 0 : 1;
+            //    results.events.Enqueue(CommandHandler.MakeEvent(
+            //        "EndMatch",
+            //        new EndMatchEvent    // need change
+            //        (
+            //            playerId,
+            //            true,
+            //            finalWinnerId
+            //        ),
+            //        -1
+            //    ));
+            //}
+            else
+            {
+                results.events.Enqueue(CommandHandler.MakeEvent(
+                    "EndMatch",
+                    new EndMatchEvent    // need change
+                    (
+                        playerId,
+                        true,
+                        -1
+                    ),
+                    -1
+                ));
+            }
         }
 
         public static void ExecuteEffectOp(ref int effectOpId, Card skillCard, MatchSession session, int playerId, int instanceId, ref CommandResult results)
