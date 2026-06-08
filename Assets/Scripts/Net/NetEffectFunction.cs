@@ -1,3 +1,4 @@
+using FishNet.Demo.AdditiveScenes;
 using Game.Server;
 using System.Collections.Generic;
 
@@ -55,12 +56,12 @@ namespace Game.Domain
             int playerPoints = playerId == 0 ? player0Points : player1Points;
             int opponentPoints = playerId == 0 ? player1Points : player0Points;
 
+            int currentBet = session.gameState.currentBet;
             if (winnerId != -1)
             {
-                int currentBet = session.gameState.currentBet;
                 session.gameState.Dispose();
-                session.gameState.players[winnerId].chipCount += currentBet;
-                session.gameState.players[1 - winnerId].chipCount -= currentBet;
+                session.gameState.players[winnerId].chipCount += 2 * currentBet;
+                // session.gameState.players[1 - winnerId].chipCount -= currentBet; // 输家扣除筹码在 PlaceBets 阶段已经处理了
 
                 results.events.Enqueue(CommandHandler.MakeEvent(
                     "RevealCardsAndScore",
@@ -69,14 +70,64 @@ namespace Game.Domain
                         playerId,
                         true,
                         winnerId,
-                        session.gameState.currentBet,
+                        currentBet,
                         playerPoints,
                         opponentPoints
                     ),
                     -1
                 ));
+
+                EndMatch(session, playerId, winnerId, currentBet, ref results);
             }
 
+        }
+
+        public static void EndMatch(MatchSession session, int playerId, int winnerId, int currentBet, ref CommandResult results)
+        {
+            if (session.gameState.players[1 - winnerId].chipCount <= 0)
+            {
+                results.events.Enqueue(CommandHandler.MakeEvent(
+                    "EndMatch",
+                    new EndMatchEvent    // need change
+                    (
+                        playerId,
+                        true,
+                        winnerId,
+                        winnerId,
+                        currentBet
+                    ),
+                    -1
+                ));
+            }
+            //else if (session.gameState.GameRound >= 5 && session.gameState.players[0].chipCount != session.gameState.players[1].chipCount)
+            //{
+            //    int finalWinnerId = session.gameState.players[0].chipCount > session.gameState.players[1].chipCount ? 0 : 1;
+            //    results.events.Enqueue(CommandHandler.MakeEvent(
+            //        "EndMatch",
+            //        new EndMatchEvent    // need change
+            //        (
+            //            playerId,
+            //            true,
+            //            finalWinnerId
+            //        ),
+            //        -1
+            //    ));
+            //}
+            else
+            {
+                results.events.Enqueue(CommandHandler.MakeEvent(
+                    "EndMatch",
+                    new EndMatchEvent    // need change
+                    (
+                        playerId,
+                        true,
+                        -1,
+                        winnerId,
+                        currentBet
+                    ),
+                    -1
+                ));
+            }
         }
 
         public static void ExecuteEffectOp(ref int effectOpId, Card skillCard, MatchSession session, int playerId, int instanceId, ref CommandResult results)

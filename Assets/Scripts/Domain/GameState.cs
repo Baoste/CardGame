@@ -17,7 +17,7 @@ namespace Game.Domain
     public class GameState
     {
         public int Turn = 0;
-        public int GameCount = 0;
+        public int GameRound = 0;
         public int CurrentPlayerId = -1;
         public int RandomSeed = 12345;
 
@@ -60,7 +60,7 @@ namespace Game.Domain
         {
             RandomSeed = seed;
             rng = new Random(seed);
-            GameCount = 0;
+            GameRound = 0;
         }
 
         public void Start()
@@ -69,7 +69,7 @@ namespace Game.Domain
             readyToStartCount = 0;
 
             Turn = 0;
-            GameCount++;
+            GameRound++;
             CurrentPlayerId = -1;
 
             currentBet = 0;
@@ -92,7 +92,6 @@ namespace Game.Domain
         {
             isStart = false;
             Turn = 0;
-            GameCount = 0;
             CurrentPlayerId = -1;
             currentBet = 0;
 
@@ -268,7 +267,7 @@ namespace Game.Domain
         public static string token;
         public static int lastEventIndex = -1;
 
-        private static int _skillCardCount = 6;
+        private static int _skillCardCount = 10;
         public static int SkillCardCount
         {
             get => _skillCardCount;

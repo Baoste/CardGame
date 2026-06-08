@@ -43,7 +43,8 @@ public static class SceneViewManager
             opponentActionPointView,
             turnIndicator,
             callOrFoldMachine,
-            callOrFoldMachineBack
+            callOrFoldMachineBack,
+            endTurnView
     };
 
     public static void ClearViews()

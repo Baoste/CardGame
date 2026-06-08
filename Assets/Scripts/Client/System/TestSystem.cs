@@ -75,9 +75,9 @@ public class TestSystem : MonoBehaviour
             ClientGameState.SkillCardCount--;
             SceneViewManager.viewAnimController.displaySkillCard.Display("test", "test", 1);
             //ClientCommand.DrawSkillCard();
-            instance1 = CardViewCreator.Instance.CreateCardInstance(1001, 9999);
+            instance1 = CardViewCreator.Instance.CreateCardInstance(1203, 9999);
             StartCoroutine(handView.AddCard(instance1));
-            instance2 = CardViewCreator.Instance.CreateCardInstance(1001, 9998);
+            instance2 = CardViewCreator.Instance.CreateCardInstance(1203, 9998);
             StartCoroutine(ophandView.AddCard(instance2));
         }
 

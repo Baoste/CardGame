@@ -12,6 +12,7 @@ public class StartTurnCmdHandler : CommandHandler, ICommandHandler
         session.gameState.Turn++;
         session.gameState.CurrentPlayerId = payload.playerId;
 
+        session.ctx.ClearContext();
         int opponentId = 1 - payload.playerId;
         session.ctx.caster = payload.playerId;
         session.ctx.opponent = opponentId;

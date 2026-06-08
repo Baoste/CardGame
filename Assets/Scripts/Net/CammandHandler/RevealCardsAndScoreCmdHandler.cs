@@ -10,6 +10,7 @@ public class RevealCardsAndScoreCmdHandler : CommandHandler, ICommandHandler
     {
         // need change
         var payload = JsonConvert.DeserializeObject<RevealCardsAndScoreCommand>(cmd.jsonData);
+        CommandResult results = new CommandResult();
 
         // TODO: 服务器端需要做什么
         int winnerId;
@@ -46,11 +47,9 @@ public class RevealCardsAndScoreCmdHandler : CommandHandler, ICommandHandler
 
         int currentBet = session.gameState.currentBet;
         session.gameState.Dispose();
-        session.gameState.players[winnerId].chipCount += currentBet;
-        session.gameState.players[1 - winnerId].chipCount -= currentBet;
+        session.gameState.players[winnerId].chipCount += 2 * currentBet;
+        // session.gameState.players[1 - winnerId].chipCount -= currentBet; // 输家扣除筹码在 PlaceBets 阶段已经处理了
 
-        // return
-        CommandResult results = new CommandResult();
         results.events.Enqueue(MakeEvent(
             "RevealCardsAndScore",
             new RevealCardsAndScoreEvent    // need change
@@ -64,6 +63,9 @@ public class RevealCardsAndScoreCmdHandler : CommandHandler, ICommandHandler
             ),
             -1
         ));
+
+        NetEffectFunction.EndMatch(session, payload.playerId, winnerId, currentBet, ref results);
+
         return results;
     }
 }

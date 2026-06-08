@@ -1,4 +1,4 @@
-using DG.Tweening;
+﻿using DG.Tweening;
 using Game.Domain;
 using Newtonsoft.Json;
 using System.Collections;
@@ -13,29 +13,70 @@ public class ClickToDrawSkillCard : MonoBehaviour, IMouseClick, IMouseEnter, IMo
     [SerializeField] private TMP_Text skillCardCountText;
     public Stack<GameObject> SkillCardStack;
 
+    [SerializeField] private string[] EmojiStrings;
+    private string countEmoji;
+    private Coroutine animCoroutine;
+
     private void Start()
     {
+        countEmoji = EmojiStrings[0];
+        skillCardCountText.text = countEmoji;
         SkillCardStack = new Stack<GameObject>();
         ResetCardStack();
     }
 
     public void Draw1Card()
     {
-        skillCardCountText.text = ClientGameState.SkillCardCount.ToString();
+        ChangeCountStr(ClientGameState.SkillCardCount);
 
         if (ClientGameState.SkillCardCount < 6 && SkillCardStack.Count > 0)
         {
             GameObject topCard = SkillCardStack.Pop();
             topCard.SetActive(false);
         }
+        // 当牌堆中有4张牌时，触发遮罩动画
         if (ClientGameState.SkillCardCount == 4)
         {
             DOTween.To(
                 () => buttomMat.GetFloat("_MaskAppearProgress"),
                 x => buttomMat.SetFloat("_MaskAppearProgress", x),
-                2f, // Ŀ��ֵ
-                3f  // ����ʱ��
+                2f, // 目标值
+                3f  // 持续时间
             ).SetEase(Ease.Linear);
+        }
+    }
+
+    private void ChangeCountStr(int count)
+    {
+        string str = "";
+        if (count < 4)
+        {
+            if (animCoroutine != null) StopCoroutine(animCoroutine);
+            animCoroutine = StartCoroutine(PlayStrAnim("( /owo)|(  /ow)|(   /o)|(    /)|(     )|(\\    )|(o\\   )|(wo\\  )|(owo\\ )|(/owo\\)"));
+        }
+        else if (count < 7)
+        {
+            if (animCoroutine != null) StopCoroutine(animCoroutine);
+            animCoroutine = StartCoroutine(PlayStrAnim("( '.ω.)|(  '.ω)|(   '.)|(    ')|(     )|(     )|('    )|(.'   )|(ω.' )|(.ω.' )|('.ω.')"));
+        }
+        else
+        {
+            str = EmojiStrings[Random.Range(0, EmojiStrings.Length)];
+            countEmoji = str;
+            skillCardCountText.text = countEmoji;
+        }
+    }
+
+    private IEnumerator PlayStrAnim(string str)
+    {
+        yield return new WaitForSeconds(0.5f);
+
+        string[] parts = str.Split('|');
+        foreach (string part in parts)
+        {
+            countEmoji = part;
+            skillCardCountText.text = countEmoji;
+            yield return new WaitForSeconds(0.2f);
         }
     }
 
@@ -56,7 +97,7 @@ public class ClickToDrawSkillCard : MonoBehaviour, IMouseClick, IMouseEnter, IMo
         if (ClientEffectContext.isExecutingSkillCard) return;
         if (ClientGameState.playerSlot != ClientGameState.Instance.CurrentPlayerId)
         {
-            Debug.Log("������Ļغ�");
+            Debug.Log("不是你的回合");
             return;
         }
 
@@ -73,6 +114,13 @@ public class ClickToDrawSkillCard : MonoBehaviour, IMouseClick, IMouseEnter, IMo
         {
             return;
         }
+
+        if (animCoroutine != null)
+        {
+            StopCoroutine(animCoroutine);
+            animCoroutine = null;
+        }
+        skillCardCountText.text = ClientGameState.SkillCardCount.ToString();
 
         skillCard.DOKill();
 
@@ -96,6 +144,7 @@ public class ClickToDrawSkillCard : MonoBehaviour, IMouseClick, IMouseEnter, IMo
         if (ClientEffectContext.isExecutingSkillCard || ClientEffectContext.isDrawingSkillCard || ClientGameState.SkillCardCount < 1) return;
         if (ClientGameState.playerSlot != ClientGameState.Instance.CurrentPlayerId) return;
 
+        skillCardCountText.text = countEmoji;
         skillCard.DOKill();
 
         Sequence seq = DOTween.Sequence();

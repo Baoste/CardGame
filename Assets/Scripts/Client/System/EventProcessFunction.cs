@@ -1,9 +1,11 @@
 using Cinemachine;
+using FishNet.Demo.AdditiveScenes;
 using Game.Domain;
 using Newtonsoft.Json;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using UnityEngine;
 
 public class EventProcessFunction : MonoBehaviour
@@ -35,6 +37,7 @@ public class EventProcessFunction : MonoBehaviour
         ProcessDispatcher.Register("EndTurnTest", EndTurnTest);
         ProcessDispatcher.Register("ClearCardsToResolveTest", ClearResolve);
         ProcessDispatcher.Register("RevealTest", RevealTest);
+        ProcessDispatcher.Register("EndMatchTest", EndMatchTest);
         ProcessDispatcher.Register("SumPointTest", SumPointTest);
         ProcessDispatcher.Register("EmojiTest", EmojiTest);
     }
@@ -99,7 +102,10 @@ public class EventProcessFunction : MonoBehaviour
         SceneViewManager.turnIndicator.Rotate2Player(ClientGameState.playerSlot != playerId);
 
         if (ClientGameState.playerSlot == playerId)
+        {
             SceneViewManager.endTurnView.btnLight.intensity = 1;
+            SceneViewManager.endTurnView.hasClicked = false;
+        }
 
         if (turn == 1)
         {
@@ -185,10 +191,12 @@ public class EventProcessFunction : MonoBehaviour
 
     // parameters[0]: int dealerId
     // parameters[1]: int punterId
+    // parameters[2]: int placeBetCount
     public void AssignRolesTest(object[] parameters)
     {
         int dealerId = (int)parameters[0];
         int punterId = (int)parameters[1];
+        int placeBetCount = (int)parameters[2];
 
         SceneViewManager.roleView.ShowRole(dealerId);
 
@@ -201,8 +209,11 @@ public class EventProcessFunction : MonoBehaviour
             }
         }
 
-        StartCoroutine(SceneViewManager.myChipView.Place1BetAuto(false, 1f));
-        StartCoroutine(SceneViewManager.opponentChipView.Place1BetAuto(true, 1f));
+        for (int i = 0; i < placeBetCount; i++)
+        {
+            StartCoroutine(SceneViewManager.myChipView.Place1BetAuto(false, 1f));
+            StartCoroutine(SceneViewManager.opponentChipView.Place1BetAuto(true, 1f));
+        }
 
         if (punterId == ClientGameState.playerSlot)
             ClientCommand.StartTurn(punterId);
@@ -731,33 +742,24 @@ public class EventProcessFunction : MonoBehaviour
         int turn = (int)parameters[1];
         bool reveal = (bool)parameters[2];
 
-        bool isOpponent = playerId != ClientGameState.playerSlot;
-        // ÁÁµÆ
-        if (ClientGameState.Instance.dealerId == playerId)
-        {
-            //int dealerTurn = (turn + 1) / 2;
-            //if (isOpponent)
-            //    SceneViewManager.opponentTurnLightView.SetLight(dealerTurn + 1);
-            //else
-            //    SceneViewManager.myTurnLightView.SetLight(dealerTurn + 1);
-
-            StartCoroutine(SceneViewManager.myRevealButtonView.RandomAnimation(reveal));
-            StartCoroutine(SceneViewManager.opponentRevealButtonView.RandomAnimation(reveal));
-        }
-        //else
-        //{
-        //    int playerTurn = turn / 2 + 1;
-        //    if (isOpponent)
-        //        SceneViewManager.opponentTurnLightView.SetLight(playerTurn + 1);
-        //    else
-        //        SceneViewManager.myTurnLightView.SetLight(playerTurn + 1);
-        //}
-
-        // Òþ²Ø±¬ÅÆ°´Å¥
         if (ClientGameState.Instance.punterId == ClientGameState.playerSlot)
             SceneViewManager.myRevealButtonView.HideButton();
         else
             SceneViewManager.opponentRevealButtonView.HideButton();
+        StartCoroutine(_PlayTurnEndAnim(playerId, reveal));
+    }
+
+    private IEnumerator _PlayTurnEndAnim(int playerId, bool reveal)
+    {
+        if (ClientGameState.Instance.dealerId == playerId)
+        {
+            yield return SceneViewManager.myRevealButtonView.RandomAnimation(reveal);
+            yield return SceneViewManager.opponentRevealButtonView.RandomAnimation(reveal);
+        }
+
+        yield return new WaitForSeconds(0.5f);
+        if (ClientGameState.playerSlot == playerId)
+            ClientCommand.StartTurn(1 - ClientGameState.playerSlot);
     }
 
     // parameters[0]: int playerId
@@ -802,6 +804,59 @@ public class EventProcessFunction : MonoBehaviour
         yield return SceneViewManager.roleView.ShowWin(winnerId);
 
         // chip
+        //StartCoroutine(SceneViewManager.myChipView.RotateContainer());
+        //yield return SceneViewManager.opponentChipView.RotateContainer();
+        //if (isOpponentWin)
+        //{
+        //    // ³ïÂëÍË»Ø³ïÂëÅÌ
+        //    SceneViewManager.opponentChipView.GenerateChips(SceneViewManager.opponentChipView.chipsPlaced.Count, true);
+        //    // ¶Ô·½»ñµÃ³ïÂë
+        //    SceneViewManager.opponentChipView.GenerateChips(currentBet, true);
+        //}
+        //else
+        //{
+        //    // ³ïÂëÍË»Ø³ïÂëÅÌ
+        //    SceneViewManager.myChipView.GenerateChips(SceneViewManager.myChipView.chipsPlaced.Count, false);
+        //    // »ñµÃ³ïÂë
+        //    SceneViewManager.myChipView.GenerateChips(currentBet, false);
+        //}
+        //// Ïú»Ù³ïÂë
+        //SceneViewManager.myChipView.DestroyChipsPlaced();
+        //SceneViewManager.opponentChipView.DestroyChipsPlaced();
+        //StartCoroutine(SceneViewManager.myChipView.RotateContainer());
+        //yield return SceneViewManager.opponentChipView.RotateContainer();
+
+        //yield return SceneViewManager.viewAnimController.PlayGameEndAnim();
+    }
+
+    // parameters[0]: int finalWinnerId
+    // parameters[1]: int winnerId
+    // parameters[2]: int currentBet
+    public void EndMatchTest(object[] parameters)
+    {
+        int finalWinnerId = (int)parameters[0];
+        int winnerId = (int)parameters[1];
+        int currentBet = (int)parameters[2];
+
+        if (finalWinnerId == -1)
+        {
+            StartCoroutine(DelayToStartGame(winnerId, currentBet));
+        }
+        else
+        {
+            bool isWinner = finalWinnerId == ClientGameState.playerSlot;
+            StartCoroutine(DelayToEndGame(isWinner));
+        }
+    }
+
+    private IEnumerator DelayToStartGame(int winnerId, int currentBet)
+    {
+        bool isOpponentWin = winnerId != ClientGameState.playerSlot;
+
+        yield return new WaitForSeconds(2f);
+
+        StartCoroutine(SceneViewManager.myChipView.RotateContainer());
+        yield return SceneViewManager.opponentChipView.RotateContainer();
         if (isOpponentWin)
         {
             // ³ïÂëÍË»Ø³ïÂëÅÌ
@@ -819,9 +874,23 @@ public class EventProcessFunction : MonoBehaviour
         // Ïú»Ù³ïÂë
         SceneViewManager.myChipView.DestroyChipsPlaced();
         SceneViewManager.opponentChipView.DestroyChipsPlaced();
+        StartCoroutine(SceneViewManager.myChipView.RotateContainer());
+        yield return SceneViewManager.opponentChipView.RotateContainer();
 
         yield return SceneViewManager.viewAnimController.PlayGameEndAnim();
+
+        yield return new WaitForSeconds(2f);
         ClientCommand.StartGame();
+    }
+
+    private IEnumerator DelayToEndGame(bool isWinner)
+    {
+        yield return new WaitForSeconds(2f);
+
+        SceneViewManager.myChipView.MoveChipsPlaced();
+        SceneViewManager.opponentChipView.MoveChipsPlaced();
+        // TODO: ÏÔÊ¾Ê¤¸º¶¯»­
+        StartCoroutine(SceneViewManager.viewAnimController.PlayMatchEndAnim(isWinner));
     }
 
     // parameters[0]: int playerId

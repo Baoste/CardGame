@@ -36,6 +36,7 @@ public static class DispatcherBootstrap
         EventDispatcher.Register("RevealCardsAndScore", new RevealCardsAndScoreEventHandler());
         EventDispatcher.Register("SumPoint", new SumPointEventHandler());
         EventDispatcher.Register("EndTurn", new EndTurnEventHandler());
+        EventDispatcher.Register("EndMatch", new EndMatchEventHandler());
 
         CommandDispatcher.Register("GetCardDeck", new GetCardDeckCmdHandler());
         CommandDispatcher.Register("LeaveMatch", new LeaveMatchCmdHandler());

@@ -26,6 +26,8 @@ public class RevealButton : MonoBehaviour, IMouseEnter, IMouseExit, IMouseClick
 
     [SerializeField] private Transform pivot;
 
+    public bool hasClicked = true;
+
     private void Start()
     {
         // originalPosition = transform.position;  // 获取按钮的初始位置
@@ -40,6 +42,7 @@ public class RevealButton : MonoBehaviour, IMouseEnter, IMouseExit, IMouseClick
     // 鼠标进入时，按钮轻微晃动并开启按钮灯光
     public void MouseEnter()
     {
+        if (hasClicked) return;
         isMouseOver = true;  // 标记鼠标进入
         Vector3 mouseWorldPos = GetMouseWorldPosition();
         TiltButton(mouseWorldPos);  // 根据鼠标位置进行倾斜
@@ -49,6 +52,7 @@ public class RevealButton : MonoBehaviour, IMouseEnter, IMouseExit, IMouseClick
     // 鼠标退出时，按钮回到原位置并恢复原始旋转
     public void MouseExit()
     {
+        if (hasClicked) return;
         isMouseOver = false;  // 标记鼠标离开
         transform.DOKill();  // 停止所有动画
         transform.DOLocalMove(originalPosition, shakeDuration);  // 回到原始位置
@@ -59,8 +63,11 @@ public class RevealButton : MonoBehaviour, IMouseEnter, IMouseExit, IMouseClick
     // 鼠标按下时，按钮下沉并倾斜
     public void MouseClick()
     {
+        if (hasClicked) return;
+        hasClicked = true;
         Vector3 mouseWorldPos = GetMouseWorldPosition();
         TiltButton(mouseWorldPos);  // 根据鼠标位置进行倾斜
+        buttonLight.SetActive(false);  // 关闭按钮灯光
         transform.DOLocalMove(originalPosition - Vector3.up * pressAmount, pressDuration)
             .SetEase(Ease.InQuad)  // 设置加速下沉
             .OnComplete(() =>

@@ -12,6 +12,7 @@ public class ChipController : MonoBehaviour
     [HideInInspector] public ChipDragState dragState;
     [HideInInspector] public ChipPlacedState placedState;
     [HideInInspector] public ChipSelectedState selectedState;
+    [HideInInspector] public ChipDiscardState discardState;
     #endregion
 
     [HideInInspector] public Outline outlineControl;
@@ -28,6 +29,7 @@ public class ChipController : MonoBehaviour
         dragState = new ChipDragState(stateMachine, this, "isDrag");
         placedState = new ChipPlacedState(stateMachine, this, "isPlaced");
         selectedState = new ChipSelectedState(stateMachine, this, "isSelected");
+        discardState = new ChipDiscardState(stateMachine, this, "isDiscard");
     }
     private void Start()
     {

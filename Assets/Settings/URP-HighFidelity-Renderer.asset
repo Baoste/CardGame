@@ -127,7 +127,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ae0021bd820c363419644365a21f8206, type: 3}
   m_Name: PixelPostProcessing
   m_EditorClassIdentifier: 
-  m_Active: 1
+  m_Active: 0
   settings:
     blitMaterial: {fileID: 2100000, guid: 0fe674733bf41e744aa254071ff97f02, type: 2}
     passEvent: 500

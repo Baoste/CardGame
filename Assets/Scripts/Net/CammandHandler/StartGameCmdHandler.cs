@@ -1,6 +1,7 @@
 using Game.Domain;
 using Game.Server;
 using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 
 public class StartGameCmdHandler : CommandHandler, ICommandHandler
@@ -56,7 +57,8 @@ public class StartGameCmdHandler : CommandHandler, ICommandHandler
             (
                 payload.playerId,
                 true,
-                skillCardCount
+                skillCardCount,
+                session.gameState.GameRound
             ),
             -1
         ));
@@ -168,12 +170,19 @@ public class StartGameCmdHandler : CommandHandler, ICommandHandler
         session.gameState.dealerId = dealerId;
         session.gameState.punterId = punterId;
 
-        if (session.gameState.players[1 - payload.playerId].Place1Bet() &&
-            session.gameState.players[payload.playerId].Place1Bet())
+        // Place bets
+        int placeCount = Math.Max(session.gameState.GameRound - 1, 1);
+        placeCount = Math.Min(
+            placeCount, 
+            Math.Min(session.gameState.players[0].chipCount, session.gameState.players[1].chipCount)
+        );
+        if (session.gameState.players[1 - payload.playerId].PlaceBets(placeCount) &&
+            session.gameState.players[payload.playerId].PlaceBets(placeCount))
         {
-            session.gameState.currentBet = 1;
+            session.gameState.currentBet = placeCount;
         }
 
+        // return
         results.events.Enqueue(MakeEvent(
             "AssignRoles",
             new AssignRolesEvent    // need change
@@ -181,7 +190,8 @@ public class StartGameCmdHandler : CommandHandler, ICommandHandler
                 payload.playerId,
                 true,
                 dealerId,
-                punterId
+                punterId,
+                placeCount
             ),
             -1
         ));

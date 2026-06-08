@@ -58,10 +58,12 @@ namespace Game.Domain
     public class StartGameEvent : PlayerEvent
     {
         public int skillCardCount;
-        public StartGameEvent(int playerId, bool success, int skillCardCount) 
+        public int gameRound;
+        public StartGameEvent(int playerId, bool success, int skillCardCount, int gameRound) 
             : base(playerId, success)
         {
             this.skillCardCount = skillCardCount;
+            this.gameRound = gameRound;
         }
     }
 
@@ -72,11 +74,13 @@ namespace Game.Domain
     {
         public int dealerId;
         public int punterId;
-        public AssignRolesEvent(int playerId, bool success, int dealerId, int punterId)
+        public int placeBetCount;
+        public AssignRolesEvent(int playerId, bool success, int dealerId, int punterId, int placeBetCount)
             : base(playerId, success)
         {
             this.dealerId = dealerId;
             this.punterId = punterId;
+            this.placeBetCount = placeBetCount;
         }
     }
 
@@ -506,6 +510,20 @@ namespace Game.Domain
             this.opponentId = opponentId;
             this.turn = turn;
             this.reveal = reveal;
+        }
+    }
+
+    public class EndMatchEvent : PlayerEvent
+    {
+        public int finalWinnerId;
+        public int winnerId;
+        public int currentBet;
+        public EndMatchEvent(int playerId, bool success, int finalWinnerId, int winnerId, int currentBet)
+            : base(playerId, success)
+        {
+            this.finalWinnerId = finalWinnerId;
+            this.winnerId = winnerId;
+            this.currentBet = currentBet;
         }
     }
 }

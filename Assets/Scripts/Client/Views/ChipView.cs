@@ -20,8 +20,8 @@ public class ChipView : MonoBehaviour
     [SerializeField] private ChipInit chipInit;
     [SerializeField] private Transform chipContainer;
 
-    [HideInInspector] public Dictionary<int, GameObject> chipsInTray = new Dictionary<int, GameObject>();
-    [HideInInspector] public Dictionary<int, GameObject> chipsPlaced = new Dictionary<int, GameObject>();
+    public Dictionary<int, GameObject> chipsInTray = new Dictionary<int, GameObject>();
+    public Dictionary<int, GameObject> chipsPlaced = new Dictionary<int, GameObject>();
 
     private void Start()
     {
@@ -34,6 +34,13 @@ public class ChipView : MonoBehaviour
         chipContainer.DORotate(new Vector3(0, 0, 180f), 0.5f, RotateMode.LocalAxisAdd).SetEase(Ease.OutBack);
     }
 
+    public IEnumerator RotateContainer()
+    {
+        Sequence seq = DOTween.Sequence();
+        seq.Append(chipContainer.DORotate(new Vector3(0, 0, 180f), 0.5f, RotateMode.LocalAxisAdd).SetEase(Ease.OutBack));
+        yield return seq.WaitForCompletion();
+    }
+
     public void GenerateChips(int count, bool isOpponent)
     {
         chipInit.GenerateChips(count, isOpponent, ref chipsInTray);
@@ -44,6 +51,16 @@ public class ChipView : MonoBehaviour
         foreach (var obj in chipsPlaced.Values)
         {
             Destroy(obj);
+        }
+        chipsPlaced.Clear();
+    }
+
+    public void MoveChipsPlaced()
+    {
+        foreach (var obj in chipsPlaced.Values)
+        {
+            ChipController chipController = obj.GetComponentInChildren<ChipController>();
+            chipController.stateMachine.ChangeState(chipController.discardState);
         }
         chipsPlaced.Clear();
     }

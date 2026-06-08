@@ -31,11 +31,11 @@ public class RevealView : MonoBehaviour, IViewClear
 
     public void ClearView()
     {
-        revealButton.GetComponent<RevealButton>().DOKill();
+        revealButton.transform.DOKill();
         revealButton.GetComponent<RevealButton>().enabled = false;
         revealButton.GetComponent<Collider>().enabled = false;
         isRandomEnabled = false;
-        revealButton.transform.localPosition = BtnHidePosition;
+        revealButton.transform.DOLocalMove(BtnHidePosition, 0.5f);
     }
 
     public void ShowButton(bool canClick)
@@ -43,6 +43,7 @@ public class RevealView : MonoBehaviour, IViewClear
         revealButton.transform.DOLocalMove(BtnShowPosition, 0.5f);
         if (canClick)
         {
+            revealButton.GetComponent<RevealButton>().hasClicked = false;
             revealButton.GetComponent<RevealButton>().enabled = true;
             revealButton.GetComponent<Collider>().enabled = true;
         }
@@ -50,6 +51,7 @@ public class RevealView : MonoBehaviour, IViewClear
 
     public void HideButton()
     {
+        revealButton.transform.DOKill();
         revealButton.GetComponent<RevealButton>().enabled = false;
         revealButton.GetComponent<Collider>().enabled = false;
         revealButton.transform.DOLocalMove(BtnHidePosition, 0.5f);

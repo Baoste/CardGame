@@ -66,7 +66,11 @@ public class RoleView : MonoBehaviour
             yield return new WaitForSecondsRealtime(1.5f);
         }
 
-        ApplyDissolution(ClientGameState.Instance.dealerId == ClientGameState.playerSlot ? MyDealer : OpDealer, My_DissolutionVFX, 1.2f);
+        ApplyDissolution(
+            ClientGameState.Instance.dealerId == ClientGameState.playerSlot ? MyDealer : OpDealer,
+            ClientGameState.Instance.dealerId == ClientGameState.playerSlot ? My_DissolutionVFX : OP_DissolutionVFX,
+            1.2f
+        );
 
         yield break;
     }
