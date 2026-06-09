@@ -30,7 +30,11 @@ Material:
     m_Ints: []
     m_Floats:
     - _Freq: 48
+<<<<<<< HEAD
     - _LightsCount: 9
+=======
+    - _LightsCount: 4
+>>>>>>> 1ad4d047adf6acedce53b630080009407b6a2c21
     - _Radius: 0.5
     m_Colors:
     - _BaseColor: {r: 0, g: 0, b: 0, a: 1}
