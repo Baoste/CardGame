@@ -14,6 +14,8 @@ public class SlotMachine : MonoBehaviour
 
     public IEnumerator PlayAnimation(bool reveal)
     {
+        AudioManager.Instance.Play("SlotMachineAppear");
+
         Quaternion quaternion = transform.rotation;
 
         Sequence seq = DOTween.Sequence();

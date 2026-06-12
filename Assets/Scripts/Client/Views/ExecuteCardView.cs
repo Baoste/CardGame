@@ -40,6 +40,8 @@ public class ExecuteCardView : MonoBehaviour
 
     public IEnumerator MoveToExecutePosition(GameObject card)
     {
+        AudioManager.Instance.Play("SkillCard_Fall");
+
         card.GetComponent<Outline>().Enable = 0f;
 
         StartCoroutine(SceneViewManager.myHandView.RemoveCard(card));

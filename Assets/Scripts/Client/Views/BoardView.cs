@@ -139,6 +139,8 @@ public class BoardView : MonoBehaviour, IViewClear
         Vector3 fallPosition = targetPosition + Vector3.down * fallDistance;
 
         // 移到目标位置
+        AudioManager.Instance.Play("PointCardFly");
+
         PointCardController pcc = instance.GetComponent<PointCardController>();
         pcc.stateMachine.ChangeState(pcc.onBoardState);
         Sequence seq = DOTween.Sequence();
@@ -146,7 +148,7 @@ public class BoardView : MonoBehaviour, IViewClear
         seq.Append(instance.transform.DOMove(fallPosition, 0.1f).SetEase(Ease.InCubic));
         yield return seq.WaitForCompletion();
 
-        AudioManager.Instance.Play("DrawPointCard");
+        AudioManager.Instance.Play("PointCardFall");
         instance.GetComponent<PointCardShake>().CardShake();
     }
 
@@ -206,6 +208,8 @@ public class BoardView : MonoBehaviour, IViewClear
         yield return new WaitForSeconds(0.5f);
 
         // 移到目标位置
+        AudioManager.Instance.Play("PointCardFly");
+
         PointCardController pcc = instance.GetComponent<PointCardController>();
         pcc.stateMachine.ChangeState(pcc.onBoardState);
         Sequence seq = DOTween.Sequence();
@@ -213,7 +217,7 @@ public class BoardView : MonoBehaviour, IViewClear
         seq.Append(instance.transform.DOMove(fallPosition, 0.1f).SetEase(Ease.InCubic));
         yield return seq.WaitForCompletion();
 
-        AudioManager.Instance.Play("DrawPointCard");
+        AudioManager.Instance.Play("PointCardFall");
 
         instance.GetComponent<PointCardShake>().CardShake();
         Quaternion targetRotation = instance.transform.rotation * Quaternion.Euler(0, 0.5f, 0);

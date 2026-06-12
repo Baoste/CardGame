@@ -24,6 +24,8 @@ public class EndTurnView : MonoBehaviour, IViewClear, IMouseDown
        
         transform.DOMoveY(transform.position.y - clickDist, 0.1f).SetEase(Ease.OutQuad).OnComplete(() =>
         {
+            AudioManager.Instance.Play("EndTurn");
+
             hasClicked = true;
             btnLight.intensity = 0;
             ClientCommand.EndTurn();

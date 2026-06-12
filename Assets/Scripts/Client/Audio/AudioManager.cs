@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Audio;
 
@@ -22,6 +23,7 @@ public class AudioManager : MonoBehaviour
     [SerializeField] private AudioMixerGroup sfxGroup;
 
     private AudioSource[] sfxSources;
+    private Dictionary<string, AudioSource> playingSfxSources;
     private int sfxIndex;
 
     private Coroutine bgmFadeCoroutine;
@@ -33,6 +35,8 @@ public class AudioManager : MonoBehaviour
             Destroy(gameObject);
             return;
         }
+
+        playingSfxSources = new Dictionary<string, AudioSource>();
 
         Instance = this;
         DontDestroyOnLoad(gameObject);
@@ -85,7 +89,21 @@ public class AudioManager : MonoBehaviour
         if (source)
         {
             ApplyConfig(source, config);
+
             source.Play();
+            if (config.loop)
+            {
+                playingSfxSources[id] = source;
+            }
+        }
+    }
+
+    public void Stop(string id)
+    {
+        if (playingSfxSources.TryGetValue(id, out AudioSource source))
+        {
+            source.Stop();
+            playingSfxSources.Remove(id);
         }
     }
 

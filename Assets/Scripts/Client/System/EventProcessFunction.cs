@@ -132,7 +132,10 @@ public class EventProcessFunction : MonoBehaviour
         }
 
         // ¡¡µ∆
+        AudioManager.Instance.Play("TurnLightOn");
+        
         bool isOpponent = playerId != ClientGameState.playerSlot;
+
         if (ClientGameState.Instance.dealerId == playerId)
         {
             int dealerTurn = (turn + 1) / 2;
@@ -160,10 +163,12 @@ public class EventProcessFunction : MonoBehaviour
         InvalidActionType invalidType = (InvalidActionType)parameters[1];
         int instanceId = (int)parameters[2];
 
+        AudioManager.Instance.Play("InvalidAction");
+
         // TODO: œ‘ æ¥ÌŒÛÃ· æ
         Debug.Log($"[Client] Player {playerId} performed invalid action: {invalidType}");
 
-        switch(invalidType)
+        switch (invalidType)
         {
             case InvalidActionType.InvalidTarget:
             case InvalidActionType.NotEnoughAP:
@@ -538,6 +543,8 @@ public class EventProcessFunction : MonoBehaviour
         bool isOpponent = playerId != ClientGameState.playerSlot;
         GameObject instance = CardViewCreator.Instance.CreateCardInstance(cardId, instanceId);
         instanceMap[instanceId] = instance;
+
+        AudioManager.Instance.Play("DrawPointCard");
 
         StartCoroutine(SceneViewManager.boardView.AddCard(instance, playerId, cardState));
 
