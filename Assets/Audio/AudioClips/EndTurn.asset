@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   id: EndTurn
   clip:
-  - {fileID: 8300000, guid: 7435ac4a2b3cf0042a455661fb04f3e7, type: 3}
+  - {fileID: 8300000, guid: 56264d233d8be73429761e1c7912a086, type: 3}
   type: 1
   volume: 1
   pitch: 1

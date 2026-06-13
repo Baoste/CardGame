@@ -63,6 +63,17 @@ public class RevealButton : MonoBehaviour, IMouseEnter, IMouseExit, IMouseClick
     // 鼠标按下时，按钮下沉并倾斜
     public void MouseClick()
     {
+        // 教程特定
+        if (ClientGameState.IsTutorial)
+        {
+            ClientGameState.TutorialStepDone = true;
+            hasClicked = true;
+            TiltButton(GetMouseWorldPosition());  // 根据鼠标位置进行倾斜
+            buttonLight.SetActive(false);  // 关闭按钮灯光
+            transform.DOLocalMove(originalPosition - Vector3.up * pressAmount, pressDuration).SetEase(Ease.InQuad);
+            return;
+        }
+
         if (hasClicked) return;
         hasClicked = true;
         Vector3 mouseWorldPos = GetMouseWorldPosition();

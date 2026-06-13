@@ -59,6 +59,7 @@ public class OddEvenSwitch : MonoBehaviour, IMouseDrag, IMouseUp
     {
         if (Mathf.Abs(transform.localEulerAngles.x) > 45)
         {
+            AudioManager.Instance.Play("GuessOddEven_Operate");
             StartCoroutine(CloseSwitch());
         }
         else

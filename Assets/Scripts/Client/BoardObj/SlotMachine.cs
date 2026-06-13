@@ -14,7 +14,7 @@ public class SlotMachine : MonoBehaviour
 
     public IEnumerator PlayAnimation(bool reveal)
     {
-        AudioManager.Instance.Play("SlotMachineAppear");
+        AudioManager.Instance.Play("SettleUp_SlotMachineAppear");
 
         Quaternion quaternion = transform.rotation;
 

@@ -74,7 +74,7 @@ public class ChipSelectDrag : MonoBehaviour
             return;
 
         chipStartPositions.Clear();
-
+        AudioManager.Instance.Play("Chip_Up");
         foreach (ChipController chip in chipRaycastSelect.SelectedChips)
         {
             if (chip == null)
@@ -145,6 +145,35 @@ public class ChipSelectDrag : MonoBehaviour
         // 再统一处理所有 Chip
         if (hasAnyInsideValidArea)
         {
+            // 教程特定
+            if (ClientGameState.IsTutorial)
+            {
+                if (chipStartPositions.Count != 3)
+                    chipRaycastSelect.ClearSelection();
+                else
+                {
+                    AudioManager.Instance.Play("Chip_Up");
+                    for (int i = 0; i < 3; i++)
+                    {
+                        StartCoroutine(SceneViewManager.opponentChipView.Place1BetAuto(true, 0));
+                    }
+                    foreach (ChipController cc in chipStartPositions.Keys)
+                    {
+                        GameObject obj = cc.gameObject;
+
+                        cc.stateMachine.ChangeState(cc.placedState);
+                        Destroy(cc);
+                    }
+                    chipRaycastSelect.ClearList();
+                    ClientGameState.TutorialStepDone = true;
+                }
+
+                isDragging = false;
+                chipStartPositions.Clear();
+
+                return;
+            }
+
             if (ClientGameState.playerSlot != ClientGameState.Instance.CurrentPlayerId)
             {
                 Debug.Log("不是你的回合");

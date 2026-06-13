@@ -62,6 +62,12 @@ public class AudioManager : MonoBehaviour
         }
     }
 
+    public IEnumerator Play(string id, float delay)
+    {
+        yield return new WaitForSecondsRealtime(delay);
+        Play(id);
+    }
+
     public void Play(string id)
     {
         var config = database.Get(id);

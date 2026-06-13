@@ -94,6 +94,14 @@ public class ClickToDrawSkillCard : MonoBehaviour, IMouseClick, IMouseEnter, IMo
 
     public void MouseClick()
     {
+        // 教程特定
+        if (ClientGameState.IsTutorial)
+        {
+            skillCard.DOLocalMoveX(-0.003446764f, 0.2f);
+            ClientGameState.TutorialStepDone = true;
+            return;
+        }
+
         if (ClientEffectContext.isExecutingSkillCard) return;
         if (ClientGameState.playerSlot != ClientGameState.Instance.CurrentPlayerId)
         {

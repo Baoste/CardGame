@@ -10,11 +10,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: d3c8fc7f53551a7419c1d20c48f57911, type: 3}
-  m_Name: SlotMachineAppear
+  m_Name: GuessOddEven_Operate
   m_EditorClassIdentifier: 
-  id: SlotMachineAppear
+  id: GuessOddEven_Operate
   clip:
-  - {fileID: 8300000, guid: 12ea0faa1a989cc459da697fada1af7b, type: 3}
+  - {fileID: 8300000, guid: 32e0e846603d10d43a6eb1ed4dd199d9, type: 3}
   type: 1
   volume: 1
   pitch: 1

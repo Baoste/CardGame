@@ -18,7 +18,7 @@ MonoBehaviour:
   type: 1
   volume: 1
   pitch: 1
-  loop: 1
+  loop: 0
   randomClip: 0
   randomPitch: 0
   pitchRange: {x: 0.95, y: 1.05}

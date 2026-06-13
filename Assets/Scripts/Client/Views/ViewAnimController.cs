@@ -62,6 +62,7 @@ public class ViewAnimController : MonoBehaviour
     public IEnumerator PlayGameEndAnim()
     {
         // 充电
+        AudioManager.Instance.Play("SettleUp_ChargeUp");
         TablePlaneMatManager.SetFirstMaterial("Charge");
         TablePlaneMatManager.PlayPlaneAnim(1.5f, 1f, 0.2f);
 
@@ -84,6 +85,7 @@ public class ViewAnimController : MonoBehaviour
         // 准备下一把
         yield return new WaitForSeconds(2f);
         SceneViewManager.ClearViews();
+        AudioManager.Instance.Play("SettleUp_OpenCover");
         StartCoroutine(OpenPointCardDeckCover());
         StartCoroutine(CloseSkillCardDeckCover());
         // StartCoroutine(OpenChipCover());

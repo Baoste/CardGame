@@ -28,9 +28,9 @@ public class ChipView : MonoBehaviour
         chipContainer.Rotate(Vector3.forward, 180);
     }
 
-    public void StartGame(bool isOpponent)
+    public void StartGame(bool isOpponent, int chipStartCount = 6)
     {
-        chipInit.GenerateChips(6, isOpponent, ref chipsInTray);
+        chipInit.GenerateChips(chipStartCount, isOpponent, ref chipsInTray);
         chipContainer.DORotate(new Vector3(0, 0, 180f), 0.5f, RotateMode.LocalAxisAdd).SetEase(Ease.OutBack);
     }
 

@@ -154,8 +154,9 @@ public class BoardView : MonoBehaviour, IViewClear
 
     public IEnumerator HoleCardFlip()
     {
+        AudioManager.Instance.Play("SettleUp_FlipHoleCard");
+        yield return new WaitForSeconds(0.5f);
         Sequence seq = DOTween.Sequence();
-        
         seq.Append(opponentCards[0].transform.DORotate(opponentEuler + new Vector3(180f, 0, 0), 0.5f).SetEase(Ease.OutBack));
         yield return seq.WaitForCompletion();
     }
@@ -454,6 +455,7 @@ public class BoardView : MonoBehaviour, IViewClear
     private IEnumerator DestroyHoleCard(GameObject instance)
     {
         Vector3 originalPos = instance.transform.position;
+        AudioManager.Instance.Play("SettleUp_Lightning");
 
         // up and down and shake
         Sequence upDownSeq = DOTween.Sequence();
