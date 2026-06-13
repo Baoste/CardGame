@@ -1,5 +1,6 @@
 using Cinemachine;
 using DG.Tweening;
+using FishNet.Example.ColliderRollbacks;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -155,6 +156,7 @@ public class ViewAnimController : MonoBehaviour
 
     public IEnumerator PlayMatchEndAnim(bool isWin)
     {
+        finalWinAC.updateMode = AnimatorUpdateMode.AnimatePhysics;
         finalWinAC.SetTrigger(isWin ? "Win" : "Lose");
         yield return null;
     }

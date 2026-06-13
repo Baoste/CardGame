@@ -42,5 +42,7 @@ public class SlotMachine : MonoBehaviour
 
         transform.DORotateQuaternion(quaternion, 0.3f).SetEase(Ease.InBack);
         yield return new WaitForSeconds(0.3f);
+        animator.Play("Start");
+        yield return null; // 等一帧保证播放
     }
 }

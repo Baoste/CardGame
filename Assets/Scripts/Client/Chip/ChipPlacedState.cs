@@ -11,7 +11,7 @@ public class ChipPlacedState : ChipState
     public override void Enter()
     {
         // base.Enter();
-        chip.transform.parent.parent = SceneViewManager.viewAnimController.ChipMoveTransformParent;
+        // chip.transform.parent.parent = SceneViewManager.viewAnimController.ChipMoveTransformParent;
 
         chip.rb.useGravity = true;
         chip.col.isTrigger = false;
