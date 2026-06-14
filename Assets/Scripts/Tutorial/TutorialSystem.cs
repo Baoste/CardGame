@@ -3,6 +3,7 @@ using Game.Domain;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.Rendering;
 using UnityEngine.Rendering.Universal;
@@ -49,12 +50,13 @@ public class TutorialSystem : MonoBehaviour
 
         yield return DrawPointCard();
 
+        instanceMap[1001].GetComponentInChildren<Outline>().Enable = 1f;
         yield return PlaySkillCard(1001);
         yield return new WaitForSeconds(1f);
         yield return ClickTest(true, new List<int> { 1 << 7 }, 1);
         instance = CardViewCreator.Instance.CreateCardInstance(4, instanceID++);
         StartCoroutine(SceneViewManager.boardView.AddCard(instance, ClientGameState.playerSlot, CardVisualState.None));
-        SceneViewManager.mySumPointView.ChangeSum(13, true);
+        SceneViewManager.mySumPointView.ChangeSum(11, true);
 
         yield return DrawSkillCard(1004);
         yield return EndTurn();
@@ -131,7 +133,7 @@ public class TutorialSystem : MonoBehaviour
         // yield return SceneViewManager.roleView.ShowWin(ClientGameState.playerSlot);
         // yield return SceneViewManager.viewAnimController.PlayGameEndAnim();
 
-        yield return SceneViewManager.viewAnimController.PlayMatchEndAnim(true);
+        // yield return SceneViewManager.viewAnimController.PlayMatchEndAnim(true);
     }
 
     private IEnumerator ShowButton()
@@ -218,7 +220,7 @@ public class TutorialSystem : MonoBehaviour
             0.5f
         );
 
-        int layer = LayerMask.NameToLayer("HighlightOnly");
+        int layer = LayerMask.NameToLayer("Tutorial");
         foreach (int id in candidateIds)
         {
             if (instanceMap.TryGetValue(id, out GameObject instance))
@@ -229,6 +231,19 @@ public class TutorialSystem : MonoBehaviour
                 zoneClickSuggest.Show(id);
             }
         }
+    }
+
+    private void HighLight(GameObject instance)
+    {
+        DOTween.To(
+            () => colorAdjust.saturation.value,
+            x => colorAdjust.saturation.value = x,
+            -100,
+            0.5f
+        );
+
+        int layer = LayerMask.NameToLayer("Tutorial");
+        SetLayerRecursively(instance, layer);
     }
 
     private void CancelHighLight(List<int> candidateIds)
@@ -250,6 +265,19 @@ public class TutorialSystem : MonoBehaviour
                 zoneClickSuggest.Hide();
             }
         }
+    }
+
+    private void CancelHighLight(GameObject instance)
+    {
+        DOTween.To(
+            () => colorAdjust.saturation.value,
+            x => colorAdjust.saturation.value = x,
+            0,
+            0.5f
+        );
+
+        int layer = LayerMask.NameToLayer("Default");
+        SetLayerRecursively(instance, layer);
     }
 
     private void SetLayerRecursively(GameObject obj, int layer)
@@ -284,12 +312,13 @@ public class TutorialSystem : MonoBehaviour
 
         GameObject instance = CardViewCreator.Instance.CreateCardInstance(3, instanceID++);
         StartCoroutine(SceneViewManager.boardView.AddCard(instance, ClientGameState.playerSlot, CardVisualState.None));
-        SceneViewManager.mySumPointView.ChangeSum(4 + 2 + 3, true);
+        SceneViewManager.mySumPointView.ChangeSum(2 + 2 + 3, true);
         clickToDrawPointCard.gameObject.layer = LayerMask.NameToLayer("Default");
     }
 
     private IEnumerator DrawSkillCard(int id)
     {
+        HighLight(clickToDrawSkillCard.transform.parent.gameObject);
         clickToDrawSkillCard.gameObject.layer = LayerMask.NameToLayer("Tutorial");
         yield return new WaitUntil(() => ClientGameState.TutorialStepDone);
         ClientGameState.TutorialStepDone = false;
@@ -322,7 +351,7 @@ public class TutorialSystem : MonoBehaviour
         GameManager.ChangeInteractMask("Tutorial");
 
         StartCoroutine(SceneViewManager.viewAnimController.PlayStartGameAnim());
-        SceneViewManager.myChipView.StartGame(false, 9);
+        SceneViewManager.myChipView.StartGame(false, 7);
         SceneViewManager.opponentChipView.StartGame(true, 3);
         foreach (var obj in SceneViewManager.myChipView.chipsInTray.Values)
         {
@@ -341,7 +370,7 @@ public class TutorialSystem : MonoBehaviour
 
     private void InitPointCard()
     {
-        GameObject instance = CardViewCreator.Instance.CreateCardInstance(4, instanceID++);
+        GameObject instance = CardViewCreator.Instance.CreateCardInstance(2, instanceID++);
         StartCoroutine(SceneViewManager.boardView.AddCard(instance, ClientGameState.playerSlot, CardVisualState.Hole));
         instance = CardViewCreator.Instance.CreateCardInstance(5, instanceID++);
         StartCoroutine(SceneViewManager.boardView.AddCard(instance, 1 - ClientGameState.playerSlot, CardVisualState.Hole));
@@ -353,7 +382,7 @@ public class TutorialSystem : MonoBehaviour
         instance = CardViewCreator.Instance.CreateCardInstance(2, instanceID++);
         StartCoroutine(SceneViewManager.boardView.AddCard(instance, ClientGameState.playerSlot, CardVisualState.None));
 
-        SceneViewManager.mySumPointView.ChangeSum(4 + 2, true);
+        SceneViewManager.mySumPointView.ChangeSum(2 + 2, true);
         SceneViewManager.opponentSumPointView.ChangeSum(6, false);
     }
 
