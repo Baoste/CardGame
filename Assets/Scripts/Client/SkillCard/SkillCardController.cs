@@ -65,6 +65,13 @@ public class SkillCardController : MonoBehaviour, IDiscardPresentation
     
     public IEnumerator StartExecuteCard()
     {
+        // 教程特定
+        if (ClientGameState.IsTutorial)
+        {
+            ClientGameState.TutorialStepDone = true;
+            yield break;
+        }
+
         if (ClientGameState.playerSlot != ClientGameState.Instance.CurrentPlayerId)
         {
             Debug.Log("不是你的回合");

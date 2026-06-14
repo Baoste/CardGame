@@ -1,11 +1,9 @@
 using Cinemachine;
-using FishNet.Demo.AdditiveScenes;
 using Game.Domain;
 using Newtonsoft.Json;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.CompilerServices;
 using UnityEngine;
 
 public class EventProcessFunction : MonoBehaviour
@@ -132,7 +130,10 @@ public class EventProcessFunction : MonoBehaviour
         }
 
         // ¡¡µ∆
+        AudioManager.Instance.Play("TurnLightOn");
+        
         bool isOpponent = playerId != ClientGameState.playerSlot;
+
         if (ClientGameState.Instance.dealerId == playerId)
         {
             int dealerTurn = (turn + 1) / 2;
@@ -160,10 +161,12 @@ public class EventProcessFunction : MonoBehaviour
         InvalidActionType invalidType = (InvalidActionType)parameters[1];
         int instanceId = (int)parameters[2];
 
+        AudioManager.Instance.Play("InvalidAction");
+
         // TODO: œ‘ æ¥ÌŒÛÃ· æ
         Debug.Log($"[Client] Player {playerId} performed invalid action: {invalidType}");
 
-        switch(invalidType)
+        switch (invalidType)
         {
             case InvalidActionType.InvalidTarget:
             case InvalidActionType.NotEnoughAP:
@@ -209,6 +212,7 @@ public class EventProcessFunction : MonoBehaviour
             }
         }
 
+        StartCoroutine(AudioManager.Instance.Play("Chip_Up", 1f));
         for (int i = 0; i < placeBetCount; i++)
         {
             StartCoroutine(SceneViewManager.myChipView.Place1BetAuto(false, 1f));
@@ -296,6 +300,7 @@ public class EventProcessFunction : MonoBehaviour
         bool isOpponent = playerId != ClientGameState.playerSlot;
         if (isOpponent)
         {
+            AudioManager.Instance.Play("Chip_Up");
             StartCoroutine(SceneViewManager.opponentChipView.Place1BetAuto(true, 0));
             StartCoroutine(SceneViewManager.callOrFoldMachine.Show(1));
         }
@@ -325,6 +330,7 @@ public class EventProcessFunction : MonoBehaviour
         if (isOpponent)
         {
             if (instanceId.Length < 1)  return;
+            AudioManager.Instance.Play("Chip_Up");
             for (int i = 0; i < instanceId.Length; i++)
             {
                 StartCoroutine(SceneViewManager.opponentChipView.Place1BetAuto(true, 0));
@@ -373,6 +379,7 @@ public class EventProcessFunction : MonoBehaviour
         int betCount = (int)parameters[1];
 
         bool isOpponent = playerId != ClientGameState.playerSlot;
+        AudioManager.Instance.Play("Chip_Up");
         if (isOpponent)
         {
             for (int i = 0; i < betCount; i++)
@@ -538,6 +545,8 @@ public class EventProcessFunction : MonoBehaviour
         bool isOpponent = playerId != ClientGameState.playerSlot;
         GameObject instance = CardViewCreator.Instance.CreateCardInstance(cardId, instanceId);
         instanceMap[instanceId] = instance;
+
+        AudioManager.Instance.Play("DrawPointCard");
 
         StartCoroutine(SceneViewManager.boardView.AddCard(instance, playerId, cardState));
 

@@ -13,6 +13,13 @@ public class ClickToDrawPointCard : MonoBehaviour, IMouseClick, IMouseEnter, IMo
 
     public void MouseClick()
     {
+        // 教程特定
+        if (ClientGameState.IsTutorial)
+        {
+            ClientGameState.TutorialStepDone = true;
+            return;
+        }
+
         if (ClientEffectContext.isExecutingSkillCard) return;
         if (ClientGameState.playerSlot != ClientGameState.Instance.CurrentPlayerId)
         {

@@ -259,7 +259,7 @@ namespace Game.Domain
     public static class ClientGameState
     {
         public static int playerSlot = -1;
-        public static bool GetServerGameStateDone = false;     // 是否已经拿到 ClientGameState 的数据了
+        public static bool GetServerGameStateDone = false;      // 是否已经拿到 ClientGameState 的数据了
         public static GameState Instance = new GameState();
 
         public static MatchGateway gateway = null;
@@ -277,5 +277,8 @@ namespace Game.Domain
                 SceneViewManager.myHandView.skillCardDeck.Draw1Card();
             }
         }
+
+        public static bool IsTutorial = false;                  // 是否是教程模式，教程模式下会有一些特殊的逻辑
+        public static bool TutorialStepDone = false;            // 教程第n步是否完成了，完成了才能进行第n+1步
     }
 }

@@ -1,5 +1,6 @@
 
 using DG.Tweening;
+using Game.Domain;
 using UnityEngine;
 
 public class SkillCardDragState : SkillCardState
@@ -123,9 +124,11 @@ public class SkillCardDragState : SkillCardState
         base.OnMouseUp();
         if (skillCard.isOpponent) return;
 
-        bool shouldRemove = SceneViewManager.myHandView != null && SceneViewManager.myHandView.IsOutsideValidArea(skillCard.transform.position);
+        bool shouldRemove = SceneViewManager.myHandView != null && SceneViewManager.myHandView.IsOutsideValidArea(skillCard.transform.position)
+                            && !ClientEffectContext.isExecutingSkillCard;
         if (shouldRemove)
         {
+            AudioManager.Instance.Play("SkillCard_Play");
             skillCard.StartCoroutine(skillCard.StartExecuteCard());
         }
         else

@@ -11,11 +11,14 @@ public class ChipPlacedState : ChipState
     public override void Enter()
     {
         // base.Enter();
-        chip.transform.parent.parent = SceneViewManager.viewAnimController.ChipMoveTransformParent;
+        //chip.transform.parent.parent = SceneViewManager.viewAnimController.ChipMoveTransformParent;
+        chip.transform.parent.parent = SceneViewManager.myChipView.transform;
 
         chip.rb.useGravity = true;
         chip.col.isTrigger = false;
         chip.rb.AddForceAtPosition(-chip.transform.up * 0.5f, chip.transform.position - chip.transform.right * 0.1f, ForceMode.Impulse);
+
+        AudioManager.Instance.Play("Chip_Place");
     }
 
     public override void Exit()

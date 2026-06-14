@@ -11,8 +11,8 @@ public class ChipDiscardState : ChipState
     {
         // base.Enter();
 
-        chip.rb.useGravity = false;
-        chip.col.isTrigger = true;
+        //chip.rb.useGravity = false;
+        //chip.col.isTrigger = true;
     }
 
     public override void Exit()

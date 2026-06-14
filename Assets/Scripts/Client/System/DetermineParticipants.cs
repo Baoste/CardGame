@@ -100,6 +100,8 @@ public class DetermineParticipants : MonoBehaviour
         List<int> selectedSourceIds = candidateSourceIds;
         List<int> selectedTargetIds = candidateTargetIds;
 
+        AudioManager.Instance.Play("StartToChoose");
+
         if (sourceClick)
         {
             selectedSourceIds = new List<int>();

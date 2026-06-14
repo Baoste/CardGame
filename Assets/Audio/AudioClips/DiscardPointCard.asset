@@ -14,13 +14,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   id: DiscardPointCard
   clip:
-  - {fileID: 8300000, guid: 331cf190e77b55f4fae9a51553d80b9e, type: 3}
-  - {fileID: 8300000, guid: 6c4473a5200456d4682de9bbc674ded0, type: 3}
+  - {fileID: 8300000, guid: 3e1279382da514d41873ec855e688740, type: 3}
   type: 1
   volume: 1
   pitch: 1
   loop: 0
-  randomClip: 1
+  randomClip: 0
   randomPitch: 0
   pitchRange: {x: 0.95, y: 1.05}
   randomVolume: 0
