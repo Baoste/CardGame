@@ -26,12 +26,12 @@ public class MainMenuUI : MonoBehaviour
         // 在这里添加开始游戏的逻辑
         Debug.Log("开始游戏");
 
-        shotPlayer.PlayShot(2); // 自由相机
+        shotPlayer.PlayShot(1); // 自由相机
 
         mainMenuCanvas.SetActive(false); // 隐藏主菜单UI
 
-        player.GetComponent<PlayerController>().enabled = true;
-        player.GetComponent<PlayerMouseLook>().enabled = true;  // 启用玩家控制脚本
+        //player.GetComponent<PlayerController>().enabled = true;
+        //player.GetComponent<PlayerMouseLook>().enabled = true;  // 启用玩家控制脚本
     }
 
     public void ExitGame()

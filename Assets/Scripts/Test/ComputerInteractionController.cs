@@ -1,3 +1,4 @@
+using FishNet.Demo.AdditiveScenes;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -10,6 +11,9 @@ public class ComputerInteractionController : MonoBehaviour
 
     [Header("Player Control")]
     [SerializeField] private MonoBehaviour[] playerControlScripts;
+    [SerializeField] private GameObject player;
+    private Rigidbody playerRb;
+    private RigidbodyConstraints originalConstraints;
 
     [Header("Cursor")]
     [SerializeField] private bool showCursorWhenUsingComputer = true;
@@ -42,14 +46,14 @@ public class ComputerInteractionController : MonoBehaviour
                 EnterComputer();
             }
         }
-        else
-        {
-            if (Input.GetKeyDown(KeyCode.Escape))
-            {
-                Debug.Log("Press Esc -> ExitComputer");
-                ExitComputer();
-            }
-        }
+        //else
+        //{
+        //    if (Input.GetKeyDown(KeyCode.Escape))
+        //    {
+        //        Debug.Log("Press Esc -> ExitComputer");
+        //        ExitComputer();
+        //    }
+        //}
     }
 
     public void SetPlayerInRange(bool value)
@@ -63,7 +67,14 @@ public class ComputerInteractionController : MonoBehaviour
         if (isUsingComputer)
             return;
 
+        playerRb = player.GetComponent<Rigidbody>();
+        originalConstraints = playerRb.constraints;
+
         shotPlayer.PlayShot(3); // 切换到电脑交互摄像机
+
+        playerRb.velocity = Vector3.zero;
+        playerRb.angularVelocity = Vector3.zero;
+        playerRb.constraints = RigidbodyConstraints.FreezeAll;
 
         screenMesh.GetComponent<Renderer>().material.SetInt("_isStandby", 0); // 切换到正常屏幕材质
 
@@ -86,6 +97,10 @@ public class ComputerInteractionController : MonoBehaviour
             return;
 
         shotPlayer.PlayShot(2);
+
+        playerRb.velocity = Vector3.zero;
+        playerRb.angularVelocity = Vector3.zero;
+        playerRb.constraints = originalConstraints;
 
         screenMesh.GetComponent<Renderer>().material.SetInt("_isStandby", 1); // 切换到待机屏幕材质
 
