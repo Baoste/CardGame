@@ -1945,7 +1945,14 @@ AnimationClip:
   m_HasMotionFloatCurves: 0
   m_Events:
   - time: 9.433333
-    functionName: MainMenuActivate
+    functionName: CloseSingleDoor
+    data: 
+    objectReferenceParameter: {fileID: 0}
+    floatParameter: 0
+    intParameter: 0
+    messageOptions: 0
+  - time: 9.433333
+    functionName: EnablePlayControll
     data: 
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0

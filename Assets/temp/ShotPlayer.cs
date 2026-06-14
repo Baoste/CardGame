@@ -15,6 +15,7 @@ public class ShotPlayer : MonoBehaviour
 {
     public Shot[] shots;
     public CinemachineBrain brain;
+    public GameObject mainMenuCanvas;
 
     public KeyCode nextKey = KeyCode.C;
 
@@ -29,8 +30,10 @@ public class ShotPlayer : MonoBehaviour
         InitShots();
 
         SetActiveShot(0);
-        StartCoroutine(PlayShotWithDelay(1, 1f));
-        //PlayShotFromStart(0);
+        //StartCoroutine(PlayShotWithDelay(1, 1f));
+        PlayShotFromStart(0);
+        
+        mainMenuCanvas.SetActive(true);
     }
 
     private void Update()

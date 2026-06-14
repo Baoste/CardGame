@@ -21,10 +21,18 @@ public class Cam2 : MonoBehaviour
 
     //}
 
-    public void MainMenuActivate()
+    public void CloseSingleDoor()
     {
-        mainMenuCanvas.SetActive(true);
+        //mainMenuCanvas.SetActive(true);
         SingleDoor_Open.SetActive(false);
         SingleDoor_Closed.SetActive(true);
     }
+
+    public void EnablePlayControll()
+    {
+        shotPlayer.PlayShot(2); // 切换到自由摄像机
+        player.GetComponent<PlayerController>().enabled = true;
+        player.GetComponent<PlayerMouseLook>().enabled = true;  // 启用玩家控制脚本
+    }
+
 }

@@ -10,30 +10,68 @@ public class PlayerMouseLook : MonoBehaviour
     public float mouseSensitivity = 2.0f;
     public float verticalRotationLimit = 80.0f;
 
-    private float rotationX = 0;
-    private float currentRotationY = 75;
+    private float rotationX = 0f;
+    private float currentRotationY = 75f;
+
+    private bool canLook = true;
+    private bool skipOneFrame = false;
 
     private void Start()
     {
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
 
+        SyncRotationFromCamera();
     }
 
-    private void Update()
+    private void LateUpdate()
     {
+        if (!canLook)
+            return;
+
         camFreeTransform.position = PlayerTransform.position + offset;
+
+        if (skipOneFrame)
+        {
+            skipOneFrame = false;
+            Input.ResetInputAxes();
+            return;
+        }
 
         float mouseX = Input.GetAxis("Mouse X") * mouseSensitivity;
         float mouseY = Input.GetAxis("Mouse Y") * mouseSensitivity;
 
         currentRotationY += mouseX;
-        camFreeTransform.rotation = Quaternion.Euler(0, currentRotationY, 0);
 
         rotationX -= mouseY;
         rotationX = Mathf.Clamp(rotationX, -verticalRotationLimit, verticalRotationLimit);
 
-        transform.rotation = Quaternion.Euler(0, currentRotationY, 0);
-        camFreeTransform.rotation = Quaternion.Euler(rotationX, currentRotationY, 0);
+        PlayerTransform.rotation = Quaternion.Euler(0f, currentRotationY, 0f);
+        camFreeTransform.rotation = Quaternion.Euler(rotationX, currentRotationY, 0f);
+    }
+
+    public void SetLookEnabled(bool enabled)
+    {
+        canLook = enabled;
+
+        if (enabled)
+        {
+            SyncRotationFromCamera();
+            skipOneFrame = true;
+            Input.ResetInputAxes();
+        }
+    }
+
+    public void SyncRotationFromCamera()
+    {
+        Vector3 euler = camFreeTransform.rotation.eulerAngles;
+
+        currentRotationY = euler.y;
+
+        rotationX = euler.x;
+        if (rotationX > 180f)
+            rotationX -= 360f;
+
+        rotationX = Mathf.Clamp(rotationX, -verticalRotationLimit, verticalRotationLimit);
     }
 }
