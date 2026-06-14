@@ -10,15 +10,15 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: d3c8fc7f53551a7419c1d20c48f57911, type: 3}
-  m_Name: Electric_Buzz
+  m_Name: GenerateFog
   m_EditorClassIdentifier: 
-  id: Electric_Buzz
+  id: GenerateFog
   clip:
-  - {fileID: 8300000, guid: e6418b8e666124140845b790a30ae356, type: 3}
-  type: 3
+  - {fileID: 8300000, guid: 4dfd4fc2efa80a6489cb44c7e717c743, type: 3}
+  type: 1
   volume: 1
   pitch: 1
-  loop: 1
+  loop: 0
   randomClip: 0
   randomPitch: 0
   pitchRange: {x: 0.95, y: 1.05}

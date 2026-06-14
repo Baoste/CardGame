@@ -27,6 +27,7 @@ public class PointCardViewController : MonoBehaviour
         switch (cardState)
         {
             case CardVisualState.None:
+                AudioManager.Instance.Play("GenerateFog");
                 StartCoroutine(ChangeCardTexture_None(point));
                 break;
             case CardVisualState.Hidden:

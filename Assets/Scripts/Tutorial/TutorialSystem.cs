@@ -318,7 +318,6 @@ public class TutorialSystem : MonoBehaviour
 
     private IEnumerator DrawSkillCard(int id)
     {
-        HighLight(clickToDrawSkillCard.transform.parent.gameObject);
         clickToDrawSkillCard.gameObject.layer = LayerMask.NameToLayer("Tutorial");
         yield return new WaitUntil(() => ClientGameState.TutorialStepDone);
         ClientGameState.TutorialStepDone = false;
