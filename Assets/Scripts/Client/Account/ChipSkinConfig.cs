@@ -7,5 +7,6 @@ public class ChipSkinConfig : Singleton<ChipSkinConfig>
     public Texture2D[] texture2Ds;
     public Material[] materials;
 
-    [HideInInspector] public ChipAppearaceData chipAppearaceData;
+    [HideInInspector] public ChipAppearaceData myChipAppearaceData;
+    [HideInInspector] public ChipAppearaceData opponentChipAppearaceData;
 }

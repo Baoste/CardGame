@@ -11,17 +11,20 @@ public class AccountLoginUI : MonoBehaviour
     [SerializeField] private TMP_Dropdown chipColorDropdown;
     [SerializeField] private TMP_Dropdown chipSkinDropdown;
 
-    [SerializeField] private Button registerButton;
-    [SerializeField] private Button loginButton;
+    [Header("Single Button")]
+    [SerializeField] private Button enterButton;
 
-    [SerializeField] private TMP_Text messageText;
-
+    [Header("Test")]
     [SerializeField] private GameObject chipPrefab;
+
+    private string pendingUsername;
+    private ChipAppearaceData pendingChipAppearaceData;
+
+    private bool isWaitingResponse;
 
     private void Awake()
     {
-        registerButton.onClick.AddListener(OnClickRegister);
-        loginButton.onClick.AddListener(OnClickLogin);
+        enterButton.onClick.AddListener(OnClickEnter);
 
         accountClient.OnRegisterSuccess += OnRegisterSuccess;
         accountClient.OnRegisterFailed += OnRegisterFailed;
@@ -32,8 +35,7 @@ public class AccountLoginUI : MonoBehaviour
 
     private void OnDestroy()
     {
-        registerButton.onClick.RemoveListener(OnClickRegister);
-        loginButton.onClick.RemoveListener(OnClickLogin);
+        enterButton.onClick.RemoveListener(OnClickEnter);
 
         accountClient.OnRegisterSuccess -= OnRegisterSuccess;
         accountClient.OnRegisterFailed -= OnRegisterFailed;
@@ -42,41 +44,31 @@ public class AccountLoginUI : MonoBehaviour
         accountClient.OnLoginFailed -= OnLoginFailed;
     }
 
-    private void OnClickRegister()
+    private void OnClickEnter()
     {
-        string username = usernameInput.text;
+        if (isWaitingResponse)
+            return;
+
+        pendingUsername = usernameInput.text;
 
         int chipColorId = chipColorDropdown.value;
         int chipSkinId = chipSkinDropdown.value;
 
-        accountClient.Register(username, new ChipAppearaceData(chipColorId, chipSkinId));
-        SetMessage("正在注册...");
-    }
+        pendingChipAppearaceData = new ChipAppearaceData(chipColorId, chipSkinId);
 
-    private void OnClickLogin()
-    {
-        string username = usernameInput.text;
+        isWaitingResponse = true;
+        enterButton.interactable = false;
 
-        accountClient.Login(username);
+        // 先尝试登录
+        accountClient.Login(pendingUsername);
+
         SetMessage("正在登录...");
-    }
-
-    private void OnRegisterSuccess(AccountData account)
-    {
-        SetMessage(
-            $"注册成功：{account.Username}，筹码数量：{account.ChipCount}，皮肤：{account.ChipAppearaceData.ChipColorId} | {account.ChipAppearaceData.ChipSkinId}"
-        );
-
-        ApplyChipSkin(account.ChipAppearaceData);
-    }
-
-    private void OnRegisterFailed(string reason)
-    {
-        SetMessage($"注册失败：{reason}");
     }
 
     private void OnLoginSuccess(AccountData account)
     {
+        FinishRequest();
+
         SetMessage(
             $"登录成功：{account.Username}，筹码数量：{account.ChipCount}，皮肤：{account.ChipAppearaceData.ChipColorId} | {account.ChipAppearaceData.ChipSkinId}"
         );
@@ -86,25 +78,57 @@ public class AccountLoginUI : MonoBehaviour
 
     private void OnLoginFailed(string reason)
     {
+        // 如果服务器返回账号不存在，就自动注册
+        if (reason == "账号不存在")
+        {
+            SetMessage("账号不存在，正在自动注册...");
+
+            accountClient.Register(pendingUsername, pendingChipAppearaceData);
+            return;
+        }
+
+        FinishRequest();
         SetMessage($"登录失败：{reason}");
+    }
+
+    private void OnRegisterSuccess(AccountData account)
+    {
+        FinishRequest();
+
+        SetMessage(
+            $"注册成功：{account.Username}，筹码数量：{account.ChipCount}，皮肤：{account.ChipAppearaceData.ChipColorId} | {account.ChipAppearaceData.ChipSkinId}"
+        );
+
+        ApplyChipSkin(account.ChipAppearaceData);
+    }
+
+    private void OnRegisterFailed(string reason)
+    {
+        FinishRequest();
+        SetMessage($"注册失败：{reason}");
+    }
+
+    private void FinishRequest()
+    {
+        isWaitingResponse = false;
+
+        if (enterButton != null)
+            enterButton.interactable = true;
     }
 
     private void ApplyChipSkin(ChipAppearaceData chipAppearaceData)
     {
-        ChipSkinConfig.Instance.chipAppearaceData = chipAppearaceData;
+        ChipSkinConfig.Instance.myChipAppearaceData = chipAppearaceData;
 
         // TODO: Test, need to delete
         GameObject obj = Instantiate(chipPrefab);
         ChipViewController chipViewController = obj.GetComponentInChildren<ChipViewController>();
-        chipViewController.ChangeMat(ChipSkinConfig.Instance.chipAppearaceData);
-        Debug.Log($"[AccountLoginUI] Apply chip skin");
+        chipViewController.ChangeMat(ChipSkinConfig.Instance.myChipAppearaceData);
+        Debug.Log("[AccountLoginUI] Apply chip skin");
     }
 
     private void SetMessage(string message)
     {
-        if (messageText != null)
-            messageText.text = message;
-
         Debug.Log(message);
     }
 }
