@@ -31,6 +31,9 @@ public class ChipInit : MonoBehaviour
             chipController.instanceId = k;
             chipController.originalTransform = chip.transform;
 
+            ChipViewController chipViewController = chip.GetComponentInChildren<ChipViewController>();
+            chipViewController.ChangeMat(ChipSkinConfig.Instance.chipAppearaceData);
+
             chips[k] = chip;
             i++;
             addCount++;

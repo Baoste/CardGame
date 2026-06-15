@@ -12,7 +12,6 @@ GameObject:
   - component: {fileID: 4961096079672593879}
   - component: {fileID: 488082472874103547}
   - component: {fileID: 7751934983348840951}
-  - component: {fileID: 9152450055420227080}
   - component: {fileID: 7814769173485374979}
   m_Layer: 0
   m_Name: Model
@@ -106,23 +105,6 @@ MonoBehaviour:
   bakeKeys: []
   bakeValues: []
   outlineFillMaterial: {fileID: 0}
---- !u!114 &9152450055420227080
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7254515085507195032}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 89eee00579093ed4ea17bac81e179b3e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  outlineControl: {fileID: 0}
-  rb: {fileID: 0}
-  col: {fileID: 0}
-  originalTransform: {fileID: 0}
-  instanceId: 0
 --- !u!114 &7814769173485374979
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -145,7 +127,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6173429869778021422}
   m_Layer: 0
-  m_Name: Chip
+  m_Name: ChipTest
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

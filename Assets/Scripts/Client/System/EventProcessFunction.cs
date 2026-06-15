@@ -702,6 +702,8 @@ public class EventProcessFunction : MonoBehaviour
             }
             case EffectAnimation.ChangeCardState_Hidden:
             {
+                AudioManager.Instance.Play("SkillCard_Effect_Tar");
+
                 SceneViewManager.viewAnimController.TablePlaneMatManager.SetFirstMaterial("Tar");
                 SceneViewManager.viewAnimController.TablePlaneMatManager.PlayPlaneAnim(1.2f, 0.5f, 1.2f);
                 break;
