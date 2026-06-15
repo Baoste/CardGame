@@ -8,14 +8,15 @@ public class AccountLoginUI : MonoBehaviour
     [SerializeField] private FishNetAccountClient accountClient;
 
     [SerializeField] private TMP_InputField usernameInput;
-    [SerializeField] private TMP_Dropdown chipColorDropdown;
-    [SerializeField] private TMP_Dropdown chipSkinDropdown;
+    [SerializeField] private UIModelPreview UIModelPreview;
 
     [Header("Single Button")]
     [SerializeField] private Button enterButton;
+    [SerializeField] private Button updateConfirmButton;
+    [SerializeField] private MainMenuUI mainMenuUI;
 
-    [Header("Test")]
-    [SerializeField] private GameObject chipPrefab;
+    //[Header("Test")]
+    //[SerializeField] private GameObject chipPrefab;
 
     private string pendingUsername;
     private ChipAppearaceData pendingChipAppearaceData;
@@ -25,12 +26,16 @@ public class AccountLoginUI : MonoBehaviour
     private void Awake()
     {
         enterButton.onClick.AddListener(OnClickEnter);
+        updateConfirmButton.onClick.AddListener(OnClickUpdateChip);
 
         accountClient.OnRegisterSuccess += OnRegisterSuccess;
         accountClient.OnRegisterFailed += OnRegisterFailed;
 
         accountClient.OnLoginSuccess += OnLoginSuccess;
         accountClient.OnLoginFailed += OnLoginFailed;
+
+        accountClient.OnUpdateChipAppearanceSuccess += OnUpdateChipAppearanceSuccess;
+        accountClient.OnUpdateChipAppearanceFailed += OnUpdateChipAppearanceFailed;
     }
 
     private void OnDestroy()
@@ -42,6 +47,9 @@ public class AccountLoginUI : MonoBehaviour
 
         accountClient.OnLoginSuccess -= OnLoginSuccess;
         accountClient.OnLoginFailed -= OnLoginFailed;
+
+        accountClient.OnUpdateChipAppearanceSuccess -= OnUpdateChipAppearanceSuccess;
+        accountClient.OnUpdateChipAppearanceFailed -= OnUpdateChipAppearanceFailed;
     }
 
     private void OnClickEnter()
@@ -51,10 +59,7 @@ public class AccountLoginUI : MonoBehaviour
 
         pendingUsername = usernameInput.text;
 
-        int chipColorId = chipColorDropdown.value;
-        int chipSkinId = chipSkinDropdown.value;
-
-        pendingChipAppearaceData = new ChipAppearaceData(chipColorId, chipSkinId);
+        pendingChipAppearaceData = new ChipAppearaceData(0, 0);
 
         isWaitingResponse = true;
         enterButton.interactable = false;
@@ -65,6 +70,23 @@ public class AccountLoginUI : MonoBehaviour
         SetMessage("正在登录...");
     }
 
+    private void OnClickUpdateChip()
+    {
+        if (isWaitingResponse)
+            return;
+
+        pendingChipAppearaceData = UIModelPreview.ChipAppearaceData;
+
+        isWaitingResponse = true;
+
+        if (enterButton != null)
+            enterButton.interactable = false;
+
+        accountClient.UpdateChipAppearance(pendingChipAppearaceData);
+
+        SetMessage("正在修改筹码外观...");
+    }
+
     private void OnLoginSuccess(AccountData account)
     {
         FinishRequest();
@@ -72,8 +94,8 @@ public class AccountLoginUI : MonoBehaviour
         SetMessage(
             $"登录成功：{account.Username}，筹码数量：{account.ChipCount}，皮肤：{account.ChipAppearaceData.ChipColorId} | {account.ChipAppearaceData.ChipSkinId}"
         );
-
-        ApplyChipSkin(account.ChipAppearaceData);
+        mainMenuUI.StartGame();
+        // ApplyChipSkin(account.ChipAppearaceData);
     }
 
     private void OnLoginFailed(string reason)
@@ -98,14 +120,32 @@ public class AccountLoginUI : MonoBehaviour
         SetMessage(
             $"注册成功：{account.Username}，筹码数量：{account.ChipCount}，皮肤：{account.ChipAppearaceData.ChipColorId} | {account.ChipAppearaceData.ChipSkinId}"
         );
-
-        ApplyChipSkin(account.ChipAppearaceData);
+        mainMenuUI.ShowClipUpdate();
+        // ApplyChipSkin(account.ChipAppearaceData);
     }
 
     private void OnRegisterFailed(string reason)
     {
         FinishRequest();
         SetMessage($"注册失败：{reason}");
+    }
+
+    private void OnUpdateChipAppearanceSuccess(AccountData account)
+    {
+        FinishRequest();
+
+        SetMessage(
+            $"筹码外观修改成功：{account.ChipAppearaceData.ChipColorId} | {account.ChipAppearaceData.ChipSkinId}"
+        );
+
+        ApplyChipSkin(account.ChipAppearaceData);
+    }
+
+    private void OnUpdateChipAppearanceFailed(string reason)
+    {
+        FinishRequest();
+
+        SetMessage($"筹码外观修改失败：{reason}");
     }
 
     private void FinishRequest()
@@ -118,12 +158,12 @@ public class AccountLoginUI : MonoBehaviour
 
     private void ApplyChipSkin(ChipAppearaceData chipAppearaceData)
     {
-        ChipSkinConfig.Instance.myChipAppearaceData = chipAppearaceData;
+        // FindAnyObjectByType<StartSceneBootstrap>().SwitchToGameScene("gxz");
 
         // TODO: Test, need to delete
-        GameObject obj = Instantiate(chipPrefab);
-        ChipViewController chipViewController = obj.GetComponentInChildren<ChipViewController>();
-        chipViewController.ChangeMat(ChipSkinConfig.Instance.myChipAppearaceData);
+        //GameObject obj = Instantiate(chipPrefab);
+        //ChipViewController chipViewController = obj.GetComponentInChildren<ChipViewController>();
+        //chipViewController.ChangeMat(ChipSkinConfig.Instance.myAccountData.ChipAppearaceData);
         Debug.Log("[AccountLoginUI] Apply chip skin");
     }
 

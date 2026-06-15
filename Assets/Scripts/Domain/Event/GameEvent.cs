@@ -31,10 +31,14 @@ namespace Game.Domain
     /// </summary>
     public class JoinOrCreateMatchEvent : PlayerEvent
     {
+        public AccountData account0;
+        public AccountData account1;
         public string matchIdOrEmpty;
-        public JoinOrCreateMatchEvent(int playerId, bool success, string matchIdOrEmpty)
+        public JoinOrCreateMatchEvent(int playerId, bool success, AccountData account0, AccountData account1, string matchIdOrEmpty)
             : base(playerId, success)
         {
+            this.account0 = account0;
+            this.account1 = account1;
             this.matchIdOrEmpty = matchIdOrEmpty;
         }
     }

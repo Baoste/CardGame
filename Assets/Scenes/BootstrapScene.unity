@@ -270,7 +270,7 @@ MonoBehaviour:
   _ipv6BindAddress: 
   _port: 7777
   _maximumClients: 4095
-  _clientAddress: 49.233.142.24
+  _clientAddress: 49.232.222.222
 --- !u!114 &200847359
 MonoBehaviour:
   m_ObjectHideFlags: 0

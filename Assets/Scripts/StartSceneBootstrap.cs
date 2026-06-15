@@ -31,6 +31,7 @@ public class StartSceneBootstrap : MonoBehaviour
 
         yield return new WaitForSecondsRealtime(0.3f);
         Destroy(cam);
+        // SceneManager.LoadScene("AccountScene", LoadSceneMode.Additive);
         SceneManager.LoadScene("gxz", LoadSceneMode.Additive);
     }
 

@@ -1,3 +1,4 @@
+using FishNet;
 using FishNet.Managing;
 using Game.Domain;
 using Newtonsoft.Json;
@@ -11,10 +12,16 @@ public class SceneSwitcher : MonoBehaviour
 
     private void Start()
     {
-        nm = FindAnyObjectByType<NetworkManager>();
-        nm.TransportManager.Transport.SetClientAddress("49.232.222.222");
-        //nm.TransportManager.Transport.SetClientAddress("localhost");
-        nm.ClientManager.StartConnection();
+        if (InstanceFinder.NetworkManager == null)
+        {
+            Debug.LogError("FishNet NetworkManager not found.");
+            return;
+        }
+
+        InstanceFinder.NetworkManager.TransportManager.Transport.SetClientAddress("49.232.222.222");
+        //InstanceFinder.NetworkManager.TransportManager.Transport.SetClientAddress("localhost");
+        // nm.TransportManager.Transport.SetClientAddress("localhost");
+        InstanceFinder.ClientManager.StartConnection();
 
         ProcessDispatcher.Register("BothJoinMatch", BothJoinMatch);
     }
@@ -31,7 +38,20 @@ public class SceneSwitcher : MonoBehaviour
 
     public void BothJoinMatch(object[] parameters)
     {
+        AccountData account0 = (AccountData)parameters[0];
+        AccountData account1 = (AccountData)parameters[1];
+
         shotPlayer.PlayShot(4);
+
+        if (account0.AccountId != ChipSkinConfig.Instance.myAccountData.AccountId)
+        {
+            ChipSkinConfig.Instance.opponentAccountData = account0;
+        }
+        else
+        {
+            ChipSkinConfig.Instance.opponentAccountData = account1;
+        }
+
         StartCoroutine(_JoinMatch());
     }
 

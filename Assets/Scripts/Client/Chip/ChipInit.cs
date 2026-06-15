@@ -31,15 +31,18 @@ public class ChipInit : MonoBehaviour
             chipController.instanceId = k;
             chipController.originalTransform = chip.transform;
 
-            if (!isOpponent)
+            if (ChipSkinConfig.Instance != null)
             {
-                ChipViewController chipViewController = chip.GetComponentInChildren<ChipViewController>();
-                chipViewController.ChangeMat(ChipSkinConfig.Instance.myChipAppearaceData);
-            }
-            else
-            {
-                ChipViewController chipViewController = chip.GetComponentInChildren<ChipViewController>();
-                chipViewController.ChangeMat(ChipSkinConfig.Instance.opponentChipAppearaceData);
+                if (!isOpponent)
+                {
+                    ChipViewController chipViewController = chip.GetComponentInChildren<ChipViewController>();
+                    chipViewController.ChangeMat(ChipSkinConfig.Instance.myAccountData.ChipAppearaceData);
+                }
+                else
+                {
+                    ChipViewController chipViewController = chip.GetComponentInChildren<ChipViewController>();
+                    chipViewController.ChangeMat(ChipSkinConfig.Instance.opponentAccountData.ChipAppearaceData);
+                }
             }
 
             chips[k] = chip;

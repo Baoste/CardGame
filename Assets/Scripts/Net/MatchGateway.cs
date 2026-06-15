@@ -124,6 +124,7 @@ public class MatchGateway : NetworkBehaviour
             // ∞Û∂®µΩ≤€Œª
             var token = NewToken();
             session.Slots[slot].Token = token;
+            session.Slots[slot].accountData = payload.accountData;
             session.Slots[slot].Conn = sender;
             session.Slots[slot].LastSeenUtc = DateTime.UtcNow;
             _connMap[sender.ClientId] = (matchId, slot);

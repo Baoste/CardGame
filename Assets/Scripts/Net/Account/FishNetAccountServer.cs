@@ -38,6 +38,11 @@ public class FishNetAccountServer : MonoBehaviour
             OnLoginAccountRequest,
             requireAuthentication: false
         );
+
+        InstanceFinder.ServerManager.RegisterBroadcast<UpdateChipAppearanceRequest>(
+            OnUpdateChipAppearanceRequest,
+            requireAuthentication: false
+        );
     }
 
     private void OnDisable()
@@ -51,6 +56,10 @@ public class FishNetAccountServer : MonoBehaviour
 
         InstanceFinder.ServerManager.UnregisterBroadcast<LoginAccountRequest>(
             OnLoginAccountRequest
+        );
+
+        InstanceFinder.ServerManager.UnregisterBroadcast<UpdateChipAppearanceRequest>(
+            OnUpdateChipAppearanceRequest
         );
     }
 
@@ -141,6 +150,72 @@ public class FishNetAccountServer : MonoBehaviour
                 Username = request.Username,
                 ChipCount = 0,
                 ChipAppearaceData = new ChipAppearaceData()
+            });
+        }
+    }
+
+    private void OnUpdateChipAppearanceRequest(
+        NetworkConnection conn,
+        UpdateChipAppearanceRequest request,
+        Channel channel)
+    {
+        // 必须先登录，才能修改自己的筹码外观
+        if (!onlineAccounts.TryGetValue(conn, out AccountData currentAccount))
+        {
+            SendResponse(conn, new AccountResponse
+            {
+                RequestId = request.RequestId,
+                Action = "UpdateChipAppearance",
+                Success = false,
+                Message = "尚未登录",
+
+                AccountId = 0,
+                Username = string.Empty,
+                ChipCount = 0,
+                ChipAppearaceData = new ChipAppearaceData()
+            });
+
+            return;
+        }
+
+        bool success = repository.TryUpdateChipAppearance(
+            currentAccount.AccountId,
+            request.ChipAppearaceData,
+            out AccountData updatedAccount,
+            out string errorMessage
+        );
+
+        if (success)
+        {
+            // 更新服务器内存里的在线账号数据
+            onlineAccounts[conn] = updatedAccount;
+
+            SendResponse(conn, new AccountResponse
+            {
+                RequestId = request.RequestId,
+                Action = "UpdateChipAppearance",
+                Success = true,
+                Message = "筹码外观修改成功",
+
+                AccountId = updatedAccount.AccountId,
+                Username = updatedAccount.Username,
+                ChipCount = updatedAccount.ChipCount,
+                ChipAppearaceData = updatedAccount.ChipAppearaceData
+            });
+        }
+        else
+        {
+            SendResponse(conn, new AccountResponse
+            {
+                RequestId = request.RequestId,
+                Action = "UpdateChipAppearance",
+                Success = false,
+                Message = errorMessage,
+
+                AccountId = currentAccount.AccountId,
+                Username = currentAccount.Username,
+                ChipCount = currentAccount.ChipCount,
+                ChipAppearaceData = currentAccount.ChipAppearaceData
             });
         }
     }

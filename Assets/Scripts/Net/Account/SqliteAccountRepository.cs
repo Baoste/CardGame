@@ -198,6 +198,108 @@ public class SqliteAccountRepository
         }
     }
 
+    public bool TryUpdateChipAppearance(
+        long accountId,
+        ChipAppearaceData chipAppearaceData,
+        out AccountData accountData,
+        out string errorMessage)
+    {
+        accountData = default;
+        errorMessage = null;
+
+        if (accountId <= 0)
+        {
+            errorMessage = "账号 ID 非法";
+            return false;
+        }
+
+        if (!IsValidChipAppearance(chipAppearaceData))
+        {
+            errorMessage = "筹码外观 ID 非法";
+            return false;
+        }
+
+        try
+        {
+            using (IDbConnection connection = new SqliteConnection(ConnectionString))
+            {
+                connection.Open();
+
+                using (IDbTransaction transaction = connection.BeginTransaction())
+                {
+                    using (IDbCommand updateCommand = connection.CreateCommand())
+                    {
+                        updateCommand.Transaction = transaction;
+
+                        updateCommand.CommandText =
+                        @"
+                        UPDATE accounts
+                        SET chip_color_id = @chip_color_id,
+                            chip_skin_id = @chip_skin_id
+                        WHERE account_id = @account_id;
+                        ";
+
+                        AddParameter(updateCommand, "@chip_color_id", chipAppearaceData.ChipColorId);
+                        AddParameter(updateCommand, "@chip_skin_id", chipAppearaceData.ChipSkinId);
+                        AddParameter(updateCommand, "@account_id", accountId);
+
+                        int affectedRows = updateCommand.ExecuteNonQuery();
+
+                        if (affectedRows <= 0)
+                        {
+                            transaction.Rollback();
+                            errorMessage = "账号不存在";
+                            return false;
+                        }
+                    }
+
+                    using (IDbCommand selectCommand = connection.CreateCommand())
+                    {
+                        selectCommand.Transaction = transaction;
+
+                        selectCommand.CommandText =
+                        @"
+                        SELECT account_id, username, chip_count, chip_color_id, chip_skin_id
+                        FROM accounts
+                        WHERE account_id = @account_id
+                        LIMIT 1;
+                        ";
+
+                        AddParameter(selectCommand, "@account_id", accountId);
+
+                        using (IDataReader reader = selectCommand.ExecuteReader())
+                        {
+                            if (!reader.Read())
+                            {
+                                transaction.Rollback();
+                                errorMessage = "账号不存在";
+                                return false;
+                            }
+
+                            accountData = new AccountData(
+                                accountId: Convert.ToInt64(reader["account_id"]),
+                                username: Convert.ToString(reader["username"]),
+                                chipCount: Convert.ToInt32(reader["chip_count"]),
+                                chipAppearaceData: new ChipAppearaceData(
+                                    Convert.ToInt32(reader["chip_color_id"]),
+                                    Convert.ToInt32(reader["chip_skin_id"])
+                                )
+                            );
+                        }
+                    }
+
+                    transaction.Commit();
+                    return true;
+                }
+            }
+        }
+        catch (Exception e)
+        {
+            errorMessage = "服务器错误：" + e.Message;
+            return false;
+        }
+    }
+
     private static void AddParameter(IDbCommand command, string name, object value)
     {
         IDbDataParameter parameter = command.CreateParameter();

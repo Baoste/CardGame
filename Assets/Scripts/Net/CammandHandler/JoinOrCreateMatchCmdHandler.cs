@@ -1,8 +1,6 @@
-using FishNet.Demo.AdditiveScenes;
 using Game.Domain;
 using Game.Server;
 using Newtonsoft.Json;
-using UnityEngine;
 
 public sealed class JoinOrCreateMatchCmdHandler : CommandHandler, ICommandHandler
 {
@@ -21,6 +19,8 @@ public sealed class JoinOrCreateMatchCmdHandler : CommandHandler, ICommandHandle
             (
                 payload.playerId,
                 true,
+                session.Slots[0].accountData,
+                session.Slots[1].accountData,
                 payload.matchIdOrEmpty
             ),
             payload.playerId

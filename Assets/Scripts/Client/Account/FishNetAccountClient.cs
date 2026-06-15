@@ -11,6 +11,9 @@ public class FishNetAccountClient : MonoBehaviour
     public event Action<AccountData> OnLoginSuccess;
     public event Action<string> OnLoginFailed;
 
+    public event Action<AccountData> OnUpdateChipAppearanceSuccess;
+    public event Action<string> OnUpdateChipAppearanceFailed;
+
     public AccountData CurrentAccount { get; private set; }
     public bool HasAccount { get; private set; }
 
@@ -74,6 +77,23 @@ public class FishNetAccountClient : MonoBehaviour
         );
     }
 
+    public void UpdateChipAppearance(ChipAppearaceData chipAppearaceData)
+    {
+        if (!CanSendRequest())
+            return;
+
+        UpdateChipAppearanceRequest request = new UpdateChipAppearanceRequest
+        {
+            RequestId = nextRequestId++,
+            ChipAppearaceData = chipAppearaceData
+        };
+
+        InstanceFinder.ClientManager.Broadcast(
+            request,
+            Channel.Reliable
+        );
+    }
+
     private void OnAccountResponse(AccountResponse response, Channel channel)
     {
         if (response.Success)
@@ -87,26 +107,44 @@ public class FishNetAccountClient : MonoBehaviour
 
             HasAccount = true;
 
+            ChipSkinConfig.Instance.myAccountData = CurrentAccount;
+
             if (response.Action == "Register")
+            {
                 OnRegisterSuccess?.Invoke(CurrentAccount);
+            }
             else if (response.Action == "Login")
+            {
                 OnLoginSuccess?.Invoke(CurrentAccount);
+            }
+            else if (response.Action == "UpdateChipAppearance")
+            {
+                OnUpdateChipAppearanceSuccess?.Invoke(CurrentAccount);
+            }
 
             Debug.Log(
                 $"[AccountClient] {response.Action} success. " +
                 $"AccountId={CurrentAccount.AccountId}, " +
                 $"Username={CurrentAccount.Username}, " +
                 $"ChipCount={CurrentAccount.ChipCount}, " +
-                $"ChipSkinId={CurrentAccount.ChipAppearaceData.ChipColorId}, " +
+                $"ChipColorId={CurrentAccount.ChipAppearaceData.ChipColorId}, " +
                 $"ChipSkinId={CurrentAccount.ChipAppearaceData.ChipSkinId}"
             );
         }
         else
         {
             if (response.Action == "Register")
+            {
                 OnRegisterFailed?.Invoke(response.Message);
+            }
             else if (response.Action == "Login")
+            {
                 OnLoginFailed?.Invoke(response.Message);
+            }
+            else if (response.Action == "UpdateChipAppearance")
+            {
+                OnUpdateChipAppearanceFailed?.Invoke(response.Message);
+            }
 
             Debug.LogWarning(
                 $"[AccountClient] {response.Action} failed: {response.Message}"

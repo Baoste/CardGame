@@ -27,6 +27,7 @@ namespace Game.Domain
     public class JoinOrCreateMatchCommand : ICommand
     {
         public int playerId;
+        public AccountData accountData;
         public string matchIdOrEmpty;
     }
 

@@ -14,6 +14,12 @@ public struct LoginAccountRequest : IBroadcast
     public string Username;
 }
 
+public struct UpdateChipAppearanceRequest : IBroadcast
+{
+    public int RequestId;
+    public ChipAppearaceData ChipAppearaceData;
+}
+
 public struct AccountResponse : IBroadcast
 {
     public int RequestId;

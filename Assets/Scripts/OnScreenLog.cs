@@ -22,7 +22,8 @@ public class OnScreenLog : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.F12))
         {
             isDebug = !isDebug;
-            testSystem.enabled = isDebug;
+            if (testSystem != null)
+                testSystem.enabled = isDebug;
         }
     }
 

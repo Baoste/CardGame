@@ -9,6 +9,7 @@ namespace Game.Server   // 这里用你 MatchGateway 所在的 namespace
     public class PlayerSlot
     {
         public string Token;               // 重连凭证
+        public AccountData accountData;    // 账号信息
         public NetworkConnection Conn;     // 在线连接（断线后可能为 null）
         public DateTime LastSeenUtc;       // 用于 GC
     }

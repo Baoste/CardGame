@@ -22,7 +22,7 @@ public class ShotPlayer : MonoBehaviour
     public int activePriority = 20;
     public int inactivePriority = 0;
 
-    private int currentIndex = 0;
+    public int currentIndex = 0;
     private bool isPlayingShot1 = false;
 
     private void Start()
