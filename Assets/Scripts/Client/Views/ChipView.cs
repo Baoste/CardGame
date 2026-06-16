@@ -90,7 +90,7 @@ public class ChipView : MonoBehaviour
         chipsInTray.Remove(id);
 
         Rigidbody rb = chip.GetComponentInChildren<Rigidbody>();
-        Collider col = chip.transform.Find("Model/Chip/default").GetComponent<Collider>();
+        Collider col = chip.transform.Find("Model/Chip").GetComponent<Collider>();
         rb.useGravity = false;
         col.isTrigger = true;
 

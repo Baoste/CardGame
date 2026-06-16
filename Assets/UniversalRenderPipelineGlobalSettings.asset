@@ -20,7 +20,7 @@ MonoBehaviour:
   - Light Layer Character
   - Light Layer Machine
   - Light Layer Resolve
-  - Light Layer 6
+  - Light Layer Anim
   - Light Layer 7
   m_ValidRenderingLayers: 255
   lightLayerName0: Light Layer default

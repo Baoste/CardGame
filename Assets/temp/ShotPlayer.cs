@@ -29,19 +29,25 @@ public class ShotPlayer : MonoBehaviour
     {
         InitShots();
 
-        SetActiveShot(0);
-        //StartCoroutine(PlayShotWithDelay(1, 1f));
-        PlayShotFromStart(0);
-        
-        mainMenuCanvas.SetActive(true);
+        if (GameBootstrap.isLogin)
+        {
+            FindAnyObjectByType<Cam2>().EnablePlayControll();
+        }
+        else
+        {
+            SetActiveShot(0);
+            //StartCoroutine(PlayShotWithDelay(1, 1f));
+            PlayShotFromStart(0);
+            mainMenuCanvas.SetActive(true);
+        }
     }
 
     private void Update()
     {
-        if (Input.GetKeyDown(nextKey))
-        {
-            PlayNextShot();
-        }
+        //if (Input.GetKeyDown(nextKey))
+        //{
+        //    PlayNextShot();
+        //}
         if (Input.GetMouseButtonDown(0) && currentIndex == 1 && !isPlayingShot1)
         {
             shots[1].animators[0].speed = 6;

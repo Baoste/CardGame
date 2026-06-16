@@ -5,6 +5,7 @@ Shader "Custom/PostProcess/Glitch"
         _MainTex ("Main Tex", 2D) = "white" {}
 
         _Intensity ("Intensity", Range(0, 1)) = 0.5
+        _WhiteBloom ("WhiteBloom", Range(0, 1)) = 0
         _BlockCount ("Block Count", Range(10, 200)) = 20
         _OffsetStrength ("Offset Strength", Range(0, 0.2)) = 0.03
         _RGBOffset ("RGB Offset", Range(0, 0.03)) = 0.005
@@ -41,6 +42,7 @@ Shader "Custom/PostProcess/Glitch"
             SAMPLER(sampler_MainTex);
 
             float _Intensity;
+            float _WhiteBloom;
             float _BlockCount;
             float _OffsetStrength;
             float _RGBOffset;
@@ -115,7 +117,7 @@ Shader "Custom/PostProcess/Glitch"
                 // // Screen noise.
                 // float noise = Random(input.uv * _ScreenParams.xy + timeId);
                 // col += noise * _NoiseStrength * _Intensity;
-
+                col.rgb += float3(1,1,1) * _WhiteBloom; 
                 return float4(col, 1.0);
             }
 

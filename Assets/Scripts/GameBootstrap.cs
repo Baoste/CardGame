@@ -6,6 +6,7 @@ using UnityEngine;
 public class GameBootstrap : MonoBehaviour
 {
     private static bool _initialized = false;
+    public static bool isLogin = false;
     public static bool isDebugMode = true;
     public MatchGateway gateway;
 

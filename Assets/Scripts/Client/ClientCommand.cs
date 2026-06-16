@@ -8,16 +8,16 @@ public static class ClientCommand
     // 创建新局
     public static void CreateMatch(string matchId)
     {
-        JoinOrCreateMatchCommand cmd = new JoinOrCreateMatchCommand { playerId = -1, accountData = ChipSkinConfig.Instance.myAccountData, matchIdOrEmpty = matchId };
+        JoinOrCreateMatchCommand cmd = new JoinOrCreateMatchCommand { playerId = -1, accountData = ChipSkinConfig.myAccountData, matchIdOrEmpty = matchId };
         ClientGameState.gateway.SendCommandServerRpc("JoinOrCreateMatch", JsonConvert.SerializeObject(cmd));
-        Debug.Log($"[Client] Requested create match {matchId} | {ChipSkinConfig.Instance.myAccountData.AccountId}, {ChipSkinConfig.Instance.myAccountData.Username}");
+        Debug.Log($"[Client] Requested create match {matchId} | {ChipSkinConfig.myAccountData.AccountId}, {ChipSkinConfig.myAccountData.Username}");
     }
 
     public static void JoinMatch(string matchId)
     {
-        JoinOrCreateMatchCommand cmd = new JoinOrCreateMatchCommand { playerId = -1, accountData = ChipSkinConfig.Instance.myAccountData, matchIdOrEmpty = matchId };
+        JoinOrCreateMatchCommand cmd = new JoinOrCreateMatchCommand { playerId = -1, accountData = ChipSkinConfig.myAccountData, matchIdOrEmpty = matchId };
         ClientGameState.gateway.SendCommandServerRpc("JoinOrCreateMatch", JsonConvert.SerializeObject(cmd));
-        Debug.Log($"[Client] Requested join match {matchId} | {ChipSkinConfig.Instance.myAccountData.AccountId}, {ChipSkinConfig.Instance.myAccountData.Username}");
+        Debug.Log($"[Client] Requested join match {matchId} | {ChipSkinConfig.myAccountData.AccountId}, {ChipSkinConfig.myAccountData.Username}");
     }
 
     public static void LeaveMatch()

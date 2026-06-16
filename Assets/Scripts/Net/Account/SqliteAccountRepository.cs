@@ -54,13 +54,13 @@ public class SqliteAccountRepository
 
         if (!IsValidUsername(username))
         {
-            errorMessage = "用户名非法";
+            errorMessage = "Invalid username";
             return false;
         }
 
         if (!IsValidChipAppearance(chipAppearaceData))
         {
-            errorMessage = $"筹码皮肤 ID 非法";
+            errorMessage = "Invalid chip skin ID";
             return false;
         }
 
@@ -119,17 +119,17 @@ public class SqliteAccountRepository
         }
         catch (SqliteException e)
         {
-            // UNIQUE 约束冲突一般就是用户名重复
+            // A UNIQUE constraint conflict usually means the username already exists.
             if (e.Message.Contains("UNIQUE"))
-                errorMessage = "用户名已存在";
+                errorMessage = "Username already exists";
             else
-                errorMessage = "数据库错误：" + e.Message;
+                errorMessage = "Database error: " + e.Message;
 
             return false;
         }
         catch (Exception e)
         {
-            errorMessage = "服务器错误：" + e.Message;
+            errorMessage = "Server error: " + e.Message;
             return false;
         }
     }
@@ -146,7 +146,7 @@ public class SqliteAccountRepository
 
         if (!IsValidUsername(username))
         {
-            errorMessage = "用户名非法";
+            errorMessage = "Invalid username";
             return false;
         }
 
@@ -172,7 +172,7 @@ public class SqliteAccountRepository
                     {
                         if (!reader.Read())
                         {
-                            errorMessage = "账号不存在";
+                            errorMessage = "Account not found";
                             return false;
                         }
 
@@ -180,7 +180,7 @@ public class SqliteAccountRepository
                             accountId: Convert.ToInt64(reader["account_id"]),
                             username: Convert.ToString(reader["username"]),
                             chipCount: Convert.ToInt32(reader["chip_count"]),
-                            chipAppearaceData: new ChipAppearaceData( 
+                            chipAppearaceData: new ChipAppearaceData(
                                 Convert.ToInt32(reader["chip_color_id"]),
                                 Convert.ToInt32(reader["chip_skin_id"])
                             )
@@ -193,7 +193,7 @@ public class SqliteAccountRepository
         }
         catch (Exception e)
         {
-            errorMessage = "服务器错误：" + e.Message;
+            errorMessage = "Server error: " + e.Message;
             return false;
         }
     }
@@ -209,13 +209,13 @@ public class SqliteAccountRepository
 
         if (accountId <= 0)
         {
-            errorMessage = "账号 ID 非法";
+            errorMessage = "Invalid account ID";
             return false;
         }
 
         if (!IsValidChipAppearance(chipAppearaceData))
         {
-            errorMessage = "筹码外观 ID 非法";
+            errorMessage = "Invalid chip appearance ID";
             return false;
         }
 
@@ -248,7 +248,7 @@ public class SqliteAccountRepository
                         if (affectedRows <= 0)
                         {
                             transaction.Rollback();
-                            errorMessage = "账号不存在";
+                            errorMessage = "Account not found";
                             return false;
                         }
                     }
@@ -272,7 +272,7 @@ public class SqliteAccountRepository
                             if (!reader.Read())
                             {
                                 transaction.Rollback();
-                                errorMessage = "账号不存在";
+                                errorMessage = "Account not found";
                                 return false;
                             }
 
@@ -295,7 +295,158 @@ public class SqliteAccountRepository
         }
         catch (Exception e)
         {
-            errorMessage = "服务器错误：" + e.Message;
+            errorMessage = "Server error: " + e.Message;
+            return false;
+        }
+    }
+
+    public bool TryGetAccountInfo(
+        long accountId,
+        string selectColumn,
+        out AccountInfoData accountInfoData,
+        out string errorMessage)
+    {
+        accountInfoData = default;
+        errorMessage = null;
+
+        if (accountId <= 0)
+        {
+            errorMessage = "Invalid account ID";
+            return false;
+        }
+
+        selectColumn = NormalizeSelectColumn(selectColumn);
+
+        if (!IsAllowedAccountColumn(selectColumn))
+        {
+            errorMessage = "Invalid query field";
+            return false;
+        }
+
+        try
+        {
+            using (IDbConnection connection = new SqliteConnection(ConnectionString))
+            {
+                connection.Open();
+
+                using (IDbCommand command = connection.CreateCommand())
+                {
+                    command.CommandText =
+                    $@"
+                    SELECT {selectColumn}
+                    FROM accounts
+                    WHERE account_id = @account_id
+                    LIMIT 1;
+                    ";
+
+                    AddParameter(command, "@account_id", accountId);
+
+                    object result = command.ExecuteScalar();
+
+                    if (result == null || result == DBNull.Value)
+                    {
+                        errorMessage = "Account not found";
+                        return false;
+                    }
+
+                    accountInfoData = new AccountInfoData(
+                        accountId,
+                        selectColumn,
+                        Convert.ToString(result)
+                    );
+
+                    return true;
+                }
+            }
+        }
+        catch (Exception e)
+        {
+            errorMessage = "Server error: " + e.Message;
+            return false;
+        }
+    }
+
+    public bool TryAddChipCount(
+        long accountId,
+        int chipCountDelta,
+        out int updatedChipCount,
+        out string errorMessage)
+    {
+        updatedChipCount = 0;
+        errorMessage = null;
+
+        if (accountId <= 0)
+        {
+            errorMessage = "Invalid account ID";
+            return false;
+        }
+
+        try
+        {
+            using (IDbConnection connection = new SqliteConnection(ConnectionString))
+            {
+                connection.Open();
+
+                using (IDbTransaction transaction = connection.BeginTransaction())
+                {
+                    using (IDbCommand updateCommand = connection.CreateCommand())
+                    {
+                        updateCommand.Transaction = transaction;
+
+                        updateCommand.CommandText =
+                        @"
+                        UPDATE accounts
+                        SET chip_count = chip_count + @chip_count_delta
+                        WHERE account_id = @account_id;
+                        ";
+
+                        AddParameter(updateCommand, "@chip_count_delta", chipCountDelta);
+                        AddParameter(updateCommand, "@account_id", accountId);
+
+                        int affectedRows = updateCommand.ExecuteNonQuery();
+
+                        if (affectedRows <= 0)
+                        {
+                            transaction.Rollback();
+                            errorMessage = "Account not found";
+                            return false;
+                        }
+                    }
+
+                    using (IDbCommand selectCommand = connection.CreateCommand())
+                    {
+                        selectCommand.Transaction = transaction;
+
+                        selectCommand.CommandText =
+                        @"
+                        SELECT chip_count
+                        FROM accounts
+                        WHERE account_id = @account_id
+                        LIMIT 1;
+                        ";
+
+                        AddParameter(selectCommand, "@account_id", accountId);
+
+                        object result = selectCommand.ExecuteScalar();
+
+                        if (result == null || result == DBNull.Value)
+                        {
+                            transaction.Rollback();
+                            errorMessage = "Account not found";
+                            return false;
+                        }
+
+                        updatedChipCount = Convert.ToInt32(result);
+                    }
+
+                    transaction.Commit();
+                    return true;
+                }
+            }
+        }
+        catch (Exception e)
+        {
+            errorMessage = "Server error: " + e.Message;
             return false;
         }
     }
@@ -330,5 +481,21 @@ public class SqliteAccountRepository
     {
         return (chipAppearaceData.ChipColorId >= 0 && chipAppearaceData.ChipColorId <= 9999)
             && (chipAppearaceData.ChipSkinId >= 0 && chipAppearaceData.ChipSkinId <= 9999);
+    }
+
+    private static string NormalizeSelectColumn(string selectColumn)
+    {
+        return string.IsNullOrWhiteSpace(selectColumn)
+            ? string.Empty
+            : selectColumn.Trim().ToLowerInvariant();
+    }
+
+    private static bool IsAllowedAccountColumn(string selectColumn)
+    {
+        return selectColumn == "account_id"
+            || selectColumn == "username"
+            || selectColumn == "chip_count"
+            || selectColumn == "chip_color_id"
+            || selectColumn == "chip_skin_id";
     }
 }

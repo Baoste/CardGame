@@ -30,3 +30,18 @@ public struct ChipAppearaceData
         ChipSkinId = chipSkinId;
     }
 }
+
+[Serializable]
+public struct AccountInfoData
+{
+    public long AccountId;
+    public string SelectColumn;
+    public string Value;
+
+    public AccountInfoData(long accountId, string selectColumn, string value)
+    {
+        AccountId = accountId;
+        SelectColumn = selectColumn;
+        Value = value;
+    }
+}

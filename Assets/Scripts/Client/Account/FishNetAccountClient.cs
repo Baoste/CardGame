@@ -14,6 +14,9 @@ public class FishNetAccountClient : MonoBehaviour
     public event Action<AccountData> OnUpdateChipAppearanceSuccess;
     public event Action<string> OnUpdateChipAppearanceFailed;
 
+    public event Action<AccountInfoData> OnGetAccountInfoSuccess;
+    public event Action<string> OnGetAccountInfoFailed;
+
     public AccountData CurrentAccount { get; private set; }
     public bool HasAccount { get; private set; }
 
@@ -30,6 +33,10 @@ public class FishNetAccountClient : MonoBehaviour
         InstanceFinder.ClientManager.RegisterBroadcast<AccountResponse>(
             OnAccountResponse
         );
+
+        InstanceFinder.ClientManager.RegisterBroadcast<AccountInfoResponse>(
+            OnAccountInfoResponse
+        );
     }
 
     private void OnDisable()
@@ -39,6 +46,10 @@ public class FishNetAccountClient : MonoBehaviour
 
         InstanceFinder.ClientManager.UnregisterBroadcast<AccountResponse>(
             OnAccountResponse
+        );
+
+        InstanceFinder.ClientManager.UnregisterBroadcast<AccountInfoResponse>(
+            OnAccountInfoResponse
         );
     }
 
@@ -94,6 +105,24 @@ public class FishNetAccountClient : MonoBehaviour
         );
     }
 
+    public void GetAccountInfo(string selectColumn, long accountId)
+    {
+        if (!CanSendRequest())
+            return;
+
+        GetAccountInfoRequest request = new GetAccountInfoRequest
+        {
+            RequestId = nextRequestId++,
+            AccountId = accountId,
+            SelectColumn = selectColumn
+        };
+
+        InstanceFinder.ClientManager.Broadcast(
+            request,
+            Channel.Reliable
+        );
+    }
+
     private void OnAccountResponse(AccountResponse response, Channel channel)
     {
         if (response.Success)
@@ -107,7 +136,7 @@ public class FishNetAccountClient : MonoBehaviour
 
             HasAccount = true;
 
-            ChipSkinConfig.Instance.myAccountData = CurrentAccount;
+            ChipSkinConfig.myAccountData = CurrentAccount;
 
             if (response.Action == "Register")
             {
@@ -148,6 +177,35 @@ public class FishNetAccountClient : MonoBehaviour
 
             Debug.LogWarning(
                 $"[AccountClient] {response.Action} failed: {response.Message}"
+            );
+        }
+    }
+
+    private void OnAccountInfoResponse(AccountInfoResponse response, Channel channel)
+    {
+        if (response.Success)
+        {
+            AccountInfoData accountInfoData = new AccountInfoData(
+                response.AccountId,
+                response.SelectColumn,
+                response.Value
+            );
+
+            OnGetAccountInfoSuccess?.Invoke(accountInfoData);
+
+            Debug.Log(
+                $"[AccountClient] GetAccountInfo success. " +
+                $"AccountId={accountInfoData.AccountId}, " +
+                $"SelectColumn={accountInfoData.SelectColumn}, " +
+                $"Value={accountInfoData.Value}"
+            );
+        }
+        else
+        {
+            OnGetAccountInfoFailed?.Invoke(response.Message);
+
+            Debug.LogWarning(
+                $"[AccountClient] GetAccountInfo failed: {response.Message}"
             );
         }
     }

@@ -1,6 +1,7 @@
 using FishNet.Demo.AdditiveScenes;
 using Game.Server;
 using System.Collections.Generic;
+using UnityEngine;
 
 namespace Game.Domain
 {
@@ -61,7 +62,7 @@ namespace Game.Domain
             {
                 session.gameState.Dispose();
                 session.gameState.players[winnerId].chipCount += 2 * currentBet;
-                // session.gameState.players[1 - winnerId].chipCount -= currentBet; // 输家扣除筹码在 PlaceBets 阶段已经处理了
+                // session.gameState.players[1 - winnerId].chipCount -= currentBet; // Loser chips are already deducted during PlaceBets.
 
                 results.events.Enqueue(CommandHandler.MakeEvent(
                     "RevealCardsAndScore",
@@ -86,6 +87,8 @@ namespace Game.Domain
         {
             if (session.gameState.players[1 - winnerId].chipCount <= 0)
             {
+                ReduceLoserAccountChipCount(session, winnerId, 6);
+
                 results.events.Enqueue(CommandHandler.MakeEvent(
                     "EndMatch",
                     new EndMatchEvent    // need change
@@ -127,6 +130,71 @@ namespace Game.Domain
                     ),
                     -1
                 ));
+            }
+        }
+
+        private static void ReduceLoserAccountChipCount(MatchSession session, int winnerId, int betCount)
+        {
+            if (session == null || session.Slots == null)
+                return;
+
+            int loserId = 1 - winnerId;
+
+            if (loserId < 0 || loserId >= session.Slots.Length)
+                return;
+
+            if (winnerId < 0 || winnerId >= session.Slots.Length)
+                return;
+
+            long loserAccountId = session.Slots[loserId].accountData.AccountId;
+            long winnerAccountId = session.Slots[winnerId].accountData.AccountId;
+
+            if (loserAccountId <= 0)
+            {
+                Debug.LogWarning($"[NetEffectFunction] Invalid loser account id. LoserId={loserId}");
+                return;
+            }
+
+            if (winnerAccountId <= 0)
+            {
+                Debug.LogWarning($"[NetEffectFunction] Invalid winner account id. WinnerId={winnerId}");
+                return;
+            }
+
+            if (FishNetAccountServer.Repository == null)
+            {
+                Debug.LogWarning("[NetEffectFunction] FishNetAccountServer.Repository is null.");
+                return;
+            }
+
+            AddAccountChipCount(session, loserId, loserAccountId, -betCount);
+            AddAccountChipCount(session, winnerId, winnerAccountId, betCount);
+        }
+
+        private static void AddAccountChipCount(MatchSession session, int playerId, long accountId, int chipCountDelta)
+        {
+            bool success = FishNetAccountServer.Repository.TryAddChipCount(
+                accountId,
+                chipCountDelta,
+                out int updatedChipCount,
+                out string errorMessage
+            );
+
+            if (success)
+            {
+                session.Slots[playerId].accountData.ChipCount = updatedChipCount;
+
+                Debug.Log(
+                    $"[NetEffectFunction] Updated account chip_count. " +
+                    $"PlayerId={playerId}, AccountId={accountId}, Delta={chipCountDelta}, Updated={updatedChipCount}"
+                );
+            }
+            else
+            {
+                Debug.LogWarning(
+                    $"[NetEffectFunction] Update account chip_count failed. " +
+                    $"PlayerId={playerId}, AccountId={accountId}, Delta={chipCountDelta}, Error={errorMessage}"
+                );
             }
         }
 
@@ -238,10 +306,10 @@ namespace Game.Domain
                     NetEffectExecutor.ExecuteOp(playerId, op, session, results, selectedSourceIds, selectedTargetIds);
                 }
 
-                if (op.trueNode == -1 && op.falseNode == -1)        effectOpId = -1;
-                else if (op.trueNode != -1 && op.falseNode == -1)   effectOpId = op.trueNode;
-                else if (op.trueNode == -1 && op.falseNode != -1)   effectOpId = op.falseNode;
-                else                                                effectOpId = op.trueNode;
+                if (op.trueNode == -1 && op.falseNode == -1) effectOpId = -1;
+                else if (op.trueNode != -1 && op.falseNode == -1) effectOpId = op.trueNode;
+                else if (op.trueNode == -1 && op.falseNode != -1) effectOpId = op.falseNode;
+                else effectOpId = op.trueNode;
             }
         }
 

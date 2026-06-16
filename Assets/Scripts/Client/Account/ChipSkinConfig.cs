@@ -2,11 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ChipSkinConfig : Singleton<ChipSkinConfig>
+public static class ChipSkinConfig
 {
-    public Texture2D[] texture2Ds;
-    public Material[] materials;
+    public static Texture2D[] texture2Ds;
+    public static Material[] materials;
 
-    [HideInInspector] public AccountData myAccountData;
-    [HideInInspector] public AccountData opponentAccountData;
+    public static AccountData myAccountData;
+    public static AccountData opponentAccountData;
 }

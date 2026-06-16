@@ -11,7 +11,6 @@ public class AccountLoginUI : MonoBehaviour
     [SerializeField] private UIModelPreview UIModelPreview;
 
     [Header("Single Button")]
-    [SerializeField] private Button enterButton;
     [SerializeField] private Button updateConfirmButton;
     [SerializeField] private MainMenuUI mainMenuUI;
 
@@ -25,7 +24,6 @@ public class AccountLoginUI : MonoBehaviour
 
     private void Awake()
     {
-        enterButton.onClick.AddListener(OnClickEnter);
         updateConfirmButton.onClick.AddListener(OnClickUpdateChip);
 
         accountClient.OnRegisterSuccess += OnRegisterSuccess;
@@ -38,10 +36,16 @@ public class AccountLoginUI : MonoBehaviour
         accountClient.OnUpdateChipAppearanceFailed += OnUpdateChipAppearanceFailed;
     }
 
+    private void Update()
+    {
+        if (mainMenuUI.loginCanvas.activeInHierarchy && Input.GetKeyDown(KeyCode.Return))
+        {
+            OnClickEnter();
+        }
+    }
+
     private void OnDestroy()
     {
-        enterButton.onClick.RemoveListener(OnClickEnter);
-
         accountClient.OnRegisterSuccess -= OnRegisterSuccess;
         accountClient.OnRegisterFailed -= OnRegisterFailed;
 
@@ -62,12 +66,11 @@ public class AccountLoginUI : MonoBehaviour
         pendingChipAppearaceData = new ChipAppearaceData(0, 0);
 
         isWaitingResponse = true;
-        enterButton.interactable = false;
 
-        // 先尝试登录
+        // Try login first.
         accountClient.Login(pendingUsername);
 
-        SetMessage("正在登录...");
+        SetMessage("Logging in...");
     }
 
     private void OnClickUpdateChip()
@@ -79,12 +82,9 @@ public class AccountLoginUI : MonoBehaviour
 
         isWaitingResponse = true;
 
-        if (enterButton != null)
-            enterButton.interactable = false;
-
         accountClient.UpdateChipAppearance(pendingChipAppearaceData);
 
-        SetMessage("正在修改筹码外观...");
+        SetMessage("Updating chip appearance...");
     }
 
     private void OnLoginSuccess(AccountData account)
@@ -92,25 +92,25 @@ public class AccountLoginUI : MonoBehaviour
         FinishRequest();
 
         SetMessage(
-            $"登录成功：{account.Username}，筹码数量：{account.ChipCount}，皮肤：{account.ChipAppearaceData.ChipColorId} | {account.ChipAppearaceData.ChipSkinId}"
+            $"Login success: {account.Username}, chips: {account.ChipCount}, skin: {account.ChipAppearaceData.ChipColorId} | {account.ChipAppearaceData.ChipSkinId}"
         );
-        mainMenuUI.StartGame();
+        mainMenuUI.ShowMenu();
         // ApplyChipSkin(account.ChipAppearaceData);
     }
 
     private void OnLoginFailed(string reason)
     {
-        // 如果服务器返回账号不存在，就自动注册
-        if (reason == "账号不存在")
+        // Auto-register if the account does not exist.
+        if (reason == "Account not found")
         {
-            SetMessage("账号不存在，正在自动注册...");
+            SetMessage("Account not found, auto-registering...");
 
             accountClient.Register(pendingUsername, pendingChipAppearaceData);
             return;
         }
 
         FinishRequest();
-        SetMessage($"登录失败：{reason}");
+        SetMessage($"Login failed: {reason}");
     }
 
     private void OnRegisterSuccess(AccountData account)
@@ -118,7 +118,7 @@ public class AccountLoginUI : MonoBehaviour
         FinishRequest();
 
         SetMessage(
-            $"注册成功：{account.Username}，筹码数量：{account.ChipCount}，皮肤：{account.ChipAppearaceData.ChipColorId} | {account.ChipAppearaceData.ChipSkinId}"
+            $"Register success: {account.Username}, chips: {account.ChipCount}, skin: {account.ChipAppearaceData.ChipColorId} | {account.ChipAppearaceData.ChipSkinId}"
         );
         mainMenuUI.ShowClipUpdate();
         // ApplyChipSkin(account.ChipAppearaceData);
@@ -127,7 +127,7 @@ public class AccountLoginUI : MonoBehaviour
     private void OnRegisterFailed(string reason)
     {
         FinishRequest();
-        SetMessage($"注册失败：{reason}");
+        SetMessage($"Register failed: {reason}");
     }
 
     private void OnUpdateChipAppearanceSuccess(AccountData account)
@@ -135,25 +135,22 @@ public class AccountLoginUI : MonoBehaviour
         FinishRequest();
 
         SetMessage(
-            $"筹码外观修改成功：{account.ChipAppearaceData.ChipColorId} | {account.ChipAppearaceData.ChipSkinId}"
+            $"Chip appearance updated: {account.ChipAppearaceData.ChipColorId} | {account.ChipAppearaceData.ChipSkinId}"
         );
 
-        ApplyChipSkin(account.ChipAppearaceData);
+        // ApplyChipSkin(account.ChipAppearaceData);
     }
 
     private void OnUpdateChipAppearanceFailed(string reason)
     {
         FinishRequest();
 
-        SetMessage($"筹码外观修改失败：{reason}");
+        SetMessage($"Chip appearance update failed: {reason}");
     }
 
     private void FinishRequest()
     {
         isWaitingResponse = false;
-
-        if (enterButton != null)
-            enterButton.interactable = true;
     }
 
     private void ApplyChipSkin(ChipAppearaceData chipAppearaceData)

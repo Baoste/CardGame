@@ -20,6 +20,13 @@ public struct UpdateChipAppearanceRequest : IBroadcast
     public ChipAppearaceData ChipAppearaceData;
 }
 
+public struct GetAccountInfoRequest : IBroadcast
+{
+    public int RequestId;
+    public long AccountId;
+    public string SelectColumn;
+}
+
 public struct AccountResponse : IBroadcast
 {
     public int RequestId;
@@ -35,4 +42,15 @@ public struct AccountResponse : IBroadcast
     public int ChipCount;
 
     public ChipAppearaceData ChipAppearaceData;
+}
+
+public struct AccountInfoResponse : IBroadcast
+{
+    public int RequestId;
+    public bool Success;
+    public string Message;
+
+    public long AccountId;
+    public string SelectColumn;
+    public string Value;
 }

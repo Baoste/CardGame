@@ -16,13 +16,13 @@ public class ChipViewController : MonoBehaviour
 
     public void ChangeMat(ChipAppearaceData chipAppearaceData)
     {
-        Material[] mats = matRenderer.materials;
-        mats[0] = ChipSkinConfig.Instance.materials[chipAppearaceData.ChipSkinId];
-        matRenderer.materials = mats;
+        Material[] mats = matRenderer.sharedMaterials;
+        mats[0] = ChipSkinConfig.materials[chipAppearaceData.ChipSkinId];
+        matRenderer.sharedMaterials = mats;
 
-        Texture2D tex = ChipSkinConfig.Instance.texture2Ds[chipAppearaceData.ChipColorId];
+        Texture2D tex = ChipSkinConfig.texture2Ds[chipAppearaceData.ChipColorId];
         matRenderer.GetPropertyBlock(mpb);
-        mpb.SetTexture("_BaseMap", tex);
+        mpb.SetTexture("_DecalTex", tex);
         matRenderer.SetPropertyBlock(mpb);
     }
 }

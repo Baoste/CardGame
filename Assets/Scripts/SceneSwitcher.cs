@@ -43,13 +43,13 @@ public class SceneSwitcher : MonoBehaviour
 
         shotPlayer.PlayShot(4);
 
-        if (account0.AccountId != ChipSkinConfig.Instance.myAccountData.AccountId)
+        if (account0.AccountId != ChipSkinConfig.myAccountData.AccountId)
         {
-            ChipSkinConfig.Instance.opponentAccountData = account0;
+            ChipSkinConfig.opponentAccountData = account0;
         }
         else
         {
-            ChipSkinConfig.Instance.opponentAccountData = account1;
+            ChipSkinConfig.opponentAccountData = account1;
         }
 
         StartCoroutine(_JoinMatch());

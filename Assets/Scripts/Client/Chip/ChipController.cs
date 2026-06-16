@@ -36,7 +36,7 @@ public class ChipController : MonoBehaviour
         // animator = GetComponentInChildren<Animator>();
         outlineControl = GetComponent<Outline>();
         rb = GetComponent<Rigidbody>();
-        col = transform.Find("Chip/default").GetComponent<Collider>();
+        col = transform.Find("Chip").GetComponent<Collider>();
 
         stateMachine.Initialize(inTrayState);
     }

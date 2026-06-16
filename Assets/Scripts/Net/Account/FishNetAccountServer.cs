@@ -9,14 +9,17 @@ public class FishNetAccountServer : MonoBehaviour
     [Header("Database")]
     [SerializeField] private string databaseFileName = "game.db";
 
-    private SqliteAccountRepository repository;
+    public static SqliteAccountRepository Repository { get; private set; }
 
     private readonly Dictionary<NetworkConnection, AccountData> onlineAccounts = new();
 
     private void Awake()
     {
-        repository = new SqliteAccountRepository(databaseFileName);
-        repository.Initialize();
+        if (Repository == null)
+        {
+            Repository = new SqliteAccountRepository(databaseFileName);
+            Repository.Initialize();
+        }
     }
 
     private void OnEnable()
@@ -27,8 +30,8 @@ public class FishNetAccountServer : MonoBehaviour
             return;
         }
 
-        // 如果你启用了 FishNet Authenticator，注册/登录阶段通常还未认证，
-        // 所以这里 requireAuthentication 要传 false。
+        // If FishNet Authenticator is enabled, register/login requests usually arrive before authentication.
+        // Keep requireAuthentication false here so account requests can be received.
         InstanceFinder.ServerManager.RegisterBroadcast<RegisterAccountRequest>(
             OnRegisterAccountRequest,
             requireAuthentication: false
@@ -41,6 +44,11 @@ public class FishNetAccountServer : MonoBehaviour
 
         InstanceFinder.ServerManager.RegisterBroadcast<UpdateChipAppearanceRequest>(
             OnUpdateChipAppearanceRequest,
+            requireAuthentication: false
+        );
+
+        InstanceFinder.ServerManager.RegisterBroadcast<GetAccountInfoRequest>(
+            OnGetAccountInfoRequest,
             requireAuthentication: false
         );
     }
@@ -61,6 +69,10 @@ public class FishNetAccountServer : MonoBehaviour
         InstanceFinder.ServerManager.UnregisterBroadcast<UpdateChipAppearanceRequest>(
             OnUpdateChipAppearanceRequest
         );
+
+        InstanceFinder.ServerManager.UnregisterBroadcast<GetAccountInfoRequest>(
+            OnGetAccountInfoRequest
+        );
     }
 
     private void OnRegisterAccountRequest(
@@ -68,7 +80,7 @@ public class FishNetAccountServer : MonoBehaviour
         RegisterAccountRequest request,
         Channel channel)
     {
-        bool success = repository.TryCreateAccount(
+        bool success = Repository.TryCreateAccount(
             request.Username,
             request.ChipAppearaceData,
             out AccountData accountData,
@@ -84,7 +96,7 @@ public class FishNetAccountServer : MonoBehaviour
                 RequestId = request.RequestId,
                 Action = "Register",
                 Success = true,
-                Message = "注册成功",
+                Message = "Register success",
 
                 AccountId = accountData.AccountId,
                 Username = accountData.Username,
@@ -114,7 +126,7 @@ public class FishNetAccountServer : MonoBehaviour
         LoginAccountRequest request,
         Channel channel)
     {
-        bool success = repository.TryLogin(
+        bool success = Repository.TryLogin(
             request.Username,
             out AccountData accountData,
             out string errorMessage
@@ -129,7 +141,7 @@ public class FishNetAccountServer : MonoBehaviour
                 RequestId = request.RequestId,
                 Action = "Login",
                 Success = true,
-                Message = "登录成功",
+                Message = "Login success",
 
                 AccountId = accountData.AccountId,
                 Username = accountData.Username,
@@ -159,7 +171,7 @@ public class FishNetAccountServer : MonoBehaviour
         UpdateChipAppearanceRequest request,
         Channel channel)
     {
-        // 必须先登录，才能修改自己的筹码外观
+        // Players must log in before updating their own chip appearance.
         if (!onlineAccounts.TryGetValue(conn, out AccountData currentAccount))
         {
             SendResponse(conn, new AccountResponse
@@ -167,7 +179,7 @@ public class FishNetAccountServer : MonoBehaviour
                 RequestId = request.RequestId,
                 Action = "UpdateChipAppearance",
                 Success = false,
-                Message = "尚未登录",
+                Message = "Not logged in",
 
                 AccountId = 0,
                 Username = string.Empty,
@@ -178,7 +190,7 @@ public class FishNetAccountServer : MonoBehaviour
             return;
         }
 
-        bool success = repository.TryUpdateChipAppearance(
+        bool success = Repository.TryUpdateChipAppearance(
             currentAccount.AccountId,
             request.ChipAppearaceData,
             out AccountData updatedAccount,
@@ -187,7 +199,7 @@ public class FishNetAccountServer : MonoBehaviour
 
         if (success)
         {
-            // 更新服务器内存里的在线账号数据
+            // Keep the server-side online account cache in sync.
             onlineAccounts[conn] = updatedAccount;
 
             SendResponse(conn, new AccountResponse
@@ -195,7 +207,7 @@ public class FishNetAccountServer : MonoBehaviour
                 RequestId = request.RequestId,
                 Action = "UpdateChipAppearance",
                 Success = true,
-                Message = "筹码外观修改成功",
+                Message = "Chip appearance updated",
 
                 AccountId = updatedAccount.AccountId,
                 Username = updatedAccount.Username,
@@ -220,10 +232,43 @@ public class FishNetAccountServer : MonoBehaviour
         }
     }
 
+    private void OnGetAccountInfoRequest(
+        NetworkConnection conn,
+        GetAccountInfoRequest request,
+        Channel channel)
+    {
+        bool success = Repository.TryGetAccountInfo(
+            request.AccountId,
+            request.SelectColumn,
+            out AccountInfoData accountInfoData,
+            out string errorMessage
+        );
+
+        SendInfoResponse(conn, new AccountInfoResponse
+        {
+            RequestId = request.RequestId,
+            Success = success,
+            Message = success ? "Query success" : errorMessage,
+
+            AccountId = success ? accountInfoData.AccountId : request.AccountId,
+            SelectColumn = success ? accountInfoData.SelectColumn : request.SelectColumn,
+            Value = success ? accountInfoData.Value : string.Empty
+        });
+    }
+
     private void SendResponse(NetworkConnection conn, AccountResponse response)
     {
-        // 第三个参数 requireAuthenticated = false。
-        // 因为注册/登录阶段客户端可能还没通过 Authenticator。
+        // The requireAuthenticated argument is false because account requests may arrive before authentication.
+        InstanceFinder.ServerManager.Broadcast(
+            conn,
+            response,
+            requireAuthenticated: false,
+            channel: Channel.Reliable
+        );
+    }
+
+    private void SendInfoResponse(NetworkConnection conn, AccountInfoResponse response)
+    {
         InstanceFinder.ServerManager.Broadcast(
             conn,
             response,
