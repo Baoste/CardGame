@@ -809,6 +809,8 @@ public class EventProcessFunction : MonoBehaviour
             SceneViewManager.mySumPointView.ChangeSum(opponentPoints, true);
             SceneViewManager.opponentSumPointView.ChangeSum(playerPoints, true);
         }
+        SceneViewManager.myExecuteCardView.DestroyCard(null);
+        SceneViewManager.opponentExecuteCardView.DestroyCard(null);
         yield return new WaitForSecondsRealtime(0.5f);
         yield return SceneViewManager.boardView.RemoveHoleCard(1 - winnerId);
         yield return SceneViewManager.boardView.RemoveOneSideCards(1 - winnerId);

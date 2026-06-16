@@ -18,11 +18,14 @@ public class SceneSwitcher : MonoBehaviour
             return;
         }
 
-        InstanceFinder.NetworkManager.TransportManager.Transport.SetClientAddress("49.232.222.222");
-        //InstanceFinder.NetworkManager.TransportManager.Transport.SetClientAddress("localhost");
-        // nm.TransportManager.Transport.SetClientAddress("localhost");
-        InstanceFinder.ClientManager.StartConnection();
+        if (!GameBootstrap.isLogin)
+        {
+            InstanceFinder.NetworkManager.TransportManager.Transport.SetClientAddress("49.232.222.222");
+            //InstanceFinder.NetworkManager.TransportManager.Transport.SetClientAddress("localhost");
+            // nm.TransportManager.Transport.SetClientAddress("localhost");
+            InstanceFinder.ClientManager.StartConnection();
 
+        }
         ProcessDispatcher.Register("BothJoinMatch", BothJoinMatch);
     }
 

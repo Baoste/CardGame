@@ -12,7 +12,8 @@ public static class ProcessDispatcher
     public static void Register(string type, DelegateFuncWithParams action)
     {
         if (!map.TryAdd(type, action))
-            throw new InvalidOperationException($"Handler already registered for type: {type}");
+            map[type] = action;
+            // throw new InvalidOperationException($"Handler already registered for type: {type}");
     }
 
     public static bool Process(string type, object[] parameters)

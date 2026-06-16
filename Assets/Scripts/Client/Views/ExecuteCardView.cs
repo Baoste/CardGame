@@ -90,7 +90,17 @@ public class ExecuteCardView : MonoBehaviour
     public void DestroyCard(GameObject instance)
     {
         if (executedCard != null)
-            StartCoroutine(_DestroyCard(instance));
+        {
+            if (instance != null)
+            {
+                StartCoroutine(_DestroyCard(instance));
+            }
+            else
+            {
+                Destroy(executedCard);
+                executedCard = null;
+            }
+        }
         else
             executedCard = instance;
     }

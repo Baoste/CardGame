@@ -24,7 +24,7 @@ public class MainMenuUI : MonoBehaviour
 
     private void Awake()
     {
-        if (!GameBootstrap.isLogin)
+        if (GameBootstrap.isLogin)
         {
             mainMenuCanvas.SetActive(false);
             chipUpdateCanvas.SetActive(false);
