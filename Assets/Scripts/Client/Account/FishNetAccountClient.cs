@@ -17,6 +17,9 @@ public class FishNetAccountClient : MonoBehaviour
     public event Action<AccountInfoData> OnGetAccountInfoSuccess;
     public event Action<string> OnGetAccountInfoFailed;
 
+    public event Action<LeaderboardEntryData[]> OnGetLeaderboardSuccess;
+    public event Action<string> OnGetLeaderboardFailed;
+
     public AccountData CurrentAccount { get; private set; }
     public bool HasAccount { get; private set; }
 
@@ -37,6 +40,10 @@ public class FishNetAccountClient : MonoBehaviour
         InstanceFinder.ClientManager.RegisterBroadcast<AccountInfoResponse>(
             OnAccountInfoResponse
         );
+
+        InstanceFinder.ClientManager.RegisterBroadcast<LeaderboardResponse>(
+            OnLeaderboardResponse
+        );
     }
 
     private void OnDisable()
@@ -51,6 +58,10 @@ public class FishNetAccountClient : MonoBehaviour
         InstanceFinder.ClientManager.UnregisterBroadcast<AccountInfoResponse>(
             OnAccountInfoResponse
         );
+
+        InstanceFinder.ClientManager.UnregisterBroadcast<LeaderboardResponse>(
+            OnLeaderboardResponse
+        );
     }
 
     public void Register(string username, ChipAppearaceData chipAppearaceData)
@@ -63,6 +74,23 @@ public class FishNetAccountClient : MonoBehaviour
             RequestId = nextRequestId++,
             Username = username,
             ChipAppearaceData = chipAppearaceData
+        };
+
+        InstanceFinder.ClientManager.Broadcast(
+            request,
+            Channel.Reliable
+        );
+    }
+
+    public void GetLeaderboard(int count)
+    {
+        if (!CanSendRequest())
+            return;
+
+        GetLeaderboardRequest request = new GetLeaderboardRequest
+        {
+            RequestId = nextRequestId++,
+            Count = count
         };
 
         InstanceFinder.ClientManager.Broadcast(
@@ -206,6 +234,28 @@ public class FishNetAccountClient : MonoBehaviour
 
             Debug.LogWarning(
                 $"[AccountClient] GetAccountInfo failed: {response.Message}"
+            );
+        }
+    }
+
+    private void OnLeaderboardResponse(LeaderboardResponse response, Channel channel)
+    {
+        if (response.Success)
+        {
+            LeaderboardEntryData[] entries = response.Entries ?? Array.Empty<LeaderboardEntryData>();
+
+            OnGetLeaderboardSuccess?.Invoke(entries);
+
+            Debug.Log(
+                $"[AccountClient] GetLeaderboard success. Count={entries.Length}"
+            );
+        }
+        else
+        {
+            OnGetLeaderboardFailed?.Invoke(response.Message);
+
+            Debug.LogWarning(
+                $"[AccountClient] GetLeaderboard failed: {response.Message}"
             );
         }
     }

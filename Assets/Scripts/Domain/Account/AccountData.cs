@@ -45,3 +45,16 @@ public struct AccountInfoData
         Value = value;
     }
 }
+
+[Serializable]
+public struct LeaderboardEntryData
+{
+    public string Username;
+    public int ChipCount;
+
+    public LeaderboardEntryData(string username, int chipCount)
+    {
+        Username = username;
+        ChipCount = chipCount;
+    }
+}

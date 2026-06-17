@@ -13,11 +13,14 @@ public class TutorialSystem : MonoBehaviour
     private int instanceID = 10000;
     private Dictionary<int, GameObject> instanceMap;
 
+    [Header("Audio")]
+    public AudioSource audioSource;
+    public AudioClip[] clips;
+
+    [Header("Scene Object")]
     public ClickToDrawSkillCard clickToDrawSkillCard;
     public ClickToDrawPointCard clickToDrawPointCard;
     public RevealButton revealButton;
-    public TMP_Text TutorialText;
-
     [SerializeField] private Volume volume;
     [SerializeField] private UIClickSuggest zoneClickSuggest;
     [SerializeField] private GameObject switchObject;
@@ -37,19 +40,24 @@ public class TutorialSystem : MonoBehaviour
         GameObject instance = null;
         yield return new WaitForSecondsRealtime(1f);
 
+        yield return PlayTutorialTTS(0);
         StartGame();
-        yield return new WaitForSecondsRealtime(1f);
         InitPointCard();
         InitSkillCard();
 
-        yield return ChangeText("this is boardview");
-        yield return ChangeText("this is handview");
 
         // 第一回合
         StartTurn(2);
+        yield return PlayTutorialTTS(1);
+        yield return PlayTutorialTTS(2);
+        yield return PlayTutorialTTS(3);
+        yield return PlayTutorialTTS(4);
+        yield return PlayTutorialTTS(5);
+        yield return PlayTutorialTTS(6);
 
         yield return DrawPointCard();
 
+        yield return PlayTutorialTTS(7);
         instanceMap[1001].GetComponentInChildren<Outline>().Enable = 1f;
         yield return PlaySkillCard(1001);
         yield return new WaitForSeconds(1f);
@@ -58,7 +66,11 @@ public class TutorialSystem : MonoBehaviour
         StartCoroutine(SceneViewManager.boardView.AddCard(instance, ClientGameState.playerSlot, CardVisualState.None));
         SceneViewManager.mySumPointView.ChangeSum(11, true);
 
+        yield return PlayTutorialTTS(8);
+        yield return PlayTutorialTTS(9);
         yield return DrawSkillCard(1004);
+
+        yield return PlayTutorialTTS(10);
         yield return EndTurn();
 
         // AI 就抽牌
@@ -71,15 +83,22 @@ public class TutorialSystem : MonoBehaviour
 
         // 第二回合
         StartTurn(2);
+        yield return PlayTutorialTTS(11);
+
         SceneViewManager.myTurnLightView.SetLight(5);
         yield return ShowButton();
+        yield return PlayTutorialTTS(12);
 
         yield return DrawSkillCard(1002);
         SceneViewManager.myRevealButtonView.HideButton();
 
+        yield return PlayTutorialTTS(13);
+
         yield return PlaySkillCard(1004);
         yield return new WaitForSeconds(1f);
         SceneViewManager.myActionPointView.AddPoint(2);
+
+        yield return PlayTutorialTTS(14);
 
         yield return PlaySkillCard(1002);
         yield return new WaitForSeconds(1f);
@@ -87,9 +106,11 @@ public class TutorialSystem : MonoBehaviour
         StartCoroutine(SceneViewManager.boardView.RemoveCard(instanceMap[100]));
         SceneViewManager.opponentSumPointView.ChangeSum(3, false);
 
+        yield return PlayTutorialTTS(15);
         yield return AddChip();
         SceneViewManager.myActionPointView.SpendPoint(1);
 
+        yield return PlayTutorialTTS(16);
         yield return EndTurn();
 
         // AI 就抽牌
@@ -100,15 +121,37 @@ public class TutorialSystem : MonoBehaviour
         yield return new WaitForSeconds(2f);
         SceneViewManager.opponentSumPointView.ChangeSum(4, false);
         yield return new WaitForSeconds(1f);
+        yield return PlayTutorialTTS(17);
 
         yield return EndGame();
+        yield return PlayTutorialTTS(18);
 
         ClientGameState.IsTutorial = false;
     }
 
+    private IEnumerator PlayTutorialTTS(int index)
+    {
+        audioSource.clip = clips[index];
+        audioSource.Play();
+
+        // 防止打开教程的那一次点击立刻把语音跳过
+        yield return null;
+
+        while (audioSource.isPlaying)
+        {
+            if (Input.GetMouseButtonDown(0))
+            {
+                audioSource.Stop();
+                break;
+            }
+
+            yield return null;
+        }
+    }
+
     private IEnumerator ChangeText(string text)
     {
-        TutorialText.text = text;
+        // TutorialText.text = text;
         while (true)
         {
             yield return null;
@@ -350,7 +393,7 @@ public class TutorialSystem : MonoBehaviour
         GameManager.ChangeInteractMask("Tutorial");
 
         StartCoroutine(SceneViewManager.viewAnimController.PlayStartGameAnim());
-        SceneViewManager.myChipView.StartGame(false, 7);
+        SceneViewManager.myChipView.StartGame(false, 4);
         SceneViewManager.opponentChipView.StartGame(true, 3);
         foreach (var obj in SceneViewManager.myChipView.chipsInTray.Values)
         {

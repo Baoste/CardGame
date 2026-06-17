@@ -16,6 +16,9 @@ public class ChipViewController : MonoBehaviour
 
     public void ChangeMat(ChipAppearaceData chipAppearaceData)
     {
+        if (ChipSkinConfig.materials == null)
+            return;
+
         Material[] mats = matRenderer.sharedMaterials;
         mats[0] = ChipSkinConfig.materials[chipAppearaceData.ChipSkinId];
         matRenderer.sharedMaterials = mats;

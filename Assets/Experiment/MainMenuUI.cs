@@ -11,11 +11,13 @@ public class MainMenuUI : MonoBehaviour
     public GameObject chipUpdateCanvas;
     public GameObject loginCanvas;
 
-    [Header("Other")]
+    [Header("Account")]
     public AccountChipCountText accountChipCountText;
+    public AccountLeaderboardText cccountLeaderboardText;
 
     // private Animator cameraAnimator;
     // public GameObject movingCamera;
+    [Header("Other")]
     public ShotPlayer shotPlayer;
     public GameObject player;
 
@@ -26,6 +28,7 @@ public class MainMenuUI : MonoBehaviour
     {
         if (GameBootstrap.isLogin)
         {
+
             mainMenuCanvas.SetActive(false);
             chipUpdateCanvas.SetActive(false);
             loginCanvas.SetActive(false);
@@ -41,8 +44,17 @@ public class MainMenuUI : MonoBehaviour
                 postprocessMat.DOFloat(0f, "_Intensity", 0.18f)
                     .SetEase(Ease.OutQuad)
             );
+            seq.AppendCallback(
+                RefreshAccountData
+            );
         }
         //cameraAnimator = movingCamera.GetComponent<Animator>();
+    }
+
+    private void RefreshAccountData()
+    {
+        cccountLeaderboardText.RefreshLeaderboard();
+        accountChipCountText.RefreshChipCount();
     }
 
     public void ShowMenu()
@@ -60,6 +72,8 @@ public class MainMenuUI : MonoBehaviour
     public void StartGame()
     {
         GameBootstrap.isLogin = true;
+
+        RefreshAccountData();
 
         shotPlayer.PlayShot(1); // 自由相机
 

@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Data;
 using System.IO;
 using Mono.Data.Sqlite;
@@ -443,6 +444,66 @@ public class SqliteAccountRepository
                     return true;
                 }
             }
+        }
+        catch (Exception e)
+        {
+            errorMessage = "Server error: " + e.Message;
+            return false;
+        }
+    }
+
+    public bool TryGetLeaderboard(
+        int count,
+        out LeaderboardEntryData[] entries,
+        out string errorMessage)
+    {
+        entries = Array.Empty<LeaderboardEntryData>();
+        errorMessage = null;
+
+        if (count <= 0)
+        {
+            errorMessage = "Invalid leaderboard count";
+            return false;
+        }
+
+        if (count > 100)
+            count = 100;
+
+        try
+        {
+            List<LeaderboardEntryData> results = new List<LeaderboardEntryData>();
+
+            using (IDbConnection connection = new SqliteConnection(ConnectionString))
+            {
+                connection.Open();
+
+                using (IDbCommand command = connection.CreateCommand())
+                {
+                    command.CommandText =
+                    @"
+                    SELECT username, chip_count
+                    FROM accounts
+                    ORDER BY chip_count DESC, account_id ASC
+                    LIMIT @count;
+                    ";
+
+                    AddParameter(command, "@count", count);
+
+                    using (IDataReader reader = command.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            results.Add(new LeaderboardEntryData(
+                                Convert.ToString(reader["username"]),
+                                Convert.ToInt32(reader["chip_count"])
+                            ));
+                        }
+                    }
+                }
+            }
+
+            entries = results.ToArray();
+            return true;
         }
         catch (Exception e)
         {

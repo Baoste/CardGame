@@ -51,6 +51,11 @@ public class FishNetAccountServer : MonoBehaviour
             OnGetAccountInfoRequest,
             requireAuthentication: false
         );
+
+        InstanceFinder.ServerManager.RegisterBroadcast<GetLeaderboardRequest>(
+            OnGetLeaderboardRequest,
+            requireAuthentication: false
+        );
     }
 
     private void OnDisable()
@@ -72,6 +77,10 @@ public class FishNetAccountServer : MonoBehaviour
 
         InstanceFinder.ServerManager.UnregisterBroadcast<GetAccountInfoRequest>(
             OnGetAccountInfoRequest
+        );
+
+        InstanceFinder.ServerManager.UnregisterBroadcast<GetLeaderboardRequest>(
+            OnGetLeaderboardRequest
         );
     }
 
@@ -256,6 +265,26 @@ public class FishNetAccountServer : MonoBehaviour
         });
     }
 
+    private void OnGetLeaderboardRequest(
+        NetworkConnection conn,
+        GetLeaderboardRequest request,
+        Channel channel)
+    {
+        bool success = Repository.TryGetLeaderboard(
+            request.Count,
+            out LeaderboardEntryData[] entries,
+            out string errorMessage
+        );
+
+        SendLeaderboardResponse(conn, new LeaderboardResponse
+        {
+            RequestId = request.RequestId,
+            Success = success,
+            Message = success ? "Query success" : errorMessage,
+            Entries = success ? entries : new LeaderboardEntryData[0]
+        });
+    }
+
     private void SendResponse(NetworkConnection conn, AccountResponse response)
     {
         // The requireAuthenticated argument is false because account requests may arrive before authentication.
@@ -268,6 +297,16 @@ public class FishNetAccountServer : MonoBehaviour
     }
 
     private void SendInfoResponse(NetworkConnection conn, AccountInfoResponse response)
+    {
+        InstanceFinder.ServerManager.Broadcast(
+            conn,
+            response,
+            requireAuthenticated: false,
+            channel: Channel.Reliable
+        );
+    }
+
+    private void SendLeaderboardResponse(NetworkConnection conn, LeaderboardResponse response)
     {
         InstanceFinder.ServerManager.Broadcast(
             conn,

@@ -6,6 +6,7 @@ public class AccountChipCountText : MonoBehaviour
     [Header("References")]
     [SerializeField] private FishNetAccountClient accountClient;
     [SerializeField] private TMP_Text chipCountText;
+    [SerializeField] private SlotNumberTMP slotNumberTMP;
 
     [Header("Text")]
     [SerializeField] private string loadingText = "...";
@@ -70,8 +71,10 @@ public class AccountChipCountText : MonoBehaviour
 
         if (chipCountText != null)
         {
-            ChipSkinConfig.myAccountData.ChipCount = int.Parse(accountInfoData.Value);
+            int chipCount = int.Parse(accountInfoData.Value);
             chipCountText.text = accountInfoData.Value;
+            slotNumberTMP.RollTo(chipCount);
+            ChipSkinConfig.myAccountData.ChipCount = chipCount;
         }
     }
 

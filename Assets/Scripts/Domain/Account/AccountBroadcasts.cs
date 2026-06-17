@@ -27,6 +27,12 @@ public struct GetAccountInfoRequest : IBroadcast
     public string SelectColumn;
 }
 
+public struct GetLeaderboardRequest : IBroadcast
+{
+    public int RequestId;
+    public int Count;
+}
+
 public struct AccountResponse : IBroadcast
 {
     public int RequestId;
@@ -53,4 +59,13 @@ public struct AccountInfoResponse : IBroadcast
     public long AccountId;
     public string SelectColumn;
     public string Value;
+}
+
+public struct LeaderboardResponse : IBroadcast
+{
+    public int RequestId;
+    public bool Success;
+    public string Message;
+
+    public LeaderboardEntryData[] Entries;
 }
