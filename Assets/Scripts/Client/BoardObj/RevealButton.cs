@@ -8,7 +8,6 @@ public class RevealButton : MonoBehaviour, IMouseEnter, IMouseExit, IMouseClick
 {
     private Vector3 originalPosition;  // 存储原始位置
     private Quaternion originalRotation;  // 存储原始旋转角度
-    public GameObject buttonLight;  // 按钮的模型对象
 
     // 设置晃动幅度
     public float shakeAmount = 0.1f;
@@ -46,7 +45,6 @@ public class RevealButton : MonoBehaviour, IMouseEnter, IMouseExit, IMouseClick
         isMouseOver = true;  // 标记鼠标进入
         Vector3 mouseWorldPos = GetMouseWorldPosition();
         TiltButton(mouseWorldPos);  // 根据鼠标位置进行倾斜
-        buttonLight.SetActive(true);  // 打开按钮灯光
     }
 
     // 鼠标退出时，按钮回到原位置并恢复原始旋转
@@ -57,7 +55,6 @@ public class RevealButton : MonoBehaviour, IMouseEnter, IMouseExit, IMouseClick
         transform.DOKill();  // 停止所有动画
         transform.DOLocalMove(originalPosition, shakeDuration);  // 回到原始位置
         ResetTilt();  // 恢复按钮的倾斜
-        buttonLight.SetActive(false);  // 关闭按钮灯光
     }
 
     // 鼠标按下时，按钮下沉并倾斜
@@ -69,7 +66,6 @@ public class RevealButton : MonoBehaviour, IMouseEnter, IMouseExit, IMouseClick
             ClientGameState.TutorialStepDone = true;
             hasClicked = true;
             TiltButton(GetMouseWorldPosition());  // 根据鼠标位置进行倾斜
-            buttonLight.SetActive(false);  // 关闭按钮灯光
             transform.DOLocalMove(originalPosition - Vector3.up * pressAmount, pressDuration).SetEase(Ease.InQuad);
             return;
         }
@@ -78,7 +74,6 @@ public class RevealButton : MonoBehaviour, IMouseEnter, IMouseExit, IMouseClick
         hasClicked = true;
         Vector3 mouseWorldPos = GetMouseWorldPosition();
         TiltButton(mouseWorldPos);  // 根据鼠标位置进行倾斜
-        buttonLight.SetActive(false);  // 关闭按钮灯光
         transform.DOLocalMove(originalPosition - Vector3.up * pressAmount, pressDuration)
             .SetEase(Ease.InQuad)  // 设置加速下沉
             .OnComplete(() =>

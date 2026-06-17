@@ -18,13 +18,17 @@ public class TutorialSystem : MonoBehaviour
     public AudioClip[] clips;
 
     [Header("Scene Object")]
+    public GameObject arrow;
     public ClickToDrawSkillCard clickToDrawSkillCard;
     public ClickToDrawPointCard clickToDrawPointCard;
     public RevealButton revealButton;
     [SerializeField] private Volume volume;
     [SerializeField] private UIClickSuggest zoneClickSuggest;
     [SerializeField] private GameObject switchObject;
+    [SerializeField] private Material postprocessMat;
+
     private ColorAdjustments colorAdjust;
+    private Tween arrowTween;
 
     private void Start()
     {
@@ -48,15 +52,22 @@ public class TutorialSystem : MonoBehaviour
 
         // 第一回合
         StartTurn(2);
+        MoveArrowTo(new Vector3(0, 1.136f, 1.47f));
         yield return PlayTutorialTTS(1);
+        MoveArrowTo(new Vector3(0, 1.136f, -0.623f));
         yield return PlayTutorialTTS(2);
+        MoveArrowTo(new Vector3(0, 1.136f, -1.348f));
         yield return PlayTutorialTTS(3);
+        MoveArrowTo(new Vector3(0, 1.136f, 0.706f));
         yield return PlayTutorialTTS(4);
+        MoveArrowTo(new Vector3(0, 1.136f, 1.274f));
         yield return PlayTutorialTTS(5);
+        MoveArrowTo(new Vector3(0, 1.236f, 0f));
         yield return PlayTutorialTTS(6);
 
         yield return DrawPointCard();
 
+        MoveArrowTo(new Vector3(0, 1.136f, -1.55f));
         yield return PlayTutorialTTS(7);
         instanceMap[1001].GetComponentInChildren<Outline>().Enable = 1f;
         yield return PlaySkillCard(1001);
@@ -66,12 +77,16 @@ public class TutorialSystem : MonoBehaviour
         StartCoroutine(SceneViewManager.boardView.AddCard(instance, ClientGameState.playerSlot, CardVisualState.None));
         SceneViewManager.mySumPointView.ChangeSum(11, true);
 
+        MoveArrowTo(new Vector3(0.51f, 1.22f, -1.23f));
         yield return PlayTutorialTTS(8);
+        MoveArrowTo(new Vector3(1.568f, 1.275f, -1.23f));
         yield return PlayTutorialTTS(9);
         yield return DrawSkillCard(1004);
 
+        MoveArrowTo(new Vector3(1.041f, 1.248f, -1.181f));
         yield return PlayTutorialTTS(10);
         yield return EndTurn();
+        MoveArrowTo(Vector3.zero);
 
         // AI 就抽牌
         SceneViewManager.opponentTurnLightView.SetLight(4);
@@ -86,18 +101,22 @@ public class TutorialSystem : MonoBehaviour
         yield return PlayTutorialTTS(11);
 
         SceneViewManager.myTurnLightView.SetLight(5);
+        MoveArrowTo(new Vector3(1.547f, 1.323f, -0.483f));
         yield return ShowButton();
         yield return PlayTutorialTTS(12);
+        MoveArrowTo(Vector3.zero);
 
         yield return DrawSkillCard(1002);
         SceneViewManager.myRevealButtonView.HideButton();
 
+        MoveArrowTo(new Vector3(-0.21f, 1.136f, -1.55f));
         yield return PlayTutorialTTS(13);
 
         yield return PlaySkillCard(1004);
         yield return new WaitForSeconds(1f);
         SceneViewManager.myActionPointView.AddPoint(2);
 
+        MoveArrowTo(new Vector3(0f, 1.136f, -1.55f));
         yield return PlayTutorialTTS(14);
 
         yield return PlaySkillCard(1002);
@@ -106,12 +125,16 @@ public class TutorialSystem : MonoBehaviour
         StartCoroutine(SceneViewManager.boardView.RemoveCard(instanceMap[100]));
         SceneViewManager.opponentSumPointView.ChangeSum(3, false);
 
+        MoveArrowTo(new Vector3(-0.888f, 1.237f, -1.169f));
         yield return PlayTutorialTTS(15);
         yield return AddChip();
         SceneViewManager.myActionPointView.SpendPoint(1);
 
+        MoveArrowTo(new Vector3(1.586f, 1.269f, 0.842f));
         yield return PlayTutorialTTS(16);
+        MoveArrowTo(new Vector3(1.041f, 1.248f, -1.181f));
         yield return EndTurn();
+        MoveArrowTo(Vector3.zero);
 
         // AI 就抽牌
         SceneViewManager.opponentTurnLightView.SetLight(5);
@@ -121,12 +144,30 @@ public class TutorialSystem : MonoBehaviour
         yield return new WaitForSeconds(2f);
         SceneViewManager.opponentSumPointView.ChangeSum(4, false);
         yield return new WaitForSeconds(1f);
+
+        MoveArrowTo(new Vector3(-1.368f, 1.345f, 0.218f));
         yield return PlayTutorialTTS(17);
+        MoveArrowTo(Vector3.zero);
 
         yield return EndGame();
         yield return PlayTutorialTTS(18);
 
         ClientGameState.IsTutorial = false;
+        GameManager.ResetInteractMask();
+
+        postprocessMat.SetFloat("_Intensity", 0f);
+        postprocessMat.SetFloat("_WhiteBloom", 0f);
+        Sequence endSeq = DOTween.Sequence();
+        endSeq.Append(
+            postprocessMat.DOFloat(1f, "_Intensity", 1f)
+        );
+        endSeq.Append(
+            postprocessMat.DOFloat(1f, "_WhiteBloom", 0.2f)
+        );
+        yield return endSeq.WaitForCompletion();
+        yield return new WaitForSeconds(2f);
+        postprocessMat.SetFloat("_Intensity", 0f);
+        FindAnyObjectByType<StartSceneBootstrap>().SwitchToGameScene("gxz");
     }
 
     private IEnumerator PlayTutorialTTS(int index)
@@ -139,7 +180,7 @@ public class TutorialSystem : MonoBehaviour
 
         while (audioSource.isPlaying)
         {
-            if (Input.GetMouseButtonDown(0))
+            if (index != 12 && Input.GetMouseButtonDown(0))
             {
                 audioSource.Stop();
                 break;
@@ -147,6 +188,20 @@ public class TutorialSystem : MonoBehaviour
 
             yield return null;
         }
+    }
+
+    private void MoveArrowTo(Vector3 pos)
+    {
+        arrowTween?.Kill();
+
+        // 先放到目标位置
+        arrow.transform.position = pos;
+
+        // 从目标位置开始上下浮动
+        arrowTween = arrow.transform
+            .DOMoveY(pos.y + 0.1f, 1f)
+            .SetLoops(-1, LoopType.Yoyo)
+            .SetEase(Ease.InOutSine);
     }
 
     private IEnumerator ChangeText(string text)

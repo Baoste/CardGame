@@ -12,6 +12,9 @@ public class UIModelPreview : MonoBehaviour
     [SerializeField] private float dragSensitivity = 0.3f;
     // 鼠标每移动 1 像素，转多少度
 
+    [Header("Idle Rotation")]
+    [SerializeField] private float idleRotateSpeed = 3f;
+
     [Header("Inertia")]
     [SerializeField] private float inertiaDamping = 5f;
     // 惯性衰减速度，越大停得越快
@@ -21,6 +24,8 @@ public class UIModelPreview : MonoBehaviour
     private Vector3 lastMousePos;
     // 当前惯性角速度，单位：度/秒
     private float angularVelocity;
+
+    private float idleAngularVelocity;
 
 
     private void Update()
@@ -42,6 +47,7 @@ public class UIModelPreview : MonoBehaviour
                 isDragging = true;
                 lastMousePos = Input.mousePosition;
                 angularVelocity = 0f;
+                idleAngularVelocity = 0f;
             }
         }
 
@@ -74,19 +80,32 @@ public class UIModelPreview : MonoBehaviour
         if (isDragging)
             return;
 
-        if (Mathf.Abs(angularVelocity) <= minAngularVelocity)
+        // 有拖拽惯性时，优先使用惯性
+        if (Mathf.Abs(angularVelocity) > minAngularVelocity)
         {
-            angularVelocity = 0f;
+            transform.Rotate(Vector3.forward, angularVelocity * Time.deltaTime);
+
+            angularVelocity = Mathf.Lerp(
+                angularVelocity,
+                0f,
+                inertiaDamping * Time.deltaTime
+            );
+
+            idleAngularVelocity = 0f;
             return;
         }
 
-        transform.Rotate(Vector3.forward, angularVelocity * Time.deltaTime);
+        // 惯性结束
+        angularVelocity = 0f;
 
-        angularVelocity = Mathf.Lerp(
-            angularVelocity,
-            0f,
-            inertiaDamping * Time.deltaTime
+        // 待机自转从 0 慢慢加速到 idleRotateSpeed
+        idleAngularVelocity = Mathf.MoveTowards(
+            idleAngularVelocity,
+            idleRotateSpeed,
+            8f * Time.deltaTime
         );
+
+        transform.Rotate(Vector3.forward, idleAngularVelocity * Time.deltaTime);
     }
 
     public void SetChipColor(int chipColorId)

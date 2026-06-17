@@ -9,6 +9,7 @@ public class RevealView : MonoBehaviour, IViewClear
 {
     [SerializeField] private GameObject revealButton;
     [SerializeField] private GameObject slotMachine;
+    [SerializeField] private GameObject buttonLight;
 
     private Vector3 BtnHidePosition;
     private Vector3 BtnShowPosition;
@@ -32,6 +33,7 @@ public class RevealView : MonoBehaviour, IViewClear
     public void ClearView()
     {
         revealButton.transform.DOKill();
+        buttonLight.SetActive(false);
         revealButton.GetComponent<RevealButton>().enabled = false;
         revealButton.GetComponent<Collider>().enabled = false;
         isRandomEnabled = false;
@@ -43,6 +45,7 @@ public class RevealView : MonoBehaviour, IViewClear
         revealButton.transform.DOLocalMove(BtnShowPosition, 0.5f);
         if (canClick)
         {
+            buttonLight.SetActive(true);
             revealButton.GetComponent<RevealButton>().hasClicked = false;
             revealButton.GetComponent<RevealButton>().enabled = true;
             revealButton.GetComponent<Collider>().enabled = true;
@@ -52,6 +55,7 @@ public class RevealView : MonoBehaviour, IViewClear
     public void HideButton()
     {
         revealButton.transform.DOKill();
+        buttonLight.SetActive(false);
         revealButton.GetComponent<RevealButton>().enabled = false;
         revealButton.GetComponent<Collider>().enabled = false;
         revealButton.transform.DOLocalMove(BtnHidePosition, 0.5f);

@@ -17,4 +17,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/ClientTest_Yifan_v4.unity
     guid: 9bc949a38f77aea40999d306896a4281
+  - enabled: 1
+    path: Assets/Scenes/Tutorial.unity
+    guid: cad9a50b669e948498c65b199416f92a
   m_configObjects: {}

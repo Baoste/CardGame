@@ -41,7 +41,8 @@ public class ComputerUIController : MonoBehaviour
     private readonly string[] mainMenuOptions =
     {
         "Random Match",
-        "Join by Room Code",
+        "Tutorial",
+        // "Join by Room Code",
         "Exit Terminal"
     };
 
@@ -167,6 +168,26 @@ public class ComputerUIController : MonoBehaviour
         RefreshMainMenuInputView();
     }
 
+    //private void EnterInputRoomCodeState()
+    //{
+    //    StopMatchingRoutineIfNeed();
+
+    //    currentState = ComputerScreenState.InputRoomCode;
+    //    currentRoomCode = string.Empty;
+
+    //    if (terminalLog != null)
+    //    {
+    //        terminalLog.ClearAll();
+    //        terminalLog.PlayLines(new string[]
+    //        {
+    //            "Manual room connection selected.",
+    //            "Please enter room code."
+    //        });
+    //    }
+
+    //    RefreshRoomCodeInputView();
+    //}
+
     private void EnterInputRoomCodeState()
     {
         StopMatchingRoutineIfNeed();
@@ -179,12 +200,14 @@ public class ComputerUIController : MonoBehaviour
             terminalLog.ClearAll();
             terminalLog.PlayLines(new string[]
             {
-                "Manual room connection selected.",
-                "Please enter room code."
+                "Select Tutorial."
             });
         }
 
-        RefreshRoomCodeInputView();
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
+        FindAnyObjectByType<StartSceneBootstrap>().SwitchToGameScene("Tutorial");
+        // RefreshRoomCodeInputView();
     }
 
     private void EnterMatchingRandomState()
