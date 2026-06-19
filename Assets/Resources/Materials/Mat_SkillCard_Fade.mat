@@ -82,9 +82,15 @@ Material:
     - _BorderSize: -5.5
     - _DissolutionStrength: 0
     - _Distance: 0.91
+    - _Intensity: 5
+    - _Period: 7
     - _QueueControl: 0
     - _QueueOffset: 0
+    - _Softness: 0.5
+    - _SweepDurationi: 0.2
+    - _Width: 0.03
     m_Colors:
     - _BorderColor: {r: 0, g: 4, b: 3.534391, a: 0}
     - _Center: {r: 0, g: 0, b: 0, a: 0}
+    - _ShiningColor: {r: 1, g: 0.2109753, b: 0, a: 0}
   m_BuildTextureStacks: []
