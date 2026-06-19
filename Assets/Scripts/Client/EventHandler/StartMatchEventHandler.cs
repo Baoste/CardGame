@@ -20,8 +20,8 @@ public class StartMatchEventHandler : IEventProcess, IEventHandler
 
         return true;
     }
-    public void Process(object[] objects)
+    public IEnumerator Process(object[] objects)
     {
-        ProcessDispatcher.Process("StartMatchTest", objects);
+        yield return ProcessDispatcher.Process("StartMatchTest", objects);
     }
 }

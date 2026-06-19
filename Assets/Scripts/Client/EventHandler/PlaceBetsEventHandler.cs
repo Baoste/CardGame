@@ -16,9 +16,9 @@ public class PlaceBetsEventHandler : IEventProcess, IEventHandler
 
         return true;
     }
-    public void Process(object[] objects)
+    public IEnumerator Process(object[] objects)
     {
-        ProcessDispatcher.Process("PlaceBetsTest", objects);
+        yield return ProcessDispatcher.Process("PlaceBetsTest", objects);
     }
 }
 

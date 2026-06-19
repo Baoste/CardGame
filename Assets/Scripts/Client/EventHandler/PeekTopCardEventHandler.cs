@@ -20,8 +20,8 @@ public class PeekTopCardEventHandler : IEventProcess, IEventHandler
         return true;
     }
 
-    public void Process(object[] objects)
+    public IEnumerator Process(object[] objects)
     {
-        ProcessDispatcher.Process("PeekTopCardEventTest", objects);
+        yield return ProcessDispatcher.Process("PeekTopCardEventTest", objects);
     }
 }

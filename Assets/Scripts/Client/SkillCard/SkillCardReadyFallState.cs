@@ -17,6 +17,5 @@ public class SkillCardReadyFallState : SkillCardState
     public override void Exit()
     {
         base.Exit();
-        ClientEffectContext.isExecutingSkillCard = false;
     }
 }

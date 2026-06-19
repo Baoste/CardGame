@@ -17,8 +17,9 @@ public class GetCtxEventHandler : IEventProcess, IEventHandler
 
         return true;
     }
-    public void Process(object[] objects)
+    public IEnumerator Process(object[] objects)
     {
         // Nothing to do
+        yield break;
     }
 }

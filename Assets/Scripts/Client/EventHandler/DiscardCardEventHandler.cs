@@ -25,8 +25,8 @@ public class DiscardCardEventHandler : IEventProcess, IEventHandler
         return true;
     }
 
-    public void Process(object[] objects)
+    public IEnumerator Process(object[] objects)
     {
-        ProcessDispatcher.Process("DiscardCardTest", objects);
+        yield return ProcessDispatcher.Process("DiscardCardTest", objects);
     }
 }

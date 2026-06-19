@@ -16,8 +16,8 @@ public class InvalidActionEventHandler : IEventProcess, IEventHandler
 
         return true;
     }
-    public void Process(object[] objects)
+    public IEnumerator Process(object[] objects)
     {
-        ProcessDispatcher.Process("InvalidActionTest", objects);
+        yield return ProcessDispatcher.Process("InvalidActionTest", objects);
     }
 }

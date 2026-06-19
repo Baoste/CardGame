@@ -16,8 +16,8 @@ public class AddActionPointEventHandler : IEventProcess, IEventHandler
 
         return true;
     }
-    public void Process(object[] objects)
+    public IEnumerator Process(object[] objects)
     {
-        ProcessDispatcher.Process("AddActionPointTest", objects);
+        yield return ProcessDispatcher.Process("AddActionPointTest", objects);
     }
 }

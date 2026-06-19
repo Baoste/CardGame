@@ -10,14 +10,14 @@ public class JudgeResultEventHandler : IEventProcess, IEventHandler
     {
         var payload = JsonConvert.DeserializeObject<JudgeResultEvent>(ev.jsonData);
         // need change, 需要把参数在这里传进去
-        ProcessQueueManager.Instance.Enqueue(Process, new object[] { payload.playerId, payload.judgeResult, payload.effectAnimation }, 0.5f);
+        ProcessQueueManager.Instance.Enqueue(Process, new object[] { payload.playerId, payload.judgeResult, payload.effectAnimation }, 0f);
 
         Debug.Log($"[Client] Event#{ev.Index} type={ev.type} slot={payload.playerId} payload={payload.judgeResult}");
 
         return true;
     }
-    public void Process(object[] objects)
+    public IEnumerator Process(object[] objects)
     {
-        ProcessDispatcher.Process("JudgeResultTest", objects);
+        yield return ProcessDispatcher.Process("JudgeResultTest", objects);
     }
 }

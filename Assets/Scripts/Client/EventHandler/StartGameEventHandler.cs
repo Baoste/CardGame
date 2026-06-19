@@ -1,5 +1,6 @@
 using Game.Domain;
 using Newtonsoft.Json;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -21,8 +22,8 @@ public class StartGameEventHandler : IEventProcess, IEventHandler
 
         return true;
     }
-    public void Process(object[] objects)
+    public IEnumerator Process(object[] objects)
     {
-        ProcessDispatcher.Process("StartGameTest", objects);
+        yield return ProcessDispatcher.Process("StartGameTest", objects);
     }
 }

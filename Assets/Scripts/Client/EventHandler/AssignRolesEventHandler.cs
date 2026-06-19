@@ -10,7 +10,7 @@ public class AssignRolesEventHandler : IEventProcess, IEventHandler
     {
         var payload = JsonConvert.DeserializeObject<AssignRolesEvent>(ev.jsonData);
         // need change, 需要把参数在这里传进去
-        ProcessQueueManager.Instance.Enqueue(Process, new object[] { payload.dealerId, payload.punterId, payload.placeBetCount }, 0.5f);
+        ProcessQueueManager.Instance.Enqueue(Process, new object[] { payload.dealerId, payload.punterId, payload.placeBetCount }, 0f);
 
         ClientGameState.Instance.dealerId = payload.dealerId;
         ClientGameState.Instance.punterId = payload.punterId;
@@ -20,8 +20,8 @@ public class AssignRolesEventHandler : IEventProcess, IEventHandler
 
         return true;
     }
-    public void Process(object[] objects)
+    public IEnumerator Process(object[] objects)
     {
-        ProcessDispatcher.Process("AssignRolesTest", objects);
+        yield return ProcessDispatcher.Process("AssignRolesTest", objects);
     }
 }

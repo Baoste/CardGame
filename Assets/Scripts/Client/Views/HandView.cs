@@ -85,6 +85,7 @@ public class HandView : MonoBehaviour, IViewClear
         {
             skillCardInstances.Add(instance);
         }
+        StartCoroutine(UpdateCardPositions(0.5f));
     }
 
     public IEnumerator RemoveCard(GameObject instance, bool isDestroy = false)
@@ -147,8 +148,8 @@ public class HandView : MonoBehaviour, IViewClear
         seq.Append(instance.transform.DOMove(instantiatePosition - moveDir * instance.transform.right * 1f, 0.5f).SetEase(Ease.OutBack));
         seq.Append(skillCardsDeck.transform.DOLocalMove(deckOriginalPosition, 0.3f).SetEase(Ease.OutBack));
 
-        yield return seq.WaitForCompletion();
         ClientEffectContext.isDrawingSkillCard = false;
+        yield return new WaitForSeconds(1f);
     }
 
      public IEnumerator UpdateCardPositions(float duration)

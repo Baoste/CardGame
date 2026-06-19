@@ -24,8 +24,9 @@ public class ValidateActionPointEventHandler : IEventProcess, IEventHandler
         return true;
     }
 
-    public void Process(object[] objects)
+    public IEnumerator Process(object[] objects)
     {
         // ProcessDispatcher.Process("EventProcessFunction", objects);
+        yield break;
     }
 }

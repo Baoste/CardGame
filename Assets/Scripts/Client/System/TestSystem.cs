@@ -103,7 +103,7 @@ public class TestSystem : MonoBehaviour
             if (card <= 10)
             {
                 GameObject instance = CardViewCreator.Instance.CreateCardResolved(card++, 989);
-                StartCoroutine(ResolveZoneView.AddCard(instance, -1, true, CardVisualState.None));
+                StartCoroutine(ResolveZoneView.AddCard(instance, -1, true, CardVisualState.None, 1.5f));
             }
         }
 
@@ -111,7 +111,7 @@ public class TestSystem : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.P))
         {
             GameObject instance = CardViewCreator.Instance.CreateCardResolved(2, 99);
-            StartCoroutine(SceneViewManager.peekZoneView.AddCard(instance, 999, false, CardVisualState.None));
+            StartCoroutine(SceneViewManager.peekZoneView.AddCard(instance, 999, false, CardVisualState.None, 0.8f));
         }
 
         // ³éµãÊýÅÆ

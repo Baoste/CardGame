@@ -16,8 +16,8 @@ public class ClearCardsToResolveEventHandler : IEventProcess, IEventHandler
 
         return true;
     }
-    public void Process(object[] objects)
+    public IEnumerator Process(object[] objects)
     {
-        ProcessDispatcher.Process("ClearCardsToResolveTest", objects);
+        yield return ProcessDispatcher.Process("ClearCardsToResolveTest", objects);
     }
 }

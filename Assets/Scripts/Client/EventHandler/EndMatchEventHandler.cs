@@ -10,7 +10,7 @@ public class EndMatchEventHandler : IEventProcess, IEventHandler
     {
         var payload = JsonConvert.DeserializeObject<EndMatchEvent>(ev.jsonData); // need change
         // need change, 需要把参数在这里传进去
-        ProcessQueueManager.Instance.Enqueue(Process, new object[] { payload.finalWinnerId, payload.winnerId, payload.currentBet }, 0.5f);
+        ProcessQueueManager.Instance.Enqueue(Process, new object[] { payload.finalWinnerId, payload.winnerId, payload.currentBet }, 0);
 
         // TODO
         // START
@@ -20,8 +20,8 @@ public class EndMatchEventHandler : IEventProcess, IEventHandler
 
         return true;
     }
-    public void Process(object[] objects)
+    public IEnumerator Process(object[] objects)
     {
-        ProcessDispatcher.Process("EndMatchTest", objects);
+        yield return  ProcessDispatcher.Process("EndMatchTest", objects);
     }
 }

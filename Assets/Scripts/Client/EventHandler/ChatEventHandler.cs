@@ -1,5 +1,6 @@
 using Game.Domain;
 using Newtonsoft.Json;
+using System.Collections;
 using UnityEngine;
 
 public sealed class ChatEventHandler : IEventProcess, IEventHandler
@@ -15,8 +16,9 @@ public sealed class ChatEventHandler : IEventProcess, IEventHandler
 
         return true;
     }
-    public void Process(object[] objects)
+    public IEnumerator Process(object[] objects)
     {
         // TODO:
+        yield break;
     }
 }

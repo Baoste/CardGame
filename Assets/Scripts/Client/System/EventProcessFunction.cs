@@ -40,12 +40,13 @@ public class EventProcessFunction : MonoBehaviour
         ProcessDispatcher.Register("EmojiTest", EmojiTest);
     }
 
-    public void EmojiTest(object[] parameters)
+    public IEnumerator EmojiTest(object[] parameters)
     {
         int playerId = (int)parameters[0];
         int emojiId = (int)parameters[1];
 
         Debug.Log($"EmojiTest {emojiId}");
+        yield break;
         //bool isOpponent = playerId != ClientGameState.playerSlot;
         //if (isOpponent)
         //    SceneViewManager.opponentEmojiView.ShowEmoji(emojiId);
@@ -53,26 +54,21 @@ public class EventProcessFunction : MonoBehaviour
         //    SceneViewManager.myEmojiView.ShowEmoji(emojiId);
     }
 
-    public void StartMatchTest(object[] parameters)
+    public IEnumerator StartMatchTest(object[] parameters)
     {
         CinemachineVirtualCamera vcam = GameObject.Find("VCamera_Playing").GetComponent<CinemachineVirtualCamera>();
         vcam.Priority = 20;
 
         // SceneViewManager.boardView.transform.GetComponentInChildren<ClickToStartGame>().isEnabled = true;
         // SceneViewManager.boardView.transform.GetComponentInChildren<ClickToStartGame>().startText.SetActive(true);
-        StartCoroutine(_SendStartGameCmd());
+        yield return new WaitForSeconds(1f);
+        ClientCommand.StartGame();
 
         SceneViewManager.myChipView.StartGame(false);
         SceneViewManager.opponentChipView.StartGame(true);
     }
 
-    private IEnumerator _SendStartGameCmd()
-    {
-        yield return new WaitForSeconds(1f);
-        ClientCommand.StartGame();
-    }
-
-    public void StartGameTest(object[] parameters)
+    public IEnumerator StartGameTest(object[] parameters)
     {
         SceneViewManager.myHandView.skillCardDeck.ResetCardStack();
 
@@ -87,11 +83,12 @@ public class EventProcessFunction : MonoBehaviour
         {
             instanceMap[k] = SceneViewManager.opponentChipView.chipsInTray[k];
         }
+        yield break;
     }
 
     // parameters[0]: int playerId
     // parameters[1]: int turn
-    public void StartTurnTest(object[] parameters)
+    public IEnumerator StartTurnTest(object[] parameters)
     {
         int playerId = (int)parameters[0];
         int turn = (int)parameters[1];
@@ -150,12 +147,13 @@ public class EventProcessFunction : MonoBehaviour
             else
                 SceneViewManager.myTurnLightView.SetLight(playerTurn);
         }
+        yield break;
     }
 
     // parameters[0]: int playerId
     // parameters[1]: InvalidActionType invalidType
     // parameters[2]: int instanceId
-    public void InvalidActionTest(object[] parameters)
+    public IEnumerator InvalidActionTest(object[] parameters)
     {
         int playerId = (int)parameters[0];
         InvalidActionType invalidType = (InvalidActionType)parameters[1];
@@ -190,12 +188,13 @@ public class EventProcessFunction : MonoBehaviour
             default:
                 break;
         }
+        yield break;
     }
 
     // parameters[0]: int dealerId
     // parameters[1]: int punterId
     // parameters[2]: int placeBetCount
-    public void AssignRolesTest(object[] parameters)
+    public IEnumerator AssignRolesTest(object[] parameters)
     {
         int dealerId = (int)parameters[0];
         int punterId = (int)parameters[1];
@@ -216,7 +215,7 @@ public class EventProcessFunction : MonoBehaviour
         for (int i = 0; i < placeBetCount; i++)
         {
             StartCoroutine(SceneViewManager.myChipView.Place1BetAuto(false, 1f));
-            StartCoroutine(SceneViewManager.opponentChipView.Place1BetAuto(true, 1f));
+            yield return SceneViewManager.opponentChipView.Place1BetAuto(true, 1f);
         }
 
         if (punterId == ClientGameState.playerSlot)
@@ -226,7 +225,7 @@ public class EventProcessFunction : MonoBehaviour
     // parameters[0]: int playerId
     // parameters[1]: int apCount
     // parameters[2]: bool reset
-    public void AddActionPointTest(object[] parameters)
+    public IEnumerator AddActionPointTest(object[] parameters)
     {
         int playerId = (int)parameters[0];
         int apCount = (int)parameters[1];
@@ -243,11 +242,12 @@ public class EventProcessFunction : MonoBehaviour
             if (reset) SceneViewManager.myActionPointView.ResetPoint();
             SceneViewManager.myActionPointView.AddPoint(apCount);
         }
+        yield break;
     }
 
     // parameters[0]: int playerId
     // parameters[1]: int apCount
-    public void SpendActionPointTest(object[] parameters)
+    public IEnumerator SpendActionPointTest(object[] parameters)
     {
         int playerId = (int)parameters[0];
         int apCount = (int)parameters[1];
@@ -257,12 +257,13 @@ public class EventProcessFunction : MonoBehaviour
             SceneViewManager.opponentActionPointView.SpendPoint(apCount);
         else
             SceneViewManager.myActionPointView.SpendPoint(apCount);
+        yield break;
     }
 
     // parameters[0]: int playerId
     // parameters[1]: bool judgeResult
     // parameters[2]: EffectAnimation effectAnimation
-    public void JudgeResultTest(object[] parameters)
+    public IEnumerator JudgeResultTest(object[] parameters)
     {
         int playerId = (int)parameters[0];
         bool judgeResult = (bool)parameters[1];
@@ -287,12 +288,13 @@ public class EventProcessFunction : MonoBehaviour
                 break;
             }
         }
+        yield break;
     }
 
 
     // parameters[0]: int playerId
     // parameters[1]: int instanceId
-    public void Place1BetTest(object[] parameters)
+    public IEnumerator Place1BetTest(object[] parameters)
     {
         int playerId = (int)parameters[0];
         int instanceId = (int)parameters[1];
@@ -301,8 +303,8 @@ public class EventProcessFunction : MonoBehaviour
         if (isOpponent)
         {
             AudioManager.Instance.Play("Chip_Up");
-            StartCoroutine(SceneViewManager.opponentChipView.Place1BetAuto(true, 0));
-            StartCoroutine(SceneViewManager.callOrFoldMachine.Show(1));
+            yield return SceneViewManager.opponentChipView.Place1BetAuto(true, 0);
+            yield return SceneViewManager.callOrFoldMachine.Show(1);
         }
         else
         {
@@ -313,13 +315,13 @@ public class EventProcessFunction : MonoBehaviour
                 script.enabled = false;
             }
             SceneViewManager.myChipView.Place1Bet(instanceId);
-            StartCoroutine(SceneViewManager.callOrFoldMachineBack.Show(1));
+            yield return SceneViewManager.callOrFoldMachineBack.Show(1);
         }
     }
 
     // parameters[0]: int playerId
     // parameters[1]: int[] instanceIds
-    public void PlaceBetsTest(object[] parameters)
+    public IEnumerator PlaceBetsTest(object[] parameters)
     {
         int playerId = (int)parameters[0];
         int[] instanceId = (int[])parameters[1];
@@ -329,13 +331,13 @@ public class EventProcessFunction : MonoBehaviour
 
         if (isOpponent)
         {
-            if (instanceId.Length < 1)  return;
+            if (instanceId.Length < 1)  yield break;
             AudioManager.Instance.Play("Chip_Up");
             for (int i = 0; i < instanceId.Length; i++)
             {
                 StartCoroutine(SceneViewManager.opponentChipView.Place1BetAuto(true, 0));
             }
-            StartCoroutine(SceneViewManager.callOrFoldMachine.Show(instanceId.Length));
+            yield return SceneViewManager.callOrFoldMachine.Show(instanceId.Length);
         }
         else
         {
@@ -373,7 +375,7 @@ public class EventProcessFunction : MonoBehaviour
 
     // parameters[0]: int playerId
     // parameters[1]: int betCount
-    public void ConfirmBetTest(object[] parameters)
+    public IEnumerator ConfirmBetTest(object[] parameters)
     {
         int playerId = (int)parameters[0];
         int betCount = (int)parameters[1];
@@ -384,13 +386,13 @@ public class EventProcessFunction : MonoBehaviour
         {
             for (int i = 0; i < betCount; i++)
                 StartCoroutine(SceneViewManager.opponentChipView.Place1BetAuto(true, 0));
-            StartCoroutine(SceneViewManager.callOrFoldMachineBack.Hide());
+            yield return SceneViewManager.callOrFoldMachineBack.Hide();
         }
         else
         {
             for (int i = 0; i < betCount; i++)
                 StartCoroutine(SceneViewManager.myChipView.Place1BetAuto(true, 0));
-            StartCoroutine(SceneViewManager.callOrFoldMachine.Hide());
+            yield return SceneViewManager.callOrFoldMachine.Hide();
         }
 
         //foreach (var obj in SceneViewManager.myChipView.chipsInTray.Keys)
@@ -412,7 +414,7 @@ public class EventProcessFunction : MonoBehaviour
     // parameters[0]: int playerId
     // parameters[1]: AnimationType animType
     // parameters[2]: int instanceId
-    public void PlayAnimation(object[] parameters)
+    public IEnumerator PlayAnimation(object[] parameters)
     {
         int playerId = (int)parameters[0];
         AnimationType animType = (AnimationType)parameters[1];
@@ -441,6 +443,7 @@ public class EventProcessFunction : MonoBehaviour
                         SceneViewManager.myHandView.ReturnCard(obj);
                     skillCard.stateMachine.ChangeState(skillCard.inHandState);
                 }
+                ClientEffectContext.isExecutingSkillCard = false;
 
                 ChipController chipController = obj.GetComponentInChildren<ChipController>();
                 if (chipController != null)
@@ -462,11 +465,12 @@ public class EventProcessFunction : MonoBehaviour
             }
             break;
         }
+        yield break;
     }
 
     // parameters[0]: int instanceId
     // parameters[1]: int targeValue
-    public void ModifyPoint(object[] parameters)
+    public IEnumerator ModifyPoint(object[] parameters)
     {
         int instanceId = (int)parameters[0];
         int targeValue = (int)parameters[1];
@@ -474,13 +478,14 @@ public class EventProcessFunction : MonoBehaviour
         GameObject obj = instanceMap[instanceId];
         PointCardInstance pointIns = obj.GetComponent<PointCardInstance>();
         obj.GetComponent<PointCardViewController>().ChangeCardTexture(pointIns.cardVisualState, targeValue);
+        yield break;
     }
 
 
     // parameters[0]: int playerId
     // parameters[1]: List<int> instanceIds
     // parameters[2]: EffectAnimation effectAnimation
-    public void DiscardCard(object[] parameters)
+    public IEnumerator DiscardCard(object[] parameters)
     {
         int playerId = (int)parameters[0];
         List<int> instanceIds = (List<int>)parameters[1];
@@ -488,7 +493,7 @@ public class EventProcessFunction : MonoBehaviour
 
         if (instanceIds.Count < 1)
         {
-            return;
+            yield break;
         }
 
         if (instanceIds.Count == 1)
@@ -500,7 +505,7 @@ public class EventProcessFunction : MonoBehaviour
                 IDiscardPresentation discardPresentation = obj.GetComponent<IDiscardPresentation>();
                 discardPresentation?.DiscardPlay();
             }
-            return;
+            yield break;
         }
 
         switch (effectAnimation)
@@ -535,7 +540,7 @@ public class EventProcessFunction : MonoBehaviour
     // parameters[1]: int instanceId
     // parameters[2]: int playerId
     // parameters[3]: CardVisualState cardVisualState
-    public void DrawPointCard(object[] parameters)
+    public IEnumerator DrawPointCard(object[] parameters)
     {
         int cardId = (int)parameters[0];
         int instanceId = (int)parameters[1];
@@ -548,7 +553,7 @@ public class EventProcessFunction : MonoBehaviour
 
         AudioManager.Instance.Play("DrawPointCard");
 
-        StartCoroutine(SceneViewManager.boardView.AddCard(instance, playerId, cardState));
+        yield return SceneViewManager.boardView.AddCard(instance, playerId, cardState);
 
         // ≤Ÿ◊˜¡ÀæÕ“˛≤ÿ±¨≈∆∞¥≈•
         if (ClientGameState.Instance.punterId == ClientGameState.playerSlot)
@@ -560,7 +565,7 @@ public class EventProcessFunction : MonoBehaviour
     // parameters[0]: int cardId
     // parameters[1]: int instanceId
     // parameters[2]: int playerId
-    public void DrawSkillCard(object[] parameters)
+    public IEnumerator DrawSkillCard(object[] parameters)
     {
         int cardId = (int)parameters[0];
         int instanceId = (int)parameters[1];
@@ -588,6 +593,8 @@ public class EventProcessFunction : MonoBehaviour
             SceneViewManager.myRevealButtonView.HideButton();
         else
             SceneViewManager.opponentRevealButtonView.HideButton();
+
+        yield break;
     }
 
     // parameters[0]: int cardId
@@ -595,7 +602,7 @@ public class EventProcessFunction : MonoBehaviour
     // parameters[2]: int playerId
     // parameters[3]: bool isShown
     // parameters[4]: CardVisualState cardState
-    public void ToResolveTest(object[] parameters)
+    public IEnumerator ToResolveTest(object[] parameters)
     {
         int cardId      = (int)parameters[0];
         int instanceId  = (int)parameters[1];
@@ -604,7 +611,7 @@ public class EventProcessFunction : MonoBehaviour
         CardVisualState cardState = (CardVisualState)parameters[4];
 
         GameObject instance = CardViewCreator.Instance.CreateCardResolved(cardId, instanceId);
-        StartCoroutine(SceneViewManager.resolveZoneView.AddCard(instance, playerId, isShown, cardState));
+        yield return SceneViewManager.resolveZoneView.AddCard(instance, playerId, isShown, cardState, 1.5f);
     }
 
     // parameters[0]: int playerId
@@ -612,7 +619,7 @@ public class EventProcessFunction : MonoBehaviour
     // parameters[2]: int instanceId
     // parameters[3]: ParticipantType toZone
     // parameters[4]: CardVisualState cardState
-    public void MoveCard(object[] parameters)
+    public IEnumerator MoveCard(object[] parameters)
     {
         int playerId                = (int)parameters[0];
         int cardId                  = (int)parameters[1];
@@ -628,12 +635,12 @@ public class EventProcessFunction : MonoBehaviour
             {
                 if (instanceMap.TryGetValue(instanceId, out var obj))
                 {
-                    StartCoroutine(SceneViewManager.boardView.MoveCard(obj, 1 - playerId));
+                    yield return SceneViewManager.boardView.MoveCard(obj, 1 - playerId);
                 }
                 else
                 {
                     GameObject instance = CardViewCreator.Instance.CreateCardInstance(cardId, instanceId);
-                    StartCoroutine(SceneViewManager.boardView.AddCard(instance, playerId, cardState));
+                    yield return SceneViewManager.boardView.AddCard(instance, playerId, cardState);
                     instanceMap[instanceId] = instance;
                 }
                 break;
@@ -642,12 +649,12 @@ public class EventProcessFunction : MonoBehaviour
             {
                 if (instanceMap.TryGetValue(instanceId, out var obj))
                 {
-                    StartCoroutine(SceneViewManager.boardView.MoveCard(obj, playerId));
+                    yield return SceneViewManager.boardView.MoveCard(obj, playerId);
                 }
                 else
                 {
                     GameObject instance = CardViewCreator.Instance.CreateCardInstance(cardId, instanceId);
-                    StartCoroutine(SceneViewManager.boardView.AddCard(instance, 1 - playerId, cardState));
+                    yield return SceneViewManager.boardView.AddCard(instance, 1 - playerId, cardState);
                     instanceMap[instanceId] = instance;
                 }
                 break;
@@ -656,27 +663,27 @@ public class EventProcessFunction : MonoBehaviour
             {
                 if (isOpponent)
                 {
-                    StartCoroutine(SceneViewManager.myHandView.RemoveCard(instanceMap[instanceId]));
-                    StartCoroutine(SceneViewManager.opponentHandView.AddCardFromOthers(instanceMap[instanceId]));
+                    yield return (SceneViewManager.myHandView.RemoveCard(instanceMap[instanceId]));
+                    yield return (SceneViewManager.opponentHandView.AddCardFromOthers(instanceMap[instanceId]));
                 }
                 else
                 {
-                    StartCoroutine(SceneViewManager.opponentHandView.RemoveCard(instanceMap[instanceId]));
-                    StartCoroutine(SceneViewManager.myHandView.AddCardFromOthers(instanceMap[instanceId]));
+                    yield return (SceneViewManager.opponentHandView.RemoveCard(instanceMap[instanceId]));
+                    yield return (SceneViewManager.myHandView.AddCardFromOthers(instanceMap[instanceId]));
                 }
                 break;
             }
             case ParticipantType.OpponentSkillCardsInHand:
             {
                 if (isOpponent)
-                { 
-                    StartCoroutine(SceneViewManager.opponentHandView.RemoveCard(instanceMap[instanceId]));
-                    StartCoroutine(SceneViewManager.myHandView.AddCardFromOthers(instanceMap[instanceId]));
+                {
+                    yield return (SceneViewManager.opponentHandView.RemoveCard(instanceMap[instanceId]));
+                    yield return (SceneViewManager.myHandView.AddCardFromOthers(instanceMap[instanceId]));
                 }
                 else
                 {
-                    StartCoroutine(SceneViewManager.myHandView.RemoveCard(instanceMap[instanceId]));
-                    StartCoroutine(SceneViewManager.opponentHandView.AddCardFromOthers(instanceMap[instanceId]));
+                    yield return (SceneViewManager.myHandView.RemoveCard(instanceMap[instanceId]));
+                    yield return (SceneViewManager.opponentHandView.AddCardFromOthers(instanceMap[instanceId]));
                 }
                 break;
             }
@@ -687,7 +694,7 @@ public class EventProcessFunction : MonoBehaviour
     // parameters[1]: int instanceId
     // parameters[2]: CardVisualState cardVisualState
     // parameters[3]: EffectAnimation effectAnimation
-    public void ChangeCardStateTest(object[] parameters)
+    public IEnumerator ChangeCardStateTest(object[] parameters)
     {
         int playerId = (int)parameters[0];
         int instanceId = (int)parameters[1];
@@ -719,35 +726,36 @@ public class EventProcessFunction : MonoBehaviour
                 pointIns.ChangeCardState(cardState, isOpponent);
             }
         }
+        yield break;
     }
 
     // parameters[0]: int playerId
     // parameters[1]: int cardId
     // parameters[2]: int instanceId
-    public void PeekTopCardEventTest(object[] parameters)
+    public IEnumerator PeekTopCardEventTest(object[] parameters)
     {
         int playerId = (int)parameters[0];
         int cardId = (int)parameters[1];
         int instanceId = (int)parameters[2];
         GameObject instance = CardViewCreator.Instance.CreateCardResolved(cardId, instanceId);
-        StartCoroutine(SceneViewManager.peekZoneView.AddCard(instance, playerId, false, CardVisualState.None));
+        yield return SceneViewManager.peekZoneView.AddCard(instance, playerId, false, CardVisualState.None, 0.7f);
     }
 
     // parameters[0]: bool isPeekZone
-    public void ClearResolve(object[] parameters)
+    public IEnumerator ClearResolve(object[] parameters)
     {
         bool isPeekZone = (bool)parameters[0];
 
         if (isPeekZone)
-            StartCoroutine(SceneViewManager.peekZoneView.ClearCards());
+            yield return (SceneViewManager.peekZoneView.ClearCards());
         else
-            StartCoroutine(SceneViewManager.resolveZoneView.ClearCards());
+            yield return (SceneViewManager.resolveZoneView.ClearCards());
     }
 
     // parameters[0]: int playerId
     // parameters[1]: int turn
     // parameters[2]: bool reveal
-    public void EndTurnTest(object[] parameters)
+    public IEnumerator EndTurnTest(object[] parameters)
     {
         int playerId = (int)parameters[0];
         int turn = (int)parameters[1];
@@ -757,11 +765,7 @@ public class EventProcessFunction : MonoBehaviour
             SceneViewManager.myRevealButtonView.HideButton();
         else
             SceneViewManager.opponentRevealButtonView.HideButton();
-        StartCoroutine(_PlayTurnEndAnim(playerId, reveal));
-    }
 
-    private IEnumerator _PlayTurnEndAnim(int playerId, bool reveal)
-    {
         if (ClientGameState.Instance.dealerId == playerId)
         {
             yield return SceneViewManager.myRevealButtonView.RandomAnimation(reveal);
@@ -778,7 +782,7 @@ public class EventProcessFunction : MonoBehaviour
     // parameters[2]: int currentBet
     // parameters[3]: int playerPointsOnBoard
     // parameters[4]: int opponentPoints
-    public void RevealTest(object[] parameters)
+    public IEnumerator RevealTest(object[] parameters)
     {
         int playerId = (int)parameters[0];
         int winnerId = (int)parameters[1];
@@ -789,11 +793,7 @@ public class EventProcessFunction : MonoBehaviour
         StartCoroutine(SceneViewManager.callOrFoldMachine.Hide());
         StartCoroutine(SceneViewManager.callOrFoldMachineBack.Hide());
 
-        StartCoroutine(_Reveal(playerId, winnerId, currentBet, playerPoints, opponentPoints));
-    }
-
-    private IEnumerator _Reveal(int playerId, int winnerId, int currentBet, int playerPoints, int opponentPoints)
-    {
+        // StartCoroutine(_Reveal(playerId, winnerId, currentBet, playerPoints, opponentPoints));
         bool isOpponentWin = winnerId != ClientGameState.playerSlot;
 
         SceneViewManager.endTurnView.btnLight.intensity = 0;
@@ -815,95 +815,62 @@ public class EventProcessFunction : MonoBehaviour
         yield return SceneViewManager.boardView.RemoveHoleCard(1 - winnerId);
         yield return SceneViewManager.boardView.RemoveOneSideCards(1 - winnerId);
         yield return SceneViewManager.roleView.ShowWin(winnerId);
-
-        // chip
-        //StartCoroutine(SceneViewManager.myChipView.RotateContainer());
-        //yield return SceneViewManager.opponentChipView.RotateContainer();
-        //if (isOpponentWin)
-        //{
-        //    // ≥Ô¬ÎÕÀªÿ≥Ô¬Î≈Ã
-        //    SceneViewManager.opponentChipView.GenerateChips(SceneViewManager.opponentChipView.chipsPlaced.Count, true);
-        //    // ∂‘∑ΩªÒµ√≥Ô¬Î
-        //    SceneViewManager.opponentChipView.GenerateChips(currentBet, true);
-        //}
-        //else
-        //{
-        //    // ≥Ô¬ÎÕÀªÿ≥Ô¬Î≈Ã
-        //    SceneViewManager.myChipView.GenerateChips(SceneViewManager.myChipView.chipsPlaced.Count, false);
-        //    // ªÒµ√≥Ô¬Î
-        //    SceneViewManager.myChipView.GenerateChips(currentBet, false);
-        //}
-        //// œ˙ªŸ≥Ô¬Î
-        //SceneViewManager.myChipView.DestroyChipsPlaced();
-        //SceneViewManager.opponentChipView.DestroyChipsPlaced();
-        //StartCoroutine(SceneViewManager.myChipView.RotateContainer());
-        //yield return SceneViewManager.opponentChipView.RotateContainer();
-
-        //yield return SceneViewManager.viewAnimController.PlayGameEndAnim();
     }
 
     // parameters[0]: int finalWinnerId
     // parameters[1]: int winnerId
     // parameters[2]: int currentBet
-    public void EndMatchTest(object[] parameters)
+    public IEnumerator EndMatchTest(object[] parameters)
     {
         int finalWinnerId = (int)parameters[0];
         int winnerId = (int)parameters[1];
         int currentBet = (int)parameters[2];
 
+        // DelayToStartGame
         if (finalWinnerId == -1)
         {
-            StartCoroutine(DelayToStartGame(winnerId, currentBet));
+            bool isOpponentWin = winnerId != ClientGameState.playerSlot;
+
+            yield return new WaitForSeconds(2f);
+
+            StartCoroutine(SceneViewManager.myChipView.RotateContainer());
+            yield return SceneViewManager.opponentChipView.RotateContainer();
+            if (isOpponentWin)
+            {
+                // ≥Ô¬ÎÕÀªÿ≥Ô¬Î≈Ã
+                SceneViewManager.opponentChipView.GenerateChips(SceneViewManager.opponentChipView.chipsPlaced.Count, true);
+                // ∂‘∑ΩªÒµ√≥Ô¬Î
+                SceneViewManager.opponentChipView.GenerateChips(currentBet, true);
+            }
+            else
+            {
+                // ≥Ô¬ÎÕÀªÿ≥Ô¬Î≈Ã
+                SceneViewManager.myChipView.GenerateChips(SceneViewManager.myChipView.chipsPlaced.Count, false);
+                // ªÒµ√≥Ô¬Î
+                SceneViewManager.myChipView.GenerateChips(currentBet, false);
+            }
+            // œ˙ªŸ≥Ô¬Î
+            SceneViewManager.myChipView.DestroyChipsPlaced();
+            SceneViewManager.opponentChipView.DestroyChipsPlaced();
+            StartCoroutine(SceneViewManager.myChipView.RotateContainer());
+            yield return SceneViewManager.opponentChipView.RotateContainer();
+
+            yield return SceneViewManager.viewAnimController.PlayGameEndAnim();
+
+            yield return new WaitForSeconds(2f);
+            ClientCommand.StartGame();
         }
+        // DelayToEndGame
         else
         {
             bool isWinner = finalWinnerId == ClientGameState.playerSlot;
-            StartCoroutine(DelayToEndGame(isWinner));
+            yield return new WaitForSeconds(2f);
+
+            SceneViewManager.myChipView.MoveChipsPlaced();
+            SceneViewManager.opponentChipView.MoveChipsPlaced();
+            // TODO: œ‘ æ §∏∫∂Øª≠
+            StartCoroutine(SceneViewManager.viewAnimController.PlayMatchEndAnim(isWinner));
         }
-    }
-
-    private IEnumerator DelayToStartGame(int winnerId, int currentBet)
-    {
-        bool isOpponentWin = winnerId != ClientGameState.playerSlot;
-
-        yield return new WaitForSeconds(2f);
-
-        StartCoroutine(SceneViewManager.myChipView.RotateContainer());
-        yield return SceneViewManager.opponentChipView.RotateContainer();
-        if (isOpponentWin)
-        {
-            // ≥Ô¬ÎÕÀªÿ≥Ô¬Î≈Ã
-            SceneViewManager.opponentChipView.GenerateChips(SceneViewManager.opponentChipView.chipsPlaced.Count, true);
-            // ∂‘∑ΩªÒµ√≥Ô¬Î
-            SceneViewManager.opponentChipView.GenerateChips(currentBet, true);
-        }
-        else
-        {
-            // ≥Ô¬ÎÕÀªÿ≥Ô¬Î≈Ã
-            SceneViewManager.myChipView.GenerateChips(SceneViewManager.myChipView.chipsPlaced.Count, false);
-            // ªÒµ√≥Ô¬Î
-            SceneViewManager.myChipView.GenerateChips(currentBet, false);
-        }
-        // œ˙ªŸ≥Ô¬Î
-        SceneViewManager.myChipView.DestroyChipsPlaced();
-        SceneViewManager.opponentChipView.DestroyChipsPlaced();
-        StartCoroutine(SceneViewManager.myChipView.RotateContainer());
-        yield return SceneViewManager.opponentChipView.RotateContainer();
-
-        yield return SceneViewManager.viewAnimController.PlayGameEndAnim();
-
-        yield return new WaitForSeconds(2f);
-        ClientCommand.StartGame();
-    }
-
-    private IEnumerator DelayToEndGame(bool isWinner)
-    {
-        yield return new WaitForSeconds(2f);
-
-        SceneViewManager.myChipView.MoveChipsPlaced();
-        SceneViewManager.opponentChipView.MoveChipsPlaced();
-        // TODO: œ‘ æ §∏∫∂Øª≠
-        StartCoroutine(SceneViewManager.viewAnimController.PlayMatchEndAnim(isWinner));
     }
 
     // parameters[0]: int playerId
@@ -911,7 +878,7 @@ public class EventProcessFunction : MonoBehaviour
     // parameters[2]: int playerHoleCardPoint
     // parameters[3]: bool hasHiddenCard
     // parameters[4]: int opponentPointsOnBoard
-    public void SumPointTest(object[] parameters)
+    public IEnumerator SumPointTest(object[] parameters)
     {
         int playerId = (int)parameters[0];
         int playerPointsOnBoard = (int)parameters[1];
@@ -921,5 +888,6 @@ public class EventProcessFunction : MonoBehaviour
 
         SceneViewManager.mySumPointView.ChangeSum(playerPointsOnBoard + playerHoleCardPoint, !hasHiddenCard);
         SceneViewManager.opponentSumPointView.ChangeSum(opponentPointsOnBoard, false);
+        yield break;
     }
 }

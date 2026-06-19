@@ -14,7 +14,7 @@ public class ResolveZoneView : MonoBehaviour, IViewClear
     [Header("Card Layout")]
     [SerializeField] private float cardSpacing = 1.8f;
     // [SerializeField] private float depthOffsetPerCard = 0.02f;
-    [SerializeField] private float animationDuration = 0.2f;
+    [SerializeField] private float animationDuration = 0.8f;
     [SerializeField] private GameObject confirmBtn = null;
     [SerializeField] private GameObject confirmText = null;
 
@@ -29,7 +29,7 @@ public class ResolveZoneView : MonoBehaviour, IViewClear
         resolveCards.Clear();
     }
 
-    public IEnumerator AddCard(GameObject instance, int playerId, bool isShown, CardVisualState cardState)
+    public IEnumerator AddCard(GameObject instance, int playerId, bool isShown, CardVisualState cardState, float delay)
     {
         bool isOpponent = playerId != ClientGameState.playerSlot && !isShown;
         if (confirmBtn != null && confirmText != null && !isOpponent)
@@ -42,7 +42,7 @@ public class ResolveZoneView : MonoBehaviour, IViewClear
         pointIns.InitCardState(cardState);
 
         resolveCards.Add(instance);
-        yield return UpdateCardPositions(animationDuration, playerId, isShown);
+        yield return UpdateCardPositions(animationDuration, playerId, isShown, delay);
     }
 
     public void ClearPeek()
@@ -73,10 +73,10 @@ public class ResolveZoneView : MonoBehaviour, IViewClear
         yield return null;
     }
 
-    public IEnumerator UpdateCardPositions(float duration, int playerId, bool isShown)
+    public IEnumerator UpdateCardPositions(float duration, int playerId, bool isShown, float delay)
     {
         LayoutCards(duration, playerId, isShown);
-        yield return new WaitForSeconds(duration);
+        yield return new WaitForSeconds(delay);
     }
 
     private void LayoutCards(float duration, int playerId, bool isShown)

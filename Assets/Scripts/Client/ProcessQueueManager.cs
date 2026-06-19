@@ -2,12 +2,13 @@ using Game.Domain;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Security.Cryptography;
 using UnityEngine;
 
 public class ProcessQueueManager : MonoBehaviour
 {
     private static ProcessQueueManager instance;
-    private Queue<Action<object[]>> processQueue = new Queue<Action<object[]>>();
+    private Queue<Func<object[], IEnumerator>> processQueue = new();
     private Queue<object[]> paramsQueue = new Queue<object[]>();
     private Queue<float> delayQueue = new Queue<float>();
     private bool isProcessing = false;
@@ -45,7 +46,7 @@ public class ProcessQueueManager : MonoBehaviour
     }
 
     // 添加到队列
-    public void Enqueue(Action<object[]> processable, object[] paramList, float delay)
+    public void Enqueue(Func<object[], IEnumerator> processable, object[] paramList, float delay)
     {
         processQueue.Enqueue(processable);
         paramsQueue.Enqueue(paramList);
@@ -64,11 +65,14 @@ public class ProcessQueueManager : MonoBehaviour
 
         while (processQueue.Count > 0)
         {
-            Action<object[]> current = processQueue.Dequeue();
-            current(paramsQueue.Dequeue());
+            Func<object[], IEnumerator> current = processQueue.Dequeue();
+            object[] parameters = paramsQueue.Dequeue();
             float delay = delayQueue.Dequeue();
 
-            yield return new WaitForSecondsRealtime(delay);
+            if (delay > 0f)
+                yield return new WaitForSeconds(delay);
+
+            yield return current(parameters);
         }
 
         isProcessing = false;

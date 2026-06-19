@@ -10,14 +10,14 @@ public class ConfirmBetEventHandler : IEventProcess, IEventHandler
     {
         var payload = JsonConvert.DeserializeObject<ConfirmBetEvent>(ev.jsonData);
         // need change, 需要把参数在这里传进去
-        ProcessQueueManager.Instance.Enqueue(Process, new object[] { payload.playerId, payload.betCount }, 0.5f);
+        ProcessQueueManager.Instance.Enqueue(Process, new object[] { payload.playerId, payload.betCount }, 0f);
 
         Debug.Log($"[Client] Event#{ev.Index} type={ev.type} slot={payload.playerId} payload={payload.betCount}");
 
         return true;
     }
-    public void Process(object[] objects)
+    public IEnumerator Process(object[] objects)
     {
-        ProcessDispatcher.Process("ConfirmBetTest", objects);
+        yield return ProcessDispatcher.Process("ConfirmBetTest", objects);
     }
 }

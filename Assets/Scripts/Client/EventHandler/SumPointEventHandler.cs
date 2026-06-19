@@ -20,8 +20,8 @@ public class SumPointEventHandler : IEventProcess, IEventHandler
         return true;
     }
 
-    public void Process(object[] objects)
+    public IEnumerator Process(object[] objects)
     {
-        ProcessDispatcher.Process("SumPointTest", objects);
+        yield return ProcessDispatcher.Process("SumPointTest", objects);
     }
 }

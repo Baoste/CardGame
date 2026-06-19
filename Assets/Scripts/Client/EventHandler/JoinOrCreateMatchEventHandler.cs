@@ -1,5 +1,6 @@
 using Game.Domain;
 using Newtonsoft.Json;
+using System.Collections;
 using UnityEngine;
 
 public sealed class JoinOrCreateMatchEventHandler : IEventProcess, IEventHandler
@@ -7,7 +8,7 @@ public sealed class JoinOrCreateMatchEventHandler : IEventProcess, IEventHandler
     public bool Handle(NetEvent ev)
     {
         var payload = JsonConvert.DeserializeObject<JoinOrCreateMatchEvent>(ev.jsonData); // need change
-        ProcessQueueManager.Instance.Enqueue(Process, new object[] { payload.account0, payload.account1 }, 0.5f);
+        ProcessQueueManager.Instance.Enqueue(Process, new object[] { payload.account0, payload.account1 }, 0);
 
         // TODO
         // START
@@ -17,8 +18,9 @@ public sealed class JoinOrCreateMatchEventHandler : IEventProcess, IEventHandler
 
         return true;
     }
-    public void Process(object[] objects)
+    public IEnumerator Process(object[] objects)
     {
-        ProcessDispatcher.Process("BothJoinMatch", objects);
+        yield break;
+        yield return ProcessDispatcher.Process("BothJoinMatch", objects);
     }
 }

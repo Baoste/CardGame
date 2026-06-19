@@ -45,8 +45,8 @@ public class WaitForPlayer2ChooseEventHandler : IEventProcess, IEventHandler
         return true;
     }
 
-    public void Process(object[] objects)
+    public IEnumerator Process(object[] objects)
     {
-        ProcessDispatcher.Process("DetermineParticipantsTest", objects);
+        yield return ProcessDispatcher.Process("DetermineParticipantsTest", objects);
     }
 }

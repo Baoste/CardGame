@@ -39,7 +39,7 @@ public class SceneSwitcher : MonoBehaviour
         ClientCommand.CreateMatch(MatchData.Instance.matchId);
     }
 
-    public void BothJoinMatch(object[] parameters)
+    public IEnumerator BothJoinMatch(object[] parameters)
     {
         AccountData account0 = (AccountData)parameters[0];
         AccountData account1 = (AccountData)parameters[1];
@@ -55,11 +55,6 @@ public class SceneSwitcher : MonoBehaviour
             ChipSkinConfig.opponentAccountData = account1;
         }
 
-        StartCoroutine(_JoinMatch());
-    }
-
-    private IEnumerator _JoinMatch()
-    {
         yield return new WaitForSeconds(11f);
         FindAnyObjectByType<StartSceneBootstrap>().SwitchToGameScene("ClientTest_Yifan_v4");
     }

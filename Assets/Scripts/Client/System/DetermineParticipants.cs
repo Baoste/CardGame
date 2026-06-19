@@ -29,15 +29,8 @@ public class DetermineParticipants : MonoBehaviour
         switchObject.SetActive(false);
     }
 
-
-    void Update()
-    {
-        if (ClientGameState.gateway == null) return;
-    }
-
-
     // Debug Test
-    public void DetermineParticipantsTest(object[] parameters)
+    public IEnumerator DetermineParticipantsTest(object[] parameters)
     {
         bool success = (bool)parameters[0];
         int skillCardInstanceId = (int)parameters[1];
@@ -55,7 +48,7 @@ public class DetermineParticipants : MonoBehaviour
             ClientEffectContext.Instance.selectedSourceIds = new List<int>();
             ClientEffectContext.Instance.selectedTargetIds = new List<int>();
             ClientEffectContext.ChooseDone = true;
-            return;
+            yield break;
         }
 
         bool sourceClick = true;
@@ -77,7 +70,7 @@ public class DetermineParticipants : MonoBehaviour
         if (isSourceParticipantZone && (candidateSourceIds.Contains(0) || candidateSourceIds.Contains(1)) ||
             isTargetParticipantZone && (candidateTargetIds.Contains(0) || candidateTargetIds.Contains(1)) )
         {
-            StartCoroutine(SwitchTest(
+            yield return (SwitchTest(
                 skillCardInstanceId,
                 candidateSourceIds, sourceSelectCount, sourceClick,
                 candidateTargetIds, targetSelectCount, targetClick
@@ -85,7 +78,7 @@ public class DetermineParticipants : MonoBehaviour
         }
         else
         {
-            StartCoroutine(ClickTest(
+            yield return (ClickTest(
                 skillCardInstanceId,
                 isSourceParticipantZone, candidateSourceIds, sourceSelectCount, sourceClick,
                 isTargetParticipantZone, candidateTargetIds, targetSelectCount, targetClick

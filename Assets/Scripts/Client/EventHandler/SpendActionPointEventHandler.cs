@@ -24,8 +24,8 @@ public class SpendActionPointEventHandler : IEventProcess, IEventHandler
         return true;
     }
 
-    public void Process(object[] objects)
+    public IEnumerator Process(object[] objects)
     {
-        ProcessDispatcher.Process("SpendActionPointTest", objects);
+        yield return ProcessDispatcher.Process("SpendActionPointTest", objects);
     }
 }

@@ -9,7 +9,7 @@ public class ModifyPointEventHandler : IEventProcess, IEventHandler
     public bool Handle(NetEvent ev)
     {
         var payload = JsonConvert.DeserializeObject<ModifyPointEvent>(ev.jsonData); // need change
-        ProcessQueueManager.Instance.Enqueue(Process, new object[] { payload.instanceId, payload.pointChange }, 0.5f);
+        ProcessQueueManager.Instance.Enqueue(Process, new object[] { payload.instanceId, payload.pointChange }, 0);
 
         // TODO
         // START
@@ -19,8 +19,8 @@ public class ModifyPointEventHandler : IEventProcess, IEventHandler
 
         return true;
     }
-    public void Process(object[] objects)
+    public IEnumerator Process(object[] objects)
     {
-        ProcessDispatcher.Process("ModifyPointTest", objects);
+        yield return ProcessDispatcher.Process("ModifyPointTest", objects);
     }
 }

@@ -1,5 +1,6 @@
 using Game.Domain;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 
 public interface IEventHandler
@@ -11,7 +12,7 @@ public interface IEventHandler
 
 public interface IEventProcess
 {
-    void Process(object[] objects);
+    IEnumerator Process(object[] objects);
 }
 
 public static class EventDispatcher

@@ -31,7 +31,6 @@ public class SkillCardExecuteState : SkillCardState
     public override void Exit()
     {
         base.Exit();
-        ClientEffectContext.isExecutingSkillCard = false;
     }
 
     public override void OnMouseEnter()

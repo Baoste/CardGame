@@ -27,8 +27,8 @@ public class StartTurnEventHandler : IEventProcess, IEventHandler
 
         return true;
     }
-    public void Process(object[] objects)
+    public IEnumerator Process(object[] objects)
     {
-        ProcessDispatcher.Process("StartTurnTest", objects);
+        yield return ProcessDispatcher.Process("StartTurnTest", objects);
     }
 }

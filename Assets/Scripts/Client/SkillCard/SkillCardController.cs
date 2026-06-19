@@ -108,6 +108,10 @@ public class SkillCardController : MonoBehaviour, IDiscardPresentation
     public void DiscardPlay()
     {
         bool isDestroy = stateMachine.currentState == inHandState;
+
+        if (!isDestroy)
+            ClientEffectContext.isExecutingSkillCard = false;
+
         if (isOpponent)
             StartCoroutine(SceneViewManager.opponentHandView.RemoveCard(gameObject, isDestroy));
         else

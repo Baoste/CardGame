@@ -4552,6 +4552,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   revealButton: {fileID: 945241352}
   slotMachine: {fileID: 2092316112}
+  buttonLight: {fileID: 1793696706}
 --- !u!1 &296617994
 GameObject:
   m_ObjectHideFlags: 0
@@ -13704,7 +13705,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ca3c8926b02a4ec4fb85019c1a722b94, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  buttonLight: {fileID: 1937985896}
   shakeAmount: 0.1
   shakeDuration: 0.2
   pressAmount: 0.05
@@ -21893,7 +21893,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ca3c8926b02a4ec4fb85019c1a722b94, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  buttonLight: {fileID: 1793696706}
   shakeAmount: 0.1
   shakeDuration: 0.2
   pressAmount: 0.05
@@ -38924,6 +38923,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   revealButton: {fileID: 507451429}
   slotMachine: {fileID: 2092316112}
+  buttonLight: {fileID: 1937985896}
 --- !u!1001 &1868230724
 PrefabInstance:
   m_ObjectHideFlags: 0

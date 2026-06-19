@@ -83,8 +83,6 @@ public class ExecuteCardView : MonoBehaviour
         seq.Append(card.transform.DOMove(executePosition, 0.04f).SetEase(Ease.InCubic));
 
         yield return seq.WaitForCompletion();
-
-        ClientEffectContext.isExecutingSkillCard = false;
     }
 
     public void DestroyCard(GameObject instance)

@@ -10,7 +10,7 @@ public class DrawPointCardToResolveEventHandler : IEventProcess, IEventHandler
     {
         var payload = JsonConvert.DeserializeObject<DrawPointCardToResolveEvent>(ev.jsonData);   // need change
         // need change, 需要把参数在这里传进去
-        ProcessQueueManager.Instance.Enqueue(Process, new object[] { payload.cardId, payload.instanceId, payload.playerId, true, payload.cardState }, 1f);
+        ProcessQueueManager.Instance.Enqueue(Process, new object[] { payload.cardId, payload.instanceId, payload.playerId, true, payload.cardState }, 0);
 
         // TODO
         // START
@@ -20,8 +20,8 @@ public class DrawPointCardToResolveEventHandler : IEventProcess, IEventHandler
         return true;
     }
 
-    public void Process(object[] objects)
+    public IEnumerator Process(object[] objects)
     {
-        ProcessDispatcher.Process("ToResolveTest", objects);
+        yield return ProcessDispatcher.Process("ToResolveTest", objects);
     }
 }

@@ -1,6 +1,6 @@
 using Game.Domain;
 using Newtonsoft.Json;
-using TMPro;
+using System.Collections;
 using UnityEngine;
 
 public sealed class DrawPointCardEventHandler : IEventProcess, IEventHandler
@@ -11,7 +11,7 @@ public sealed class DrawPointCardEventHandler : IEventProcess, IEventHandler
     {
         payload = JsonConvert.DeserializeObject<DrawPointCardEvent>(ev.jsonData);   // need change
         // need change, 需要把参数在这里传进去
-        ProcessQueueManager.Instance.Enqueue(Process, new object[] { payload.cardId, payload.instanceId, payload.playerId, payload.cardState }, 1.5f);
+        ProcessQueueManager.Instance.Enqueue(Process, new object[] { payload.cardId, payload.instanceId, payload.playerId, payload.cardState }, 0);
 
         // TODO
         // START
@@ -22,8 +22,8 @@ public sealed class DrawPointCardEventHandler : IEventProcess, IEventHandler
         return true;
     }
 
-    public void Process(object[] objects)
+    public IEnumerator Process(object[] objects)
     {
-        ProcessDispatcher.Process("DrawPointCard", objects);
+        yield return ProcessDispatcher.Process("DrawPointCard", objects);
     }
 }
