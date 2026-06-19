@@ -10,11 +10,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: d3c8fc7f53551a7419c1d20c48f57911, type: 3}
-  m_Name: BGM
+  m_Name: MenuBGM
   m_EditorClassIdentifier: 
-  id: BGM
+  id: MenuBGM
   clip:
-  - {fileID: 8300000, guid: 7bebeb9a07e36124585863fedefa36bf, type: 3}
+  - {fileID: 8300000, guid: 211ab014da95117428521cfcdb14ff08, type: 3}
   type: 0
   volume: 1
   pitch: 1

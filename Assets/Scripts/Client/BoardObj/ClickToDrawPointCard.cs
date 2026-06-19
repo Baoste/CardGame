@@ -1,6 +1,5 @@
 using DG.Tweening;
 using Game.Domain;
-using Game.Server;
 using Newtonsoft.Json;
 using System.Collections;
 using System.Collections.Generic;
@@ -9,7 +8,18 @@ using UnityEngine;
 public class ClickToDrawPointCard : MonoBehaviour, IMouseClick, IMouseEnter, IMouseExit, IMouseStay
 {
     [SerializeField] private Transform disk;
+    [SerializeField] private Renderer screenRenderer;
     private bool diskIsOut = true;
+    private bool screenLight = false;
+
+    private void Update()
+    {
+        if (!screenLight && ClientGameState.Instance.CurrentPlayerId != -1 && ClientGameState.Instance.CurrentPlayerId == ClientGameState.playerSlot && ClientEffectContext.Instance.drawPointCardCount == 0)
+        {
+            screenRenderer.material.SetFloat("_LightController", 1);
+            screenLight = true;
+        }
+    }
 
     public void MouseClick()
     {
@@ -31,6 +41,8 @@ public class ClickToDrawPointCard : MonoBehaviour, IMouseClick, IMouseEnter, IMo
         {
             StartCoroutine(DrawPointCard());
             ClientEffectContext.Instance.drawPointCardCount++;
+            screenRenderer.material.SetFloat("_LightController", 0);
+            screenLight = false;
         }
     }
 

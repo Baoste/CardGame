@@ -864,6 +864,14 @@ public class EventProcessFunction : MonoBehaviour
         // DelayToEndGame
         else
         {
+            Transform root = CardViewCreator.Instance.transform;
+            foreach (Transform child in root)
+            {
+                yield return null;
+                IDiscardPresentation discardPresentation = child.gameObject.GetComponent<IDiscardPresentation>();
+                discardPresentation?.DiscardPlay();
+            }
+
             bool isWinner = finalWinnerId == ClientGameState.playerSlot;
             yield return new WaitForSeconds(2f);
 

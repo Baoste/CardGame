@@ -20,7 +20,6 @@ public sealed class JoinOrCreateMatchEventHandler : IEventProcess, IEventHandler
     }
     public IEnumerator Process(object[] objects)
     {
-        yield break;
         yield return ProcessDispatcher.Process("BothJoinMatch", objects);
     }
 }

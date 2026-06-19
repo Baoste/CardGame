@@ -48,6 +48,11 @@ public class MainMenuUI : MonoBehaviour
                 RefreshAccountData
             );
         }
+        else
+        {
+            AudioManager.Instance.PlayBGM("MenuBGM");
+        }
+
         //cameraAnimator = movingCamera.GetComponent<Animator>();
     }
 
@@ -73,6 +78,7 @@ public class MainMenuUI : MonoBehaviour
     {
         GameBootstrap.isLogin = true;
 
+        AudioManager.Instance.StopBGM();
         RefreshAccountData();
 
         shotPlayer.PlayShot(1); // 自由相机

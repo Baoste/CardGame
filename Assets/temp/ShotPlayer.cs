@@ -48,11 +48,11 @@ public class ShotPlayer : MonoBehaviour
         //{
         //    PlayNextShot();
         //}
-        if (Input.GetMouseButtonDown(0) && currentIndex == 1 && !isPlayingShot1)
-        {
-            shots[1].animators[0].speed = 6;
-            isPlayingShot1 = true;
-        }
+        //if (Input.GetMouseButtonDown(0) && currentIndex == 1 && !isPlayingShot1)
+        //{
+        //    shots[1].animators[0].speed = 6;
+        //    isPlayingShot1 = true;
+        //}
     }
 
     public void PlayNextShot()

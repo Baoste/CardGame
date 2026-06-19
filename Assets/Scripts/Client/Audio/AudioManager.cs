@@ -152,6 +152,55 @@ public class AudioManager : MonoBehaviour
         }
 
         bgmSource.volume = targetVolume;
+        bgmFadeCoroutine = null;
+    }
+
+    public void StopBGM(float fadeTime = 1f)
+    {
+        if (bgmFadeCoroutine != null)
+        {
+            StopCoroutine(bgmFadeCoroutine);
+            bgmFadeCoroutine = null;
+        }
+
+        if (!bgmSource.isPlaying)
+        {
+            bgmSource.Stop();
+            bgmSource.clip = null;
+            return;
+        }
+
+        if (fadeTime <= 0f)
+        {
+            bgmSource.Stop();
+            bgmSource.clip = null;
+            bgmSource.volume = 0f;
+            return;
+        }
+
+        bgmFadeCoroutine = StartCoroutine(FadeOutBGM(fadeTime));
+    }
+
+    private IEnumerator FadeOutBGM(float fadeTime)
+    {
+        float startVolume = bgmSource.volume;
+
+        for (float t = 0f; t < fadeTime; t += Time.unscaledDeltaTime)
+        {
+            bgmSource.volume = Mathf.Lerp(
+                startVolume,
+                0f,
+                t / fadeTime
+            );
+
+            yield return null;
+        }
+
+        bgmSource.volume = 0f;
+        bgmSource.Stop();
+        bgmSource.clip = null;
+
+        bgmFadeCoroutine = null;
     }
 
     private void ApplyConfig(AudioSource source, AudioClipConfig config)

@@ -27780,7 +27780,7 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
-      objectReference: {fileID: 2100000, guid: 34eaa41430f812c4a90b3e5c0e77ac79, type: 2}
+      objectReference: {fileID: 2100000, guid: 753b69ca172b59d46b495c55fa0a9a2e, type: 2}
     - target: {fileID: 919132149155446097, guid: 7038a31dfcb1bec4a9fe2932f99eb76e,
         type: 3}
       propertyPath: m_Name
@@ -35145,6 +35145,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   disk: {fileID: 381345298}
+  screenRenderer: {fileID: 350524225}
+  offTexture: {fileID: 2800000, guid: 13ffadcc73ac2424795d3d29970a175d, type: 3}
+  onTexture: {fileID: 2800000, guid: ad013ef2f7c5c704b83671297031457d, type: 3}
 --- !u!65 &1604019154
 BoxCollider:
   m_ObjectHideFlags: 0

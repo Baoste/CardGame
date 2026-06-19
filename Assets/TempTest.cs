@@ -14,9 +14,9 @@ public class TempTest : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(Input.GetKeyDown(KeyCode.G))
-        {
-            glitchController.TriggerGlitch(1.0f, 0.15f);
-        }
+        //if(Input.GetKeyDown(KeyCode.G))
+        //{
+        //    glitchController.TriggerGlitch(1.0f, 0.15f);
+        //}
     }
 }

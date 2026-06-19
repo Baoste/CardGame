@@ -7,6 +7,12 @@ public class StartPlaySceneAnim : MonoBehaviour
 {
     [SerializeField] private CinemachineVirtualCamera startCamera;
 
+    private void Start()
+    {
+        //AudioManager.Instance.Play("BGM");
+        AudioManager.Instance.Play("Electric_Buzz");
+    }
+
     public void StartGame()
     {
         Cursor.lockState = CursorLockMode.None;
