@@ -178,6 +178,11 @@ namespace Game.Domain
         private static void ModifyPoint(int playerId, EffectOp op, MatchSession session, CommandResult results, List<int> selectedTargetIds)
         {
             int pointChange = op.value.Evaluate(session.gameState, session.ctx);
+            while (pointChange == 0)
+            {
+                pointChange = op.value.Evaluate(session.gameState, session.ctx);
+            }
+
             int targeValue = -1;
             for (int i = 0; i < selectedTargetIds.Count; i++)
             {

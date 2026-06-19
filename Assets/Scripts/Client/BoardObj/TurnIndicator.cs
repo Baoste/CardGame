@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class TurnIndicator : MonoBehaviour, IViewClear
 {
-    private float rotateTime = 0.5f;
+    [HideInInspector] public float rotateTime = 0.5f;
 
     public void ClearView()
     {

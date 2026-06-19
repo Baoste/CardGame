@@ -179,6 +179,9 @@ public class DetermineParticipants : MonoBehaviour
         {
             selectedSourceIds = new List<int>();
             Debug.Log($"[Client] Wating for select source {candidateSourceIds}");
+
+            GameManager.ChangeInteractMask("HighlightOnly");
+
             HighLight(candidateSourceIds);
             int count0 = 0;
             while (count0 < SourceSelectCount)
@@ -227,12 +230,17 @@ public class DetermineParticipants : MonoBehaviour
             }
             ClientEffectContext.Instance.selectedSourceIds = selectedSourceIds;
             CancelHighLight(candidateSourceIds);
+
+            GameManager.ResetInteractMask();
         }
 
         if (targetClick)
         {
             selectedTargetIds = new List<int>();
             Debug.Log("[Client] Wating for select target");
+
+            GameManager.ChangeInteractMask("HighlightOnly");
+            
             HighLight(candidateTargetIds);
             int count1 = 0;
             while (count1 < targetSelectCount)
@@ -281,6 +289,8 @@ public class DetermineParticipants : MonoBehaviour
             }
             ClientEffectContext.Instance.selectedTargetIds = selectedTargetIds;
             CancelHighLight(candidateTargetIds);
+
+            GameManager.ResetInteractMask();
         }
 
         // ClientEffectContext.ChooseDone = true;

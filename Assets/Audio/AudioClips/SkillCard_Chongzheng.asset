@@ -10,11 +10,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: d3c8fc7f53551a7419c1d20c48f57911, type: 3}
-  m_Name: TurnLightOn
+  m_Name: SkillCard_Chongzheng
   m_EditorClassIdentifier: 
-  id: TurnLightOn
+  id: SkillCard_Chongzheng
   clip:
-  - {fileID: 8300000, guid: c1ec258431ee71e4abc3817e55697b13, type: 3}
+  - {fileID: 8300000, guid: ca4ade094972e764c9ce36a8378dfd99, type: 3}
   type: 1
   volume: 1
   pitch: 1

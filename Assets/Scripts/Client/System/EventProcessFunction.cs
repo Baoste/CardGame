@@ -95,6 +95,7 @@ public class EventProcessFunction : MonoBehaviour
 
         // rotate turn indicator
         SceneViewManager.turnIndicator.Rotate2Player(ClientGameState.playerSlot != playerId);
+        yield return new WaitForSeconds(SceneViewManager.turnIndicator.rotateTime);
 
         if (ClientGameState.playerSlot == playerId)
         {

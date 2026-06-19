@@ -220,7 +220,8 @@ public class BoardView : MonoBehaviour, IViewClear
 
         AudioManager.Instance.Play("PointCardFall");
 
-        instance.GetComponent<PointCardShake>().CardShake();
+        PointCardShake pcs = instance.GetComponent<PointCardShake>();
+        if (pcs != null) pcs.CardShake();
         Quaternion targetRotation = instance.transform.rotation * Quaternion.Euler(0, 0.5f, 0);
         instance.transform.DORotateQuaternion(targetRotation, 0.2f);
 
@@ -245,6 +246,7 @@ public class BoardView : MonoBehaviour, IViewClear
         lazer.transform.rotation = Quaternion.Euler(new Vector3(0, 0, -90));
         lazer.SetActive(true);
 
+        AudioManager.Instance.Play("SkillCard_Chongzheng");
         // TODO: º§π‚Ãÿ–ß
         Sequence seq = DOTween.Sequence();
         seq.Append(

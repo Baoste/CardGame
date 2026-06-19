@@ -50,7 +50,7 @@ public class SkillCardInHandState : SkillCardState
         base.OnMouseEnter();
         if (skillCard.isOpponent) return;
 
-        AudioManager.Instance.Play("SkillCard_Hover");
+        //AudioManager.Instance.Play("SkillCard_Hover");
 
         skillCard.outlineControl.Enable = 1f;
         skillCard.transform.DOScale(Vector3.one * skillCard.instance.localScaleFactor * 2.0f, 0.15f);
@@ -68,7 +68,7 @@ public class SkillCardInHandState : SkillCardState
         base.OnMouseExit();
         if (skillCard.isOpponent) return;
 
-        AudioManager.Instance.Stop("SkillCard_Hover");
+        //AudioManager.Instance.Stop("SkillCard_Hover");
 
         skillCard.outlineControl.Enable = 0f;
         skillCard.transform.DOScale(Vector3.one * skillCard.instance.localScaleFactor, 0.15f);

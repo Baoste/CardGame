@@ -63,7 +63,7 @@ Material:
     m_Ints: []
     m_Floats:
     - _BorderSize: -5.5
-    - _DissolutionStrength: 0
+    - _DissolutionStrength: 1.2
     - _Distance: 0.91
     - _DistortionStrength: 1
     - _Intensity: 5
@@ -76,9 +76,9 @@ Material:
     - _SweepStart: -5
     - _Width: 0.005
     m_Colors:
-    - _BorderColor: {r: 0, g: 4, b: 3.534391, a: 0}
+    - _BorderColor: {r: 3.9999995, g: 0.04151611, b: 0, a: 0}
     - _Center: {r: 0, g: 0, b: 0, a: 0}
-    - _ShiningColor: {r: 0.9808331, g: 0.050892286, b: 0.050892286, a: 0}
+    - _ShiningColor: {r: 0.672837, g: 2.6415095, b: 2.0885553, a: 1}
   m_BuildTextureStacks: []
 --- !u!114 &1081584023232622055
 MonoBehaviour:
