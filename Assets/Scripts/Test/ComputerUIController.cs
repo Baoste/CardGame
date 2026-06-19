@@ -321,10 +321,10 @@ public class ComputerUIController : MonoBehaviour
             ConfirmMainMenuOption();
         }
 
-        if (Input.GetKeyDown(KeyCode.Escape))
-        {
-            ExitComputerCompletely();
-        }
+        //if (Input.GetKeyDown(KeyCode.Escape))
+        //{
+        //    ExitComputerCompletely();
+        //}
     }
 
     private void UpdateInputRoomCodeState()
@@ -345,23 +345,23 @@ public class ComputerUIController : MonoBehaviour
             ConfirmJoinRoomByCode();
         }
 
-        if (Input.GetKeyDown(KeyCode.Escape))
-        {
-            EnterMainMenuState();
-        }
+        //if (Input.GetKeyDown(KeyCode.Escape))
+        //{
+        //    EnterMainMenuState();
+        //}
     }
 
     private void UpdateMatchingState()
     {
-        if (Input.GetKeyDown(KeyCode.Escape))
-        {
-            if (terminalLog != null)
-            {
-                terminalLog.PlaySingleLine("Operation cancelled by user.");
-            }
+        //if (Input.GetKeyDown(KeyCode.Escape))
+        //{
+        //    if (terminalLog != null)
+        //    {
+        //        terminalLog.PlaySingleLine("Operation cancelled by user.");
+        //    }
 
-            EnterMainMenuState();
-        }
+        //    EnterMainMenuState();
+        //}
     }
 
     private void UpdateResultState()
