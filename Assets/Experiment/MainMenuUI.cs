@@ -44,13 +44,11 @@ public class MainMenuUI : MonoBehaviour
                 postprocessMat.DOFloat(0f, "_Intensity", 0.18f)
                     .SetEase(Ease.OutQuad)
             );
-            seq.AppendCallback(
-                RefreshAccountData
-            );
-        }
-        else
-        {
-            AudioManager.Instance.PlayBGM("MenuBGM");
+            seq.AppendCallback(() =>
+            {
+                RefreshAccountData();
+                AudioManager.Instance.PlayBGM("ComputerRoomBGM");
+            });
         }
 
         //cameraAnimator = movingCamera.GetComponent<Animator>();
@@ -66,6 +64,8 @@ public class MainMenuUI : MonoBehaviour
     {
         loginCanvas.SetActive(false);
 
+        AudioManager.Instance.PlayBGM("MenuBGM");
+
         mainMenuCanvas.SetActive(true);
         rawImage.color = Color.black;
         Sequence seq = DOTween.Sequence();
@@ -79,6 +79,7 @@ public class MainMenuUI : MonoBehaviour
         GameBootstrap.isLogin = true;
 
         AudioManager.Instance.StopBGM();
+        AudioManager.Instance.PlayBGM("ComputerRoomBGM");
         RefreshAccountData();
 
         shotPlayer.PlayShot(1); // 自由相机
@@ -101,6 +102,7 @@ public class MainMenuUI : MonoBehaviour
 
     public void ShowClipUpdate()
     {
+        AudioManager.Instance.PlayBGM("ClipUpdateBGM");
         accountChipCountText.RefreshChipCount();
         loginCanvas.SetActive(false);
         chipUpdateCanvas.SetActive(true);
@@ -119,6 +121,8 @@ public class MainMenuUI : MonoBehaviour
                 rawImage.DOColor(Color.white, 1)
             );
         }
+        AudioManager.Instance.StopBGM();
+        AudioManager.Instance.PlayBGM("MenuBGM");
     }
 
     public void ExitGame()

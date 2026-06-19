@@ -19,6 +19,11 @@ public class ClickToDrawPointCard : MonoBehaviour, IMouseClick, IMouseEnter, IMo
             screenRenderer.material.SetFloat("_LightController", 1);
             screenLight = true;
         }
+        else if (screenLight && (ClientGameState.Instance.CurrentPlayerId == -1 || ClientGameState.Instance.CurrentPlayerId != ClientGameState.playerSlot))
+        {
+            screenRenderer.material.SetFloat("_LightController", 0);
+            screenLight = false;
+        }
     }
 
     public void MouseClick()

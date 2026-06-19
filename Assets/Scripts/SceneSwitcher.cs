@@ -44,6 +44,8 @@ public class SceneSwitcher : MonoBehaviour
         AccountData account0 = (AccountData)parameters[0];
         AccountData account1 = (AccountData)parameters[1];
 
+        AudioManager.Instance.StopBGM();
+
         shotPlayer.PlayShot(4);
 
         if (account0.AccountId != ChipSkinConfig.myAccountData.AccountId)

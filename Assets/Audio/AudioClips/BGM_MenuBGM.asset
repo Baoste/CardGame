@@ -10,15 +10,15 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: d3c8fc7f53551a7419c1d20c48f57911, type: 3}
-  m_Name: Electric_Buzz
+  m_Name: BGM_MenuBGM
   m_EditorClassIdentifier: 
-  id: Electric_Buzz
+  id: MenuBGM
   clip:
-  - {fileID: 8300000, guid: e6418b8e666124140845b790a30ae356, type: 3}
-  type: 3
-  volume: 0.199
+  - {fileID: 8300000, guid: 211ab014da95117428521cfcdb14ff08, type: 3}
+  type: 0
+  volume: 1
   pitch: 1
-  loop: 0
+  loop: 1
   randomClip: 0
   randomPitch: 0
   pitchRange: {x: 0.95, y: 1.05}
