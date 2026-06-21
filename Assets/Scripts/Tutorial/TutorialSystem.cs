@@ -19,6 +19,7 @@ public class TutorialSystem : MonoBehaviour
 
     [Header("Scene Object")]
     public GameObject arrow;
+    public GameObject chipArrow;
     public ClickToDrawSkillCard clickToDrawSkillCard;
     public ClickToDrawPointCard clickToDrawPointCard;
     public RevealButton revealButton;
@@ -52,22 +53,22 @@ public class TutorialSystem : MonoBehaviour
 
         // 第一回合
         StartTurn(2);
-        MoveArrowTo(new Vector3(0, 1.136f, 1.47f));
+        MoveArrowTo(new Vector3(0, 1.228f, 1.741f));
         yield return PlayTutorialTTS(1);
         MoveArrowTo(new Vector3(0, 1.136f, -0.623f));
         yield return PlayTutorialTTS(2);
-        MoveArrowTo(new Vector3(0, 1.136f, -1.348f));
+        MoveArrowTo(new Vector3(0, 1.249f, -1.237f));
         yield return PlayTutorialTTS(3);
         MoveArrowTo(new Vector3(0, 1.136f, 0.706f));
         yield return PlayTutorialTTS(4);
-        MoveArrowTo(new Vector3(0, 1.136f, 1.274f));
+        MoveArrowTo(new Vector3(0, 1.249f, 1.274f));
         yield return PlayTutorialTTS(5);
-        MoveArrowTo(new Vector3(0, 1.236f, 0f));
+        MoveArrowTo(new Vector3(0, 1.369f, 0f));
         yield return PlayTutorialTTS(6);
 
         yield return DrawPointCard();
 
-        MoveArrowTo(new Vector3(0, 1.136f, -1.55f));
+        MoveArrowTo(new Vector3(0, 1.498f, -1.68f));
         yield return PlayTutorialTTS(7);
         instanceMap[1001].GetComponentInChildren<Outline>().Enable = 1f;
         yield return PlaySkillCard(1001);
@@ -76,6 +77,7 @@ public class TutorialSystem : MonoBehaviour
         instance = CardViewCreator.Instance.CreateCardInstance(4, instanceID++);
         StartCoroutine(SceneViewManager.boardView.AddCard(instance, ClientGameState.playerSlot, CardVisualState.None));
         SceneViewManager.mySumPointView.ChangeSum(11, true);
+        ClientEffectContext.isExecutingSkillCard = false;
 
         MoveArrowTo(new Vector3(0.51f, 1.22f, -1.23f));
         yield return PlayTutorialTTS(8);
@@ -109,14 +111,15 @@ public class TutorialSystem : MonoBehaviour
         yield return DrawSkillCard(1002);
         SceneViewManager.myRevealButtonView.HideButton();
 
-        MoveArrowTo(new Vector3(-0.21f, 1.136f, -1.55f));
+        MoveArrowTo(new Vector3(-0.13f, 1.423f, -1.668f));
         yield return PlayTutorialTTS(13);
 
         yield return PlaySkillCard(1004);
         yield return new WaitForSeconds(1f);
         SceneViewManager.myActionPointView.AddPoint(2);
+        ClientEffectContext.isExecutingSkillCard = false;
 
-        MoveArrowTo(new Vector3(0f, 1.136f, -1.55f));
+        MoveArrowTo(new Vector3(0f, 1.467f, -1.675f));
         yield return PlayTutorialTTS(14);
 
         yield return PlaySkillCard(1002);
@@ -124,11 +127,14 @@ public class TutorialSystem : MonoBehaviour
         yield return ClickTest(true, new List<int> { 1 << 8 }, 1);
         StartCoroutine(SceneViewManager.boardView.RemoveCard(instanceMap[100]));
         SceneViewManager.opponentSumPointView.ChangeSum(3, false);
+        ClientEffectContext.isExecutingSkillCard = false;
 
-        MoveArrowTo(new Vector3(-0.888f, 1.237f, -1.169f));
+        MoveArrowTo(new Vector3(-0.991f, 1.357f, -1.169f));
+        chipArrow.SetActive(true);
         yield return PlayTutorialTTS(15);
         yield return AddChip();
         SceneViewManager.myActionPointView.SpendPoint(1);
+        chipArrow.SetActive(false);
 
         MoveArrowTo(new Vector3(1.586f, 1.269f, 0.842f));
         yield return PlayTutorialTTS(16);
@@ -448,7 +454,7 @@ public class TutorialSystem : MonoBehaviour
         GameManager.ChangeInteractMask("Tutorial");
 
         StartCoroutine(SceneViewManager.viewAnimController.PlayStartGameAnim());
-        SceneViewManager.myChipView.StartGame(false, 4);
+        SceneViewManager.myChipView.StartGame(false, 3);
         SceneViewManager.opponentChipView.StartGame(true, 3);
         foreach (var obj in SceneViewManager.myChipView.chipsInTray.Values)
         {

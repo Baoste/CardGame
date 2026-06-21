@@ -6,15 +6,12 @@ public class AccountLeaderboardText : MonoBehaviour
 {
     [Header("References")]
     [SerializeField] private FishNetAccountClient accountClient;
-    [SerializeField] private TMP_Text leaderboardText;
+    [SerializeField] private TMP_Text rankText;
+    [SerializeField] private TMP_Text userText;
+    [SerializeField] private TMP_Text chipsText;
 
     [Header("Leaderboard")]
     [SerializeField] private int count = 10;
-
-    [Header("Text")]
-    [SerializeField] private string loadingText = "...";
-    [SerializeField] private string emptyText = "No leaderboard data";
-    [SerializeField] private string failedText = "--";
 
     private bool isWaitingForLeaderboard;
 
@@ -38,13 +35,10 @@ public class AccountLeaderboardText : MonoBehaviour
 
     public void RefreshLeaderboard()
     {
-        if (leaderboardText != null)
-            leaderboardText.text = loadingText;
-
         if (accountClient == null)
         {
             Debug.LogError("[AccountLeaderboardText] FishNetAccountClient not found.");
-            SetFailedText();
+            // SetFailedText();
             return;
         }
 
@@ -59,31 +53,41 @@ public class AccountLeaderboardText : MonoBehaviour
 
         isWaitingForLeaderboard = false;
 
-        if (leaderboardText == null)
-            return;
-
-        if (entries == null || entries.Length <= 0)
+        if (entries == null || entries.Length == 0)
         {
-            leaderboardText.text = emptyText;
+            rankText.text = string.Empty;
+            userText.text = string.Empty;
+            chipsText.text = string.Empty;
             return;
         }
 
-        StringBuilder builder = new StringBuilder();
+        StringBuilder rankBuilder = new StringBuilder();
+        StringBuilder userBuilder = new StringBuilder();
+        StringBuilder chipsBuilder = new StringBuilder();
 
         for (int i = 0; i < entries.Length; i++)
         {
             LeaderboardEntryData entry = entries[i];
-            builder.Append(i + 1);
-            builder.Append(". ");
-            builder.Append(entry.Username);
-            builder.Append("  ");
-            builder.Append(entry.ChipCount);
+
+            string username = entry.Username ?? string.Empty;
+            if (username.Length > 13)
+                username = username.Substring(0, 13);
+
+            rankBuilder.Append(i + 1);
+            userBuilder.Append(username);
+            chipsBuilder.Append(entry.ChipCount);
 
             if (i < entries.Length - 1)
-                builder.AppendLine();
+            {
+                rankBuilder.AppendLine();
+                userBuilder.AppendLine();
+                chipsBuilder.AppendLine();
+            }
         }
 
-        leaderboardText.text = builder.ToString();
+        rankText.text = rankBuilder.ToString();
+        userText.text = userBuilder.ToString();
+        chipsText.text = chipsBuilder.ToString();
     }
 
     private void OnGetLeaderboardFailed(string reason)
@@ -92,14 +96,14 @@ public class AccountLeaderboardText : MonoBehaviour
             return;
 
         isWaitingForLeaderboard = false;
-        SetFailedText();
+        // SetFailedText();
 
         Debug.LogWarning("[AccountLeaderboardText] Get leaderboard failed: " + reason);
     }
 
-    private void SetFailedText()
-    {
-        if (leaderboardText != null)
-            leaderboardText.text = failedText;
-    }
+    //private void SetFailedText()
+    //{
+    //    if (leaderboardText != null)
+    //        leaderboardText.text = failedText;
+    //}
 }
