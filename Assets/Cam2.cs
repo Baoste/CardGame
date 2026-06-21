@@ -8,6 +8,7 @@ public class Cam2 : MonoBehaviour
     public ShotPlayer shotPlayer;
     public GameObject player;
     public GameObject mainMenuCanvas;
+    public GameObject wasdHint;
 
     public GameObject SingleDoor_Open;
     public GameObject SingleDoor_Closed;
@@ -35,4 +36,14 @@ public class Cam2 : MonoBehaviour
         player.GetComponent<PlayerMouseLook>().enabled = true;  // 启用玩家控制脚本
     }
 
+    public void ShowWASDHint()
+    {
+        StartCoroutine(ActivateWASDHint());
+    }
+    IEnumerator ActivateWASDHint()
+    {
+        wasdHint.SetActive(true);
+        yield return new WaitForSeconds(5f);
+        wasdHint.SetActive(false);
+    }
 }
