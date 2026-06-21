@@ -206,6 +206,7 @@ public class ComputerUIController : MonoBehaviour
 
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
+        AudioManager.Instance.StopBGM();
         FindAnyObjectByType<StartSceneBootstrap>().SwitchToGameScene("Tutorial");
         // RefreshRoomCodeInputView();
     }
