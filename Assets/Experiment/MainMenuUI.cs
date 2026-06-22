@@ -62,11 +62,11 @@ public class MainMenuUI : MonoBehaviour
 
     public void ShowMenu()
     {
-        loginCanvas.SetActive(false);
+        mainMenuCanvas.SetActive(true);
 
         AudioManager.Instance.PlayBGM("MenuBGM");
 
-        mainMenuCanvas.SetActive(true);
+        loginCanvas.SetActive(false);
         rawImage.color = Color.black;
         Sequence seq = DOTween.Sequence();
         seq.Append(
@@ -104,8 +104,8 @@ public class MainMenuUI : MonoBehaviour
     {
         AudioManager.Instance.PlayBGM("ClipUpdateBGM");
         accountChipCountText.RefreshChipCount();
-        loginCanvas.SetActive(false);
         chipUpdateCanvas.SetActive(true);
+        loginCanvas.SetActive(false);
     }
 
     public void HideClipUpdate()
