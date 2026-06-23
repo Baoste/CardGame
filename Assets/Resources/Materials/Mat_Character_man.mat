@@ -20,7 +20,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Mat_Character2
+  m_Name: Mat_Character_man
   m_Shader: {fileID: -6465566751694194690, guid: 9518d030cf70242438d8090041f7bb9d,
     type: 3}
   m_Parent: {fileID: 0}
@@ -42,7 +42,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _BaseMap:
-        m_Texture: {fileID: 2800000, guid: 3daff43c5ad6d5f489deb32698651e94, type: 3}
+        m_Texture: {fileID: 2800000, guid: a781f6c20b2b1f94dbc356800f0f0a36, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _EmissionMap:
@@ -50,15 +50,15 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MetallicMap:
-        m_Texture: {fileID: 2800000, guid: 05a50abc65d9ce2459f64638aa8b11f4, type: 3}
+        m_Texture: {fileID: 2800000, guid: c9f344739d436474aaebe36c7e6bd993, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _NormalMap:
-        m_Texture: {fileID: 2800000, guid: 2782167ded8d182459ab5d41c2c8359c, type: 3}
+        m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _RoughnessMap:
-        m_Texture: {fileID: 2800000, guid: 8ca9f594365d5db45bde980c3a5a96df, type: 3}
+        m_Texture: {fileID: 2800000, guid: 6dc42eea4b57e5f4182ab9930b7294b5, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _SampleTexture2D_c8101de1656948c7b78e3cadde4e51c5_Texture_1_Texture2D:

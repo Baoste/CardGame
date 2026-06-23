@@ -5,7 +5,10 @@ using UnityEngine;
 
 public class EndAnimController : MonoBehaviour
 {
+    [SerializeField] private GameObject originalCharacter;
     [SerializeField] private Material postprocessMat;
+    [SerializeField] private Renderer manChipRenderer;
+    [SerializeField] private Renderer womanmanChipRenderer;
 
     [Header("Chip Spawner")]
     [SerializeField] private GameObject chipPrefab;
@@ -15,7 +18,7 @@ public class EndAnimController : MonoBehaviour
     [SerializeField] private Vector3 spawnCenter;
     [SerializeField] private Vector3 spawnRange = new Vector3(5f, 0f, 5f);
 
-    private Material chipMaterial;
+    [SerializeField] private Material chipMaterial;
     
     private void Start()
     {
@@ -28,6 +31,14 @@ public class EndAnimController : MonoBehaviour
         chipMaterial.enableInstancing = true;
         chipMaterial.SetTexture("_DecalTex", ChipSkinConfig.texture2Ds[colorId]);
 
+        manChipRenderer.sharedMaterial = chipMaterial;
+        womanmanChipRenderer.sharedMaterial = chipMaterial;
+
+    }
+
+    public void HideOriginalCharacter()
+    {
+        originalCharacter.SetActive(false);
     }
 
     public void StartEndAnim()

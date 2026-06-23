@@ -4471,6 +4471,7 @@ MonoBehaviour:
   isBack: 0
   disk: {fileID: 543450652572640022}
   callBtn: {fileID: 42319922}
+  foldBtn: {fileID: 809014391}
   betCountText: {fileID: 405529623}
   volume: {fileID: 832575518}
 --- !u!1 &296187572
@@ -22854,6 +22855,7 @@ MonoBehaviour:
   isBack: 1
   disk: {fileID: 512185647}
   callBtn: {fileID: 0}
+  foldBtn: {fileID: 0}
   betCountText: {fileID: 0}
   volume: {fileID: 832575518}
 --- !u!1 &1001179829

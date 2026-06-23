@@ -1,4 +1,5 @@
 using Cinemachine;
+using Game.Domain;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -6,11 +7,18 @@ using UnityEngine;
 public class StartPlaySceneAnim : MonoBehaviour
 {
     [SerializeField] private CinemachineVirtualCamera startCamera;
+    [SerializeField] private GameObject man;
+    [SerializeField] private GameObject woman;
 
     private void Start()
     {
         //AudioManager.Instance.Play("BGM");
         AudioManager.Instance.Play("Electric_Buzz");
+
+        if (ClientGameState.playerSlot == 0)
+            man.SetActive(true);
+        else 
+            woman.SetActive(true);
     }
 
     public void StartGame()

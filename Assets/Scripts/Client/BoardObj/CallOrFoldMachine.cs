@@ -12,6 +12,7 @@ public class CallOrFoldMachine : MonoBehaviour, IViewClear
     [SerializeField] private Transform disk;
     private Vector3 diskOriginalPosition = new Vector3(-0.379f, 1.131f, -0.96f);
     [SerializeField] private ClickToCallOrFold callBtn;
+    [SerializeField] private ClickToCallOrFold foldBtn;
     [SerializeField] private TMP_Text betCountText;
 
     private Vector3 originalPosition;
@@ -38,7 +39,10 @@ public class CallOrFoldMachine : MonoBehaviour, IViewClear
     public IEnumerator Show(int betCount)
     {
         if (callBtn != null)
+        {
             callBtn.betCount = betCount;
+            foldBtn.betCount = betCount;
+        }
         if (betCountText != null)
             betCountText.text = betCount.ToString();
 

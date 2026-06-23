@@ -120,7 +120,7 @@ public class ComputerUIController : MonoBehaviour
                 break;
 
             case ComputerScreenState.Result:
-                UpdateResultState();
+                // UpdateResultState();
                 break;
         }
     }

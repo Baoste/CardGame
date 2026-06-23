@@ -216,11 +216,13 @@ public class EventProcessFunction : MonoBehaviour
         for (int i = 0; i < placeBetCount; i++)
         {
             StartCoroutine(SceneViewManager.myChipView.Place1BetAuto(false, 1f));
-            yield return SceneViewManager.opponentChipView.Place1BetAuto(true, 1f);
+            StartCoroutine(SceneViewManager.opponentChipView.Place1BetAuto(true, 1f));
         }
 
         if (punterId == ClientGameState.playerSlot)
             ClientCommand.StartTurn(punterId);
+
+        yield break;
     }
 
     // parameters[0]: int playerId

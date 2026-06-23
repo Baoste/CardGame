@@ -26,9 +26,14 @@ public class ConfirmBetCmdHandler : CommandHandler, ICommandHandler
         }
         else
         {
-            int currentBet = session.gameState.currentBet;
+            int winnerId = 1 - payload.playerId;
+            int currentBet = session.gameState.currentBet - payload.betCount;
             int playerPoints = session.gameState.SumPoint(payload.playerId, out int _, out bool _);
             int opponentPoints = session.gameState.SumPoint(1 - payload.playerId, out int _, out bool _);
+            session.gameState.players[winnerId].chipCount += session.gameState.currentBet + currentBet;
+            session.gameState.players[1 - winnerId].chipCount += session.gameState.currentBet - currentBet;
+
+            session.gameState.Dispose();
 
             results.events.Enqueue(MakeEvent(
                 "RevealCardsAndScore",
@@ -36,13 +41,15 @@ public class ConfirmBetCmdHandler : CommandHandler, ICommandHandler
                 (
                     payload.playerId,
                     true,
-                    1 - payload.playerId,
-                    currentBet - 1,
+                    winnerId,
+                    currentBet,
                     playerPoints,
                     opponentPoints
                 ),
                 -1
             ));
+
+            NetEffectFunction.EndMatch(session, payload.playerId, winnerId, currentBet, ref results);
         }    
         //END
 
