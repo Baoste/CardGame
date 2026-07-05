@@ -63,5 +63,24 @@ public class SceneViewRegistry : MonoBehaviour
         SceneViewManager.turnIndicator = turnIndicator;
         SceneViewManager.callOrFoldMachine = callOrFoldMachine;
         SceneViewManager.callOrFoldMachineBack = callOrFoldMachineBack;
+
+        SceneViewManager.views = new IViewClear[]
+        {
+            boardView,
+            resolveZoneView,
+            peekZoneView,
+            myHandView,
+            opponentHandView,
+            myRevealButtonView,
+            opponentRevealButtonView,
+            myTurnLightView,
+            opponentTurnLightView,
+            myActionPointView,
+            opponentActionPointView,
+            turnIndicator,
+            callOrFoldMachine,
+            callOrFoldMachineBack,
+            endTurnView
+        };
     }
 }

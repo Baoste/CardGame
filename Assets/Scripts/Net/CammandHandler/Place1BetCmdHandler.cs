@@ -11,28 +11,30 @@ public class Place1BetCmdHandler : CommandHandler, ICommandHandler
 
         // TODO
         // START
-        int apCount = ++session.gameState.placeBetTimes;
-        if (!NetEffectFunction.SpendActionPoint(payload.playerId, payload.instanceId, session, results, apCount))
-            return results;
+        // int apCount = ++session.gameState.placeBetTimes;
 
         if (session.gameState.players[1 - payload.playerId].Place1Bet() &&
             session.gameState.players[payload.playerId].Place1Bet())
         {
+            int apCount = 1;
+            if (!NetEffectFunction.SpendActionPoint(payload.playerId, payload.instanceId, session, results, apCount))
+                return results;
             session.gameState.currentBet++;
+            results.events.Enqueue(MakeEvent(
+                "Place1Bet",
+                new Place1BetEvent
+                (
+                    payload.playerId,
+                    true,
+                    payload.instanceId
+                ),
+                -1
+            ));
+            return results;
         }
-        // END
-
-        // need change
-        results.events.Enqueue(MakeEvent(
-            "Place1Bet",
-            new Place1BetEvent
-            (
-                payload.playerId,
-                true,
-                payload.instanceId
-            ),
-            -1
-        ));
-        return results;
+        else
+        {
+            return results;
+        }
     }
 }

@@ -28,12 +28,12 @@ public class ExecuteCardView : MonoBehaviour
 
         if (isOpponent)
         {
-            Vector3 readyPosition = card.transform.position + card.transform.forward * 0.5f;
-            readyPosition += card.transform.up * 1f;
-            Sequence seq = DOTween.Sequence();
-            seq.Append(card.transform.DOMove(readyPosition, 0.8f).SetEase(Ease.InOutCubic));
+            //Vector3 readyPosition = card.transform.position + card.transform.forward * 0.5f;
+            //readyPosition += card.transform.up * 1f;
+            //Sequence seq = DOTween.Sequence();
+            //seq.Append(card.transform.DOMove(readyPosition, 0.8f).SetEase(Ease.InOutCubic));
 
-            yield return seq.WaitForCompletion();
+            //yield return seq.WaitForCompletion();
         }
         yield break;
     }

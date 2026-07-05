@@ -87,7 +87,7 @@ namespace Game.Domain
         {
             if (session.gameState.players[1 - winnerId].chipCount <= 0)
             {
-                ReduceLoserAccountChipCount(session, winnerId, 6);
+                ReduceLoserAccountChipCount(session, winnerId, 3);
 
                 results.events.Enqueue(CommandHandler.MakeEvent(
                     "EndMatch",

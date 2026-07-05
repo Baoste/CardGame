@@ -4,10 +4,16 @@ using UnityEngine;
 public class PointCardShake : MonoBehaviour
 {
     private float shakeHeight = 0.03f;
+    private Quaternion originalRotation;
+    private bool hasSetRotation = false;
+
     public void CardShake()
     {
-        Quaternion originalRotation = transform.rotation;
-
+        if (!hasSetRotation)
+        {
+            originalRotation = transform.rotation;
+            hasSetRotation = true;
+        }
         Sequence wobble = DOTween.Sequence();
         wobble.Append(transform.DOLocalRotate(new Vector3(12, 0, 0), 0.08f, RotateMode.LocalAxisAdd));
         wobble.Append(transform.DOLocalRotate(new Vector3(-12, 0, 0), 0.08f, RotateMode.LocalAxisAdd));

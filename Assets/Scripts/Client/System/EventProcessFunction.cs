@@ -526,14 +526,22 @@ public class EventProcessFunction : MonoBehaviour
             }
             case EffectAnimation.Discard_Lazer:
             {
-                List<GameObject> objs = new List<GameObject>();
                 foreach (int instanceId in instanceIds)
                 {
-                    objs.Add(instanceMap[instanceId]);
+                    GameObject obj = instanceMap[instanceId];
                     instanceMap.Remove(instanceId);
+                    IDiscardPresentation discardPresentation = obj.GetComponent<IDiscardPresentation>();
+                    discardPresentation?.DiscardPlay();
                 }
-                SceneViewManager.boardView.GenerateLazer(objs[0].transform.position, objs);
                 break;
+                //List<GameObject> objs = new List<GameObject>();
+                //foreach (int instanceId in instanceIds)
+                //{
+                //    objs.Add(instanceMap[instanceId]);
+                //    instanceMap.Remove(instanceId);
+                //}
+                //SceneViewManager.boardView.GenerateLazer(objs[0].transform.position, objs);
+                //break;
             }
         }
     }
@@ -555,7 +563,6 @@ public class EventProcessFunction : MonoBehaviour
         instanceMap[instanceId] = instance;
 
         AudioManager.Instance.Play("DrawPointCard");
-
         yield return SceneViewManager.boardView.AddCard(instance, playerId, cardState);
 
         // 操作了就隐藏爆牌按钮

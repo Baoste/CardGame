@@ -107,9 +107,12 @@ namespace Game.Domain
             for (int i = 0; i < drawNum; i++)
             {
                 int drawCardInstanceId = session.gameState.skillCardsDeck.Draw();
-                session.gameState.AddCard(casterId, session.instanceToCardId[drawCardInstanceId], drawCardInstanceId, CardType.Skill);
+                if (drawCardInstanceId == -1)
+                {
+                    return;  // 如果没有牌可以抽，直接返回
+                }
 
-                // return
+                session.gameState.AddCard(casterId, session.instanceToCardId[drawCardInstanceId], drawCardInstanceId, CardType.Skill);
                 results.events.Enqueue(CommandHandler.MakeEvent(
                     "DrawSkillCard",
                     new DrawSkillCardEvent    // need change

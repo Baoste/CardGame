@@ -12,7 +12,28 @@ public class PlaceBetsCmdHandler : CommandHandler, ICommandHandler
 
         // TODO
         // START
-        int apCount = ++session.gameState.placeBetTimes;
+        
+        int count = Math.Min(
+            payload.instanceIds.Length, 
+            Math.Min(session.gameState.players[1 - payload.playerId].chipCount, session.gameState.players[payload.playerId].chipCount)
+        );
+        if (count <= 0)
+        {
+            results.events.Enqueue(MakeEvent(
+                "PlaceBets",
+                new PlaceBetsEvent
+                (
+                    payload.playerId,
+                    true,
+                    new int[] { }
+                ),
+                -1
+            ));
+            return results;
+        }
+
+        // int apCount = ++session.gameState.placeBetTimes;
+        int apCount = 1;
         if (!NetEffectFunction.SpendActionPoint(payload.playerId, -1, session, results, apCount))
         {
             results.events.Enqueue(MakeEvent(
@@ -28,10 +49,7 @@ public class PlaceBetsCmdHandler : CommandHandler, ICommandHandler
             return results;
         }
 
-        int count = Math.Min(
-            payload.instanceIds.Length, 
-            Math.Min(session.gameState.players[1 - payload.playerId].chipCount, session.gameState.players[payload.playerId].chipCount)
-        );
+
         if (session.gameState.players[1 - payload.playerId].PlaceBets(count) &&
             session.gameState.players[payload.playerId].PlaceBets(count))
         {

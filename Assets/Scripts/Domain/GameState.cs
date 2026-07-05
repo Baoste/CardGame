@@ -94,6 +94,7 @@ namespace Game.Domain
             Turn = 0;
             CurrentPlayerId = -1;
             currentBet = 0;
+            placeBetTimes = 0;
 
             skillCardsDeck._Clear();
             pointCardsDeck._Clear();

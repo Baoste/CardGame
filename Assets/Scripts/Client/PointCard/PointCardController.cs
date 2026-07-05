@@ -52,13 +52,13 @@ public class PointCardController : MonoBehaviour, IDiscardPresentation
         this.isOpponent = isOpponent;
     }
 
-    private void OnTriggerEnter(Collider other)
-    {
-        if (other.gameObject.CompareTag("Lazer") && stateMachine.currentState == onBoardState)
-        {
-            StartCoroutine(DestroyByLazer());
-        }
-    }
+    //private void OnTriggerEnter(Collider other)
+    //{
+    //    if (other.gameObject.CompareTag("Lazer") && stateMachine.currentState == onBoardState)
+    //    {
+    //        StartCoroutine(DestroyByLazer());
+    //    }
+    //}
 
     private IEnumerator DestroyByLazer()
     {

@@ -28,24 +28,7 @@ public static class SceneViewManager
     public static CallOrFoldMachine callOrFoldMachine;
     public static CallOrFoldMachine callOrFoldMachineBack;
 
-    private static IEnumerable<IViewClear> views => new IViewClear[]
-    {
-            boardView,
-            resolveZoneView,
-            peekZoneView,
-            myHandView,
-            opponentHandView,
-            myRevealButtonView,
-            opponentRevealButtonView,
-            myTurnLightView,
-            opponentTurnLightView,
-            myActionPointView,
-            opponentActionPointView,
-            turnIndicator,
-            callOrFoldMachine,
-            callOrFoldMachineBack,
-            endTurnView
-    };
+    public static IEnumerable<IViewClear> views;
 
     public static void ClearViews()
     {

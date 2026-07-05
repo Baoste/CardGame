@@ -14,7 +14,7 @@ namespace Game.Domain
         public int playerId;
         public int actionPoint = 0;
         public int _holeCard = -1;
-        public int chipCount = 6;
+        public int chipCount = 3;
         public SkillCardsInHand skillCardsInHand = new SkillCardsInHand();
         public SkillCardsInHand skillCardsExecute = new SkillCardsInHand();
         public PointCardsOnBoard pointCardsOnBoard = new PointCardsOnBoard();

@@ -6,7 +6,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Rendering.Universal;
 using static MeshDestroy;
-using static Unity.Burst.Intrinsics.X86.Avx;
 
 public class BoardView : MonoBehaviour, IViewClear
 {
@@ -391,7 +390,7 @@ public class BoardView : MonoBehaviour, IViewClear
                 boardCenter.y,
                 centerZ
             );
-            card.transform.DOKill();
+            //card.transform.DOKill();
             float during = Mathf.Abs(card.transform.position.x - targetPos.x);
             during = Mathf.Max(0.25f, during * 1.7f);
             card.transform.DOMove(targetPos, during).SetEase(Ease.OutCubic);
@@ -509,11 +508,15 @@ public class BoardView : MonoBehaviour, IViewClear
         impulseSource.GenerateImpulse();
         foreach (var card in selfCards)
         {
-            card.GetComponent<PointCardShake>().CardShake();
+            PointCardShake pcs = card.GetComponent<PointCardShake>();
+            if (pcs != null)
+                pcs.CardShake();
         }
         foreach (var card in opponentCards)
         {
-            card.GetComponent<PointCardShake>().CardShake();
+            PointCardShake pcs = card.GetComponent<PointCardShake>();
+            if (pcs != null)
+                pcs.CardShake();
         }
         yield break;
     }

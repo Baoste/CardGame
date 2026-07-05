@@ -71,6 +71,7 @@ public class ResolveZoneView : MonoBehaviour, IViewClear
         }
         resolveCards.Clear();
         yield return null;
+
     }
 
     public IEnumerator UpdateCardPositions(float duration, int playerId, bool isShown, float delay)
